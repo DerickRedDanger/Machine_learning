@@ -2,16 +2,20 @@ import os
 import zipfile
 from pathlib import Path
 
-DATA_DIR = Path("data/raw")
-DATA_DIR.mkdir(parents=True, exist_ok=True)
+ROOT_DIR = Path(__file__).resolve().parents[1]
 
-ZIP_PATH = DATA_DIR / "titanic.zip"
+# Data Directory
+RAW_DIR = ROOT_DIR/ 'data'/ 'raw'
+
+RAW_DIR.mkdir(parents=True, exist_ok=True)
+
+ZIP_PATH = RAW_DIR / "titanic.zip"
 
 
 def download_data():
     print("Downloading Titanic dataset...")
 
-    os.system(f"kaggle competitions download -c titanic -p {DATA_DIR}")
+    os.system(f"kaggle competitions download -c titanic -p {RAW_DIR}")
 
     print("Download complete.")
 
@@ -20,7 +24,7 @@ def unzip_data():
     print("Unzipping dataset...")
 
     with zipfile.ZipFile(ZIP_PATH, 'r') as zip_ref:
-        zip_ref.extractall(DATA_DIR)
+        zip_ref.extractall(RAW_DIR)
 
     ZIP_PATH.unlink()  # delete zip file
 

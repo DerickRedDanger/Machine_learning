@@ -21,5 +21,3 @@ SRC_DIR=ROOT_DIR/'src'
 
 # print(SUBMISSIONS_DATA_DIR)
 
-import os
-print(os.environ["KAGGLE_USERNAME"])
