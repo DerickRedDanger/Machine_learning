@@ -1,62 +1,108 @@
-## Dataset setup
+## Dataset Setup
 
 This project uses the Titanic dataset from Kaggle's Titanic competition.
 
 The dataset files are **not included in this repository**.  
-To run the project, you need to download them from Kaggle using your own Kaggle account and API credentials.
+To run the project, you must download them using your own Kaggle account.
 
-Expected files:
+### Expected files
 
 ```text
 data/raw/train.csv
 data/raw/test.csv
 data/raw/gender_submission.csv
+````
 
-### Dataset Download steps
+---
 
-1 - Install the Kaggle CLI by running in the terminal:
+## Step 1 — Install Kaggle CLI
+
+```bash
 pip install kaggle
+```
 
-2 - Create a Kaggle API token:
-Go to Kaggle.
-Open your account settings.
-Go to the API section.
-Create an API token.
+---
 
-3 - Kaggle credentials:
-Kaggle supports multiple authentication methods. The simplest method for this project is the legacy kaggle.json file or using a environment variable.
+## Step 2 — Create a Kaggle API token
 
-Option A - environment variable:
-Execute the following in the terminal, replacing Your_token_here with the one given by Kaggle:
+1. Go to Kaggle
+2. Open **Account Settings**
+3. Scroll to the **API** section
+4. Click **Create New Token**
 
-export KAGGLE_API_TOKEN=your_token_here
+This will download a `kaggle.json` file.
 
-Option B - legacy kaggle.json:
-Place your kaggle.json file in the Kaggle config folder.
+---
 
-For Linux/macOS/Codespaces, execute the following in the terminal:
+## Step 3 — Configure credentials
 
+You can choose one of the following methods:
+
+### Option A — `kaggle.json` (recommended for beginners)
+
+#### Linux/macOS/Codespaces
+
+```bash
 mkdir -p ~/.kaggle
 mv kaggle.json ~/.kaggle/kaggle.json
 chmod 600 ~/.kaggle/kaggle.json
+```
 
-For Windows PowerShell:
+#### Windows (PowerShell)
+
+```powershell
 mkdir $env:USERPROFILE\.kaggle
+```
 
-Then move kaggle.json into:
+Move `kaggle.json` to:
+
+```text
 C:\Users\YOUR_USERNAME\.kaggle\kaggle.json
+```
 
+---
+
+### Option B — Environment variable
+
+```bash
+export KAGGLE_API_TOKEN=your_token_here
+```
+
+PowerShell:
+
+```powershell
+$env:KAGGLE_API_TOKEN="your_token_here"
+```
+
+---
+
+## Step 4 — Download the dataset
+
+Run:
+
+```bash
 python scripts/download_data.py
+```
 
-4 - Download the Titanic dataset:
-run:
-python scripts/download_data.py
+---
 
-Or manually go to scripts and execute it.
+## What the script does
 
-The script will:
+* Checks if the dataset already exists
+* Downloads it from Kaggle if needed
+* Extracts the files into `data/raw/`
+* Shows helpful messages if setup is missing
 
-Check whether the Titanic files already exist in data/raw/.
-Download the dataset from Kaggle if the files are missing.
-Extract the CSV files.
-Print setup instructions if Kaggle authentication is missing.
+---
+
+## Security note
+
+Never commit your Kaggle credentials.
+
+Make sure your `.gitignore` includes:
+
+```gitignore
+data/
+kaggle.json
+.env
+```
