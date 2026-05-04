@@ -1,0 +1,13 @@
+[project]
+name = "titanic-ml"
+version = "0.1.0"
+description = "Machine learning project for the Kaggle Titanic competition"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "scikit-learn",
+    "kaggle",
+]
+
+[tool.setuptools]
+packages = ["titanic_ml"]

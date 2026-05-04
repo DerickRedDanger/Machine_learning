@@ -1,5 +1,10 @@
 # Ignore environment variables file
 data/
 .env
+kaggle.json
+
 __pycache__/
+*.py[cod]
+*.egg-info/
+
 .ipynb_checkpoints/

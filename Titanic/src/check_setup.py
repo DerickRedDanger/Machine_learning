@@ -12,10 +12,11 @@ def check_package_import():
 
 
 def check_data():
+    import titanic_ml.paths as paths
     expected_files = [
-        Path("data/raw/train.csv"),
-        Path("data/raw/test.csv"),
-        Path("data/raw/gender_submission.csv"),
+        paths.TRAIN_PATH,
+        paths.TEST_PATH,
+        paths.GENDER_SUBMISSION_PATH,
     ]
 
     missing = [path for path in expected_files if not path.exists()]
@@ -41,3 +42,5 @@ if __name__ == "__main__":
     check_package_import()
     check_data()
     check_kaggle_cli()
+
+# DEBUG
