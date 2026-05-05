@@ -12,18 +12,28 @@ data/raw/train.csv
 data/raw/test.csv
 data/raw/gender_submission.csv
 ````
-
 ---
-
-## Step 1 — Install Kaggle CLI
+## step 1 - Create and activate virtual environment
 
 ```bash
-pip install kaggle
+python -m venv .venv
+```
+
+```bash
+.venv\Scripts\Activate
 ```
 
 ---
 
-## Step 2 — Create a Kaggle API token
+## Step 2 — Install Kaggle CLI
+
+```bash
+python -m pip install kaggle
+```
+
+---
+
+## Step 3 — Create a Kaggle API token
 
 1. Go to Kaggle
 2. Open **Account Settings**
@@ -34,7 +44,7 @@ This will download a `kaggle.json` file.
 
 ---
 
-## Step 3 — Configure credentials
+## Step 4 — Configure credentials
 
 You can choose one of the following methods:
 
@@ -76,7 +86,7 @@ $env:KAGGLE_API_TOKEN="your_token_here"
 
 ---
 
-## Step 4 — Download the dataset
+## Step 5 — Download the dataset
 
 Run:
 

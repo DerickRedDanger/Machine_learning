@@ -1,15 +1,17 @@
 from pathlib import Path
 import subprocess
 import zipfile
+from titanic_ml.paths import RAW_DATA_DIR, ZIP_PATH, TRAIN_PATH, TEST_PATH, GENDER_SUBMISSION_PATH
 
-ROOT_DIR = Path(__file__).resolve().parents[1]
-RAW_DATA_DIR = ROOT_DIR / "data" / "raw"
-ZIP_PATH = RAW_DATA_DIR / "titanic.zip"
+
+# ROOT_DIR = Path(__file__).resolve().parents[1]
+# RAW_DATA_DIR = ROOT_DIR / "data" / "raw"
+# ZIP_PATH = RAW_DATA_DIR / "titanic.zip"
 
 EXPECTED_FILES = [
-    RAW_DATA_DIR / "train.csv",
-    RAW_DATA_DIR / "test.csv",
-    RAW_DATA_DIR / "gender_submission.csv",
+    TRAIN_PATH,
+    TEST_PATH,
+    GENDER_SUBMISSION_PATH,
 ]
 
 

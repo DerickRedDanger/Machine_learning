@@ -1,6 +1,7 @@
 # Ignore environment variables file
 data/
 .env
+.venv/
 kaggle.json
 
 __pycache__/
