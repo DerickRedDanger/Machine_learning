@@ -25,13 +25,18 @@ python -m venv .venv
 
 ---
 
-## Step 2 — Install Kaggle CLI
+## Step 2 — Install Kaggle CLI and requirements (WIP)
 
 ```bash
 python -m pip install kaggle
 ```
 
+```bash
+pip install -r requirements.txt
+```
 ---
+
+
 
 ## Step 3 — Create a Kaggle API token
 
