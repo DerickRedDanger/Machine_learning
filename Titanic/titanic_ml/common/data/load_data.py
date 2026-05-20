@@ -1,6 +1,6 @@
 import pandas as pd
 
-from titanic_ml.src.config import TRAIN_PATH, TEST_PATH
+from titanic_ml.paths import TRAIN_PATH, TEST_PATH
 
 
 def load_train_data():

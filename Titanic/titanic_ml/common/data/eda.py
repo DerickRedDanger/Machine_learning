@@ -1,46 +1,30 @@
 import pandas as pd
 
-def quick_description(df):
-    """
-    Provides a quick overview of the DataFrame, including:
-    - DataFrame info
-    - Shape, columns, and data types
-    - Descriptive statistics for numeric and categorical features
-    - Missing values count
+def sample_dataframe(
+    df,
+    head=5,
+    random=10,
+    tail=5,
+    random_state=42
+):
+    top = df.head(head)
+    bottom = df.tail(tail)
 
-    Parameters:
-    df (pd.DataFrame): The DataFrame to be described.
+    middle = df.iloc[head:max(head, len(df) - tail)]
 
-    Returns:
-    None: Prints the description to the console.
-    """
-    print('DataFrame info:')
-    df.info()
-    print('------------------------')
-    print('DataFrame shape:', df.shape)
-    print('------------------------')
-    print('DataFrame columns:', df.columns.tolist())
-    print('------------------------')
-    print('DataFrame dtypes:')
-    print(df.dtypes)
-    print('------------------------')
+    if middle.empty:
+        rand = middle
+    else:
+        rand = middle.sample(
+            n=min(random, len(middle)),
+            random_state=random_state
+        ).sort_index()
 
-    print('Describe numeric features:')
-    print(df.describe(include=['number']))
-    print('------------------------')
-
-    print('Describe categorical features:')
-    print(df.describe(include=['object', 'category']))
-    print('------------------------')
-
-    print('Missing values:')
-    print(df.isnull().sum())
-    print('------------------------')
-
-    print('DataFrame head:')
-    print(df.head())
-    print('------------------------')
-
+    return {
+        "head": top,
+        "random": rand,
+        "tail": bottom,
+    }
 
 def format_missing_index(index):
     return ["MISSING" if pd.isna(idx) else idx for idx in index]
@@ -252,7 +236,49 @@ def summarize_numerical_column(series):
 
     return pd.concat([summary, extra])
 
-def run_eda(df, target=None, display=True, max_display=20, method="pearson"):
+def get_rare_categories(
+    series,
+    threshold=0.01,
+    max_unique=50,
+    max_cardinality_pct=30,
+):
+    unique = series.nunique(dropna=False)
+    cardinality_pct = unique / len(series) * 100
+
+    if (
+        unique > max_unique
+        or cardinality_pct > max_cardinality_pct
+    ):
+        return None
+
+    freq = (
+        series.fillna("MISSING")
+        .value_counts(normalize=True)
+    )
+
+    rare = freq[freq < threshold]
+
+    return pd.DataFrame({
+        "count": (
+            series.fillna("MISSING")
+            .value_counts()
+            .loc[rare.index]
+        ),
+        "percent": (rare * 100).round(2),
+    })
+
+def run_eda(df,
+            target=None,
+            display=True,
+            max_display=20,
+            method="pearson",
+            head=5,
+            random=10,
+            tail=5,
+            random_state=42,
+            display_advanced=False,
+):
+    sample = sample_dataframe(df, head=head, random=random, tail=tail, random_state=random_state)
     categorical_cols = df.select_dtypes(include=["object", "category", "bool"]).columns
     numerical_cols = df.select_dtypes(include=["number"]).columns
     corr_df = df[numerical_cols].corr(method=method).round(3)
@@ -283,6 +309,11 @@ def run_eda(df, target=None, display=True, max_display=20, method="pearson"):
             for col in numerical_cols
         },
         "correlation_matrix": corr_df,
+        "sample": sample,
+        "categorical_rare": {
+            col: get_rare_categories(df[col])
+            for col in categorical_cols
+        },
     }
 
     if target_corr_df is not None:
@@ -292,25 +323,69 @@ def run_eda(df, target=None, display=True, max_display=20, method="pearson"):
         print('Dataframe Health')
         print(eda_results["dataFrame_health"])
         print("="*60)
+
         print("DataFrame Summary:")
         print(eda_results["dataFrame_summary"])
         print("="*60)
+
         print("Categorical columns summary:")
         for col in categorical_cols:
             print(f"\n=== {col} ===")
             print(eda_results["categorical_summary"][col])
         print("="*60)
+
         print("\nNumerical columns summary:")
         for col in numerical_cols:
             print(f"\n=== {col} ===")
             print(eda_results["numerical_summary"][col])
         print("="*60)
+
         print(f"\nCorrelation matrix ({method}):")
         print(eda_results["correlation_matrix"])
         print("="*60)
+
         if target_corr_df is not None:
             print(f"\n=== {target} ===")
             print(f"\nCorrelation of features with target '{target}':")
             print(eda_results["target_correlation"])
-            
+
+        for sample_type, sample_df in sample.items():
+            print(f"\n=== Sample: {sample_type} ===")
+            print(sample_df)
+
+        if display_advanced:
+            print("\n=== Advanced Summary ===")
+            for col in categorical_cols:
+                if col in eda_results["categorical_rare"]:
+                    print(f"\n--- {col} ---")
+                    print(eda_results["categorical_rare"][col])
     return eda_results
+
+# WIP: Add function to show examples of rows containing specific values in a column
+def show_examples(df, column, values=None, n=5, contains=True, random_state=42):
+    series = df[column]
+
+    if values is None:
+        return df.sample(n=min(n, len(df)), random_state=random_state)
+
+    if not isinstance(values, list):
+        values = [values]
+
+    if contains and series.dtype == "object":
+        pattern = "|".join(map(str, values))
+        mask = series.fillna("").astype(str).str.contains(pattern, case=False, regex=True)
+    else:
+        mask = series.isin(values)
+
+    return df[mask].head(n)
+
+# WIP: Add function to summarize text length in a column
+def summarize_text_length(series):
+    text = series.dropna().astype(str)
+
+    return pd.Series({
+        "min_len": text.str.len().min(),
+        "mean_len": round(text.str.len().mean(), 2),
+        "median_len": text.str.len().median(),
+        "max_len": text.str.len().max(),
+    })
