@@ -20,4 +20,3 @@ SRC_DIR=ROOT_DIR/'src'
 # Continue
 
 # print(SUBMISSIONS_DATA_DIR)
-

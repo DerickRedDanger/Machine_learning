@@ -1,5 +1,5 @@
 # Ignore environment variables file
-data/
+titanic_ml/data/
 .env
 .venv/
 kaggle.json
