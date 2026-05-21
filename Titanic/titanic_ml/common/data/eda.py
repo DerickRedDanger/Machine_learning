@@ -249,7 +249,7 @@ def get_rare_categories(
         unique > max_unique
         or cardinality_pct > max_cardinality_pct
     ):
-        return None
+        return "No rare categories - too many unique values"
 
     freq = (
         series.fillna("MISSING")
@@ -257,6 +257,9 @@ def get_rare_categories(
     )
 
     rare = freq[freq < threshold]
+
+    if rare.empty:
+        return "No rare categories"
 
     return pd.DataFrame({
         "count": (
@@ -355,12 +358,16 @@ def run_eda(df,
 
         if display_advanced:
             print("\n=== Advanced Summary ===")
+            print('='*60)
+            print("\nRare categories in categorical columns:")
             for col in categorical_cols:
-                if col in eda_results["categorical_rare"]:
+                if col in eda_results["categorical_rare"] and eda_results["categorical_rare"][col] is not None:
                     print(f"\n--- {col} ---")
                     print(eda_results["categorical_rare"][col])
     return eda_results
 
+
+# ================================== WIP Functions ==================================
 # WIP: Add function to show examples of rows containing specific values in a column
 def show_examples(df, column, values=None, n=5, contains=True, random_state=42):
     series = df[column]
