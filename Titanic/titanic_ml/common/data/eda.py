@@ -107,6 +107,10 @@ def classify_cardinality(cardinality_pct, unique):
 
     return "high_cardinality"
 
+def display_memory_usage(df):
+    df.memory_usage(deep=True)
+    return(f"Total memory usage: {df.memory_usage(deep=True).sum() / 1024:.2f} KB")
+
 
 def summarize_dataframe(df):
 
@@ -148,6 +152,7 @@ def summarize_dataframe_health(df):
         "rows_with_missing_%": round(rows_with_missing / len(df) * 100, 2),
         "total_missing_values": df.isna().sum().sum(),
         "dataFrame_columns": df.columns.tolist(),
+        "memory_usage": display_memory_usage(df),
     })
 
 def summarize_categorical_column(df, feature, target=None, max_display=20):

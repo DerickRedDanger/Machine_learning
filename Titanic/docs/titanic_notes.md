@@ -13,7 +13,7 @@ Most columns actually have no missing values. Age have about 20% missing values,
 Id, no real use. drop.
 
 ### Survived
-Target. 61.6% dead, 38.4% alive. Slightly unbalanced
+Target. 61.6% dead, 38.4% alive. somewhat unbalanced
 
 ### Pclass
 
@@ -41,7 +41,7 @@ Mean: 29.7,
 Max: 80.
 20% missing, 11 outliers, low skew
 
-Despite the presence of babies and elders, the vast majority of age is around 20-40 and there aren't many outliers. Might be worth pinning them into groups (kids, teens, adults, elders).
+Despite the presence of babies and elders, the vast majority of age is around 20-40 and there aren't many outliers. Might be worth binning them into groups (kids, teens, adults, elders).
 
 Relative high number of missing's worrying. Will need careful imputation for best results. Name had titles and none of them are missing, might be a good starting point for inputation.
 
@@ -82,11 +82,21 @@ S: 72%, 34% survived
 C: 19%, 55% Survived
 Q: 8.7%, 39% Survived
 
-C has a considerably higher survival rate, could this linked to class or position or the ship?
+C has a considerably higher survival rate, could this linked to class or position on the ship?
 
 Will need more exploring
 
 ## Feature engineering ideas
+
+ Extract Title from name
+
+ create family size from sibSp and Parch + alone column
+
+ Section from the first letter of Cabin
+
+ Age bin
+
+ Sex + Pclass column?
 
 ## Experiments
 
