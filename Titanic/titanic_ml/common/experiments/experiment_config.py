@@ -1,3 +1,41 @@
+# This file defines the configuration for machine learning experiments on the Titanic dataset.
+# Each experiment is represented as a dictionary with specific fields that describe the model, features, preprocessing steps, evaluation method, and other relevant information.
+
+# Current experiment model - WIP
+baseline = [
+    {
+        "name": "baseline_logreg",
+        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
+
+        "feature_engineering": None,
+
+        "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "onehot_features": ["Sex", "Embarked"],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+
+        "model_name": "logreg",
+        "model_params": {
+            "max_iter": 1000,
+            "random_state": 42,
+        },
+
+        "evaluation": {
+            "method": "cross_validation",
+            "cv": 5,
+            "scoring": ["accuracy", "precision", "recall", "f1"],
+            "return_train_score": True,
+            "n_jobs": -1,
+        },
+        "notes": "Base logistic regression. Baseline for comparison.",
+    },
+]
+
+
 EXPERIMENTS = [
     {
         "name": "baseline_logreg",
