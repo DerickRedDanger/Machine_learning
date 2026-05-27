@@ -107,7 +107,10 @@ def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None)
 
     # Round results if round_decimals is specified
     if round_decimals is not None:
-        result = {key: round(value, round_decimals) for key, value in result.items()}
+        result = {
+            key: round(value, round_decimals) if isinstance(value, (int, float)) else value
+            for key, value in result.items()
+        }
 
     return result
 
