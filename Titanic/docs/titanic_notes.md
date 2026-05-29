@@ -103,46 +103,46 @@ Will need more exploring
 ### Baseline_logred
 Base Logistic regression used for comparisison
 
-#### Full Configuration:
 
-features: ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"]
+<details>
+<summary>Full configuration</summary>
 
-baseline = [
-    {
-        "name": "baseline_logreg",
-        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
+```python
 
-        "feature_engineering": None,
+{'name': 'baseline_logreg',
+  'features': ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked'],
+  'feature_engineering': None,
+  'preprocessing': {'numeric_features': ['Age', 'SibSp', 'Parch', 'Fare'],
+                    'onehot_features': ['Sex', 'Embarked'],
+                    'ordinal_features': ['Pclass'],
+                    'numeric_imputer': 'median',
+                    'categorical_imputer': 'most_frequent',
+                    'scaler': 'standard'},
+  'model_name': 'logreg',
+  'model_params': {'max_iter': 1000, 'random_state': 42},
+  'evaluation': {'method': 'cross_validation',
+                 'cv': 5,
+                 'scoring': ['accuracy', 'precision', 'recall', 'f1'],
+                 'return_train_score': True,
+                 'n_jobs': -1},
+  'notes': 'Base logistic regression. Baseline for comparison.'}
+```
+</details>
 
-        "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
-            "onehot_features": ["Sex", "Embarked"],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
-        },
 
-        "model_name": "logreg",
-        "model_params": {
-            "max_iter": 1000,
-            "random_state": 42,
-        },
-
-        "evaluation": {
-            "method": "cross_validation",
-            "cv": 5,
-            "scoring": ["accuracy", "precision", "recall", "f1"],
-            "return_train_score": True,
-            "n_jobs": -1,
-        },
-        "notes": "Base logistic regression. Baseline for comparison.",
-    },
-]
 
 #### Result:
 
-
+| Field | Value |
+|---|---|
+|Train accuracy| 0.803 ± 0.005 |
+|Train precision| 0.762 ± 0.011 |
+|Train recall| 0.708 ± 0.015 |
+|Train f1| 0.734 ± 0.008 |
+|Test accuracy| 0.786 ± 0.018 |
+|Test precision| 0.736 ± 0.036 |
+|Test recall| 0.693 ± 0.038 |
+|Test f1| 0.713 ± 0.026 |
 
 ## Model comparison notes
 
