@@ -9,20 +9,20 @@ def experiment_result_to_markdown(result_row):
         f"Experiment {result_row.get('experiment', 'N/A')}:",
         "| Field | Value |",
         "|---|---|",
-        f"|Train accuracy| {result_row.get('train_accuracy_mean', 'N/A')} ± {result_row.get('train_accuracy_std', 'N/A')} |",
-        f"|Train precision| {result_row.get('train_precision_mean', 'N/A')} ± {result_row.get('train_precision_std', 'N/A')} |",
-        f"|Train recall| {result_row.get('train_recall_mean', 'N/A')} ± {result_row.get('train_recall_std', 'N/A')} |",
-        f"|Train f1| {result_row.get('train_f1_mean', 'N/A')} ± {result_row.get('train_f1_std', 'N/A')} |",
-        f"|Test accuracy| {result_row.get('test_accuracy_mean', 'N/A')} ± {result_row.get('test_accuracy_std', 'N/A')} |",
-        f"|Test precision| {result_row.get('test_precision_mean', 'N/A')} ± {result_row.get('test_precision_std', 'N/A')} |",
-        f"|Test recall| {result_row.get('test_recall_mean', 'N/A')} ± {result_row.get('test_recall_std', 'N/A')} |",
-        f"|Test f1| {result_row.get('test_f1_mean', 'N/A')} ± {result_row.get('test_f1_std', 'N/A')} |",
+        f"|Train accuracy| {format_metric(result_row, 'train_accuracy')} |",
+        f"|Train precision| {format_metric(result_row, 'train_precision')} |",
+        f"|Train recall| {format_metric(result_row, 'train_recall')} |",
+        f"|Train f1| {format_metric(result_row, 'train_f1')} |",
+        f"|Test accuracy| {format_metric(result_row, 'test_accuracy')} |",
+        f"|Test precision| {format_metric(result_row, 'test_precision')} |",
+        f"|Test recall| {format_metric(result_row, 'test_recall')} |",
+        f"|Test f1| {format_metric(result_row, 'test_f1')} |",
     ]
     return "\n".join(lines)
 
 def format_metric(result_row, metric_name):
-    mean_key = f"test_{metric_name}_mean"
-    std_key = f"test_{metric_name}_std"
+    mean_key = f"{metric_name}_mean"
+    std_key = f"{metric_name}_std"
 
     mean = result_row.get(mean_key)
     std = result_row.get(std_key)
@@ -40,10 +40,10 @@ def experiments_summary_to_markdown(results_df):
             "experiment": row.get("experiment", "N/A"),
             "model_name": row.get("model_name", "N/A"),
             "status": row.get("status", "N/A"),
-            "test_accuracy": format_metric(row, "accuracy"),
-            "test_precision": format_metric(row, "precision"),
-            "test_recall": format_metric(row, "recall"),
-            "test_f1": format_metric(row, "f1"),
+            "test_accuracy": format_metric(row, "test_accuracy"),
+            "test_precision": format_metric(row, "test_precision"),
+            "test_recall": format_metric(row, "test_recall"),
+            "test_f1": format_metric(row, "test_f1"),
             "notes": row.get("notes", ""),
         })
 
@@ -53,5 +53,37 @@ def experiments_summary_to_markdown(results_df):
 
 
 def experiment_config_to_markdown(config):
-    config_text = pprint.pformat(config, sort_dicts=False)
-    return config_text
+    return pprint.pformat(config, sort_dicts=False)
+
+def experiment_report(results_df, experiment_configs):
+    individual_reports = []
+
+    for result_row, config in zip(
+        results_df.to_dict(orient="records"),
+        experiment_configs
+    ):
+        experiment_name = result_row.get("experiment", "N/A")
+
+        individual_reports.append({
+            "experiment": experiment_name,
+            "result_markdown": experiment_result_to_markdown(result_row),
+            "config_markdown": experiment_config_to_markdown(config),
+        })
+
+    full_report = experiments_summary_to_markdown(results_df)
+
+    return individual_reports, full_report
+
+# Create a report class to centralise the reporting logic and make it easier to extend in the future
+# class ExperimentReport:
+#     def __init__(self, experiment_result, experiment_config):
+#         self.experiment_result = experiment_result
+#         self.experiment_config = experiment_config
+
+#     def generate_report(self):
+#         individual_report = []
+#         for experiment,config in zip(self.experiment_result, self.experiment_config):
+#             individual_report.append((experiment.get("experiment", "N/A"), experiment_result_to_markdown(experiment), experiment_config_to_markdown(config)))
+
+#         full_report = experiments_summary_to_markdown(self.experiment_result)
+#         return individual_report, full_report
