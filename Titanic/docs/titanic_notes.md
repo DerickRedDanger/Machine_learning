@@ -1,10 +1,16 @@
 # Titanic Notes
 
+## All Models report
+
+| experiment      | model_name   | status   | test_accuracy   | test_precision   | test_recall   | test_f1       |   fit_time | notes                                              |
+|:----------------|:-------------|:---------|:----------------|:-----------------|:--------------|:--------------|-----------:|:---------------------------------------------------|
+| baseline_logreg | logreg       | success  | 0.786 ± 0.018   | 0.736 ± 0.036    | 0.693 ± 0.038 | 0.713 ± 0.026 |      0.016 | Base logistic regression. Baseline for comparison. |
+
 ## EDA observations
 
 ### Dataframe
 
-891 rows, 12 columns, no duplicate, 708 ros with at least 1 missing column (79.46% of the rwos), total 866 missing values.
+891 rows, 12 columns, no duplicate, 708 rows with at least 1 missing column (79.46% of the rwos), total 866 missing values.
 
 Most columns actually have no missing values. Age have about 20% missing values, will need careful imputation for best results. Cabing has 687 (77%) missing values, far too many to impute, far too few for reliable use; not nescessarely useless, but very limited use; could the missingness itself be a signal?
 
@@ -82,7 +88,7 @@ S: 72%, 34% survived
 C: 19%, 55% Survived
 Q: 8.7%, 39% Survived
 
-C has a considerably higher survival rate, could this linked to class or position on the ship?
+C has a considerably higher survival rate, could this be linked to class or position on the ship?
 
 Will need more exploring
 
@@ -90,9 +96,10 @@ Will need more exploring
 
  Extract Title from name
 
- create family size from sibSp and Parch + alone column
+ create family size and alone from sibSp and Parch
 
- Section from the first letter of Cabin
+ Deck from the first letter of Cabin
+ Has_deck from where cabin is not null
 
  Age bin
 
@@ -131,7 +138,7 @@ Base Logistic regression used for comparisison
 
 
 
-#### Result:
+### Result:
 
 | Field | Value |
 |---|---|
@@ -144,6 +151,17 @@ Base Logistic regression used for comparisison
 |Test recall| 0.693 ± 0.038 |
 |Test f1| 0.713 ± 0.026 |
 
+### Conclusion
+
+Baseline works.
+Accuracy 78.6%.
+
+Small train/test gap.
+No obvious overfitting.
+
+Next:
+- Add new models
+  Both for baselines and to compare how feature engineering affects each model
 ## Model comparison notes
 
 ## Problems encountered

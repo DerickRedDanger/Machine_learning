@@ -1,12 +1,24 @@
 import pandas as pd
 import pprint
 
+def format_metric(result_row, metric_name):
+    mean_key = f"{metric_name}_mean"
+    std_key = f"{metric_name}_std"
+
+    mean = result_row.get(mean_key)
+    std = result_row.get(std_key)
+
+    if mean is None or std is None:
+        return "N/A"
+
+    return f"{mean} ± {std}"
+
 def experiment_result_to_markdown(result_row):
     if hasattr(result_row, "to_dict"):
         result_row = result_row.to_dict()
 
     lines = [
-        f"Experiment {result_row.get('experiment', 'N/A')}:",
+        f"Experiment - {result_row.get('experiment', 'N/A')}:",
         "| Field | Value |",
         "|---|---|",
         f"|Train accuracy| {format_metric(result_row, 'train_accuracy')} |",
@@ -20,18 +32,6 @@ def experiment_result_to_markdown(result_row):
     ]
     return "\n".join(lines)
 
-def format_metric(result_row, metric_name):
-    mean_key = f"{metric_name}_mean"
-    std_key = f"{metric_name}_std"
-
-    mean = result_row.get(mean_key)
-    std = result_row.get(std_key)
-
-    if mean is None or std is None:
-        return "N/A"
-
-    return f"{mean} ± {std}"
-
 def experiments_summary_to_markdown(results_df):
     summary_rows = []
 
@@ -44,7 +44,9 @@ def experiments_summary_to_markdown(results_df):
             "test_precision": format_metric(row, "test_precision"),
             "test_recall": format_metric(row, "test_recall"),
             "test_f1": format_metric(row, "test_f1"),
+            "fit_time": row.get("fit_time_mean", "N/A"),
             "notes": row.get("notes", ""),
+
         })
 
     summary_df = pd.DataFrame(summary_rows)
@@ -55,7 +57,7 @@ def experiments_summary_to_markdown(results_df):
 def experiment_config_to_markdown(config):
     return pprint.pformat(config, sort_dicts=False)
 
-def experiment_report(results_df, experiment_configs):
+def experiment_report(results_df, experiment_configs, print_report=False):
     individual_reports = []
 
     for result_row, config in zip(
@@ -71,6 +73,23 @@ def experiment_report(results_df, experiment_configs):
         })
 
     full_report = experiments_summary_to_markdown(results_df)
+
+    if print_report:
+        print("Individual Experiment Reports:")
+
+        for report in individual_reports:
+            print()
+            print(report["result_markdown"])
+
+            print("\nFull configuration:")
+            print("```python")
+            print(report["config_markdown"])
+            print("```")
+
+            print("-" * 40)
+
+        print("\nFull Summary Report:\n")
+        print(full_report)
 
     return individual_reports, full_report
 
