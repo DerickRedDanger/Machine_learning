@@ -2,6 +2,123 @@
 # Each experiment is represented as a dictionary with specific fields that describe the model, features, preprocessing steps, evaluation method, and other relevant information.
 
 # Current experiment model - WIP
+
+import copy
+baseline_config_model = {
+        "name": "",
+        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
+
+        "feature_engineering": None,
+
+        "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "onehot_features": ["Sex", "Embarked"],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+
+        "model_name": "",
+        "model_params": {
+        },
+
+        "evaluation": {
+            "method": "cross_validation",
+            "cv": 5,
+            "scoring": ["accuracy", "precision", "recall", "f1"],
+            "return_train_score": True,
+            "n_jobs": -1,
+        },
+        "notes": "Base logistic regression. Baseline for comparison.",
+    }
+
+baseline_models =[
+    {   
+    "name": "baseline_logreg",
+    "model_name": "logreg",
+    "model_params": {
+        "max_iter": 1000,
+        "random_state": 42,},
+    },
+
+    {  
+    "name": "baseline_knn",
+    "model_name":'knn',
+    "model_params":{
+        "n_neighbors": 5,
+        "random_state": 42,
+    },
+    },
+
+    {   
+    "name": "baseline_svc",
+    "model_name":'svc',
+    "model_params":{
+        "C": 1.0,
+        "kernel": "rbf",
+        "gamma": "scale",
+        "probability": False,
+        "random_state": 42,
+    },
+    },
+
+    {   
+    "name": "baseline_decision_tree",
+    "model_name":'DecisionTreeClassifier',
+    "model_params":{
+        "max_depth": 4,
+        "min_samples_leaf": 5,
+        "random_state": 42,
+    },
+    },
+
+    {
+    "name": "baseline_random_forest",
+    "model_name":'RandomForestClassifier',
+    "model_params":{
+        "n_estimators": 200,
+        "max_depth": 5,
+        "min_samples_leaf": 3,
+        "random_state": 42,
+        "n_jobs": -1,
+    },
+    },
+
+    {
+    "name": "baseline_extra_trees",
+    "model_name":'ExtraTreesClassifier',
+    "model_params":{
+        "n_estimators": 200,
+        "max_depth": 5,
+        "min_samples_leaf": 3,
+        "random_state": 42,
+        "n_jobs": -1,
+    },
+    },
+
+    {   
+    "name": "baseline_xgb",
+    "model_name":'XGBClassifier',
+    "model_params":{
+        "n_estimators": 200,
+        "max_depth": 3,
+        "learning_rate": 0.05,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "random_state": 42,
+        "eval_metric": "logloss",
+    },
+    },
+]
+
+baseline_config = []
+
+for model in baseline_models:
+    config = copy.deepcopy(baseline_config_model)
+    config.update(model)
+    baseline_config.append(config)
+
 baseline = [
     {
         "name": "baseline_logreg",
