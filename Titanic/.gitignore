@@ -7,5 +7,6 @@ kaggle.json
 __pycache__/
 *.py[cod]
 *.egg-info/
-
+reusable_models.md
+test_codes.py
 .ipynb_checkpoints/

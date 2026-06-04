@@ -16,9 +16,9 @@ MODEL_REGISTRY = {
     "logreg": LogisticRegression,
     "knn": KNeighborsClassifier,
     "svc": SVC,
-    "tree": DecisionTreeClassifier,
-    "rf": RandomForestClassifier,
-    "et": ExtraTreesClassifier,
+    "decision_tree": DecisionTreeClassifier,
+    "random_forest": RandomForestClassifier,
+    "extra_trees": ExtraTreesClassifier,
 }
 
 if XGBClassifier is not None:

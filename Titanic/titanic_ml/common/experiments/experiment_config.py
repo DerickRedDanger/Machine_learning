@@ -30,7 +30,7 @@ baseline_config_model = {
             "return_train_score": True,
             "n_jobs": -1,
         },
-        "notes": "Base logistic regression. Baseline for comparison.",
+        "notes": "",
     }
 
 baseline_models =[
@@ -39,7 +39,10 @@ baseline_models =[
     "model_name": "logreg",
     "model_params": {
         "max_iter": 1000,
-        "random_state": 42,},
+        "random_state": 42,
+        },
+        "notes": "Base logistic regression. Baseline for comparison."
+        
     },
 
     {  
@@ -47,8 +50,9 @@ baseline_models =[
     "model_name":'knn',
     "model_params":{
         "n_neighbors": 5,
-        "random_state": 42,
-    },
+        },
+        "notes": "Base kneighbors classifier. Baseline for comparison."
+        
     },
 
     {   
@@ -60,46 +64,50 @@ baseline_models =[
         "gamma": "scale",
         "probability": False,
         "random_state": 42,
-    },
+        },
+        "notes": "Base SVC. Baseline for comparison.",
     },
 
     {   
     "name": "baseline_decision_tree",
-    "model_name":'DecisionTreeClassifier',
+    "model_name":'decision_tree',
     "model_params":{
         "max_depth": 4,
         "min_samples_leaf": 5,
         "random_state": 42,
-    },
+        },
+        "notes": "Base decision tree. Baseline for comparison."
     },
 
     {
     "name": "baseline_random_forest",
-    "model_name":'RandomForestClassifier',
+    "model_name":'random_forest',
     "model_params":{
         "n_estimators": 200,
         "max_depth": 5,
         "min_samples_leaf": 3,
         "random_state": 42,
         "n_jobs": -1,
-    },
+        },
+        "notes": "Base random forest. Baseline for comparison."
     },
 
     {
     "name": "baseline_extra_trees",
-    "model_name":'ExtraTreesClassifier',
+    "model_name":'extra_trees',
     "model_params":{
         "n_estimators": 200,
         "max_depth": 5,
         "min_samples_leaf": 3,
         "random_state": 42,
         "n_jobs": -1,
-    },
+        },
+        "notes": "Base extra trees. Baseline for comparison."
     },
 
     {   
     "name": "baseline_xgb",
-    "model_name":'XGBClassifier',
+    "model_name":'xgb',
     "model_params":{
         "n_estimators": 200,
         "max_depth": 3,
@@ -108,7 +116,8 @@ baseline_models =[
         "colsample_bytree": 0.8,
         "random_state": 42,
         "eval_metric": "logloss",
-    },
+        },
+        "notes": "Base xgb. Baseline for comparison."
     },
 ]
 
@@ -119,102 +128,6 @@ for model in baseline_models:
     config.update(model)
     baseline_config.append(config)
 
-baseline = [
-    {
-        "name": "baseline_logreg",
-        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
-
-        "feature_engineering": None,
-
-        "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
-            "onehot_features": ["Sex", "Embarked"],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
-        },
-
-        "model_name": "logreg",
-        "model_params": {
-            "max_iter": 1000,
-            "random_state": 42,
-        },
-
-        "evaluation": {
-            "method": "cross_validation",
-            "cv": 5,
-            "scoring": ["accuracy", "precision", "recall", "f1"],
-            "return_train_score": True,
-            "n_jobs": -1,
-        },
-        "notes": "Base logistic regression. Baseline for comparison.",
-    },
-]
-
-dummy = [
-    {
-        "name": "baseline_logreg",
-        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
-
-        "feature_engineering": None,
-
-        "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
-            "onehot_features": ["Sex", "Embarked"],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
-        },
-
-        "model_name": "logreg",
-        "model_params": {
-            "max_iter": 1000,
-            "random_state": 42,
-        },
-
-        "evaluation": {
-            "method": "cross_validation",
-            "cv": 5,
-            "scoring": ["accuracy", "precision", "recall", "f1"],
-            "return_train_score": True,
-            "n_jobs": -1,
-        },
-        "notes": "Base logistic regression. Baseline for comparison.",
-    },
-
-    {
-        "name": "baseline_logreg",
-        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
-
-        "feature_engineering": None,
-
-        "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
-            "onehot_features": ["Sex", "Embarked"],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
-        },
-
-        "model_name": "logreg",
-        "model_params": {
-            "max_iter": 1000,
-            "random_state": 42,
-        },
-
-        "evaluation": {
-            "method": "cross_validation",
-            "cv": 5,
-            "scoring": ["accuracy", "precision", "recall", "f1"],
-            "return_train_score": True,
-            "n_jobs": -1,
-        },
-        "notes": "Base logistic regression. Baseline for comparison.",
-    },
-]
 
 EXPERIMENTS = [
     {
