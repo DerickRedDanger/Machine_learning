@@ -1,9 +1,10 @@
 # This file defines the configuration for machine learning experiments on the Titanic dataset.
 # Each experiment is represented as a dictionary with specific fields that describe the model, features, preprocessing steps, evaluation method, and other relevant information.
 
-# Current experiment model - WIP
-
+from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_full_deck, add_title, add_full_title_feature
 import copy
+
+# Baseline configuration for experiment config
 baseline_config_model = {
         "name": "",
         "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
@@ -33,9 +34,10 @@ baseline_config_model = {
         "notes": "",
     }
 
-baseline_models =[
+# Baseline configuration for models
+baseline__models =[
     {   
-    "name": "baseline_logreg",
+    "name": "baseline__logreg",
     "model_name": "logreg",
     "model_params": {
         "max_iter": 1000,
@@ -46,7 +48,7 @@ baseline_models =[
     },
 
     {  
-    "name": "baseline_knn",
+    "name": "baseline__knn",
     "model_name":'knn',
     "model_params":{
         "n_neighbors": 5,
@@ -56,7 +58,7 @@ baseline_models =[
     },
 
     {   
-    "name": "baseline_svc",
+    "name": "baseline__svc",
     "model_name":'svc',
     "model_params":{
         "C": 1.0,
@@ -69,7 +71,7 @@ baseline_models =[
     },
 
     {   
-    "name": "baseline_decision_tree",
+    "name": "baseline__decision_tree",
     "model_name":'decision_tree',
     "model_params":{
         "max_depth": 4,
@@ -80,7 +82,7 @@ baseline_models =[
     },
 
     {
-    "name": "baseline_random_forest",
+    "name": "baseline__random_forest",
     "model_name":'random_forest',
     "model_params":{
         "n_estimators": 200,
@@ -93,7 +95,7 @@ baseline_models =[
     },
 
     {
-    "name": "baseline_extra_trees",
+    "name": "baseline__extra_trees",
     "model_name":'extra_trees',
     "model_params":{
         "n_estimators": 200,
@@ -106,7 +108,7 @@ baseline_models =[
     },
 
     {   
-    "name": "baseline_xgb",
+    "name": "baseline__xgb",
     "model_name":'xgb',
     "model_params":{
         "n_estimators": 200,
@@ -121,12 +123,30 @@ baseline_models =[
     },
 ]
 
-baseline_config = []
+# Baseline experiment configuration
+baseline__config = []
 
-for model in baseline_models:
+for model in baseline__models:
     config = copy.deepcopy(baseline_config_model)
     config.update(model)
-    baseline_config.append(config)
+    baseline__config.append(config)
+
+# New Naming convention:
+# <stages>__<feature_group>__<model>
+
+# Feature engineering 1 - family
+fe01_feature = {"feature_engineering":[add_family_features]}
+fe01_name = 'family'
+fe01__family__config = copy.deepcopy(baseline__config)
+
+for exp in fe01__family__config:
+    exp.update(fe01_feature)
+    exp_name = exp['name']
+    exp_name = exp_name.split('__')[1]
+    exp_name = fe01_name + '__' + exp_name
+    exp['name'] = exp_name
+
+
 
 
 EXPERIMENTS = [

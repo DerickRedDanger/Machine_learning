@@ -55,6 +55,8 @@ def experiments_summary_to_markdown(results_df):
 
 
 def experiment_config_to_markdown(config):
+    config = config.copy()
+    config['feature_engineering'] =[x.__name__ for x in config['feature_engineering']] 
     return pprint.pformat(config, sort_dicts=False)
 
 def experiment_report(results_df, experiment_configs, print_report=False):
