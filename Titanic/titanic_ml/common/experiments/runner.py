@@ -114,7 +114,7 @@ def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None)
 
     return result
 
-def run_experiments(df, experiments, target, verbose=False, round_decimals=3):
+def run_experiments(df, experiments, target, verbose=False, round_decimals=3, debug=False):
     results = []
 
     for exp in experiments:
@@ -122,8 +122,11 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3):
             print(f"Running experiment: {exp['name']}")
 
         try:
-            feature_engineering_fn = exp.get("feature_engineering")
-            working_df = feature_engineering_fn(df.copy()) if feature_engineering_fn else df.copy()
+            working_df = df.copy()
+            for fn in exp.get("feature_engineering",[]):
+                if debug:
+                    print(f'Applying feature: {fn.__name__}')
+                working_df = fn(working_df)
 
             features = exp["features"]
             X = working_df[features]
