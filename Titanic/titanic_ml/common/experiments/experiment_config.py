@@ -134,18 +134,47 @@ for model in baseline__models:
 # New Naming convention:
 # <stages>__<feature_group>__<model>
 
+def create_experiment(experiment_name,feature_engineering_name, base_config, model_config_list=None, feature_engineering=None, notes=''):
+    if not experiment_name:
+        raise ValueError('Experiment needs a name')
+    
+    if not feature_engineering_name:
+        raise ValueError('models needs a feature_engineering name')
+    
+    if not base_config:
+        raise ValueError('No base model added')
+    
+    base_config = copy.deepcopy(base_config)
+
+    if not model_config_list:
+        model_config_list = [[] for x in base_config]
+
+    # print(model_config_list)
+
+    for exp, model in zip(base_config,model_config_list):
+        # print(zip(base_config,model_config_list))
+        # print(exp)
+        if feature_engineering:
+            exp.update(feature_engineering)
+        if model:
+            exp.update(model)
+
+        exp_name = exp['name']
+        exp_name = exp_name.split('__')[1]
+        exp_name = feature_engineering_name + '__' + exp_name
+        exp['name'] = exp_name
+        exp['notes'] = f'{experiment_name}__{exp_name}. {notes}'
+
+    return base_config
+
+
 # Feature engineering 1 - family
-fe01_feature = {"feature_engineering":[add_family_features]}
-fe01_name = 'family'
-fe01__family__config = copy.deepcopy(baseline__config)
+fe01 ='fe01'
+fe01_fe_name = 'family'
+fe01_fe = {"feature_engineering":[add_family_features]}
+fe01_note = 'fe01 - Feature engineering 01 experiment - family/alone feature'
 
-for exp in fe01__family__config:
-    exp.update(fe01_feature)
-    exp_name = exp['name']
-    exp_name = exp_name.split('__')[1]
-    exp_name = fe01_name + '__' + exp_name
-    exp['name'] = exp_name
-
+fe01__family__config = create_experiment(fe01, fe01_fe_name, baseline__config,feature_engineering=fe01_fe, notes=fe01_note)
 
 
 
