@@ -5,7 +5,7 @@ from titanic_ml.feature_engineering import add_family_features, add_has_cabin, a
 import copy
 
 # Baseline configuration for experiment config
-baseline_config_model = {
+baseline__config_model = {
         "name": "",
         "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
 
@@ -127,54 +127,62 @@ baseline__models =[
 baseline__config = []
 
 for model in baseline__models:
-    config = copy.deepcopy(baseline_config_model)
+    config = copy.deepcopy(baseline__config_model)
     config.update(model)
     baseline__config.append(config)
 
 # New Naming convention:
 # <stages>__<feature_group>__<model>
-
-def create_experiment(experiment_name,feature_engineering_name, base_config, model_config_list=None, feature_engineering=None, notes=''):
-    if not experiment_name:
-        raise ValueError('Experiment needs a name')
-    
-    if not feature_engineering_name:
-        raise ValueError('models needs a feature_engineering name')
-    
-    if not base_config:
-        raise ValueError('No base model added')
-    
-    base_config = copy.deepcopy(base_config)
-
-    if not model_config_list:
-        model_config_list = [[] for x in base_config]
-
-    # print(model_config_list)
-
-    for exp, model in zip(base_config,model_config_list):
-        # print(zip(base_config,model_config_list))
-        # print(exp)
-        if feature_engineering:
-            exp.update(feature_engineering)
-        if model:
-            exp.update(model)
-
-        exp_name = exp['name']
-        exp_name = exp_name.split('__')[1]
-        exp_name = feature_engineering_name + '__' + exp_name
-        exp['name'] = exp_name
-        exp['notes'] = f'{experiment_name}__{exp_name}. {notes}'
-
-    return base_config
+import copy
 
 
-# Feature engineering 1 - family
-fe01 ='fe01'
-fe01_fe_name = 'family'
-fe01_fe = {"feature_engineering":[add_family_features]}
-fe01_note = 'fe01 - Feature engineering 01 experiment - family/alone feature'
+def create_experiment_group(
+    stage,
+    feature_group,
+    base_configs,
+    feature_engineering=None,
+    model_overrides=None,
+    notes="",
+):
+    if not stage:
+        raise ValueError("Experiment group needs a stage, like 'fe01'.")
 
-fe01__family__config = create_experiment(fe01, fe01_fe_name, baseline__config,feature_engineering=fe01_fe, notes=fe01_note)
+    if not feature_group:
+        raise ValueError("Experiment group needs a feature group, like 'family'.")
+
+    if not base_configs:
+        raise ValueError("No base configs provided.")
+
+    configs = copy.deepcopy(base_configs)
+
+    if model_overrides is None:
+        model_overrides = [{} for _ in configs]
+
+    if len(model_overrides) != len(configs):
+        raise ValueError("model_overrides must have the same length as base_configs.")
+
+    for exp, override in zip(configs, model_overrides):
+        model_name = exp["model_name"]
+
+        exp["name"] = f"{stage}__{feature_group}__{model_name}"
+
+        if feature_engineering is not None:
+            exp["feature_engineering"] = feature_engineering
+
+        if override:
+            exp.update(override)
+
+        exp["notes"] = notes
+
+    return configs
+
+fe01_family_config = create_experiment_group(
+    stage="fe01",
+    feature_group="family",
+    base_configs=baseline__config,
+    feature_engineering=[add_family_features],
+    notes="Feature engineering 01: adds FamilySize and IsAlone.",
+)
 
 
 

@@ -95,6 +95,61 @@ def experiment_report(results_df, experiment_configs, print_report=False):
 
     return individual_reports, full_report
 
+
+def experiment_group_report_to_markdown(
+    results_df,
+    experiment_configs,
+    experiment_name,
+    description="",
+    conclusion="",
+):
+    lines = []
+
+    lines.append(f"### {experiment_name}")
+    lines.append("")
+    lines.append(description if description else "_Description pending._")
+    lines.append("")
+
+    lines.append("#### Result")
+    lines.append("")
+    lines.append(experiments_summary_to_markdown(results_df))
+    lines.append("")
+
+    lines.append("<details>")
+    lines.append("<summary>Experiment details</summary>")
+    lines.append("")
+
+    for result_row, config in zip(
+        results_df.to_dict(orient="records"),
+        experiment_configs
+    ):
+        model_name = result_row.get("model_name", "N/A")
+        exp_name = result_row.get("experiment", "N/A")
+
+        lines.append(f"#### {model_name} — {exp_name}")
+        lines.append("")
+        lines.append(experiment_result_to_markdown(result_row))
+        lines.append("")
+
+        lines.append("<details>")
+        lines.append("<summary>Full configuration</summary>")
+        lines.append("")
+        lines.append("```python")
+        lines.append(experiment_config_to_markdown(config))
+        lines.append("```")
+        lines.append("")
+        lines.append("</details>")
+        lines.append("")
+
+    lines.append("#### Conclusion")
+    lines.append("")
+    lines.append(conclusion if conclusion else "_Conclusion pending._")
+    lines.append("")
+
+    lines.append("</details>")
+
+    return "\n".join(lines)
+
 # Create a report class to centralise the reporting logic and make it easier to extend in the future
 # class ExperimentReport:
 #     def __init__(self, experiment_result, experiment_config):

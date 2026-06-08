@@ -11,6 +11,13 @@
 | baseline_random_forest | random_forest | success  | 0.822 ± 0.02    | 0.824 ± 0.02     | 0.681 ± 0.062 | 0.744 ± 0.041 |      0.423 | Base random forest. Baseline for comparison.         |
 | baseline_extra_trees   | extra_trees   | success  | 0.804 ± 0.012   | 0.791 ± 0.009    | 0.664 ± 0.041 | 0.721 ± 0.025 |      0.309 | Base extra trees. Baseline for comparison.           |
 | baseline_xgb           | xgb           | success  | 0.826 ± 0.025   | 0.811 ± 0.033    | 0.713 ± 0.06  | 0.758 ± 0.041 |      0.594 | Base xgb. Baseline for comparison.                   |                 |
+| family__logreg        | logreg        | success  | 0.786 ± 0.018   | 0.736 ± 0.036    | 0.693 ± 0.038 | 0.713 ± 0.026 |      0.015 | fe01__family__logreg. fe01 - Feature engineering 01 experiment - family/alone feature        |
+| family__knn           | knn           | success  | 0.809 ± 0.021   | 0.775 ± 0.044    | 0.713 ± 0.038 | 0.742 ± 0.026 |      0.016 | fe01__family__knn. fe01 - Feature engineering 01 experiment - family/alone feature           |
+| family__svc           | svc           | success  | 0.827 ± 0.015   | 0.813 ± 0.029    | 0.716 ± 0.045 | 0.76 ± 0.026  |      0.025 | fe01__family__svc. fe01 - Feature engineering 01 experiment - family/alone feature           |
+| family__decision_tree | decision_tree | success  | 0.803 ± 0.023   | 0.828 ± 0.03     | 0.617 ± 0.093 | 0.702 ± 0.055 |      0.023 | fe01__family__decision_tree. fe01 - Feature engineering 01 experiment - family/alone feature |
+| family__random_forest | random_forest | success  | 0.822 ± 0.02    | 0.824 ± 0.02     | 0.681 ± 0.062 | 0.744 ± 0.041 |      0.363 | fe01__family__random_forest. fe01 - Feature engineering 01 experiment - family/alone feature |
+| family__extra_trees   | extra_trees   | success  | 0.804 ± 0.012   | 0.791 ± 0.009    | 0.664 ± 0.041 | 0.721 ± 0.025 |      0.284 | fe01__family__extra_trees. fe01 - Feature engineering 01 experiment - family/alone feature   |
+| family__xgb           | xgb           | success  | 0.826 ± 0.025   | 0.811 ± 0.033    | 0.713 ± 0.06  | 0.758 ± 0.041 |      0.098 | fe01__family__xgb. fe01 - Feature engineering 01 experiment - family/alone feature           |
 
 ## EDA observations
 
@@ -569,6 +576,31 @@ baseline Xgb
 Baseline works
 82.6% accuracy
 6% gap between train/test, small overfitting?
+
+</details>
+
+### feature engineering 01 - Family/alone features
+
+Exploring the effects of the addition of Family and alone feature.
+#### Result:
+
+
+
+<details>
+<summary>Experiments details</summary>
+
+#### Configuration
+
+<details>
+<summary>Full configuration</summary>
+
+```python
+
+```
+</details>
+
+
+#### Conclusion
 
 </details>
 
