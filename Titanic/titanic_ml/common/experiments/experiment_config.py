@@ -9,7 +9,7 @@ baseline__config_model = {
         "name": "",
         "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked"],
 
-        "feature_engineering": None,
+        "feature_engineering": [],
 
         "preprocessing": {
             "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
@@ -135,15 +135,48 @@ for model in baseline__models:
 # <stages>__<feature_group>__<model>
 import copy
 
+VALID_EXPERIMENT_KEYS = {
+    "name",
+    "features",
+    "feature_engineering",
+    "preprocessing",
+    "model_name",
+    "model_params",
+    "evaluation",
+    "notes",
+}
 
-def create_experiment_group(
-    stage,
-    feature_group,
-    base_configs,
-    feature_engineering=None,
-    model_overrides=None,
-    notes="",
-):
+
+def validate_experiment_override(override):
+    unknown_keys = set(override) - VALID_EXPERIMENT_KEYS
+
+    if unknown_keys:
+        raise ValueError(f"Unknown override keys: {unknown_keys}")
+
+    if "features" in override and not isinstance(override["features"], list):
+        raise TypeError("'features' must be a list.")
+
+    if "feature_engineering" in override:
+        feature_engineering = override["feature_engineering"]
+
+        if not isinstance(feature_engineering, list):
+            raise TypeError("'feature_engineering' must be a list of functions.")
+
+        for fn in feature_engineering:
+            if not callable(fn):
+                raise TypeError(f"Feature engineering item is not callable: {fn}")
+
+    if "preprocessing" in override and not isinstance(override["preprocessing"], dict):
+        raise TypeError("'preprocessing' must be a dictionary.")
+
+    if "model_params" in override and not isinstance(override["model_params"], dict):
+        raise TypeError("'model_params' must be a dictionary.")
+
+    if "evaluation" in override and not isinstance(override["evaluation"], dict):
+        raise TypeError("'evaluation' must be a dictionary.")
+
+
+def create_experiment_group(stage, feature_group, base_configs, group_override=None):
     if not stage:
         raise ValueError("Experiment group needs a stage, like 'fe01'.")
 
@@ -153,37 +186,46 @@ def create_experiment_group(
     if not base_configs:
         raise ValueError("No base configs provided.")
 
+    group_override = group_override or {}
+
+    validate_experiment_override(group_override)
+
     configs = copy.deepcopy(base_configs)
 
-    if model_overrides is None:
-        model_overrides = [{} for _ in configs]
-
-    if len(model_overrides) != len(configs):
-        raise ValueError("model_overrides must have the same length as base_configs.")
-
-    for exp, override in zip(configs, model_overrides):
+    for exp in configs:
         model_name = exp["model_name"]
 
+        exp.update(group_override)
         exp["name"] = f"{stage}__{feature_group}__{model_name}"
 
-        if feature_engineering is not None:
-            exp["feature_engineering"] = feature_engineering
-
-        if override:
-            exp.update(override)
-
-        exp["notes"] = notes
-
     return configs
+
+fe01_family_override = {
+    "feature_engineering": [add_family_features],
+
+    "features": [
+        "Pclass", "Sex", "Age", "Fare", "Embarked",
+        "FamilySize", "IsAlone",
+    ],
+
+    "preprocessing": {
+        "numeric_features": ["Age", "Fare", "FamilySize", "IsAlone"],
+        "onehot_features": ["Sex", "Embarked"],
+        "ordinal_features": ["Pclass"],
+        "numeric_imputer": "median",
+        "categorical_imputer": "most_frequent",
+        "scaler": "standard",
+    },
+
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+}
 
 fe01_family_config = create_experiment_group(
     stage="fe01",
     feature_group="family",
     base_configs=baseline__config,
-    feature_engineering=[add_family_features],
-    notes="Feature engineering 01: adds FamilySize and IsAlone.",
+    group_override=fe01_family_override,
 )
-
 
 
 EXPERIMENTS = [

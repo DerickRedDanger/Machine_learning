@@ -9,4 +9,5 @@ __pycache__/
 *.egg-info/
 reusable_models.md
 test_codes.py
+markdown_test.md
 .ipynb_checkpoints/

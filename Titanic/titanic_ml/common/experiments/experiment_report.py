@@ -116,7 +116,7 @@ def experiment_group_report_to_markdown(
     lines.append("")
 
     lines.append("<details>")
-    lines.append("<summary>Experiment details</summary>")
+    lines.append("<summary>Model details</summary>")
     lines.append("")
 
     for result_row, config in zip(
@@ -126,7 +126,7 @@ def experiment_group_report_to_markdown(
         model_name = result_row.get("model_name", "N/A")
         exp_name = result_row.get("experiment", "N/A")
 
-        lines.append(f"#### {model_name} — {exp_name}")
+        lines.append(f"#### {model_name}")
         lines.append("")
         lines.append(experiment_result_to_markdown(result_row))
         lines.append("")

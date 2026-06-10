@@ -127,6 +127,8 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3, de
                 if debug:
                     print(f'Applying feature: {fn.__name__}')
                 working_df = fn(working_df)
+                if debug:
+                    print(f'Features after {fn.__name__}: {working_df.columns.tolist()}')
 
             features = exp["features"]
             X = working_df[features]
