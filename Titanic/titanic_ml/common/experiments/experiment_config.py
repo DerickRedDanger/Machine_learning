@@ -124,12 +124,12 @@ baseline__models =[
 ]
 
 # Baseline experiment configuration
-baseline__config = []
+baseline = []
 
 for model in baseline__models:
     config = copy.deepcopy(baseline__config_model)
     config.update(model)
-    baseline__config.append(config)
+    baseline.append(config)
 
 # New Naming convention:
 # <stages>__<feature_group>__<model>
@@ -220,10 +220,10 @@ fe01_family_override = {
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
 }
 
-fe01_family_config = create_experiment_group(
+fe01_family = create_experiment_group(
     stage="fe01",
     feature_group="family",
-    base_configs=baseline__config,
+    base_configs=baseline,
     group_override=fe01_family_override,
 )
 
