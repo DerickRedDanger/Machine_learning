@@ -37,28 +37,28 @@ baseline__config_model = {
 # Baseline configuration for models
 baseline__models =[
     {   
-    "name": "baseline__logreg",
+    "name": "baseline__raw__logreg",
     "model_name": "logreg",
     "model_params": {
         "max_iter": 1000,
         "random_state": 42,
         },
-        "notes": "Base logistic regression. Baseline for comparison."
+        "notes": "Base logistic regression, using raw configuration. Baseline for comparison."
         
     },
 
     {  
-    "name": "baseline__knn",
+    "name": "baseline__raw__knn",
     "model_name":'knn',
     "model_params":{
         "n_neighbors": 5,
         },
-        "notes": "Base kneighbors classifier. Baseline for comparison."
+        "notes": "Base kneighbors classifier, using raw configuration. Baseline for comparison."
         
     },
 
     {   
-    "name": "baseline__svc",
+    "name": "baseline__raw__svc",
     "model_name":'svc',
     "model_params":{
         "C": 1.0,
@@ -67,22 +67,22 @@ baseline__models =[
         "probability": False,
         "random_state": 42,
         },
-        "notes": "Base SVC. Baseline for comparison.",
+        "notes": "Base SVC, using raw configuration. Baseline for comparison.",
     },
 
     {   
-    "name": "baseline__decision_tree",
+    "name": "baseline__raw__decision_tree",
     "model_name":'decision_tree',
     "model_params":{
         "max_depth": 4,
         "min_samples_leaf": 5,
         "random_state": 42,
         },
-        "notes": "Base decision tree. Baseline for comparison."
+        "notes": "Base decision tree, using raw configuration. Baseline for comparison."
     },
 
     {
-    "name": "baseline__random_forest",
+    "name": "baseline__raw__random_forest",
     "model_name":'random_forest',
     "model_params":{
         "n_estimators": 200,
@@ -91,11 +91,11 @@ baseline__models =[
         "random_state": 42,
         "n_jobs": -1,
         },
-        "notes": "Base random forest. Baseline for comparison."
+        "notes": "Base random forest, using raw configuration. Baseline for comparison."
     },
 
     {
-    "name": "baseline__extra_trees",
+    "name": "baseline__raw__extra_trees",
     "model_name":'extra_trees',
     "model_params":{
         "n_estimators": 200,
@@ -104,11 +104,11 @@ baseline__models =[
         "random_state": 42,
         "n_jobs": -1,
         },
-        "notes": "Base extra trees. Baseline for comparison."
+        "notes": "Base extra trees, using raw configuration. Baseline for comparison."
     },
 
     {   
-    "name": "baseline__xgb",
+    "name": "baseline__raw__xgb",
     "model_name":'xgb',
     "model_params":{
         "n_estimators": 200,
@@ -119,17 +119,17 @@ baseline__models =[
         "random_state": 42,
         "eval_metric": "logloss",
         },
-        "notes": "Base xgb. Baseline for comparison."
+        "notes": "Base xgb, using raw configuration. Baseline for comparison."
     },
 ]
 
 # Baseline experiment configuration
-baseline = []
+baseline__raw = []
 
 for model in baseline__models:
     config = copy.deepcopy(baseline__config_model)
     config.update(model)
-    baseline.append(config)
+    baseline__raw.append(config)
 
 # New Naming convention:
 # <stages>__<feature_group>__<model>
@@ -200,7 +200,7 @@ def create_experiment_group(stage, feature_group, base_configs, group_override=N
 
     return configs
 
-fe01_family_override = {
+fe01__family_override = {
     "feature_engineering": [add_family_features],
 
     "features": [
@@ -220,17 +220,17 @@ fe01_family_override = {
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
 }
 
-fe01_family = create_experiment_group(
+fe01__family = create_experiment_group(
     stage="fe01",
     feature_group="family",
-    base_configs=baseline,
-    group_override=fe01_family_override,
+    base_configs=baseline__raw,
+    group_override=fe01__family_override,
 )
 
 
 EXPERIMENTS = [
     {
-        "name": "baseline_logreg",
+        "name": "baseline_raw_logreg",
         "model_name": "logreg",
         "model_params": {
             "max_iter": 1000
@@ -252,7 +252,7 @@ EXPERIMENTS = [
         },
         "use_tuning": False,
         "param_grid": None,
-        "notes": "Base logistic regression. Baseline for comparission"
+        "notes": "Base logistic regression, using raw configuration. Baseline for comparission"
     },
 ]
 

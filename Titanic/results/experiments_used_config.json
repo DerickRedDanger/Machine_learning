@@ -1,6 +1,6 @@
 {
-  "baseline__logreg": {
-    "name": "baseline__logreg",
+  "baseline__raw__logreg": {
+    "name": "baseline__raw__logreg",
     "features": [
       "Pclass",
       "Sex",
@@ -46,10 +46,10 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base logistic regression. Baseline for comparison."
+    "notes": "Base logistic regression, using raw configuration. Baseline for comparison."
   },
-  "baseline__knn": {
-    "name": "baseline__knn",
+  "baseline__raw__knn": {
+    "name": "baseline__raw__knn",
     "features": [
       "Pclass",
       "Sex",
@@ -94,10 +94,10 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base kneighbors classifier. Baseline for comparison."
+    "notes": "Base kneighbors classifier, using raw configuration. Baseline for comparison."
   },
-  "baseline__svc": {
-    "name": "baseline__svc",
+  "baseline__raw__svc": {
+    "name": "baseline__raw__svc",
     "features": [
       "Pclass",
       "Sex",
@@ -146,10 +146,10 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base SVC. Baseline for comparison."
+    "notes": "Base SVC, using raw configuration. Baseline for comparison."
   },
-  "baseline__decision_tree": {
-    "name": "baseline__decision_tree",
+  "baseline__raw__decision_tree": {
+    "name": "baseline__raw__decision_tree",
     "features": [
       "Pclass",
       "Sex",
@@ -196,10 +196,10 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base decision tree. Baseline for comparison."
+    "notes": "Base decision tree, using raw configuration. Baseline for comparison."
   },
-  "baseline__random_forest": {
-    "name": "baseline__random_forest",
+  "baseline__raw__random_forest": {
+    "name": "baseline__raw__random_forest",
     "features": [
       "Pclass",
       "Sex",
@@ -248,10 +248,10 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base random forest. Baseline for comparison."
+    "notes": "Base random forest, using raw configuration. Baseline for comparison."
   },
-  "baseline__extra_trees": {
-    "name": "baseline__extra_trees",
+  "baseline__raw__extra_trees": {
+    "name": "baseline__raw__extra_trees",
     "features": [
       "Pclass",
       "Sex",
@@ -300,10 +300,10 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base extra trees. Baseline for comparison."
+    "notes": "Base extra trees, using raw configuration. Baseline for comparison."
   },
-  "baseline__xgb": {
-    "name": "baseline__xgb",
+  "baseline__raw__xgb": {
+    "name": "baseline__raw__xgb",
     "features": [
       "Pclass",
       "Sex",
@@ -354,6 +354,377 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base xgb. Baseline for comparison."
+    "notes": "Base xgb, using raw configuration. Baseline for comparison."
+  },
+  "fe01__family__logreg": {
+    "name": "fe01__family__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
+  },
+  "fe01__family__knn": {
+    "name": "fe01__family__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
+  },
+  "fe01__family__svc": {
+    "name": "fe01__family__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
+  },
+  "fe01__family__decision_tree": {
+    "name": "fe01__family__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
+  },
+  "fe01__family__random_forest": {
+    "name": "fe01__family__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
+  },
+  "fe01__family__extra_trees": {
+    "name": "fe01__family__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
+  },
+  "fe01__family__xgb": {
+    "name": "fe01__family__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "Embarked",
+      "FamilySize",
+      "IsAlone"
+    ],
+    "feature_engineering": [
+      "add_family_features"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone."
   }
 }

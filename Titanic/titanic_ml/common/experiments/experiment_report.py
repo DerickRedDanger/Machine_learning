@@ -153,6 +153,19 @@ def experiment_group_report_to_markdown(
 
     return "\n".join(lines)
 
+def parse_experiment_name(name):
+    parts = name.split("__")
+
+    if len(parts) != 3:
+        raise ValueError(f"Experiment name should be stage__feature_group__model: {name}")
+
+    return {
+        "stage": parts[0],
+        "feature_group": parts[1],
+        "model": parts[2],
+        "group": f"{parts[0]}__{parts[1]}",
+    }
+
 def save_results(results_df, path=EXPERIMENT_RESULTS_FILE, append=True):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -221,6 +234,58 @@ def load_configs(path=EXPERIMENT_CONFIGS_FILE):
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
 
+def filter_results(
+    results_df,
+    stage=None,
+    feature_group=None,
+    model=None,
+    group=None,
+):
+    df = results_df.copy()
+
+    parsed = df["experiment"].apply(parse_experiment_name).apply(pd.Series)
+    df = pd.concat([df, parsed], axis=1)
+
+    if stage is not None:
+        df = df[df["stage"] == stage]
+
+    if feature_group is not None:
+        df = df[df["feature_group"] == feature_group]
+
+    if model is not None:
+        df = df[df["model"] == model]
+
+    if group is not None:
+        df = df[df["group"] == group]
+
+    return df
+
+def filter_configs_by_group(configs,
+    stage=None,
+    feature_group=None,
+    model=None,
+    group=None,
+    ):
+    filtered = {}
+
+    for name, config in configs.items():
+        parsed = parse_experiment_name(name)
+
+        if stage is not None and parsed["stage"] != stage:
+            continue
+
+        if feature_group is not None and parsed["feature_group"] != feature_group:
+            continue
+
+        if model is not None and parsed["model"] != model:
+            continue
+
+        if group is not None and parsed["group"] != group:
+            continue
+
+        filtered[name] = config
+
+    return filtered
 
 # Create a report class to centralise the reporting logic and make it easier to extend in the future
 # class ExperimentReport:
