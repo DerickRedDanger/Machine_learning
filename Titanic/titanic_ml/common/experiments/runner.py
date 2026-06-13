@@ -155,9 +155,13 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3, de
                 round_decimals=round_decimals,
             )
 
+
             result = {
                 "experiment": exp["name"],
+                "stage": exp.get("stage", ""),
+                "feature_group": exp.get("feature_group", ""),
                 "model_name": exp["model_name"],
+                "group": exp.get("group", ""),
                 "status": "success",
                 "error_type": "",
                 "error_message": "",

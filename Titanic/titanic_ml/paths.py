@@ -2,15 +2,15 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-print(f"Project root: {PROJECT_ROOT}")
+# print(f"Project root: {PROJECT_ROOT}")
 
 RESULTS_DIR = PROJECT_ROOT / "results"
 EXPERIMENT_RESULTS_FILE = RESULTS_DIR / "experiment_results.csv"
 EXPERIMENT_CONFIGS_FILE = RESULTS_DIR / "experiments_used_config.json"
 
-print(f"Results directory: {RESULTS_DIR}")
-print(f"Experiment results file: {EXPERIMENT_RESULTS_FILE}")
-print(f"Experiment configs file: {EXPERIMENT_CONFIGS_FILE}")
+# print(f"Results directory: {RESULTS_DIR}")
+# print(f"Experiment results file: {EXPERIMENT_RESULTS_FILE}")
+# print(f"Experiment configs file: {EXPERIMENT_CONFIGS_FILE}")
 
 DATA_DIR = PROJECT_ROOT / "data"
 RAW_DATA_DIR = DATA_DIR / "raw"

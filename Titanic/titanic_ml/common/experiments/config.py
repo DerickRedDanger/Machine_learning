@@ -1,7 +1,10 @@
 # This file defines the configuration for machine learning experiments on the Titanic dataset.
 # Each experiment is represented as a dictionary with specific fields that describe the model, features, preprocessing steps, evaluation method, and other relevant information.
 
+from math import exp
+
 from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_full_deck, add_title, add_full_title_feature
+from titanic_ml.common.experiments.config_creation import create_experiment_group
 import copy
 
 # Baseline configuration for experiment config
@@ -49,7 +52,7 @@ baseline__models =[
 
     {  
     "name": "baseline__raw__knn",
-    "model_name":'knn',
+    "model_name": 'knn',
     "model_params":{
         "n_neighbors": 5,
         },
@@ -59,7 +62,7 @@ baseline__models =[
 
     {   
     "name": "baseline__raw__svc",
-    "model_name":'svc',
+    "model_name": 'svc',
     "model_params":{
         "C": 1.0,
         "kernel": "rbf",
@@ -72,7 +75,7 @@ baseline__models =[
 
     {   
     "name": "baseline__raw__decision_tree",
-    "model_name":'decision_tree',
+    "model_name": 'decision_tree',
     "model_params":{
         "max_depth": 4,
         "min_samples_leaf": 5,
@@ -83,7 +86,7 @@ baseline__models =[
 
     {
     "name": "baseline__raw__random_forest",
-    "model_name":'random_forest',
+    "model_name": 'random_forest',
     "model_params":{
         "n_estimators": 200,
         "max_depth": 5,
@@ -96,7 +99,7 @@ baseline__models =[
 
     {
     "name": "baseline__raw__extra_trees",
-    "model_name":'extra_trees',
+    "model_name": 'extra_trees',
     "model_params":{
         "n_estimators": 200,
         "max_depth": 5,
@@ -109,7 +112,7 @@ baseline__models =[
 
     {   
     "name": "baseline__raw__xgb",
-    "model_name":'xgb',
+    "model_name": 'xgb',
     "model_params":{
         "n_estimators": 200,
         "max_depth": 3,
@@ -135,70 +138,6 @@ for model in baseline__models:
 # <stages>__<feature_group>__<model>
 import copy
 
-VALID_EXPERIMENT_KEYS = {
-    "name",
-    "features",
-    "feature_engineering",
-    "preprocessing",
-    "model_name",
-    "model_params",
-    "evaluation",
-    "notes",
-}
-
-
-def validate_experiment_override(override):
-    unknown_keys = set(override) - VALID_EXPERIMENT_KEYS
-
-    if unknown_keys:
-        raise ValueError(f"Unknown override keys: {unknown_keys}")
-
-    if "features" in override and not isinstance(override["features"], list):
-        raise TypeError("'features' must be a list.")
-
-    if "feature_engineering" in override:
-        feature_engineering = override["feature_engineering"]
-
-        if not isinstance(feature_engineering, list):
-            raise TypeError("'feature_engineering' must be a list of functions.")
-
-        for fn in feature_engineering:
-            if not callable(fn):
-                raise TypeError(f"Feature engineering item is not callable: {fn}")
-
-    if "preprocessing" in override and not isinstance(override["preprocessing"], dict):
-        raise TypeError("'preprocessing' must be a dictionary.")
-
-    if "model_params" in override and not isinstance(override["model_params"], dict):
-        raise TypeError("'model_params' must be a dictionary.")
-
-    if "evaluation" in override and not isinstance(override["evaluation"], dict):
-        raise TypeError("'evaluation' must be a dictionary.")
-
-
-def create_experiment_group(stage, feature_group, base_configs, group_override=None):
-    if not stage:
-        raise ValueError("Experiment group needs a stage, like 'fe01'.")
-
-    if not feature_group:
-        raise ValueError("Experiment group needs a feature group, like 'family'.")
-
-    if not base_configs:
-        raise ValueError("No base configs provided.")
-
-    group_override = group_override or {}
-
-    validate_experiment_override(group_override)
-
-    configs = copy.deepcopy(base_configs)
-
-    for exp in configs:
-        model_name = exp["model_name"]
-
-        exp.update(group_override)
-        exp["name"] = f"{stage}__{feature_group}__{model_name}"
-
-    return configs
 
 fe01__family_override = {
     "feature_engineering": [add_family_features],
