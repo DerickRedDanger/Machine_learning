@@ -41,6 +41,29 @@ def leaderboard(results_df, metric="test_accuracy_mean", top_n=10, only_success=
         .reset_index(drop=True)
     )
 
+def titanic_notes_leaderboard(results_df, top_n=10, only_success=True):
+    df = results_df.copy()
+    metric = "test_accuracy_mean"
+
+    if only_success and "status" in df.columns:
+        df = df[df["status"] == "success"]
+
+    columns = [
+        "experiment",
+        "model_name",
+        metric,
+        "test_f1_mean",
+    ]
+
+    columns = [col for col in columns if col in df.columns]
+
+    return (
+        df[columns]
+        .sort_values(metric, ascending=False)
+        .head(top_n)
+        .reset_index(drop=True)
+    ).to_markdown(index=False)
+
 def compare_experiment_groups(
     results_df,
     reference_group,

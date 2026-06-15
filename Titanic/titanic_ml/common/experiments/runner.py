@@ -6,6 +6,8 @@ from titanic_ml.common.models.registry import MODEL_REGISTRY
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, MinMaxScaler, RobustScaler
+from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs
+from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard
 
 def build_preprocessor(preprocessing_config):
     numeric_features = preprocessing_config.get("numeric_features", [])
@@ -192,6 +194,78 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3, de
 
     return pd.DataFrame(results)
 
+def get_config_group(experiment_configs):
+    if not experiment_configs:
+        raise ValueError("No experiment configs provided.")
+
+    groups = {exp.get("group") for exp in experiment_configs}
+
+    if len(groups) != 1:
+        raise ValueError(f"Expected one group, found: {groups}")
+
+    return groups.pop()
+
+def run_experiment_group_workflow(
+    df,
+    experiment_configs,
+    target,
+    reference_group="baseline__raw",
+    metrics=None,
+    save=True,
+    verbose=False,
+):
+    if metrics is None:
+        metrics = ["test_accuracy_mean", "test_f1_mean"]
+
+    compare_group = get_config_group(experiment_configs)
+
+    # 1. Run current experiment group
+    group_results = run_experiments(
+        df=df,
+        experiments=experiment_configs,
+        target=target,
+        verbose=verbose,
+    )
+
+    # 2. Save/load combined results
+    if save:
+        all_results = save_results(group_results)
+        save_configs(experiment_configs)
+    else:
+        all_results = group_results
+
+    # 3. Compare with reference group
+    comparison = None
+    summary = None
+
+    if compare_group != reference_group:
+        comparison = compare_experiment_groups(
+            results_df=all_results,
+            reference_group=reference_group,
+            compare_groups=[compare_group],
+            metrics=metrics,
+        )
+
+        summary = summarize_group_comparison(
+            comparison_df=comparison,
+            metrics=metrics,
+        )
+
+    # 4. Leaderboard
+    top_models = leaderboard(
+        results_df=all_results,
+        metric=metrics[0],
+        top_n=10,
+    )
+
+    return {
+        "group": compare_group,
+        "group_results": group_results,
+        "all_results": all_results,
+        "comparison": comparison,
+        "summary": summary,
+        "leaderboard": top_models,
+    }
 
 # def run_experiment(df, target_col, experiment_config, model_registry, logger=None):
 #     """

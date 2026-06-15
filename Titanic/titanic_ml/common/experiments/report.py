@@ -3,6 +3,7 @@ import pprint
 import pandas as pd
 from pathlib import Path
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
+from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard
 
 def format_metric(result_row, metric_name):
     mean_key = f"{metric_name}_mean"
@@ -50,6 +51,20 @@ def experiments_summary_to_markdown(results_df):
             "fit_time": row.get("fit_time_mean", "N/A"),
             "notes": row.get("notes", ""),
 
+        })
+
+    summary_df = pd.DataFrame(summary_rows)
+
+    return summary_df.to_markdown(index=False)
+
+def baseline_summary_to_markdown(results_df):
+    summary_rows = []
+
+    for _, row in results_df.iterrows():
+        summary_rows.append({
+            "model_name": row.get("model_name", "N/A"),
+            "accuracy": format_metric(row, "test_accuracy"),
+            "f1": format_metric(row, "test_f1"),
         })
 
     summary_df = pd.DataFrame(summary_rows)
@@ -153,6 +168,53 @@ def experiment_group_report_to_markdown(
 
     return "\n".join(lines)
 
+def experiment_group_summary_report(
+    results_df,
+    reference_group,
+    compare_group,
+    description="",
+    conclusion="",
+    metrics=None,
+):
+    if metrics is None:
+        metrics = ["test_accuracy_mean", "test_f1_mean"]
+
+    comparison = compare_experiment_groups(
+        results_df=results_df,
+        reference_group=reference_group,
+        compare_groups=[compare_group],
+        metrics=metrics,
+    )
+
+    summary = summarize_group_comparison(
+        comparison_df=comparison,
+        metrics=metrics,
+    )
+
+    lines = [
+        f"### {compare_group}",
+        "",
+        description or "_Description pending._",
+        "",
+        "<details>",
+        "<summary>Comparison details</summary>",
+        "",
+        "#### Comparison vs baseline",
+        "",
+        comparison.to_markdown(index=False),
+        "",
+        "#### Summary",
+        "",
+        summary.to_markdown(index=False),
+        "",
+        "</details>",
+        "",
+        "#### Conclusion",
+        "",
+        conclusion or "_Conclusion pending._",
+    ]
+
+    return "\n".join(lines)
 
 
 

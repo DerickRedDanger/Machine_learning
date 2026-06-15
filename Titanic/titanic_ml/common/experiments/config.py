@@ -8,7 +8,7 @@ from titanic_ml.common.experiments.config_creation import create_experiment_grou
 import copy
 
 # List to hold all experiment configurations
-ALL_EXPERIMENTS = []
+ALL_EXPERIMENTS = {}
 
 # Baseline configuration for experiment config
 baseline__config_model = {
@@ -140,7 +140,7 @@ for model in baseline__models:
     config.update(model)
     baseline__raw.append(config)
 
-ALL_EXPERIMENTS.append(('Baseline', baseline__raw))
+ALL_EXPERIMENTS['baseline__raw'] = baseline__raw
 # New Naming convention:
 # <stages>__<feature_group>__<model>
 
@@ -172,7 +172,7 @@ fe01__family = create_experiment_group(
     base_configs=baseline__raw,
     group_override=fe01__family_override,
 )
-ALL_EXPERIMENTS.append(('Feature Engineering 01: Family Features', fe01__family))
+ALL_EXPERIMENTS['fe01__family'] = fe01__family
 
 
 EXPERIMENTS = [
