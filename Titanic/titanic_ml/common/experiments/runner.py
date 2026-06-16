@@ -260,6 +260,7 @@ def run_experiment_group_workflow(
 
     return {
         "group": compare_group,
+        "reference_group": reference_group,
         "group_results": group_results,
         "all_results": all_results,
         "comparison": comparison,

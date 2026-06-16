@@ -3,7 +3,7 @@ import pprint
 import pandas as pd
 from pathlib import Path
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
-from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard
+from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, titanic_notes_leaderboard
 
 def format_metric(result_row, metric_name):
     mean_key = f"{metric_name}_mean"
@@ -216,7 +216,49 @@ def experiment_group_summary_report(
 
     return "\n".join(lines)
 
+def workflow_report(workflow, conclusion="", description="", top_n=None):
+    results_df = workflow["all_results"]
+    reference_group = workflow["reference_group"]
+    compare_group = workflow["group"]
+    description = description
+    conclusion = conclusion
+    comparison = workflow["comparison"]
+    summary = workflow["summary"]
+    if not top_n:
+        top_n = workflow.get("top_n", 10)
 
+    report = [
+        f"### {compare_group}",
+        "",
+        description or "_Description pending._",
+        "",
+        "<details>",
+        "<summary>Comparison details</summary>",
+        "",
+        f"#### Comparison vs {reference_group}",
+        "",
+        comparison.to_markdown(index=False),
+        "",
+        "#### Summary",
+        "",
+        summary.to_markdown(index=False),
+        "",
+        "</details>",
+        "",
+        "#### Conclusion",
+        "",
+        conclusion or "_Conclusion pending._",
+    ]   
+
+    report_leaderboard = titanic_notes_leaderboard(
+        results_df=results_df, top_n=top_n,)
+
+    full_report = {
+        "report": "\n".join(report),
+        "leaderboard": report_leaderboard
+    }
+
+    return full_report
 
 # Create a report class to centralise the reporting logic and make it easier to extend in the future
 # class ExperimentReport:
