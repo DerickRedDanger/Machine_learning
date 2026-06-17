@@ -119,7 +119,10 @@ def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None)
 def run_experiments(df, experiments, target, verbose=False, round_decimals=3, debug=False):
     results = []
 
+    
+
     for exp in experiments:
+        print(f'running exp: {exp}')
         if verbose:
             print(f"Running experiment: {exp['name']}")
 
@@ -267,6 +270,7 @@ def run_experiment_group_workflow(
         "summary": summary,
         "leaderboard": top_models,
     }
+
 
 # def run_experiment(df, target_col, experiment_config, model_registry, logger=None):
 #     """

@@ -146,6 +146,9 @@ ALL_EXPERIMENTS['baseline__raw'] = baseline__raw
 
 
 
+# Feature engineering group 01: Family features - replaces SibSp/Parch with FamilySize and IsAlone.
+fe01__family = {}
+
 fe01__family_override = {
     "feature_engineering": [add_family_features],
 
@@ -174,8 +177,57 @@ fe01__family = create_experiment_group(
 )
 ALL_EXPERIMENTS['fe01__family'] = fe01__family
 
+# Feature engineering group 02: Has_Cabin - adds a binary feature indicating whether the passenger had a known cabin or not, which can be a signal in itself.
+fe02__Has_Cabin = {}
 
-EXPERIMENTS = [
+fe02__Has_Cabin_override = {
+    "feature_engineering": [add_has_cabin],
+    "features": ["Pclass", "Sex", "Age", "SibSp", 
+                 "Parch", "Fare", "Embarked", "Has_Cabin"],
+    "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "onehot_features": ["Sex", "Embarked"],
+            "ordinal_features": ["Pclass", "Has_Cabin"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself."
+}
+
+fe02__Has_Cabin = create_experiment_group(
+    stage="fe02",
+    feature_group="Has_Cabin",
+    base_configs=baseline__raw,
+    group_override=fe02__Has_Cabin_override,
+)
+ALL_EXPERIMENTS['fe02__Has_Cabin'] = fe02__Has_Cabin
+
+fe03__Title = {}
+
+fe03__Title_override = {
+    "feature_engineering": [add_full_title_feature],
+    "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "Title"],
+            "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "onehot_features": ["Sex", "Embarked", "Title"],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles."
+}
+
+fe03__Title = create_experiment_group(
+    stage="fe03",
+    feature_group="Title",
+    base_configs=baseline__raw,
+    group_override=fe03__Title_override,
+)
+ALL_EXPERIMENTS['fe03__Title'] = fe03__Title
+
+EXPERIMENTS_GUIDE = [
     {
         "name": "baseline_raw_logreg",
         "model_name": "logreg",

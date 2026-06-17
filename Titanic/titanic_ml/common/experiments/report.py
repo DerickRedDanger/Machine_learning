@@ -216,49 +216,56 @@ def experiment_group_summary_report(
 
     return "\n".join(lines)
 
-def workflow_report(workflow, conclusion="", description="", top_n=None):
+def workflow_report(workflow, conclusion="", description="", top_n=10):
     results_df = workflow["all_results"]
     reference_group = workflow["reference_group"]
     compare_group = workflow["group"]
-    description = description
-    conclusion = conclusion
     comparison = workflow["comparison"]
     summary = workflow["summary"]
-    if not top_n:
-        top_n = workflow.get("top_n", 10)
 
-    report = [
-        f"### {compare_group}",
-        "",
-        description or "_Description pending._",
-        "",
-        "<details>",
-        "<summary>Comparison details</summary>",
-        "",
-        f"#### Comparison vs {reference_group}",
-        "",
-        comparison.to_markdown(index=False),
-        "",
-        "#### Summary",
-        "",
-        summary.to_markdown(index=False),
-        "",
-        "</details>",
-        "",
-        "#### Conclusion",
-        "",
-        conclusion or "_Conclusion pending._",
-    ]   
+    # For when refenrence and compare group are the same, so no comparison or summary is generated
+    if comparison is None or summary is None:
+        report = [
+            f"### {compare_group}",
+            "",
+            description or "_Description pending._",
+            "",
+            "#### Result",
+            "",
+            baseline_summary_to_markdown(workflow["group_results"]),
+            "",
+            "#### Conclusion",
+            "",
+            conclusion or "_Conclusion pending._",
+        ]
+    else:
+        report = [
+            f"### {compare_group}",
+            "",
+            description or "_Description pending._",
+            "",
+            "<details>",
+            "<summary>Comparison details</summary>",
+            "",
+            f"#### Comparison vs {reference_group}",
+            "",
+            comparison.to_markdown(index=False),
+            "",
+            "#### Summary",
+            "",
+            summary.to_markdown(index=False),
+            "",
+            "</details>",
+            "",
+            "#### Conclusion",
+            "",
+            conclusion or "_Conclusion pending._",
+        ]
 
-    report_leaderboard = titanic_notes_leaderboard(
-        results_df=results_df, top_n=top_n,)
-
-    full_report = {
+    return {
         "report": "\n".join(report),
-        "leaderboard": report_leaderboard
+        "leaderboard": titanic_notes_leaderboard(results_df=results_df, top_n=top_n),
     }
-
-    return full_report
 
 # Create a report class to centralise the reporting logic and make it easier to extend in the future
 # class ExperimentReport:
