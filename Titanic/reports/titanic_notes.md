@@ -2,18 +2,18 @@
 
 ## Current leaderboard
 
-| experiment                   | model_name    |   test_accuracy_mean |   test_f1_mean |
-|:-----------------------------|:--------------|---------------------:|---------------:|
-| baseline__raw__svc           | svc           |                0.827 |          0.76  |
-| baseline__raw__xgb           | xgb           |                0.826 |          0.758 |
-| fe01__family__svc            | svc           |                0.826 |          0.756 |
-| fe01__family__xgb            | xgb           |                0.826 |          0.756 |
-| baseline__raw__random_forest | random_forest |                0.822 |          0.744 |
-| fe01__family__random_forest  | random_forest |                0.816 |          0.735 |
-| baseline__raw__knn           | knn           |                0.809 |          0.742 |
-| fe01__family__decision_tree  | decision_tree |                0.806 |          0.712 |
-| fe01__family__extra_trees    | extra_trees   |                0.806 |          0.726 |
-| fe01__family__knn            | knn           |                0.805 |          0.737 |
+| experiment                | model_name   |   test_accuracy_mean |   test_f1_mean |
+|:--------------------------|:-------------|---------------------:|---------------:|
+| fe04__cabin_features__xgb | xgb          |                0.832 |          0.767 |
+| baseline__raw__svc        | svc          |                0.827 |          0.76  |
+| baseline__raw__xgb        | xgb          |                0.826 |          0.758 |
+| fe01__family__xgb         | xgb          |                0.826 |          0.756 |
+| fe01__family__svc         | svc          |                0.826 |          0.756 |
+| fe03__deck__svc           | svc          |                0.825 |          0.757 |
+| fe04__cabin_features__svc | svc          |                0.825 |          0.757 |
+| fe02__has_cabin__svc      | svc          |                0.825 |          0.756 |
+| fe03__deck__xgb           | xgb          |                0.822 |          0.751 |
+| fe02__has_cabin__xgb      | xgb          |                0.822 |          0.752 |
 
 ## EDA observations
 
@@ -223,6 +223,105 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 #### Conclusion
 
 Small/negligible impact overall. LogReg improved slightly.
+
+### fe02__has_cabin
+
+Testing if the missingness of the cabins is a signal in itself.
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe02__has_cabin | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.723 |                0.01  |
+| baseline__raw     | fe02__has_cabin | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.743 |                0.001 |
+| baseline__raw     | fe02__has_cabin | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.756 |               -0.004 |
+| baseline__raw     | fe02__has_cabin | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.701 |               -0.001 |
+| baseline__raw     | fe02__has_cabin | random_forest |                          0.822 |                        0.818 |                     -0.004 |                    0.744 |                  0.739 |               -0.005 |
+| baseline__raw     | fe02__has_cabin | extra_trees   |                          0.804 |                        0.807 |                      0.003 |                    0.721 |                  0.729 |                0.008 |
+| baseline__raw     | fe02__has_cabin | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.752 |               -0.006 |
+
+#### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe02__has_cabin |                    -0.000714286 |                         -0.004 |                          0.005 |               0.000428571 |                   -0.006 |                     0.01 |
+
+</details>
+
+#### Conclusion
+
+Negligible changes on it's on, likely on the level of noise. Surprisingly LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on it's own.
+
+### fe03__deck
+
+Testing the impact of the information from deck in the models. Expecting a higher impact then has_cabin, but not by a large margen, given that only 23% of the decks are know.
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe03__deck      | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.722 |                0.009 |
+| baseline__raw     | fe03__deck      | knn           |                          0.809 |                        0.818 |                      0.009 |                    0.742 |                  0.752 |                0.01  |
+| baseline__raw     | fe03__deck      | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.757 |               -0.003 |
+| baseline__raw     | fe03__deck      | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.701 |               -0.001 |
+| baseline__raw     | fe03__deck      | random_forest |                          0.822 |                        0.813 |                     -0.009 |                    0.744 |                  0.734 |               -0.01  |
+| baseline__raw     | fe03__deck      | extra_trees   |                          0.804 |                        0.799 |                     -0.005 |                    0.721 |                  0.719 |               -0.002 |
+| baseline__raw     | fe03__deck      | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.751 |               -0.007 |
+
+#### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe03__deck      |                     -0.00128571 |                         -0.009 |                          0.009 |              -0.000571429 |                    -0.01 |                     0.01 |
+
+</details>
+
+#### Conclusion
+
+Cabin-derived features showed only minor impact. However, approximately 77% of cabin values are missing, leaving usable cabin information for only about 23% of passengers. This severely limits the feature's potential contribution. The weak results may therefore reflect limited coverage rather than lack of predictive signal. Cabin-based features remain an interesting indicator, but their usefulness is constrained by the large amount of missing data.
+
+### fe04__cabin_features
+
+Testing the impact of using has_cabin and deck together, to see if this union generates better information or if they are redundant.
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group        | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:---------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe04__cabin_features | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.724 |                0.011 |
+| baseline__raw     | fe04__cabin_features | knn           |                          0.809 |                        0.817 |                      0.008 |                    0.742 |                  0.752 |                0.01  |
+| baseline__raw     | fe04__cabin_features | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.757 |               -0.003 |
+| baseline__raw     | fe04__cabin_features | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.701 |               -0.001 |
+| baseline__raw     | fe04__cabin_features | random_forest |                          0.822 |                        0.808 |                     -0.014 |                    0.744 |                  0.726 |               -0.018 |
+| baseline__raw     | fe04__cabin_features | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.728 |                0.007 |
+| baseline__raw     | fe04__cabin_features | xgb           |                          0.826 |                        0.832 |                      0.006 |                    0.758 |                  0.767 |                0.009 |
+
+#### Summary
+
+| compare_group        |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:---------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe04__cabin_features |                     0.000142857 |                         -0.014 |                          0.008 |                0.00214286 |                   -0.018 |                    0.011 |
+
+</details>
+
+#### Conclusion
+
+Results were surprising. Meanwhile the mean delta is essentially 0, this combination had greater influence on the models then deck or has_cabin. Meaning that these features compliment each other, rathen then being redundant. 
+
+Random forest was the model that suffered the most from it, believed to be because it's know for splitting important information across redundant variables.
+
+Meanwhile XGB seemed to better exploit that union, to the point of raising to the top of the current leaderboard with a mean accuracy of 0.832 (+0.006 compared to raw), ahead of Raw SVC by 0.005.
+
+This reinforces my belief that Cabin does contain useful information, but it held back by it's large number of missing values.
 
 </details>
 

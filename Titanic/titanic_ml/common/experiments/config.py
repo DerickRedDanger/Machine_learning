@@ -3,9 +3,11 @@
 
 from math import exp
 
-from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_full_deck, add_title, add_full_title_feature
+from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature
 from titanic_ml.common.experiments.config_creation import create_experiment_group
 import copy
+
+from titanic_ml.feature_engineering.cabin import add_deck, add_full_cabin_features
 
 # List to hold all experiment configurations
 ALL_EXPERIMENTS = {}
@@ -178,14 +180,40 @@ fe01__family = create_experiment_group(
 ALL_EXPERIMENTS['fe01__family'] = fe01__family
 
 # Feature engineering group 02: Has_Cabin - adds a binary feature indicating whether the passenger had a known cabin or not, which can be a signal in itself.
-fe02__Has_Cabin = {}
+fe02__has_cabin = {}
 
-fe02__Has_Cabin_override = {
+fe02__has_cabin_override = {
     "feature_engineering": [add_has_cabin],
     "features": ["Pclass", "Sex", "Age", "SibSp", 
                  "Parch", "Fare", "Embarked", "Has_Cabin"],
     "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare", "Has_Cabin"],
+            "onehot_features": ["Sex", "Embarked"],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself."
+}
+
+fe02__has_cabin = create_experiment_group(
+    stage="fe02",
+    feature_group="has_cabin",
+    base_configs=baseline__raw,
+    group_override=fe02__has_cabin_override,
+)
+ALL_EXPERIMENTS['fe02__has_cabin'] = fe02__has_cabin
+
+# Feature engineering group 02: Has_Cabin - adds a binary feature indicating whether the passenger had a known cabin or not, which can be a signal in itself.
+fe02__has_cabin = {}
+
+fe02__has_cabin_override = {
+    "feature_engineering": [add_has_cabin],
+    "features": ["Pclass", "Sex", "Age", "SibSp", 
+                 "Parch", "Fare", "Embarked", "Has_Cabin"],
+    "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare",],
             "onehot_features": ["Sex", "Embarked"],
             "ordinal_features": ["Pclass", "Has_Cabin"],
             "numeric_imputer": "median",
@@ -195,17 +223,70 @@ fe02__Has_Cabin_override = {
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself."
 }
 
-fe02__Has_Cabin = create_experiment_group(
+fe02__has_cabin = create_experiment_group(
     stage="fe02",
-    feature_group="Has_Cabin",
+    feature_group="has_cabin",
     base_configs=baseline__raw,
-    group_override=fe02__Has_Cabin_override,
+    group_override=fe02__has_cabin_override,
 )
-ALL_EXPERIMENTS['fe02__Has_Cabin'] = fe02__Has_Cabin
+ALL_EXPERIMENTS['fe02__has_cabin'] = fe02__has_cabin
 
-fe03__Title = {}
+# Feature engineering group 03: Deck - adds a feature indicating the deck level of the passenger's cabin, which can be a signal in itself.
+fe03__deck = {}
 
-fe03__Title_override = {
+fe03__deck_override = {
+    "feature_engineering": [add_deck],
+    "features": ["Pclass", "Sex", "Age", "SibSp", 
+                 "Parch", "Fare", "Embarked", "Deck"],
+    "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "onehot_features": ["Sex", "Embarked", "Deck"],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival."
+}
+
+fe03__deck = create_experiment_group(
+    stage="fe03",
+    feature_group="deck",
+    base_configs=baseline__raw,
+    group_override=fe03__deck_override,
+)
+ALL_EXPERIMENTS['fe03__deck'] = fe03__deck
+
+# Feature engineering group 04: Cabin features - adds both the Has_Cabin and Deck features together to see if they have a stronger signal when combined.
+fe04__cabin_features = {}
+
+fe04__cabin_features_override = {
+    "feature_engineering": [add_full_cabin_features],
+    "features": ["Pclass", "Sex", "Age", "SibSp", 
+                 "Parch", "Fare", "Embarked", "Has_Cabin", "Deck"],
+    "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+            "onehot_features": ["Sex", "Embarked", "Deck"],
+            "ordinal_features": ["Pclass","Has_Cabin"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively."
+}
+
+fe04__cabin_features = create_experiment_group(
+    stage="fe04",
+    feature_group="cabin_features",
+    base_configs=baseline__raw,
+    group_override=fe04__cabin_features_override,
+)
+ALL_EXPERIMENTS['fe04__cabin_features'] = fe04__cabin_features
+
+# Feature engineering group 05: Title - adds a feature that extracts the title from the passenger's name, which can give more information about their social status and thus survival chances.
+fe05__title = {}
+
+fe05__title_override = {
     "feature_engineering": [add_full_title_feature],
     "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "Title"],
             "preprocessing": {
@@ -219,13 +300,13 @@ fe03__Title_override = {
     "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles."
 }
 
-fe03__Title = create_experiment_group(
-    stage="fe03",
-    feature_group="Title",
+fe05__title = create_experiment_group(
+    stage="fe05",
+    feature_group="title",
     base_configs=baseline__raw,
-    group_override=fe03__Title_override,
+    group_override=fe05__title_override,
 )
-ALL_EXPERIMENTS['fe03__Title'] = fe03__Title
+# ALL_EXPERIMENTS['fe05__title'] = fe05__title
 
 EXPERIMENTS_GUIDE = [
     {
