@@ -2000,5 +2000,411 @@
     "stage": "fe04",
     "feature_group": "cabin_features",
     "group": "fe04__cabin_features"
+  },
+  "fe05__title__logreg": {
+    "name": "fe05__title__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
+  },
+  "fe05__title__knn": {
+    "name": "fe05__title__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
+  },
+  "fe05__title__svc": {
+    "name": "fe05__title__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
+  },
+  "fe05__title__decision_tree": {
+    "name": "fe05__title__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
+  },
+  "fe05__title__random_forest": {
+    "name": "fe05__title__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
+  },
+  "fe05__title__extra_trees": {
+    "name": "fe05__title__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
+  },
+  "fe05__title__xgb": {
+    "name": "fe05__title__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Title"
+    ],
+    "feature_engineering": [
+      "add_full_title_feature"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
+    "stage": "fe05",
+    "feature_group": "title",
+    "group": "fe05__title"
   }
 }

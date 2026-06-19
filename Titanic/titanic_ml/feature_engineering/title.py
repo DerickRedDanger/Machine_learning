@@ -8,6 +8,27 @@ def add_title(df):
     
     return df
 
+# train_df['Title'].value_counts()
+# Title
+# Mr              517
+# Miss            182
+# Mrs             125
+# Master           40
+# Dr                7
+# Rev               6
+# Col               2
+# Mlle              2
+# Major             2
+# Ms                1
+# Mme               1
+# Don               1
+# Lady              1
+# Sir               1
+# Capt              1
+# the Countess      1
+# Jonkheer          1
+# Name: count, dtype: int64
+
 def group_rare_title(df):
     df = df.copy()
 

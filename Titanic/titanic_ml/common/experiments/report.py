@@ -228,6 +228,9 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
         report = [
             f"### {compare_group}",
             "",
+            "<details>",
+            "<summary>Experiment details</summary>",
+            "",
             description or "_Description pending._",
             "",
             "#### Result",
@@ -237,10 +240,16 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
             "#### Conclusion",
             "",
             conclusion or "_Conclusion pending._",
+            "",
+            "</details>",
+
         ]
     else:
         report = [
             f"### {compare_group}",
+            "",
+            "<details>",
+            "<summary>Experiment details</summary>",
             "",
             description or "_Description pending._",
             "",
@@ -260,6 +269,8 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
             "#### Conclusion",
             "",
             conclusion or "_Conclusion pending._",
+            "",
+            "</details>",
         ]
 
     return {

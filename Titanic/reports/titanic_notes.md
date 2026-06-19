@@ -2,18 +2,18 @@
 
 ## Current leaderboard
 
-| experiment                | model_name   |   test_accuracy_mean |   test_f1_mean |
-|:--------------------------|:-------------|---------------------:|---------------:|
-| fe04__cabin_features__xgb | xgb          |                0.832 |          0.767 |
-| baseline__raw__svc        | svc          |                0.827 |          0.76  |
-| baseline__raw__xgb        | xgb          |                0.826 |          0.758 |
-| fe01__family__xgb         | xgb          |                0.826 |          0.756 |
-| fe01__family__svc         | svc          |                0.826 |          0.756 |
-| fe03__deck__svc           | svc          |                0.825 |          0.757 |
-| fe04__cabin_features__svc | svc          |                0.825 |          0.757 |
-| fe02__has_cabin__svc      | svc          |                0.825 |          0.756 |
-| fe03__deck__xgb           | xgb          |                0.822 |          0.751 |
-| fe02__has_cabin__xgb      | xgb          |                0.822 |          0.752 |
+| experiment                 | model_name    |   test_accuracy_mean |   test_f1_mean |
+|:---------------------------|:--------------|---------------------:|---------------:|
+| fe05__title__xgb           | xgb           |                0.836 |          0.772 |
+| fe05__title__svc           | svc           |                0.834 |          0.771 |
+| fe04__cabin_features__xgb  | xgb           |                0.832 |          0.767 |
+| fe05__title__random_forest | random_forest |                0.832 |          0.768 |
+| baseline__raw__svc         | svc           |                0.827 |          0.76  |
+| fe01__family__xgb          | xgb           |                0.826 |          0.756 |
+| fe01__family__svc          | svc           |                0.826 |          0.756 |
+| baseline__raw__xgb         | xgb           |                0.826 |          0.758 |
+| fe02__has_cabin__svc       | svc           |                0.825 |          0.756 |
+| fe03__deck__svc            | svc           |                0.825 |          0.757 |
 
 ## EDA observations
 
@@ -130,7 +130,7 @@ Originally composed of:
  
  Mlle/Ms - > Miss in different languange
  
- Mrs - > Mrs in different language
+ Mme - > Mrs in different language
 
  Remaining titles were rare, and thus, were grouped into a Rare category. (7 Dr, 6 Rev, all others were present only once or twice)
 
@@ -175,6 +175,9 @@ They were made into different functions to allow individual exploration and test
 
 Baseline with raw features for comparison.
 
+<details>
+<summary>Details</summary>
+
 #### Result
 
 | model_name    | accuracy      | f1            |
@@ -196,6 +199,9 @@ SVC and XGB are the strongest initial baselines. Random Forest is close. Logisti
 ### fe01__family
 
 Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
+
+<details>
+<summary>Details</summary>
 
 <details>
 <summary>Comparison details</summary>
@@ -224,9 +230,14 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 
 Small/negligible impact overall. LogReg improved slightly.
 
+</details>
+
 ### fe02__has_cabin
 
-Testing if the missingness of the cabins is a signal in itself.
+Tests if the missingness of the cabins is a signal in itself.
+
+<details>
+<summary>Details</summary>
 
 <details>
 <summary>Comparison details</summary>
@@ -255,9 +266,14 @@ Testing if the missingness of the cabins is a signal in itself.
 
 Negligible changes on it's on, likely on the level of noise. Surprisingly LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on it's own.
 
+</details>
+
 ### fe03__deck
 
 Testing the impact of the information from deck in the models. Expecting a higher impact then has_cabin, but not by a large margen, given that only 23% of the decks are know.
+
+<details>
+<summary>Details</summary>
 
 <details>
 <summary>Comparison details</summary>
@@ -286,9 +302,15 @@ Testing the impact of the information from deck in the models. Expecting a highe
 
 Cabin-derived features showed only minor impact. However, approximately 77% of cabin values are missing, leaving usable cabin information for only about 23% of passengers. This severely limits the feature's potential contribution. The weak results may therefore reflect limited coverage rather than lack of predictive signal. Cabin-based features remain an interesting indicator, but their usefulness is constrained by the large amount of missing data.
 
+</details>
+
 ### fe04__cabin_features
 
 Testing the impact of using has_cabin and deck together, to see if this union generates better information or if they are redundant.
+
+<details>
+<summary>Details</summary>
+
 
 <details>
 <summary>Comparison details</summary>
@@ -324,6 +346,49 @@ Meanwhile XGB seemed to better exploit that union, to the point of raising to th
 This reinforces my belief that Cabin does contain useful information, but it held back by it's large number of missing values.
 
 </details>
+
+### fe05__title
+
+Title's a feature that possibly bundles Sex + age + social status, this experiment test how much the addition of this feature impact in the model's prediction.
+
+<details>
+<summary>Details</summary>
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe05__title     | logreg        |                          0.786 |                        0.825 |                      0.039 |                    0.713 |                  0.765 |                0.052 |
+| baseline__raw     | fe05__title     | knn           |                          0.809 |                        0.822 |                      0.013 |                    0.742 |                  0.76  |                0.018 |
+| baseline__raw     | fe05__title     | svc           |                          0.827 |                        0.834 |                      0.007 |                    0.76  |                  0.771 |                0.011 |
+| baseline__raw     | fe05__title     | decision_tree |                          0.803 |                        0.823 |                      0.02  |                    0.702 |                  0.756 |                0.054 |
+| baseline__raw     | fe05__title     | random_forest |                          0.822 |                        0.832 |                      0.01  |                    0.744 |                  0.768 |                0.024 |
+| baseline__raw     | fe05__title     | extra_trees   |                          0.804 |                        0.82  |                      0.016 |                    0.721 |                  0.754 |                0.033 |
+| baseline__raw     | fe05__title     | xgb           |                          0.826 |                        0.836 |                      0.01  |                    0.758 |                  0.772 |                0.014 |
+
+#### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe05__title     |                       0.0164286 |                          0.007 |                          0.039 |                 0.0294286 |                    0.011 |                    0.054 |
+
+</details>
+
+#### Conclusion
+
+Unlike the previous feature engineering experiments, Title produced consistent improvements across every tested model. The feature appears to encode information related to age, gender, and social status simultaneously, making it substantially more informative than FamilySize, Has_Cabin, or Deck. Given the magnitude and consistency of the improvements, Title is a strong candidate for inclusion in future feature sets.
+
+It's inclusion led to a change to the leaderboard, leading title__Xgb and title__scv to jump to first/second place respectively with title_random__forest closely behind cabin_feature__xgb which's now third.
+
+One interesting details is that logred has it's accuracy increased by 0.039, the highest increase in any model so far. and it was also the one feature that always increase in accuracy on every feature engineering. Likely meaning that each of them is exposing relationship that the linear model would struggle to discover on it's on.
+
+</details>
+
+</details>
+
 
 ## Model comparison notes
 

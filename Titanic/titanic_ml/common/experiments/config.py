@@ -306,7 +306,7 @@ fe05__title = create_experiment_group(
     base_configs=baseline__raw,
     group_override=fe05__title_override,
 )
-# ALL_EXPERIMENTS['fe05__title'] = fe05__title
+ALL_EXPERIMENTS['fe05__title'] = fe05__title
 
 EXPERIMENTS_GUIDE = [
     {
