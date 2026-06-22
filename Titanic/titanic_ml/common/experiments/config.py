@@ -308,6 +308,11 @@ fe05__title = create_experiment_group(
 )
 ALL_EXPERIMENTS['fe05__title'] = fe05__title
 
+# fe06__title_age_imputation
+# fe07__fare_per_person
+# fe08__age_group
+# fe09__sex_pclass
+
 EXPERIMENTS_GUIDE = [
     {
         "name": "baseline_raw_logreg",

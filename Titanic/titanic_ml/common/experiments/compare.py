@@ -1,4 +1,5 @@
 import pandas as pd
+from titanic_ml.common.models.registry import MODEL_REGISTRY
 
 DEFAULT_COMPARE_METRICS = [
     "test_accuracy_mean",
@@ -147,3 +148,26 @@ def summarize_group_comparison(comparison_df, metrics=None):
     ]
 
     return summary.reset_index()
+
+
+def model_progression(results_df, model_name, metric="test_accuracy_mean"):
+    df = results_df.copy()
+
+    if model_name not in MODEL_REGISTRY:
+        raise ValueError(f"Model '{model_name}' not found in model registry.")
+
+    if metric not in df.columns:
+        raise ValueError(f"Metric '{metric}' not found in results dataframe.")
+
+    model_df = df[df["model_name"] == model_name]
+
+    if model_df.empty:
+        raise ValueError(f"Model '{model_name}' not found in results dataframe.")
+
+    columns = ["stage", "feature_group", metric]
+    sort_cols = ["stage", "feature_group"]
+    return (
+        model_df[columns]
+        .sort_values(sort_cols)
+        .reset_index(drop=True)
+    )

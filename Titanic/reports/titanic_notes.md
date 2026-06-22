@@ -39,14 +39,16 @@ int, but category like. Options are First, second and third class. Acording to c
 
 ### Name
 
-Id like, unique per passenger, little use by itself. No missing values
+Id like, unique per passenger, little use by itself. No missing values.
+
 Family name might have use for groupping families?
+
 Mr, Miss, Mrs, Dr. in the middle. Titles?
 
 ### Sex
 
-65% Male from which 81% died, 19% survived
-35% female from which 25% died, 75% survived
+65% Male from which 81% died, 19% survived.
+35% female from which 25% died, 75% survived.
 
 Female clearly had a higher survival rate, Women likely had priority.
 
