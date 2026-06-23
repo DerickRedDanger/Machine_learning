@@ -3,7 +3,7 @@
 
 from math import exp
 
-from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature
+from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature, age_imputed_by_title, age_imputed_by_title_pclass
 from titanic_ml.common.experiments.config_creation import create_experiment_group
 import copy
 
@@ -297,7 +297,7 @@ fe05__title_override = {
             "categorical_imputer": "most_frequent",
             "scaler": "standard",
         },
-    "notes": "Feature engineering 03: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles."
+    "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles."
 }
 
 fe05__title = create_experiment_group(
@@ -308,10 +308,42 @@ fe05__title = create_experiment_group(
 )
 ALL_EXPERIMENTS['fe05__title'] = fe05__title
 
-# fe06__title_age_imputation
-# fe07__fare_per_person
-# fe08__age_group
-# fe09__sex_pclass
+# Feature engineering group 06: Age imputation with Title: Imputes age by group imputation utilizing Title.
+# Title gives us information about both a passenger age and socio-economical status, which should help us get more precise ages.
+fe06__age_imputation_title = {}
+
+fe06__age_imputation_title_override = {
+    "feature_engineering": [age_imputed_by_title],
+    "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation"
+}
+
+fe06__age_imputation_title = create_experiment_group(
+    stage="fe06",
+    feature_group="age_imputation_title",
+    base_configs=baseline__raw,
+    group_override=fe06__age_imputation_title_override,
+)
+ALL_EXPERIMENTS['fe06__age_imputation_title'] = fe06__age_imputation_title
+
+# Feature engineering group 06: Age imputation with Title and Pclass: Imputes age by group imputation utilizing Title and Pclass.
+# Titles like Mr are broad, which might lead to a bad imputation on such cases. Pclass might be a good option to narrow down their age.
+fe07__age_imputation_title_pclass = {}
+
+fe07__age_imputation_title_pclass_override = {
+    "feature_engineering": [age_imputed_by_title_pclass],
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
+}
+
+fe07__age_imputation_title_pclass = create_experiment_group(
+    stage="fe07",
+    feature_group="age_imputation_title_pclass",
+    base_configs=baseline__raw,
+    group_override=fe07__age_imputation_title_pclass_override,
+)
+ALL_EXPERIMENTS['fe07__age_imputation_title_pclass'] = fe07__age_imputation_title_pclass
+# fe08__fare_per_person
+# fe09__age_group
+# fe10__sex_pclass
 
 EXPERIMENTS_GUIDE = [
     {

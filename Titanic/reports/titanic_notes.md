@@ -2,18 +2,18 @@
 
 ## Current leaderboard
 
-| experiment                 | model_name    |   test_accuracy_mean |   test_f1_mean |
-|:---------------------------|:--------------|---------------------:|---------------:|
-| fe05__title__xgb           | xgb           |                0.836 |          0.772 |
-| fe05__title__svc           | svc           |                0.834 |          0.771 |
-| fe04__cabin_features__xgb  | xgb           |                0.832 |          0.767 |
-| fe05__title__random_forest | random_forest |                0.832 |          0.768 |
-| baseline__raw__svc         | svc           |                0.827 |          0.76  |
-| fe01__family__xgb          | xgb           |                0.826 |          0.756 |
-| fe01__family__svc          | svc           |                0.826 |          0.756 |
-| baseline__raw__xgb         | xgb           |                0.826 |          0.758 |
-| fe02__has_cabin__svc       | svc           |                0.825 |          0.756 |
-| fe03__deck__svc            | svc           |                0.825 |          0.757 |
+| experiment                             | model_name    |   test_accuracy_mean |   test_f1_mean |
+|:---------------------------------------|:--------------|---------------------:|---------------:|
+| fe05__title__xgb                       | xgb           |                0.836 |          0.772 |
+| fe05__title__svc                       | svc           |                0.834 |          0.771 |
+| fe04__cabin_features__xgb              | xgb           |                0.832 |          0.767 |
+| fe05__title__random_forest             | random_forest |                0.832 |          0.768 |
+| fe07__age_imputation_title_pclass__svc | svc           |                0.829 |          0.764 |
+| fe06__age_imputation_title__svc        | svc           |                0.829 |          0.764 |
+| fe07__age_imputation_title_pclass__xgb | xgb           |                0.828 |          0.761 |
+| baseline__raw__svc                     | svc           |                0.827 |          0.76  |
+| fe06__age_imputation_title__xgb        | xgb           |                0.826 |          0.756 |
+| baseline__raw__xgb                     | xgb           |                0.826 |          0.758 |
 
 ## EDA observations
 
@@ -389,8 +389,90 @@ One interesting details is that logred has it's accuracy increased by 0.039, the
 
 </details>
 
+### fe06__age_imputation_title
+
+Age have 20% of it's values missing, imputing with median is decent, but not nescesarely the best. This how good imputing age with group by title is, and how this would affect the accuracy of the models.
+
+<details>
+<summary>Experiment details</summary>
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group              | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:---------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe06__age_imputation_title | logreg        |                          0.786 |                        0.787 |                      0.001 |                    0.713 |                  0.712 |               -0.001 |
+| baseline__raw     | fe06__age_imputation_title | knn           |                          0.809 |                        0.808 |                     -0.001 |                    0.742 |                  0.739 |               -0.003 |
+| baseline__raw     | fe06__age_imputation_title | svc           |                          0.827 |                        0.829 |                      0.002 |                    0.76  |                  0.764 |                0.004 |
+| baseline__raw     | fe06__age_imputation_title | decision_tree |                          0.803 |                        0.808 |                      0.005 |                    0.702 |                  0.711 |                0.009 |
+| baseline__raw     | fe06__age_imputation_title | random_forest |                          0.822 |                        0.825 |                      0.003 |                    0.744 |                  0.749 |                0.005 |
+| baseline__raw     | fe06__age_imputation_title | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
+| baseline__raw     | fe06__age_imputation_title | xgb           |                          0.826 |                        0.826 |                      0     |                    0.758 |                  0.756 |               -0.002 |
+
+#### Summary
+
+| compare_group              |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:---------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe06__age_imputation_title |                      0.00142857 |                         -0.001 |                          0.005 |                0.00171429 |                   -0.003 |                    0.009 |
+
 </details>
 
+#### Conclusion
+
+Overall, imputing by title lead to gains, even if only slightly.
+
+Wondering if the reason is because only 20% of title is missing, so a better imputation might still not influence much. If age itself is a weak signal, compared to the other features. Or if imputation with median was already pretty effective.
+
+Interesting how Xgb and Extra tree had no change in accuracy and barely any in f1. They didn't care about the changes in age? Or they already got the information they needed from the other features?
+
+</details>
+
+
+### fe07__age_imputation_title_pclass
+
+Testing the effect of imputing using both Title and Pclass, expecting better results then imputing with title alone.
+
+<details>
+<summary>Experiment details</summary>
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group                     | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe07__age_imputation_title_pclass | logreg        |                          0.786 |                        0.799 |                      0.013 |                    0.713 |                  0.725 |                0.012 |
+| baseline__raw     | fe07__age_imputation_title_pclass | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.737 |               -0.005 |
+| baseline__raw     | fe07__age_imputation_title_pclass | svc           |                          0.827 |                        0.829 |                      0.002 |                    0.76  |                  0.764 |                0.004 |
+| baseline__raw     | fe07__age_imputation_title_pclass | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.699 |               -0.003 |
+| baseline__raw     | fe07__age_imputation_title_pclass | random_forest |                          0.822 |                        0.826 |                      0.004 |                    0.744 |                  0.75  |                0.006 |
+| baseline__raw     | fe07__age_imputation_title_pclass | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
+| baseline__raw     | fe07__age_imputation_title_pclass | xgb           |                          0.826 |                        0.828 |                      0.002 |                    0.758 |                  0.761 |                0.003 |
+
+#### Summary
+
+| compare_group                     |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe07__age_imputation_title_pclass |                           0.002 |                         -0.007 |                          0.013 |                0.00242857 |                   -0.005 |                    0.012 |
+
+</details>
+
+#### Conclusion
+
+Imputing Age using Title and Pclass produced slightly better results than imputing by Title alone. 
+
+The strongest improvement was observed in Logistic Regression, suggesting that the more refined age estimates create relationships that are easier for linear models to exploit. 
+
+The overall gains remain small, likely because Age is only missing for approximately 20% of passengers. Nevertheless, the experiment indicates that Pclass provides useful contextual information when estimating missing ages.
+
+</details>
+
+</details>
+
+</details>
 
 ## Model comparison notes
 

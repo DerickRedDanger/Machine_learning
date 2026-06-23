@@ -1,3 +1,4 @@
 from titanic_ml.feature_engineering.cabin import add_has_cabin, add_full_cabin_features
 from titanic_ml.feature_engineering.title import add_title, add_full_title_feature
 from titanic_ml.feature_engineering.family import add_family_features
+from titanic_ml.feature_engineering.age_impute import age_imputed_by_title, age_imputed_by_title_pclass
