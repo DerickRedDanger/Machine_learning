@@ -166,6 +166,70 @@ They were made into different functions to allow individual exploration and test
 
  </details>
 
+### Fare / Family Size
+<details> <summary>Reasoning</summary>
+
+Observation
+
+While exploring Fare and Pclass, I noticed several passengers in lower classes paying fares comparable to, or higher than, some passengers in higher classes.
+
+This suggested that Fare might represent the amount paid by a group of passengers rather than by a single individual.
+
+Hypothesis
+
+If Fare is shared among family members, dividing it by FamilySize may provide a better estimate of the economic resources available per passenger.
+
+Validation
+
+After grouping passengers by fare and comparing them with FamilySize, I found that the number of passengers sharing a fare often does not match the recorded family size.
+
+Possible explanations include:
+
+Family members appearing in the test set rather than the training set.
+
+Family members traveling under different tickets.
+
+Family relationships not fully captured by SibSp and Parch.
+
+Passengers with the same fare not actually belonging to the same family.
+
+Expectation
+
+The feature may still provide a useful signal, but its assumptions are only partially supported by the data. I expect small gains at best, together with additional noise introduced by inaccurate family-size estimates.
+
+</details>
+
+Fare / Ticket Group Size
+<details> <summary>Reasoning</summary>
+
+Observation
+
+While investigating shared fares, I noticed that many passengers share both the same ticket number and the same fare.
+
+This suggests that tickets may represent traveling groups and that the recorded fare could correspond to the total amount paid for that ticket.
+
+Hypothesis
+
+Dividing Fare by the number of passengers sharing the same ticket may provide a more accurate estimate of fare per passenger than dividing by family size.
+
+Validation
+
+Passengers sharing a ticket generally form more consistent groups than passengers sharing a family relationship through SibSp and Parch.
+
+Because ticket information is directly related to the fare itself, the relationship appears more reliable than the family-based approach.
+
+Concern
+
+This feature may capture patterns specific to the Titanic dataset.
+
+Unlike family size, which is based on passenger attributes, ticket-group information depends on ticket identifiers that may not generalize well beyond the observed data.
+
+Expectation
+
+I expect this feature to outperform Fare / FamilySize on the training data. However, there is a higher risk that some of the captured signal is dataset-specific rather than generally predictive.
+
+</details>
+
 </details>
 
 ## Experiments
