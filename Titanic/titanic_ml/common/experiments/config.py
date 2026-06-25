@@ -3,11 +3,10 @@
 
 from math import exp
 
-from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature, age_imputed_by_title, age_imputed_by_title_pclass
+from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature, age_imputed_by_title, age_imputed_by_title_pclass, add_fare_per_familysize, add_ticket_group_size, add_fare_per_ticket_member, add_deck, add_full_cabin_features
 from titanic_ml.common.experiments.config_creation import create_experiment_group
 import copy
 
-from titanic_ml.feature_engineering.cabin import add_deck, add_full_cabin_features
 
 # List to hold all experiment configurations
 ALL_EXPERIMENTS = {}
@@ -325,13 +324,13 @@ fe06__age_imputation_title = create_experiment_group(
 )
 ALL_EXPERIMENTS['fe06__age_imputation_title'] = fe06__age_imputation_title
 
-# Feature engineering group 06: Age imputation with Title and Pclass: Imputes age by group imputation utilizing Title and Pclass.
+# Feature engineering group 07: Age imputation with Title and Pclass: Imputes age by group imputation utilizing Title and Pclass.
 # Titles like Mr are broad, which might lead to a bad imputation on such cases. Pclass might be a good option to narrow down their age.
 fe07__age_imputation_title_pclass = {}
 
 fe07__age_imputation_title_pclass_override = {
     "feature_engineering": [age_imputed_by_title_pclass],
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
+    "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
 }
 
 fe07__age_imputation_title_pclass = create_experiment_group(
@@ -341,7 +340,89 @@ fe07__age_imputation_title_pclass = create_experiment_group(
     group_override=fe07__age_imputation_title_pclass_override,
 )
 ALL_EXPERIMENTS['fe07__age_imputation_title_pclass'] = fe07__age_imputation_title_pclass
-# fe08__fare_per_person
+
+
+# Feature engineering group 08: Fare divided by family size - adds a feature meant to extract the economical cost of the fare per family member, rather then total.
+# This should give the df a better approach of each passengers actual individual fare
+fe08__fare_per_family_member = {}
+
+fe08__fare_per_family_member_override = {
+    "feature_engineering": [add_fare_per_familysize],
+        "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Embarked", "Fare/FamilySize"],
+            "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare/FamilySize"],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy."
+}
+
+fe08__fare_per_family_member = create_experiment_group(
+    stage="fe08",
+    feature_group="fare_per_family_member",
+    base_configs=baseline__raw,
+    group_override=fe08__fare_per_family_member_override,
+)
+ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member
+
+
+# Feature engineering group 08: Ticket group size - adds a feature meant to show how many passengers share the same ticket.
+# Expected to have a influence akin to family size, it not slightly better, as passengers sharing the same ticket might form more consistent groups then family size. 
+# As not all family members might be together, sharing the same ticket
+fe09__ticket_group_size = {}
+
+fe09__ticket_group_size_override = {
+    "feature_engineering": [add_ticket_group_size],
+            "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "TicketGroupSize"],
+            "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare", "TicketGroupSize"],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
+}
+
+fe09__ticket_group_size = create_experiment_group(
+    stage="fe09",
+    feature_group="ticket_group_size",
+    base_configs=baseline__raw,
+    group_override=fe09__ticket_group_size_override,
+)
+ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size
+
+# Feature engineering group 08: Fare divided by ticket ground size - adds a feature meant to extract the economical cost of the fare per ticket member, rather then total.
+# This is expected to give a slightly better approach then family members, as passengers sharing the same ticket are expected to form more consitent groups.
+fe10__fare_per_ticket_member = {}
+
+fe10__fare_per_ticket_member_override = {
+    "feature_engineering": [age_imputed_by_title_pclass],
+            "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Embarked", "Fare/TicketMember"],
+            "preprocessing": {
+            "numeric_features": ["Age", "SibSp", "Parch", "Fare/TicketMember"],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass"],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
+}
+
+fe10__fare_per_ticket_member = create_experiment_group(
+    stage="fe10",
+    feature_group="fare_per_ticket_member",
+    base_configs=baseline__raw,
+    group_override=fe10__fare_per_ticket_member_override,
+)
+# ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member
+
+
 # fe09__age_group
 # fe10__sex_pclass
 

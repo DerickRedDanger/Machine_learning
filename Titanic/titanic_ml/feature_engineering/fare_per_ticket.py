@@ -10,5 +10,5 @@ def add_fare_per_ticket_member(df):
     if "TicketGroupSize" not in df.columns:
         df = add_ticket_group_size(df)
 
-    df["FarePerTicketMember"] = df["Fare"] / df["TicketGroupSize"]
+    df["Fare/TicketMember"] = df["Fare"] / df["TicketGroupSize"]
     return df

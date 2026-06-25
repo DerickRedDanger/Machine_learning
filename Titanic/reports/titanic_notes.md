@@ -2,18 +2,18 @@
 
 ## Current leaderboard
 
-| experiment                             | model_name    |   test_accuracy_mean |   test_f1_mean |
-|:---------------------------------------|:--------------|---------------------:|---------------:|
-| fe05__title__xgb                       | xgb           |                0.836 |          0.772 |
-| fe05__title__svc                       | svc           |                0.834 |          0.771 |
-| fe04__cabin_features__xgb              | xgb           |                0.832 |          0.767 |
-| fe05__title__random_forest             | random_forest |                0.832 |          0.768 |
-| fe07__age_imputation_title_pclass__svc | svc           |                0.829 |          0.764 |
-| fe06__age_imputation_title__svc        | svc           |                0.829 |          0.764 |
-| fe07__age_imputation_title_pclass__xgb | xgb           |                0.828 |          0.761 |
-| baseline__raw__svc                     | svc           |                0.827 |          0.76  |
-| fe06__age_imputation_title__xgb        | xgb           |                0.826 |          0.756 |
-| baseline__raw__xgb                     | xgb           |                0.826 |          0.758 |
+| experiment                                       | model_name    |   test_accuracy_mean |   test_f1_mean |
+|:-------------------------------------------------|:--------------|---------------------:|---------------:|
+| fe05__title__xgb                                 | xgb           |                0.836 |          0.772 |
+| fe05__title__svc                                 | svc           |                0.834 |          0.771 |
+| fe04__cabin_features__xgb                        | xgb           |                0.832 |          0.767 |
+| fe05__title__random_forest                       | random_forest |                0.832 |          0.768 |
+| fe09__ticket_group_size__svc                     | svc           |                0.832 |          0.77  |
+| fe06__age_imputation_title__svc                  | svc           |                0.829 |          0.764 |
+| fe07__age_imputation_title_pclass__svc           | svc           |                0.829 |          0.764 |
+| fe07__age_imputation_title_pclass__xgb           | xgb           |                0.828 |          0.761 |
+| baseline__raw__svc                               | svc           |                0.827 |          0.76  |
+| fe07__age_imputation_title_pclass__random_forest | random_forest |                0.826 |          0.75  |
 
 ## EDA observations
 
@@ -199,7 +199,7 @@ The feature may still provide a useful signal, but its assumptions are only part
 
 </details>
 
-Fare / Ticket Group Size
+### Fare / Ticket Group Size
 <details> <summary>Reasoning</summary>
 
 Observation
@@ -227,6 +227,14 @@ Unlike family size, which is based on passenger attributes, ticket-group informa
 Expectation
 
 I expect this feature to outperform Fare / FamilySize on the training data. However, there is a higher risk that some of the captured signal is dataset-specific rather than generally predictive.
+
+</details>
+
+### Ticket Group Size
+
+<details> <summary>Reasoning</summary>
+
+Following the logic that passengers sharing tickets might form more consistent groups then family, I decided to also add the Ticket group size to features to check whether it will be more descriptive then family size, if they compliment each other or if they are overlaping.
 
 </details>
 
@@ -533,6 +541,79 @@ The strongest improvement was observed in Logistic Regression, suggesting that t
 The overall gains remain small, likely because Age is only missing for approximately 20% of passengers. Nevertheless, the experiment indicates that Pclass provides useful contextual information when estimating missing ages.
 
 </details>
+
+### fe08__fare_per_family_member
+
+<details>
+<summary>Experiment details</summary>
+
+Fare values doesn't align with the passengers class, expected that fare is not the amount paid by one passenger, but rather the whole family. By dividing fare by the family member, I expect to give the model a more precise feature to work with.
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe08__fare_per_family_member | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.717 |                0.004 |
+| baseline__raw     | fe08__fare_per_family_member | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.735 |               -0.007 |
+| baseline__raw     | fe08__fare_per_family_member | svc           |                          0.827 |                        0.826 |                     -0.001 |                    0.76  |                  0.759 |               -0.001 |
+| baseline__raw     | fe08__fare_per_family_member | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.711 |                0.009 |
+| baseline__raw     | fe08__fare_per_family_member | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.732 |               -0.012 |
+| baseline__raw     | fe08__fare_per_family_member | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe08__fare_per_family_member | xgb           |                          0.826 |                        0.823 |                     -0.003 |                    0.758 |                  0.752 |               -0.006 |
+
+#### Summary
+
+| compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe08__fare_per_family_member |                    -0.000857143 |                         -0.006 |                          0.004 |               -0.00171429 |                   -0.012 |                    0.009 |
+
+</details>
+
+#### Conclusion
+
+Fare / FamilySize appears to contain some useful information, but the underlying assumption is only approximately correct. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
+
+</details>
+
+### fe09__ticket_group_size
+
+<details>
+<summary>Experiment details</summary>
+
+Creating a feature akin to Family Size, but one more likely to reflect the actual numbers of passengers traveling togheter, as it's not because a family's in the ship that they are nescessarely traveling together or sharing the same room. Passengers sharing the same ticket are more likely to be together.
+
+<details>
+<summary>Comparison details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe09__ticket_group_size | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | fe09__ticket_group_size | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.733 |               -0.009 |
+| baseline__raw     | fe09__ticket_group_size | svc           |                          0.827 |                        0.832 |                      0.005 |                    0.76  |                  0.77  |                0.01  |
+| baseline__raw     | fe09__ticket_group_size | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.702 |                0     |
+| baseline__raw     | fe09__ticket_group_size | random_forest |                          0.822 |                        0.82  |                     -0.002 |                    0.744 |                  0.747 |                0.003 |
+| baseline__raw     | fe09__ticket_group_size | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.724 |                0.003 |
+| baseline__raw     | fe09__ticket_group_size | xgb           |                          0.826 |                        0.818 |                     -0.008 |                    0.758 |                  0.749 |               -0.009 |
+
+#### Summary
+
+| compare_group           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe09__ticket_group_size |                     -0.00128571 |                         -0.008 |                          0.005 |                         0 |                   -0.009 |                     0.01 |
+
+</details>
+
+#### Conclusion
+
+Ambiguous results, it helped some models, but hurt others. It's results reminds me of the ones from Fare/Family size, chances are that it's adding some noise or information already explore by other features. One main difference being that Ticket group size gives more precise information about the data frame, since we are finding all the passengers sharing the same ticket inside this dataframe. But it doesn't nescessarely reflects reality, as there might be other passengers that share this ticket in the test dataframe.
+
+</details>
+
 
 </details>
 
