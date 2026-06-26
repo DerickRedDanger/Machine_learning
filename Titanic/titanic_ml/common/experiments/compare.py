@@ -171,3 +171,71 @@ def model_progression(results_df, model_name, metric="test_accuracy_mean"):
         .sort_values(sort_cols)
         .reset_index(drop=True)
     )
+
+def analyze_feature_effect(
+    comparison_df,
+    metric="test_accuracy_mean",
+    positive_threshold=0.003,
+    strong_threshold=0.01,
+    negative_threshold=-0.003,
+):
+    delta_col = f"{metric}_delta"
+
+    if delta_col not in comparison_df.columns:
+        raise ValueError(f"Delta column '{delta_col}' not found.")
+
+    rows = []
+
+    for compare_group, group_df in comparison_df.groupby("compare_group"):
+        positive_models = []
+        negative_models = []
+        neutral_models = []
+
+        for _, row in group_df.iterrows():
+            model_name = row["model_name"]
+            delta = row[delta_col]
+
+            if delta >= positive_threshold:
+                positive_models.append(model_name)
+            elif delta <= negative_threshold:
+                negative_models.append(model_name)
+            else:
+                neutral_models.append(model_name)
+
+        mean_delta = group_df[delta_col].mean()
+        max_delta = group_df[delta_col].max()
+        min_delta = group_df[delta_col].min()
+
+        n_models = len(group_df)
+        n_positive = len(positive_models)
+        n_negative = len(negative_models)
+
+        if mean_delta >= strong_threshold and n_positive >= max(1, int(0.7 * n_models)):
+            verdict = "strong_general"
+        elif n_positive >= max(1, int(0.7 * n_models)):
+            verdict = "general_positive"
+        elif n_positive > 0 and n_negative > 0:
+            verdict = "model_specific_mixed"
+        elif n_positive > 0:
+            verdict = "model_specific_positive"
+        elif n_negative >= max(1, int(0.7 * n_models)):
+            verdict = "general_negative"
+        else:
+            verdict = "neutral"
+
+        rows.append({
+            "compare_group": compare_group,
+            "metric": metric,
+            "mean_delta": mean_delta,
+            "max_delta": max_delta,
+            "min_delta": min_delta,
+            "positive_models": positive_models,
+            "neutral_models": neutral_models,
+            "negative_models": negative_models,
+            "verdict": verdict,
+            "recommended_for_all": verdict in ["strong_general", "general_positive"],
+            "recommended_models": positive_models,
+            "discard": verdict in ["general_negative", "neutral"] and max_delta < positive_threshold,
+        })
+
+    return rows
