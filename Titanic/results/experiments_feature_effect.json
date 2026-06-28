@@ -1,0 +1,247 @@
+{
+  "fe01__family": {
+    "compare_group": "fe01__family",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.00042857142857142893,
+    "max_delta": 0.009000000000000008,
+    "min_delta": -0.006000000000000005,
+    "positive_models": [
+      "logreg",
+      "decision_tree"
+    ],
+    "neutral_models": [
+      "svc",
+      "extra_trees",
+      "xgb"
+    ],
+    "negative_models": [
+      "knn",
+      "random_forest"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "logreg",
+      "decision_tree"
+    ],
+    "discard": false
+  },
+  "fe02__has_cabin": {
+    "compare_group": "fe02__has_cabin",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.0007142857142857149,
+    "max_delta": 0.0050000000000000044,
+    "min_delta": -0.0040000000000000036,
+    "positive_models": [
+      "logreg",
+      "extra_trees"
+    ],
+    "neutral_models": [
+      "knn",
+      "svc"
+    ],
+    "negative_models": [
+      "decision_tree",
+      "random_forest",
+      "xgb"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "logreg",
+      "extra_trees"
+    ],
+    "discard": false
+  },
+  "fe03__deck": {
+    "compare_group": "fe03__deck",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.0012857142857143028,
+    "max_delta": 0.008999999999999897,
+    "min_delta": -0.009000000000000008,
+    "positive_models": [
+      "logreg",
+      "knn"
+    ],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [
+      "decision_tree",
+      "random_forest",
+      "extra_trees",
+      "xgb"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "logreg",
+      "knn"
+    ],
+    "discard": false
+  },
+  "fe04__cabin_features": {
+    "compare_group": "fe04__cabin_features",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.00014285714285714298,
+    "max_delta": 0.007999999999999896,
+    "min_delta": -0.013999999999999901,
+    "positive_models": [
+      "logreg",
+      "knn",
+      "xgb"
+    ],
+    "neutral_models": [
+      "svc",
+      "extra_trees"
+    ],
+    "negative_models": [
+      "decision_tree",
+      "random_forest"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "logreg",
+      "knn",
+      "xgb"
+    ],
+    "discard": false
+  },
+  "fe05__title": {
+    "compare_group": "fe05__title",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.01642857142857138,
+    "max_delta": 0.038999999999999924,
+    "min_delta": 0.007000000000000006,
+    "positive_models": [
+      "logreg",
+      "knn",
+      "svc",
+      "decision_tree",
+      "random_forest",
+      "extra_trees",
+      "xgb"
+    ],
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "strong_general",
+    "recommended_for_all": true,
+    "recommended_models": [
+      "logreg",
+      "knn",
+      "svc",
+      "decision_tree",
+      "random_forest",
+      "extra_trees",
+      "xgb"
+    ],
+    "discard": false
+  },
+  "fe06__age_imputation_title": {
+    "compare_group": "fe06__age_imputation_title",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0014285714285714299,
+    "max_delta": 0.0050000000000000044,
+    "min_delta": -0.0010000000000000009,
+    "positive_models": [
+      "decision_tree",
+      "random_forest"
+    ],
+    "neutral_models": [
+      "logreg",
+      "knn",
+      "svc",
+      "extra_trees",
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "model_specific_positive",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "decision_tree",
+      "random_forest"
+    ],
+    "discard": false
+  },
+  "fe07__age_imputation_title_pclass": {
+    "compare_group": "fe07__age_imputation_title_pclass",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0020000000000000018,
+    "max_delta": 0.013000000000000012,
+    "min_delta": -0.007000000000000006,
+    "positive_models": [
+      "logreg",
+      "random_forest"
+    ],
+    "neutral_models": [
+      "svc",
+      "decision_tree",
+      "extra_trees",
+      "xgb"
+    ],
+    "negative_models": [
+      "knn"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "logreg",
+      "random_forest"
+    ],
+    "discard": false
+  },
+  "fe08__fare_per_family_member": {
+    "compare_group": "fe08__fare_per_family_member",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.0008571428571428579,
+    "max_delta": 0.0040000000000000036,
+    "min_delta": -0.006000000000000005,
+    "positive_models": [
+      "logreg",
+      "decision_tree"
+    ],
+    "neutral_models": [
+      "svc",
+      "extra_trees"
+    ],
+    "negative_models": [
+      "knn",
+      "random_forest",
+      "xgb"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "logreg",
+      "decision_tree"
+    ],
+    "discard": false
+  },
+  "fe09__ticket_group_size": {
+    "compare_group": "fe09__ticket_group_size",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.001285714285714287,
+    "max_delta": 0.0050000000000000044,
+    "min_delta": -0.008000000000000007,
+    "positive_models": [
+      "svc"
+    ],
+    "neutral_models": [
+      "logreg",
+      "random_forest",
+      "extra_trees"
+    ],
+    "negative_models": [
+      "knn",
+      "decision_tree",
+      "xgb"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_models": [
+      "svc"
+    ],
+    "discard": false
+  }
+}

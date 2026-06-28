@@ -7,7 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, MinMaxScaler, RobustScaler
 from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs
-from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard
+from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, analyze_feature_effect
 
 def build_preprocessor(preprocessing_config):
     numeric_features = preprocessing_config.get("numeric_features", [])
@@ -261,6 +261,15 @@ def run_experiment_group_workflow(
         top_n=10,
     )
 
+    # 5. Feature effect
+    feature_effect = None
+
+    if comparison is not None:
+        feature_effect = analyze_feature_effect(
+            comparison,
+            metric=metrics[0],
+        )
+
     return {
         "group": compare_group,
         "reference_group": reference_group,
@@ -269,6 +278,7 @@ def run_experiment_group_workflow(
         "comparison": comparison,
         "summary": summary,
         "leaderboard": top_models,
+        "feature_effect": feature_effect
     }
 
 

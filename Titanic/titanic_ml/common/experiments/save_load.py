@@ -1,4 +1,4 @@
-from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
+from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE, EXPERIMENT_FEATURE_EFFECT
 import pandas as pd
 
 def save_results(results_df, path=EXPERIMENT_RESULTS_FILE, append=True):
@@ -68,4 +68,31 @@ def save_configs(configs, path=EXPERIMENT_CONFIGS_FILE, append=True):
 def load_configs(path=EXPERIMENT_CONFIGS_FILE):
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
-    
+
+def save_feature_effects(
+    feature_effects,
+    path=EXPERIMENT_FEATURE_EFFECT,
+    append=True,
+):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    if append and path.exists():
+        with open(path, "r", encoding="utf-8") as file:
+            existing = json.load(file)
+    else:
+        existing = {}
+
+    for effect in feature_effects:
+        group = effect["compare_group"]
+        existing[group] = effect
+
+    with open(path, "w", encoding="utf-8") as file:
+        json.dump(existing, file, indent=2)
+
+    return existing
+
+
+def load_feature_effects(path=EXPERIMENT_FEATURE_EFFECT):
+    with open(path, "r", encoding="utf-8") as file:
+        return json.load(file)

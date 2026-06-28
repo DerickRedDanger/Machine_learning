@@ -276,6 +276,7 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
     return {
         "report": "\n".join(report),
         "leaderboard": titanic_notes_leaderboard(results_df=results_df, top_n=top_n),
+        "feature_effect": workflow['feature_effect']
     }
 
 # Create a report class to centralise the reporting logic and make it easier to extend in the future
