@@ -202,9 +202,9 @@ def analyze_feature_effect(
             else:
                 neutral_models.append(model_name)
 
-        mean_delta = group_df[delta_col].mean()
-        max_delta = group_df[delta_col].max()
-        min_delta = group_df[delta_col].min()
+        mean_delta = round(group_df[delta_col].mean(),3)
+        max_delta = round(group_df[delta_col].max(),3)
+        min_delta = round(group_df[delta_col].min(),3)
 
         n_models = len(group_df)
         n_positive = len(positive_models)

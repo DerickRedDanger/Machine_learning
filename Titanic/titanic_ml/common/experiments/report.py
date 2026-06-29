@@ -1,10 +1,9 @@
 import pandas as pd
 import pprint
-import pandas as pd
 from pathlib import Path
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, titanic_notes_leaderboard
-
+from titanic_ml.common.experiments.presentation import feature_effect_interpretation
 def format_metric(result_row, metric_name):
     mean_key = f"{metric_name}_mean"
     std_key = f"{metric_name}_std"
@@ -228,18 +227,18 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
         report = [
             f"### {compare_group}",
             "",
-            "<details>",
-            "<summary>Experiment details</summary>",
-            "",
             description or "_Description pending._",
-            "",
-            "#### Result",
-            "",
-            baseline_summary_to_markdown(workflow["group_results"]),
             "",
             "#### Conclusion",
             "",
             conclusion or "_Conclusion pending._",
+            "",
+            "<details>",
+            "<summary>Details</summary>",
+            "",
+            "#### Result",
+            "",
+            baseline_summary_to_markdown(workflow["group_results"]),
             "",
             "</details>",
 
@@ -248,13 +247,21 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
         report = [
             f"### {compare_group}",
             "",
-            "<details>",
-            "<summary>Experiment details</summary>",
-            "",
             description or "_Description pending._",
             "",
             "<details>",
-            "<summary>Comparison details</summary>",
+            "<summary>Conclusion</summary>",
+            "",
+            *feature_effect_interpretation(workflow['feature_effect']),
+            "",     
+            "#### Conclusion",
+            "",
+            conclusion or "_Conclusion pending._",
+            "",
+            "</details>",
+            "",
+            "<details>",
+            "<summary>Experiment details</summary>",
             "",
             f"#### Comparison vs {reference_group}",
             "",
@@ -263,12 +270,6 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
             "#### Summary",
             "",
             summary.to_markdown(index=False),
-            "",
-            "</details>",
-            "",
-            "#### Conclusion",
-            "",
-            conclusion or "_Conclusion pending._",
             "",
             "</details>",
         ]

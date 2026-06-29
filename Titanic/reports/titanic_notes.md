@@ -275,10 +275,10 @@ SVC and XGB are the strongest initial baselines. Random Forest is close. Logisti
 Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 
 <details>
-<summary>Details</summary>
+<summary>Conclusion</summary>
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline
 
@@ -298,6 +298,12 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe01__family    |                     0.000428571 |                         -0.006 |                          0.009 |               0.000428571 |                   -0.009 |                     0.01 |
 
+#### Feature effect
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['logreg', 'decision_tree']
+- Max delta: 0.009
+
 </details>
 
 #### Conclusion
@@ -311,10 +317,10 @@ Small/negligible impact overall. LogReg improved slightly.
 Tests if the missingness of the cabins is a signal in itself.
 
 <details>
-<summary>Details</summary>
+<summary>Conclusion</summary>
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -334,6 +340,12 @@ Tests if the missingness of the cabins is a signal in itself.
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe02__has_cabin |                    -0.000714286 |                         -0.004 |                          0.005 |               0.000428571 |                   -0.006 |                     0.01 |
 
+#### Feature effect
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['logreg', 'extra_trees']
+- Max delta: 0.005
+
 </details>
 
 #### Conclusion
@@ -347,10 +359,10 @@ Negligible changes on it's on, likely on the level of noise. Surprisingly LogReg
 Testing the impact of the information from deck in the models. Expecting a higher impact then has_cabin, but not by a large margen, given that only 23% of the decks are know.
 
 <details>
-<summary>Details</summary>
+<summary>Conclusion</summary>
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -370,6 +382,11 @@ Testing the impact of the information from deck in the models. Expecting a highe
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe03__deck      |                     -0.00128571 |                         -0.009 |                          0.009 |              -0.000571429 |                    -0.01 |                     0.01 |
 
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['logreg', 'knn']
+- Max delta: 0.009
+
 </details>
 
 #### Conclusion
@@ -383,11 +400,11 @@ Cabin-derived features showed only minor impact. However, approximately 77% of c
 Testing the impact of using has_cabin and deck together, to see if this union generates better information or if they are redundant.
 
 <details>
-<summary>Details</summary>
+<summary>Conclusion</summary>
 
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -406,6 +423,12 @@ Testing the impact of using has_cabin and deck together, to see if this union ge
 | compare_group        |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:---------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe04__cabin_features |                     0.000142857 |                         -0.014 |                          0.008 |                0.00214286 |                   -0.018 |                    0.011 |
+
+#### Feature effect
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['logreg', 'knn', 'xgb']
+- Max delta: 0.008
 
 </details>
 
@@ -426,10 +449,10 @@ This reinforces my belief that Cabin does contain useful information, but it hel
 Title's a feature that possibly bundles Sex + age + social status, this experiment test how much the addition of this feature impact in the model's prediction.
 
 <details>
-<summary>Details</summary>
+<summary>Conclusion</summary>
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -449,6 +472,12 @@ Title's a feature that possibly bundles Sex + age + social status, this experime
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe05__title     |                       0.0164286 |                          0.007 |                          0.039 |                 0.0294286 |                    0.011 |                    0.054 |
 
+#### Feature effect
+
+- Verdict: strong_general
+- Recommended for all models: True
+- Max delta: 0.039
+
 </details>
 
 #### Conclusion
@@ -466,10 +495,10 @@ One interesting details is that logred has it's accuracy increased by 0.039, the
 Age have 20% of it's values missing, imputing with median is decent, but not nescesarely the best. This how good imputing age with group by title is, and how this would affect the accuracy of the models.
 
 <details>
-<summary>Experiment details</summary>
+<summary>Conclusion</summary>
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -489,6 +518,12 @@ Age have 20% of it's values missing, imputing with median is decent, but not nes
 |:---------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe06__age_imputation_title |                      0.00142857 |                         -0.001 |                          0.005 |                0.00171429 |                   -0.003 |                    0.009 |
 
+#### Feature effect
+
+- Verdict: model_specific_positive
+- Recommended for the models: ['decision_tree', 'random_forest']
+- Max delta: 0.005
+
 </details>
 
 #### Conclusion
@@ -507,10 +542,10 @@ Interesting how Xgb and Extra tree had no change in accuracy and barely any in f
 Testing the effect of imputing using both Title and Pclass, expecting better results then imputing with title alone.
 
 <details>
-<summary>Experiment details</summary>
+<summary>Conclusion</summary>
 
 <details>
-<summary>Comparison details</summary>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -530,6 +565,13 @@ Testing the effect of imputing using both Title and Pclass, expecting better res
 |:----------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe07__age_imputation_title_pclass |                           0.002 |                         -0.007 |                          0.013 |                0.00242857 |                   -0.005 |                    0.012 |
 
+#### Feature effect
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['logreg', 'random_forest']
+- Max delta: 0.013
+
+
 </details>
 
 #### Conclusion
@@ -544,13 +586,13 @@ The overall gains remain small, likely because Age is only missing for approxima
 
 ### fe08__fare_per_family_member
 
-<details>
-<summary>Experiment details</summary>
-
 Fare values doesn't align with the passengers class, expected that fare is not the amount paid by one passenger, but rather the whole family. By dividing fare by the family member, I expect to give the model a more precise feature to work with.
 
 <details>
-<summary>Comparison details</summary>
+<summary>Conclusion</summary>
+
+<details>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -570,6 +612,12 @@ Fare values doesn't align with the passengers class, expected that fare is not t
 |:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe08__fare_per_family_member |                    -0.000857143 |                         -0.006 |                          0.004 |               -0.00171429 |                   -0.012 |                    0.009 |
 
+#### Feature effect
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['logreg', 'decision_tree']
+- Max delta: 0.004
+
 </details>
 
 #### Conclusion
@@ -580,13 +628,13 @@ Fare / FamilySize appears to contain some useful information, but the underlying
 
 ### fe09__ticket_group_size
 
-<details>
-<summary>Experiment details</summary>
-
 Creating a feature akin to Family Size, but one more likely to reflect the actual numbers of passengers traveling togheter, as it's not because a family's in the ship that they are nescessarely traveling together or sharing the same room. Passengers sharing the same ticket are more likely to be together.
 
 <details>
-<summary>Comparison details</summary>
+<summary>Conclusion</summary>
+
+<details>
+<summary>Experiment details</summary>
 
 #### Comparison vs baseline__raw
 
@@ -605,6 +653,12 @@ Creating a feature akin to Family Size, but one more likely to reflect the actua
 | compare_group           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe09__ticket_group_size |                     -0.00128571 |                         -0.008 |                          0.005 |                         0 |                   -0.009 |                     0.01 |
+
+#### Feature effect
+
+- Verdict: model_specific_mixed
+- Recommended for the models: ['svc']
+- Max delta: 0.005
 
 </details>
 
