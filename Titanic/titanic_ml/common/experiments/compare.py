@@ -190,6 +190,10 @@ def analyze_feature_effect(
         positive_models = []
         negative_models = []
         neutral_models = []
+        positive_model_deltas = {}
+
+
+        
 
         for _, row in group_df.iterrows():
             model_name = row["model_name"]
@@ -197,8 +201,11 @@ def analyze_feature_effect(
 
             if delta >= positive_threshold:
                 positive_models.append(model_name)
+                positive_model_deltas[model_name] = round(delta,3)
+
             elif delta <= negative_threshold:
                 negative_models.append(model_name)
+
             else:
                 neutral_models.append(model_name)
 
@@ -234,7 +241,7 @@ def analyze_feature_effect(
             "negative_models": negative_models,
             "verdict": verdict,
             "recommended_for_all": verdict in ["strong_general", "general_positive"],
-            "recommended_models": positive_models,
+            "recommended_models": positive_model_deltas,
             "discard": verdict in ["general_negative", "neutral"] and max_delta < positive_threshold,
         })
 

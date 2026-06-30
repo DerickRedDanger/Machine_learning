@@ -277,6 +277,19 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 <details>
 <summary>Conclusion</summary>
 
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- logreg: 0.009
+- decision_tree: 0.003
+
+#### Conclusion
+
+Small/negligible impact overall. LogReg improved slightly.
+
+</details>
+
 <details>
 <summary>Experiment details</summary>
 
@@ -298,19 +311,8 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe01__family    |                     0.000428571 |                         -0.006 |                          0.009 |               0.000428571 |                   -0.009 |                     0.01 |
 
-#### Feature effect
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['logreg', 'decision_tree']
-- Max delta: 0.009
-
 </details>
 
-#### Conclusion
-
-Small/negligible impact overall. LogReg improved slightly.
-
-</details>
 
 ### fe02__has_cabin
 
@@ -318,6 +320,19 @@ Tests if the missingness of the cabins is a signal in itself.
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- logreg: 0.005
+- extra_trees: 0.003
+
+#### Conclusion
+
+Negligible changes on it's own, likely on the level of noise. Surprisingly LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on it's own.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -340,18 +355,6 @@ Tests if the missingness of the cabins is a signal in itself.
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe02__has_cabin |                    -0.000714286 |                         -0.004 |                          0.005 |               0.000428571 |                   -0.006 |                     0.01 |
 
-#### Feature effect
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['logreg', 'extra_trees']
-- Max delta: 0.005
-
-</details>
-
-#### Conclusion
-
-Negligible changes on it's on, likely on the level of noise. Surprisingly LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on it's own.
-
 </details>
 
 ### fe03__deck
@@ -360,6 +363,19 @@ Testing the impact of the information from deck in the models. Expecting a highe
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- logreg: 0.005
+- knn: 0.009
+
+#### Conclusion
+
+Cabin-derived features showed only minor impact. However, approximately 77% of cabin values are missing, leaving usable cabin information for only about 23% of passengers. This severely limits the feature's potential contribution. The weak results may therefore reflect limited coverage rather than lack of predictive signal. Cabin-based features remain an interesting indicator, but their usefulness is constrained by the large amount of missing data.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -382,17 +398,6 @@ Testing the impact of the information from deck in the models. Expecting a highe
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe03__deck      |                     -0.00128571 |                         -0.009 |                          0.009 |              -0.000571429 |                    -0.01 |                     0.01 |
 
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['logreg', 'knn']
-- Max delta: 0.009
-
-</details>
-
-#### Conclusion
-
-Cabin-derived features showed only minor impact. However, approximately 77% of cabin values are missing, leaving usable cabin information for only about 23% of passengers. This severely limits the feature's potential contribution. The weak results may therefore reflect limited coverage rather than lack of predictive signal. Cabin-based features remain an interesting indicator, but their usefulness is constrained by the large amount of missing data.
-
 </details>
 
 ### fe04__cabin_features
@@ -402,6 +407,25 @@ Testing the impact of using has_cabin and deck together, to see if this union ge
 <details>
 <summary>Conclusion</summary>
 
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- logreg: 0.005
+- knn: 0.008
+- xgb: 0.006
+
+#### Conclusion
+
+Results were surprising. Meanwhile the mean delta is essentially 0, this combination had greater influence on the models then deck or has_cabin. Meaning that these features compliment each other, rathen then being redundant. 
+
+Random forest was the model that suffered the most from it, believed to be because it's know for splitting important information across redundant variables.
+
+Meanwhile XGB seemed to better exploit that union, to the point of raising to the top of the current leaderboard with a mean accuracy of 0.832 (+0.006 compared to raw), ahead of Raw SVC by 0.005.
+
+This reinforces my belief that Cabin does contain useful information, but it held back by it's large number of missing values.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -424,24 +448,6 @@ Testing the impact of using has_cabin and deck together, to see if this union ge
 |:---------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe04__cabin_features |                     0.000142857 |                         -0.014 |                          0.008 |                0.00214286 |                   -0.018 |                    0.011 |
 
-#### Feature effect
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['logreg', 'knn', 'xgb']
-- Max delta: 0.008
-
-</details>
-
-#### Conclusion
-
-Results were surprising. Meanwhile the mean delta is essentially 0, this combination had greater influence on the models then deck or has_cabin. Meaning that these features compliment each other, rathen then being redundant. 
-
-Random forest was the model that suffered the most from it, believed to be because it's know for splitting important information across redundant variables.
-
-Meanwhile XGB seemed to better exploit that union, to the point of raising to the top of the current leaderboard with a mean accuracy of 0.832 (+0.006 compared to raw), ahead of Raw SVC by 0.005.
-
-This reinforces my belief that Cabin does contain useful information, but it held back by it's large number of missing values.
-
 </details>
 
 ### fe05__title
@@ -450,6 +456,22 @@ Title's a feature that possibly bundles Sex + age + social status, this experime
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: strong_general
+- Recommended for all models
+- Mean delta: 0.016
+
+#### Conclusion
+
+Unlike the previous feature engineering experiments, Title produced consistent improvements across every tested model. The feature appears to encode information related to age, gender, and social status simultaneously, making it substantially more informative than FamilySize, Has_Cabin, or Deck. Given the magnitude and consistency of the improvements, Title is a strong candidate for inclusion in future feature sets.
+
+It's inclusion led to a change to the leaderboard, leading title__Xgb and title__scv to jump to first/second place respectively with title_random__forest closely behind cabin_feature__xgb which's now third.
+
+One interesting details is that logred has it's accuracy increased by 0.039, the highest increase in any model so far. and it was also the one feature that always increase in accuracy on every feature engineering. Likely meaning that each of them is exposing relationship that the linear model would struggle to discover on it's on.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -472,22 +494,6 @@ Title's a feature that possibly bundles Sex + age + social status, this experime
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe05__title     |                       0.0164286 |                          0.007 |                          0.039 |                 0.0294286 |                    0.011 |                    0.054 |
 
-#### Feature effect
-
-- Verdict: strong_general
-- Recommended for all models: True
-- Max delta: 0.039
-
-</details>
-
-#### Conclusion
-
-Unlike the previous feature engineering experiments, Title produced consistent improvements across every tested model. The feature appears to encode information related to age, gender, and social status simultaneously, making it substantially more informative than FamilySize, Has_Cabin, or Deck. Given the magnitude and consistency of the improvements, Title is a strong candidate for inclusion in future feature sets.
-
-It's inclusion led to a change to the leaderboard, leading title__Xgb and title__scv to jump to first/second place respectively with title_random__forest closely behind cabin_feature__xgb which's now third.
-
-One interesting details is that logred has it's accuracy increased by 0.039, the highest increase in any model so far. and it was also the one feature that always increase in accuracy on every feature engineering. Likely meaning that each of them is exposing relationship that the linear model would struggle to discover on it's on.
-
 </details>
 
 ### fe06__age_imputation_title
@@ -496,6 +502,23 @@ Age have 20% of it's values missing, imputing with median is decent, but not nes
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_positive
+- Recommended for specific models:
+- decision_tree: 0.005
+- random_forest: 0.003
+
+#### Conclusion
+
+Overall, imputing by title lead to gains, even if only slightly.
+
+Wondering if the reason is because only 20% of title is missing, so a better imputation might still not influence much. If age itself is a weak signal, compared to the other features. Or if imputation with median was already pretty effective.
+
+Interesting how Xgb and Extra tree had no change in accuracy and barely any in f1. They didn't care about the changes in age? Or they already got the information they needed from the other features?
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -518,24 +541,7 @@ Age have 20% of it's values missing, imputing with median is decent, but not nes
 |:---------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe06__age_imputation_title |                      0.00142857 |                         -0.001 |                          0.005 |                0.00171429 |                   -0.003 |                    0.009 |
 
-#### Feature effect
-
-- Verdict: model_specific_positive
-- Recommended for the models: ['decision_tree', 'random_forest']
-- Max delta: 0.005
-
 </details>
-
-#### Conclusion
-
-Overall, imputing by title lead to gains, even if only slightly.
-
-Wondering if the reason is because only 20% of title is missing, so a better imputation might still not influence much. If age itself is a weak signal, compared to the other features. Or if imputation with median was already pretty effective.
-
-Interesting how Xgb and Extra tree had no change in accuracy and barely any in f1. They didn't care about the changes in age? Or they already got the information they needed from the other features?
-
-</details>
-
 
 ### fe07__age_imputation_title_pclass
 
@@ -543,6 +549,23 @@ Testing the effect of imputing using both Title and Pclass, expecting better res
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- logreg: 0.013
+- random_forest: 0.004
+
+#### Conclusion
+
+Imputing Age using Title and Pclass produced slightly better results than imputing by Title alone. 
+
+The strongest improvement was observed in Logistic Regression, suggesting that the more refined age estimates create relationships that are easier for linear models to exploit. 
+
+The overall gains remain small, likely because Age is only missing for approximately 20% of passengers. Nevertheless, the experiment indicates that Pclass provides useful contextual information when estimating missing ages.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -565,23 +588,6 @@ Testing the effect of imputing using both Title and Pclass, expecting better res
 |:----------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe07__age_imputation_title_pclass |                           0.002 |                         -0.007 |                          0.013 |                0.00242857 |                   -0.005 |                    0.012 |
 
-#### Feature effect
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['logreg', 'random_forest']
-- Max delta: 0.013
-
-
-</details>
-
-#### Conclusion
-
-Imputing Age using Title and Pclass produced slightly better results than imputing by Title alone. 
-
-The strongest improvement was observed in Logistic Regression, suggesting that the more refined age estimates create relationships that are easier for linear models to exploit. 
-
-The overall gains remain small, likely because Age is only missing for approximately 20% of passengers. Nevertheless, the experiment indicates that Pclass provides useful contextual information when estimating missing ages.
-
 </details>
 
 ### fe08__fare_per_family_member
@@ -590,6 +596,19 @@ Fare values doesn't align with the passengers class, expected that fare is not t
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- logreg: 0.003
+- decision_tree: 0.004
+
+#### Conclusion
+
+Fare / FamilySize appears to contain some useful information, but the underlying assumption is only approximately correct. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -612,18 +631,6 @@ Fare values doesn't align with the passengers class, expected that fare is not t
 |:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe08__fare_per_family_member |                    -0.000857143 |                         -0.006 |                          0.004 |               -0.00171429 |                   -0.012 |                    0.009 |
 
-#### Feature effect
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['logreg', 'decision_tree']
-- Max delta: 0.004
-
-</details>
-
-#### Conclusion
-
-Fare / FamilySize appears to contain some useful information, but the underlying assumption is only approximately correct. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
-
 </details>
 
 ### fe09__ticket_group_size
@@ -632,6 +639,18 @@ Creating a feature akin to Family Size, but one more likely to reflect the actua
 
 <details>
 <summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+- svc: 0.005
+
+#### Conclusion
+
+Ambiguous results, it helped some models, but hurt others. It's results reminds me of the ones from Fare/Family size, chances are that it's adding some noise or information already explore by other features. One main difference being that Ticket group size gives more precise information about the data frame, since we are finding all the passengers sharing the same ticket inside this dataframe. But it doesn't nescessarely reflects reality, as there might be other passengers that share this ticket in the test dataframe.
+
+</details>
 
 <details>
 <summary>Experiment details</summary>
@@ -654,20 +673,7 @@ Creating a feature akin to Family Size, but one more likely to reflect the actua
 |:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe09__ticket_group_size |                     -0.00128571 |                         -0.008 |                          0.005 |                         0 |                   -0.009 |                     0.01 |
 
-#### Feature effect
-
-- Verdict: model_specific_mixed
-- Recommended for the models: ['svc']
-- Max delta: 0.005
-
 </details>
-
-#### Conclusion
-
-Ambiguous results, it helped some models, but hurt others. It's results reminds me of the ones from Fare/Family size, chances are that it's adding some noise or information already explore by other features. One main difference being that Ticket group size gives more precise information about the data frame, since we are finding all the passengers sharing the same ticket inside this dataframe. But it doesn't nescessarely reflects reality, as there might be other passengers that share this ticket in the test dataframe.
-
-</details>
-
 
 </details>
 
