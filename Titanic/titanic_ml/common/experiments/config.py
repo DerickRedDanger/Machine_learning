@@ -288,13 +288,13 @@ fe05__title = {}
 fe05__title_override = {
     "feature_engineering": [add_full_title_feature],
     "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "Title"],
-            "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
-            "onehot_features": ["Sex", "Embarked", "Title"],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
+    "preprocessing": {
+        "numeric_features": ["Age", "SibSp", "Parch", "Fare"],
+        "onehot_features": ["Sex", "Embarked", "Title"],
+        "ordinal_features": ["Pclass"],
+        "numeric_imputer": "median",
+        "categorical_imputer": "most_frequent",
+        "scaler": "standard",
         },
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles."
 }
@@ -350,12 +350,12 @@ fe08__fare_per_family_member_override = {
     "feature_engineering": [add_fare_per_familysize],
         "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Embarked", "Fare/FamilySize"],
             "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare/FamilySize"],
-            "onehot_features": ["Sex", "Embarked",],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
+                "numeric_features": ["Age", "SibSp", "Parch", "Fare/FamilySize"],
+                "onehot_features": ["Sex", "Embarked",],
+                "ordinal_features": ["Pclass"],
+                "numeric_imputer": "median",
+                "categorical_imputer": "most_frequent",
+                "scaler": "standard",
         },
     "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy."
 }
@@ -376,14 +376,14 @@ fe09__ticket_group_size = {}
 
 fe09__ticket_group_size_override = {
     "feature_engineering": [add_ticket_group_size],
-            "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "TicketGroupSize"],
-            "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare", "TicketGroupSize"],
-            "onehot_features": ["Sex", "Embarked",],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
+    "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "TicketGroupSize"],
+    "preprocessing": {
+        "numeric_features": ["Age", "SibSp", "Parch", "Fare", "TicketGroupSize"],
+        "onehot_features": ["Sex", "Embarked",],
+        "ordinal_features": ["Pclass"],
+        "numeric_imputer": "median",
+        "categorical_imputer": "most_frequent",
+        "scaler": "standard",
         },
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
 }
@@ -401,9 +401,9 @@ ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size
 fe10__fare_per_ticket_member = {}
 
 fe10__fare_per_ticket_member_override = {
-    "feature_engineering": [age_imputed_by_title_pclass],
-            "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Embarked", "Fare/TicketMember"],
-            "preprocessing": {
+    "feature_engineering": [add_fare_per_ticket_member],
+    "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Embarked", "Fare/TicketMember"],
+    "preprocessing": {
             "numeric_features": ["Age", "SibSp", "Parch", "Fare/TicketMember"],
             "onehot_features": ["Sex", "Embarked",],
             "ordinal_features": ["Pclass"],
@@ -420,7 +420,7 @@ fe10__fare_per_ticket_member = create_experiment_group(
     base_configs=baseline__raw,
     group_override=fe10__fare_per_ticket_member_override,
 )
-# ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member
+ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member
 
 
 # fe09__age_group

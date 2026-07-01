@@ -6,7 +6,7 @@ from titanic_ml.common.models.registry import MODEL_REGISTRY
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, MinMaxScaler, RobustScaler
-from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs
+from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs, save_feature_effects, load_feature_effects
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, analyze_feature_effect
 
 def build_preprocessor(preprocessing_config):
@@ -269,6 +269,9 @@ def run_experiment_group_workflow(
             comparison,
             metric=metrics[0],
         )
+
+        if save:
+            save_feature_effects(feature_effect)
 
     return {
         "group": compare_group,

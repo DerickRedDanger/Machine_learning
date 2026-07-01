@@ -3988,5 +3988,397 @@
     "stage": "fe09",
     "feature_group": "ticket_group_size",
     "group": "fe09__ticket_group_size"
+  },
+  "fe10__fare_per_ticket_member__logreg": {
+    "name": "fe10__fare_per_ticket_member__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
+  },
+  "fe10__fare_per_ticket_member__knn": {
+    "name": "fe10__fare_per_ticket_member__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
+  },
+  "fe10__fare_per_ticket_member__svc": {
+    "name": "fe10__fare_per_ticket_member__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
+  },
+  "fe10__fare_per_ticket_member__decision_tree": {
+    "name": "fe10__fare_per_ticket_member__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
+  },
+  "fe10__fare_per_ticket_member__random_forest": {
+    "name": "fe10__fare_per_ticket_member__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
+  },
+  "fe10__fare_per_ticket_member__extra_trees": {
+    "name": "fe10__fare_per_ticket_member__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
+  },
+  "fe10__fare_per_ticket_member__xgb": {
+    "name": "fe10__fare_per_ticket_member__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "stage": "fe10",
+    "feature_group": "fare_per_ticket_member",
+    "group": "fe10__fare_per_ticket_member"
   }
 }

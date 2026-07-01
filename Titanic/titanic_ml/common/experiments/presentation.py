@@ -3,30 +3,31 @@ def feature_effect_interpretation(feature_effect):
         return []
 
     effect = feature_effect[0]
-    recommendation =[]
 
     if effect["recommended_for_all"]:
-        recommendation=[
-                f"- Recommended for all models",
-              f"- Mean delta: {effect['mean_delta']}"
-            ]
-    elif effect["discard"]:
-        recommendation=[
-            f"- Discard",
-            f"- Max delta: {effect['max_delta']}"
-            ]
-    else:
-        rec_models = []
-        print(effect['recommended_models'])
-        for name, value in effect['recommended_models'].items():
-            rec_models.append(f"- {name}: {value}")
+        recommendation = [
+            "- Recommended for all models",
+            f"- Mean delta: {effect['mean_delta']}",
+        ]
 
-        recommendation=[
-                f"- Recommended for specific models:",
-                *rec_models
-            ]
-        
-    section = [
+    elif effect["discard"]:
+        recommendation = [
+            "- Discard",
+            f"- Max delta: {effect['max_delta']}",
+        ]
+
+    else:
+        rec_models = [
+            f"  - {name}: {value}"
+            for name, value in effect["recommended_model_deltas"].items()
+        ]
+
+        recommendation = [
+            "- Recommended for specific models:",
+            *rec_models,
+        ]
+
+    return [
         "",
         "#### Interpretation",
         "",
@@ -34,5 +35,3 @@ def feature_effect_interpretation(feature_effect):
         *recommendation,
         "",
     ]
-
-    return section
