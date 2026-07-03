@@ -176,7 +176,8 @@ def analyze_feature_effect(
     comparison_df,
     metric="test_accuracy_mean",
     secondary_metrics=None,
-    secondary_threshold=0.01,
+    secondary_positive_threshold=0.01,
+    secondary_negative_threshold=-0.01,
     positive_threshold=0.003,
     strong_threshold=0.01,
     negative_threshold=-0.003,
@@ -191,27 +192,50 @@ def analyze_feature_effect(
 
     for secondary_metric in secondary_metrics:
         secondary_delta_col = f"{secondary_metric}_delta"
-
         if secondary_delta_col not in comparison_df.columns:
             raise ValueError(f"Delta column '{secondary_delta_col}' not found.")
-        
+
     rows = []
 
     for compare_group, group_df in comparison_df.groupby("compare_group"):
         positive_models = []
         negative_models = []
         neutral_models = []
-        positive_model_deltas = {}
-        notable_improvements_models = {}
+
+        recommended_model_deltas = {}
+        recommended_model_tradeoffs = {}
+        notable_secondary_improvements = {}
 
         for _, row in group_df.iterrows():
             model_name = row["model_name"]
             primary_delta = row[primary_delta_col]
-            secondary_deltas = {metric: row[f"{metric}_delta"] for metric in secondary_metrics}
+
+            secondary_deltas = {
+                secondary_metric: row[f"{secondary_metric}_delta"]
+                for secondary_metric in secondary_metrics
+            }
 
             if primary_delta >= positive_threshold:
                 positive_models.append(model_name)
-                positive_model_deltas[model_name] = round(primary_delta,3)
+                recommended_model_deltas[model_name] = round(primary_delta, 3)
+
+                pros = {}
+                cons = {}
+
+                for secondary_metric, delta in secondary_deltas.items():
+                    rounded_delta = round(delta, 3)
+
+                    if delta >= secondary_positive_threshold:
+                        pros[secondary_metric] = rounded_delta
+                    elif delta <= secondary_negative_threshold:
+                        cons[secondary_metric] = rounded_delta
+
+                recommended_model_tradeoffs[model_name] = {
+                    "primary_metric": metric,
+                    "primary_delta": round(primary_delta, 3),
+                    "secondary_pros": pros,
+                    "secondary_cons": cons,
+                }
 
             elif primary_delta <= negative_threshold:
                 negative_models.append(model_name)
@@ -219,14 +243,18 @@ def analyze_feature_effect(
             else:
                 neutral_models.append(model_name)
 
-            if any(delta >= secondary_threshold for delta in secondary_deltas.values()):
-                notable_improvements_models[model_name] = {
-                    metric: round(delta,3) for metric, delta in secondary_deltas.items() if delta >= secondary_threshold
+                notable = {
+                    secondary_metric: round(delta, 3)
+                    for secondary_metric, delta in secondary_deltas.items()
+                    if delta >= secondary_positive_threshold
                 }
 
-        mean_delta = round(group_df[primary_delta_col].mean(),3)
-        max_delta = round(group_df[primary_delta_col].max(),3)
-        min_delta = round(group_df[primary_delta_col].min(),3)
+                if notable:
+                    notable_secondary_improvements[model_name] = notable
+
+        mean_delta = round(group_df[primary_delta_col].mean(), 3)
+        max_delta = round(group_df[primary_delta_col].max(), 3)
+        min_delta = round(group_df[primary_delta_col].min(), 3)
 
         n_models = len(group_df)
         n_positive = len(positive_models)
@@ -256,8 +284,9 @@ def analyze_feature_effect(
             "negative_models": negative_models,
             "verdict": verdict,
             "recommended_for_all": verdict in ["strong_general", "general_positive"],
-            "recommended_model_deltas": positive_model_deltas,
-            "notable_improvements": notable_improvements_models,
+            "recommended_model_deltas": recommended_model_deltas,
+            "recommended_model_tradeoffs": recommended_model_tradeoffs,
+            "notable_secondary_improvements": notable_secondary_improvements,
             "discard": verdict in ["general_negative", "neutral"] and max_delta < positive_threshold,
         })
 
