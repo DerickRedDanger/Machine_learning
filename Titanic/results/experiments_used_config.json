@@ -3240,7 +3240,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -3293,7 +3293,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -3350,7 +3350,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -3405,7 +3405,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -3462,7 +3462,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -3519,7 +3519,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -3578,7 +3578,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy.",
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
     "group": "fe08__fare_per_family_member"
@@ -4038,7 +4038,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
@@ -4091,7 +4091,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
@@ -4148,7 +4148,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
@@ -4203,7 +4203,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
@@ -4260,7 +4260,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
@@ -4317,7 +4317,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
@@ -4376,9 +4376,387 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
     "group": "fe10__fare_per_ticket_member"
+  },
+  "fe11__age_bin__logreg": {
+    "name": "fe11__age_bin__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
+  },
+  "fe11__age_bin__knn": {
+    "name": "fe11__age_bin__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
+  },
+  "fe11__age_bin__svc": {
+    "name": "fe11__age_bin__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
+  },
+  "fe11__age_bin__decision_tree": {
+    "name": "fe11__age_bin__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
+  },
+  "fe11__age_bin__random_forest": {
+    "name": "fe11__age_bin__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
+  },
+  "fe11__age_bin__extra_trees": {
+    "name": "fe11__age_bin__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
+  },
+  "fe11__age_bin__xgb": {
+    "name": "fe11__age_bin__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin"
   }
 }

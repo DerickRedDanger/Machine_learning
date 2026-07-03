@@ -2,18 +2,18 @@
 
 ## Current leaderboard
 
-| experiment                                       | model_name    |   test_accuracy_mean |   test_f1_mean |
-|:-------------------------------------------------|:--------------|---------------------:|---------------:|
-| fe05__title__xgb                                 | xgb           |                0.836 |          0.772 |
-| fe05__title__svc                                 | svc           |                0.834 |          0.771 |
-| fe04__cabin_features__xgb                        | xgb           |                0.832 |          0.767 |
-| fe05__title__random_forest                       | random_forest |                0.832 |          0.768 |
-| fe09__ticket_group_size__svc                     | svc           |                0.832 |          0.77  |
-| fe06__age_imputation_title__svc                  | svc           |                0.829 |          0.764 |
-| fe07__age_imputation_title_pclass__svc           | svc           |                0.829 |          0.764 |
-| fe07__age_imputation_title_pclass__xgb           | xgb           |                0.828 |          0.761 |
-| baseline__raw__svc                               | svc           |                0.827 |          0.76  |
-| fe07__age_imputation_title_pclass__random_forest | random_forest |                0.826 |          0.75  |
+| experiment                             | model_name    |   test_accuracy_mean |   test_f1_mean |
+|:---------------------------------------|:--------------|---------------------:|---------------:|
+| fe05__title__xgb                       | xgb           |                0.836 |          0.772 |
+| fe05__title__svc                       | svc           |                0.834 |          0.771 |
+| fe11__age_bin__random_forest           | random_forest |                0.833 |          0.759 |
+| fe04__cabin_features__xgb              | xgb           |                0.832 |          0.767 |
+| fe05__title__random_forest             | random_forest |                0.832 |          0.768 |
+| fe09__ticket_group_size__svc           | svc           |                0.832 |          0.77  |
+| fe07__age_imputation_title_pclass__svc | svc           |                0.829 |          0.764 |
+| fe06__age_imputation_title__svc        | svc           |                0.829 |          0.764 |
+| fe11__age_bin__svc                     | svc           |                0.829 |          0.764 |
+| fe07__age_imputation_title_pclass__xgb | xgb           |                0.828 |          0.761 |
 
 ## EDA observations
 
@@ -238,6 +238,21 @@ Following the logic that passengers sharing tickets might form more consistent g
 
 </details>
 
+### Age Bin
+
+<details>
+<summary>Reasoning</summary>
+
+Age is a continuous feature, but its influence on survival is unlikely to be linear. A difference of five years between passengers aged 25 and 30 is unlikely to have the same impact as a difference of five years between passengers aged 5 and 10. The objective of age binning is therefore to group passengers into broader life stages, where individuals are expected to share more similar characteristics and survival behavior.
+
+Rather than treating these groups as categorical values, I chose to encode them as an ordinal feature. This preserves an ordering between the groups and avoids introducing additional dimensions through one-hot encoding. The ordering itself is important, as ordinal models interpret the relative positions of the encoded values.
+
+The initial hypothesis was based on the passengers' expected ability to react during the evacuation. Children were expected to rely more heavily on accompanying adults, elderly passengers might have experienced reduced mobility, while working-age adults were expected to react more independently and potentially assist others. This hypothesis guided the initial choice of both the age intervals and their ordering.
+
+During experimentation, however, the bin boundaries and the ordinal labels were refined through cross-validation. The final configuration should therefore be interpreted as an empirically useful representation of the data rather than a direct validation of the original hypothesis. The initial reasoning served as a starting point, while the final intervals were selected because they consistently produced better predictive performance across multiple experiments.
+
+</details>
+
 </details>
 
 ## Experiments
@@ -281,8 +296,10 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- logreg: 0.009
-- decision_tree: 0.003
+  - logreg: 0.009
+  - decision_tree: 0.003
+- Notable improvements:
+  - decision_tree: test_f1_mean: 0.01
 
 #### Conclusion
 
@@ -325,8 +342,10 @@ Tests if the missingness of the cabins is a signal in itself.
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- logreg: 0.005
-- extra_trees: 0.003
+  - logreg: 0.005
+  - extra_trees: 0.003
+- Notable improvements:
+  - logreg: test_f1_mean: 0.01
 
 #### Conclusion
 
@@ -368,8 +387,10 @@ Testing the impact of the information from deck in the models. Expecting a highe
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- logreg: 0.005
-- knn: 0.009
+  - logreg: 0.005
+  - knn: 0.009
+- Notable improvements:
+  - knn: test_f1_mean: 0.01
 
 #### Conclusion
 
@@ -411,9 +432,12 @@ Testing the impact of using has_cabin and deck together, to see if this union ge
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- logreg: 0.005
-- knn: 0.008
-- xgb: 0.006
+  - logreg: 0.005
+  - knn: 0.008
+  - xgb: 0.006
+- Notable improvements:
+  - logreg: test_f1_mean: 0.011
+  - knn: test_f1_mean: 0.01
 
 #### Conclusion
 
@@ -554,8 +578,10 @@ Testing the effect of imputing using both Title and Pclass, expecting better res
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- logreg: 0.013
-- random_forest: 0.004
+  - logreg: 0.013
+  - random_forest: 0.004
+- Notable improvements:
+  - logreg: test_f1_mean: 0.012
 
 #### Conclusion
 
@@ -644,7 +670,10 @@ Creating a feature akin to Family Size, but one more likely to reflect the actua
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- svc: 0.005
+  - svc: 0.005
+- Notable improvements:
+  - svc: test_f1_mean: 0.01
+
 
 #### Conclusion
 
@@ -690,6 +719,8 @@ Feature akin to Fare/family size, but based on ticket member instead. Expected t
   - logreg: 0.003
   - knn: 0.005
   - decision_tree: 0.007
+- Notable improvements:
+  - decision_tree: test_f1_mean: 0.023
 
 
 #### Conclusion
@@ -723,6 +754,59 @@ This proves that Fare contains useful information and should be retained.
 | compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe10__fare_per_ticket_member |                     0.000142857 |                         -0.007 |                          0.007 |               0.000428571 |                   -0.014 |                    0.023 |
+
+</details>
+
+### fe11__age_bin
+
+Turning age into bin, to explore the effect of the change when moving from continuos values to ordinal ones.
+These bin were made based from previous exploratory experiments, while it's order are meant to represent the survival rate of the passenger based on it's age, rather then the age itself.
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - decision_tree: 0.006
+  - random_forest: 0.011
+  - extra_trees: 0.015
+- Notable secondary improvements:
+  - decision_tree: test_f1_mean: 0.02
+  - random_forest: test_f1_mean: 0.015
+  - extra_trees: test_f1_mean: 0.016
+
+
+#### Conclusion
+
+Age bin's results were significant, Logreg suffered slightly, Knn and Xgb had small accuracy gains while taking some losses in f1. Scv had small gains.
+
+But compared to them, Decision, random and extra tree had significant gains on both accuracy and F1. This' likely because the binning facilitated the creation of their's threshold, while the binning themselves apparently align well with the survival behavior.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe11__age_bin   | logreg        |                          0.786 |                        0.783 |                     -0.003 |                    0.713 |                  0.71  |               -0.003 |
+| baseline__raw     | fe11__age_bin   | knn           |                          0.809 |                        0.81  |                      0.001 |                    0.742 |                  0.737 |               -0.005 |
+| baseline__raw     | fe11__age_bin   | svc           |                          0.827 |                        0.829 |                      0.002 |                    0.76  |                  0.764 |                0.004 |
+| baseline__raw     | fe11__age_bin   | decision_tree |                          0.803 |                        0.809 |                      0.006 |                    0.702 |                  0.722 |                0.02  |
+| baseline__raw     | fe11__age_bin   | random_forest |                          0.822 |                        0.833 |                      0.011 |                    0.744 |                  0.759 |                0.015 |
+| baseline__raw     | fe11__age_bin   | extra_trees   |                          0.804 |                        0.819 |                      0.015 |                    0.721 |                  0.737 |                0.016 |
+| baseline__raw     | fe11__age_bin   | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.752 |               -0.006 |
+
+#### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe11__age_bin   |                      0.00471429 |                         -0.003 |                          0.015 |                0.00585714 |                   -0.006 |                     0.02 |
 
 </details>
 

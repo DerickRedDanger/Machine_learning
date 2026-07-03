@@ -175,15 +175,26 @@ def model_progression(results_df, model_name, metric="test_accuracy_mean"):
 def analyze_feature_effect(
     comparison_df,
     metric="test_accuracy_mean",
+    secondary_metrics=None,
+    secondary_threshold=0.01,
     positive_threshold=0.003,
     strong_threshold=0.01,
     negative_threshold=-0.003,
 ):
-    delta_col = f"{metric}_delta"
+    if secondary_metrics is None:
+        secondary_metrics = ["test_f1_mean"]
 
-    if delta_col not in comparison_df.columns:
-        raise ValueError(f"Delta column '{delta_col}' not found.")
+    primary_delta_col = f"{metric}_delta"
 
+    if primary_delta_col not in comparison_df.columns:
+        raise ValueError(f"Delta column '{primary_delta_col}' not found.")
+
+    for secondary_metric in secondary_metrics:
+        secondary_delta_col = f"{secondary_metric}_delta"
+
+        if secondary_delta_col not in comparison_df.columns:
+            raise ValueError(f"Delta column '{secondary_delta_col}' not found.")
+        
     rows = []
 
     for compare_group, group_df in comparison_df.groupby("compare_group"):
@@ -191,24 +202,31 @@ def analyze_feature_effect(
         negative_models = []
         neutral_models = []
         positive_model_deltas = {}
+        notable_improvements_models = {}
 
         for _, row in group_df.iterrows():
             model_name = row["model_name"]
-            delta = row[delta_col]
+            primary_delta = row[primary_delta_col]
+            secondary_deltas = {metric: row[f"{metric}_delta"] for metric in secondary_metrics}
 
-            if delta >= positive_threshold:
+            if primary_delta >= positive_threshold:
                 positive_models.append(model_name)
-                positive_model_deltas[model_name] = round(delta,3)
+                positive_model_deltas[model_name] = round(primary_delta,3)
 
-            elif delta <= negative_threshold:
+            elif primary_delta <= negative_threshold:
                 negative_models.append(model_name)
 
             else:
                 neutral_models.append(model_name)
 
-        mean_delta = round(group_df[delta_col].mean(),3)
-        max_delta = round(group_df[delta_col].max(),3)
-        min_delta = round(group_df[delta_col].min(),3)
+            if any(delta >= secondary_threshold for delta in secondary_deltas.values()):
+                notable_improvements_models[model_name] = {
+                    metric: round(delta,3) for metric, delta in secondary_deltas.items() if delta >= secondary_threshold
+                }
+
+        mean_delta = round(group_df[primary_delta_col].mean(),3)
+        max_delta = round(group_df[primary_delta_col].max(),3)
+        min_delta = round(group_df[primary_delta_col].min(),3)
 
         n_models = len(group_df)
         n_positive = len(positive_models)
@@ -239,6 +257,7 @@ def analyze_feature_effect(
             "verdict": verdict,
             "recommended_for_all": verdict in ["strong_general", "general_positive"],
             "recommended_model_deltas": positive_model_deltas,
+            "notable_improvements": notable_improvements_models,
             "discard": verdict in ["general_negative", "neutral"] and max_delta < positive_threshold,
         })
 

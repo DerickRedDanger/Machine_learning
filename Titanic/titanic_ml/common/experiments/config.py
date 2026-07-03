@@ -7,6 +7,8 @@ from titanic_ml.feature_engineering import add_family_features, add_has_cabin, a
 from titanic_ml.common.experiments.config_creation import create_experiment_group
 import copy
 
+from titanic_ml.feature_engineering.age_bin import add_age_bin
+
 
 # List to hold all experiment configurations
 ALL_EXPERIMENTS = {}
@@ -357,7 +359,7 @@ fe08__fare_per_family_member_override = {
                 "categorical_imputer": "most_frequent",
                 "scaler": "standard",
         },
-    "notes": "Feature engineering 07: Dividing fare by family size, expected to give a small increase in accuracy."
+    "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy."
 }
 
 fe08__fare_per_family_member = create_experiment_group(
@@ -369,7 +371,7 @@ fe08__fare_per_family_member = create_experiment_group(
 ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member
 
 
-# Feature engineering group 08: Ticket group size - adds a feature meant to show how many passengers share the same ticket.
+# Feature engineering group 09: Ticket group size - adds a feature meant to show how many passengers share the same ticket.
 # Expected to have a influence akin to family size, it not slightly better, as passengers sharing the same ticket might form more consistent groups then family size. 
 # As not all family members might be together, sharing the same ticket
 fe09__ticket_group_size = {}
@@ -396,7 +398,7 @@ fe09__ticket_group_size = create_experiment_group(
 )
 ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size
 
-# Feature engineering group 08: Fare divided by ticket ground size - adds a feature meant to extract the economical cost of the fare per ticket member, rather then total.
+# Feature engineering group 10: Fare divided by ticket ground size - adds a feature meant to extract the economical cost of the fare per ticket member, rather then total.
 # This is expected to give a slightly better approach then family members, as passengers sharing the same ticket are expected to form more consitent groups.
 fe10__fare_per_ticket_member = {}
 
@@ -411,7 +413,7 @@ fe10__fare_per_ticket_member_override = {
             "categorical_imputer": "most_frequent",
             "scaler": "standard",
         },
-    "notes": "Feature engineering 06: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title"
+    "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size."
 }
 
 fe10__fare_per_ticket_member = create_experiment_group(
@@ -423,7 +425,33 @@ fe10__fare_per_ticket_member = create_experiment_group(
 ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member
 
 
-# fe09__age_group
+# Feature engineering group 11: Age bins - adds a feature meant to categorize passengers by age groups.
+# Expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.
+# While taking advantage of the labels to turn it into a ordinal feature, which is expected to give better results then onehot encoding the age groups.
+fe11__age_bin = {}
+
+fe11__age_bin_override = {
+    "feature_engineering": [add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group."
+}
+
+fe11__age_bin = create_experiment_group(
+    stage="fe11",
+    feature_group="age_bin",
+    base_configs=baseline__raw,
+    group_override=fe11__age_bin_override,
+)
+
+ALL_EXPERIMENTS['fe11__age_bin'] = fe11__age_bin
 # fe10__sex_pclass
 
 EXPERIMENTS_GUIDE = [

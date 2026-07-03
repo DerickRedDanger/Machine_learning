@@ -27,6 +27,13 @@ def feature_effect_interpretation(feature_effect):
             *rec_models,
         ]
 
+        if effect.get("notable_improvements"):
+            notable_models = [
+                f"  - {name}: {', '.join(f'{metric}: {value}' for metric, value in metrics.items())}"
+                for name, metrics in effect["notable_improvements"].items()
+            ]
+            recommendation.append("- Notable secondary improvements:")
+            recommendation.extend(notable_models)
     return [
         "",
         "#### Interpretation",
