@@ -4,3 +4,5 @@ from titanic_ml.feature_engineering.family import add_family_features
 from titanic_ml.feature_engineering.age_impute import age_imputed_by_title, age_imputed_by_title_pclass
 from titanic_ml.feature_engineering.fare_per_familysize import add_fare_per_familysize
 from titanic_ml.feature_engineering.fare_per_ticket import add_ticket_group_size, add_fare_per_ticket_member
+from titanic_ml.feature_engineering.age_bin import add_age_bin
+from titanic_ml.feature_engineering.sex_pclass import add_sex_pclass

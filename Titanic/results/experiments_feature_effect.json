@@ -373,5 +373,32 @@
       }
     },
     "discard": false
+  },
+  "fe12__sex_pclass": {
+    "compare_group": "fe12__sex_pclass",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": 0.009,
+    "min_delta": -0.009,
+    "positive_models": [
+      "logreg",
+      "extra_trees"
+    ],
+    "neutral_models": [],
+    "negative_models": [
+      "knn",
+      "svc",
+      "decision_tree",
+      "random_forest",
+      "xgb"
+    ],
+    "verdict": "model_specific_mixed",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "logreg": 0.009,
+      "extra_trees": 0.005
+    },
+    "notable_improvements": {},
+    "discard": false
   }
 }

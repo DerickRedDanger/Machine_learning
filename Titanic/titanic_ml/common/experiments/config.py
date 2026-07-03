@@ -8,6 +8,7 @@ from titanic_ml.common.experiments.config_creation import create_experiment_grou
 import copy
 
 from titanic_ml.feature_engineering.age_bin import add_age_bin
+from titanic_ml.feature_engineering.sex_pclass import add_sex_pclass
 
 
 # List to hold all experiment configurations
@@ -452,7 +453,39 @@ fe11__age_bin = create_experiment_group(
 )
 
 ALL_EXPERIMENTS['fe11__age_bin'] = fe11__age_bin
-# fe10__sex_pclass
+
+
+# Feature engineering group 12: Sex Pclass - adds a feature meant to combine the passenger's sex and pclass into a single feature.
+# This is a proof of concept to see if combining two features into a single feature can give better results then using them separately.
+
+fe12__sex_pclass={}
+
+fe12__sex_pclass = {
+    "feature_engineering": [add_sex_pclass],
+
+    "features": [
+        "Age", "Fare", "Embarked", "Sex_Pclass",
+    ],
+
+    "preprocessing": {
+        "numeric_features": ["Age", "Fare",],
+        "onehot_features": ["Sex_Pclass", "Embarked"],
+        "ordinal_features": [],
+        "numeric_imputer": "median",
+        "categorical_imputer": "most_frequent",
+        "scaler": "standard",
+    },
+
+    "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
+}
+
+fe12__sex_pclass = create_experiment_group(
+    stage="fe12",
+    feature_group="sex_pclass",
+    base_configs=baseline__raw,
+    group_override=fe12__sex_pclass,
+)
+ALL_EXPERIMENTS['fe12__sex_pclass'] = fe12__sex_pclass
 
 EXPERIMENTS_GUIDE = [
     {

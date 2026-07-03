@@ -253,6 +253,21 @@ During experimentation, however, the bin boundaries and the ordinal labels were 
 
 </details>
 
+### Sex - Pclass
+
+<details>
+<summary>Reasoning</summary>
+
+This experiment is a proof of concept to check if fusing two features into one would result into a more powerful feature (improving the accuracy), or if the models are capable of doing this on their own (meaning little to no change). Depending of the result, this could be the first of many, or the last of it's kind.
+
+To make it's results clearer, as to no have an ambiguous result that would give more questions then answers, I decided to pick two of the most important features for this experiment.
+
+During initial exploration, female proved to have a much higher survival rate then male (75% vs 19%). At the same time Pclass also returned the highest correlation with survived among the numerical columns. Acording to this, one would imply that a women from the first class would have a much higher survival rate then a man from the third.
+
+During experiment, however, only two model gained accuracy by trading Sex and Pclass for Sex-Pclass. And even those suffered losses of 0.02 or higher on F1, meaning this change greately impacted the model's generalisation, turning it more biased.
+
+</details>
+
 </details>
 
 ## Experiments
@@ -807,6 +822,59 @@ But compared to them, Decision, random and extra tree had significant gains on b
 | compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
 | fe11__age_bin   |                      0.00471429 |                         -0.003 |                          0.015 |                0.00585714 |                   -0.006 |                     0.02 |
+
+</details>
+
+### fe12__sex_pclass
+
+Proof of concept: Evaluate whether combining two informative features into a single feature can improve predictive performance or whether the models already learn this interaction naturally.
+
+Sex and Pclass were chosen because they are among the strongest predictors in the dataset, increasing the likelihood that the experiment would produce a clear outcome rather than an ambiguous one.
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: 0.009
+  - extra_trees: 0.005
+
+
+#### Conclusion
+
+Only Logistic Regression and Extra Trees showed a small improvement in accuracy after replacing Sex and Pclass with the combined Sex_Pclass feature. Most other models experienced a small decrease in accuracy.
+
+More importantly, every model suffered a noticeable reduction in F1 score (roughly -0.02 or more, with KNN being the only minor exception). This suggests that, although the combined feature may slightly improve overall accuracy for some models, it also leads to poorer balance between precision and recall. Even though the Titanic competition is evaluated solely on accuracy, this trade-off makes the usefulness of this feature questionable.
+
+A likely explanation is that most of these models are already capable of learning the interaction between Sex and Pclass. Replacing the original variables with a single combined feature removes flexibility from the model, preventing it from exploiting each variable independently and potentially reducing its ability to generalize.
+
+This experiment also exposed a limitation in the current interpretation system. The analysis highlights positive improvements but does not report significant degradations in other metrics. Future versions should report both meaningful gains and meaningful losses so that recommendations can be evaluated more critically.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group    | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe12__sex_pclass | logreg        |                          0.786 |                        0.795 |                      0.009 |                    0.713 |                  0.693 |               -0.02  |
+| baseline__raw     | fe12__sex_pclass | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.741 |               -0.001 |
+| baseline__raw     | fe12__sex_pclass | svc           |                          0.827 |                        0.824 |                     -0.003 |                    0.76  |                  0.732 |               -0.028 |
+| baseline__raw     | fe12__sex_pclass | decision_tree |                          0.803 |                        0.794 |                     -0.009 |                    0.702 |                  0.68  |               -0.022 |
+| baseline__raw     | fe12__sex_pclass | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.717 |               -0.027 |
+| baseline__raw     | fe12__sex_pclass | extra_trees   |                          0.804 |                        0.809 |                      0.005 |                    0.721 |                  0.702 |               -0.019 |
+| baseline__raw     | fe12__sex_pclass | xgb           |                          0.826 |                        0.82  |                     -0.006 |                    0.758 |                  0.743 |               -0.015 |
+
+#### Summary
+
+| compare_group    |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe12__sex_pclass |                     -0.00185714 |                         -0.009 |                          0.009 |                -0.0188571 |                   -0.028 |                   -0.001 |
 
 </details>
 
