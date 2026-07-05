@@ -311,10 +311,10 @@ Tests whether FamilySize and IsAlone replace SibSp/Parch effectively.
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.009
-  - decision_tree: 0.003
-- Notable improvements:
-  - decision_tree: test_f1_mean: 0.01
+  - logreg: test_accuracy_mean: 0.009
+  - decision_tree: test_accuracy_mean: 0.003
+    - Secondary gains:
+      - test_f1_mean: 0.01
 
 #### Conclusion
 
@@ -357,10 +357,10 @@ Tests if the missingness of the cabins is a signal in itself.
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.005
-  - extra_trees: 0.003
-- Notable improvements:
-  - logreg: test_f1_mean: 0.01
+  - logreg: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.01
+  - extra_trees: test_accuracy_mean: 0.003
 
 #### Conclusion
 
@@ -402,10 +402,10 @@ Testing the impact of the information from deck in the models. Expecting a highe
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.005
-  - knn: 0.009
-- Notable improvements:
-  - knn: test_f1_mean: 0.01
+  - logreg: test_accuracy_mean: 0.005
+  - knn: test_accuracy_mean: 0.009
+    - Secondary gains:
+      - test_f1_mean: 0.01
 
 #### Conclusion
 
@@ -447,12 +447,13 @@ Testing the impact of using has_cabin and deck together, to see if this union ge
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.005
-  - knn: 0.008
-  - xgb: 0.006
-- Notable improvements:
-  - logreg: test_f1_mean: 0.011
-  - knn: test_f1_mean: 0.01
+  - logreg: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.011
+  - knn: test_accuracy_mean: 0.008
+    - Secondary gains:
+      - test_f1_mean: 0.01
+  - xgb: test_accuracy_mean: 0.006
 
 #### Conclusion
 
@@ -546,8 +547,8 @@ Age have 20% of it's values missing, imputing with median is decent, but not nes
 
 - Verdict: model_specific_positive
 - Recommended for specific models:
-- decision_tree: 0.005
-- random_forest: 0.003
+  - decision_tree: test_accuracy_mean: 0.005
+  - random_forest: test_accuracy_mean: 0.003
 
 #### Conclusion
 
@@ -593,10 +594,10 @@ Testing the effect of imputing using both Title and Pclass, expecting better res
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.013
-  - random_forest: 0.004
-- Notable improvements:
-  - logreg: test_f1_mean: 0.012
+  - logreg: test_accuracy_mean: 0.013
+    - Secondary gains:
+      - test_f1_mean: 0.012
+  - random_forest: test_accuracy_mean: 0.004
 
 #### Conclusion
 
@@ -642,8 +643,8 @@ Fare values doesn't align with the passengers class, expected that fare is not t
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-- logreg: 0.003
-- decision_tree: 0.004
+  - logreg: test_accuracy_mean: 0.003
+  - decision_tree: test_accuracy_mean: 0.004
 
 #### Conclusion
 
@@ -685,9 +686,9 @@ Creating a feature akin to Family Size, but one more likely to reflect the actua
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - svc: 0.005
-- Notable improvements:
-  - svc: test_f1_mean: 0.01
+  - svc: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.01
 
 
 #### Conclusion
@@ -731,11 +732,11 @@ Feature akin to Fare/family size, but based on ticket member instead. Expected t
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.003
-  - knn: 0.005
-  - decision_tree: 0.007
-- Notable improvements:
-  - decision_tree: test_f1_mean: 0.023
+  - logreg: test_accuracy_mean: 0.003
+  - knn: test_accuracy_mean: 0.005
+  - decision_tree: test_accuracy_mean: 0.007
+    - Secondary gains:
+      - test_f1_mean: 0.023
 
 
 #### Conclusion
@@ -834,13 +835,16 @@ Sex and Pclass were chosen because they are among the strongest predictors in th
 <details>
 <summary>Conclusion</summary>
 
-
 #### Interpretation
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
-  - logreg: 0.009
-  - extra_trees: 0.005
+  - logreg: test_accuracy_mean: 0.009
+    - Secondary losses:
+      - test_f1_mean: -0.02
+  - extra_trees: test_accuracy_mean: 0.005
+    - Secondary losses:
+      - test_f1_mean: -0.019
 
 
 #### Conclusion

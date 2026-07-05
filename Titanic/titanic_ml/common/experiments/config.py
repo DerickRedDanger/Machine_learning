@@ -189,32 +189,6 @@ fe02__has_cabin_override = {
     "features": ["Pclass", "Sex", "Age", "SibSp", 
                  "Parch", "Fare", "Embarked", "Has_Cabin"],
     "preprocessing": {
-            "numeric_features": ["Age", "SibSp", "Parch", "Fare", "Has_Cabin"],
-            "onehot_features": ["Sex", "Embarked"],
-            "ordinal_features": ["Pclass"],
-            "numeric_imputer": "median",
-            "categorical_imputer": "most_frequent",
-            "scaler": "standard",
-        },
-    "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself."
-}
-
-fe02__has_cabin = create_experiment_group(
-    stage="fe02",
-    feature_group="has_cabin",
-    base_configs=baseline__raw,
-    group_override=fe02__has_cabin_override,
-)
-ALL_EXPERIMENTS['fe02__has_cabin'] = fe02__has_cabin
-
-# Feature engineering group 02: Has_Cabin - adds a binary feature indicating whether the passenger had a known cabin or not, which can be a signal in itself.
-fe02__has_cabin = {}
-
-fe02__has_cabin_override = {
-    "feature_engineering": [add_has_cabin],
-    "features": ["Pclass", "Sex", "Age", "SibSp", 
-                 "Parch", "Fare", "Embarked", "Has_Cabin"],
-    "preprocessing": {
             "numeric_features": ["Age", "SibSp", "Parch", "Fare",],
             "onehot_features": ["Sex", "Embarked"],
             "ordinal_features": ["Pclass", "Has_Cabin"],
@@ -514,6 +488,55 @@ EXPERIMENTS_GUIDE = [
         "notes": "Base logistic regression, using raw configuration. Baseline for comparission"
     },
 ]
+
+'''
+| Feature family | Experiments      |
+| -------------- | ---------------- |
+| Family         | fe01, fe09       |
+| Cabin          | fe02, fe03, fe04 |
+| Title          | fe05             |
+| Age            | fe06, fe07, fe11 |
+| Fare/Ticket    | fe08, fe10       |
+| Sex + Pclass   | fe12             |
+'''
+
+'''
+# Combo group 1 - redundancy
+
+# cb01
+# Age + Age_bin
+
+# cb02
+# Fare + Fare/Family
+
+# cb03
+# Fare + Fare/Ticket
+
+# cb04
+# Fare + Fare/Family + Fare/Ticket
+
+# cb05
+# SibSp/Parch + FamilySize
+
+# cb06
+# Sex + Pclass + Sex_Pclass
+'''
+
+'''
+# Combo group 2 - Same domain
+
+# cb07
+# Title + Age Imputation
+
+# cb08
+# Title + Age Bin
+
+# cb09
+# Age Imputation + Age Bin
+
+# cb10
+# Title + Age Imputation + Age Bin
+'''
 
 """
 Field by field meaning:

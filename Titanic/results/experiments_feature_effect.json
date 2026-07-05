@@ -24,11 +24,23 @@
       "logreg": 0.009,
       "decision_tree": 0.003
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.009,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
       "decision_tree": {
-        "test_f1_mean": 0.01
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe02__has_cabin": {
@@ -56,11 +68,23 @@
       "logreg": 0.005,
       "extra_trees": 0.003
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
       "logreg": {
-        "test_f1_mean": 0.01
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
+      },
+      "extra_trees": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe03__deck": {
@@ -88,11 +112,23 @@
       "logreg": 0.005,
       "knn": 0.009
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
       "knn": {
-        "test_f1_mean": 0.01
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.009,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe04__cabin_features": {
@@ -121,14 +157,31 @@
       "knn": 0.008,
       "xgb": 0.006
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
       "logreg": {
-        "test_f1_mean": 0.011
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {
+          "test_f1_mean": 0.011
+        },
+        "secondary_cons": {}
       },
       "knn": {
-        "test_f1_mean": 0.01
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.008,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
+      },
+      "xgb": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.006,
+        "secondary_pros": {},
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe05__title": {
@@ -159,29 +212,65 @@
       "extra_trees": 0.016,
       "xgb": 0.01
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
       "logreg": {
-        "test_f1_mean": 0.052
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.039,
+        "secondary_pros": {
+          "test_f1_mean": 0.052
+        },
+        "secondary_cons": {}
       },
       "knn": {
-        "test_f1_mean": 0.018
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.013,
+        "secondary_pros": {
+          "test_f1_mean": 0.018
+        },
+        "secondary_cons": {}
       },
       "svc": {
-        "test_f1_mean": 0.011
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.007,
+        "secondary_pros": {
+          "test_f1_mean": 0.011
+        },
+        "secondary_cons": {}
       },
       "decision_tree": {
-        "test_f1_mean": 0.054
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.02,
+        "secondary_pros": {
+          "test_f1_mean": 0.054
+        },
+        "secondary_cons": {}
       },
       "random_forest": {
-        "test_f1_mean": 0.024
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.01,
+        "secondary_pros": {
+          "test_f1_mean": 0.024
+        },
+        "secondary_cons": {}
       },
       "extra_trees": {
-        "test_f1_mean": 0.033
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.016,
+        "secondary_pros": {
+          "test_f1_mean": 0.033
+        },
+        "secondary_cons": {}
       },
       "xgb": {
-        "test_f1_mean": 0.014
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.01,
+        "secondary_pros": {
+          "test_f1_mean": 0.014
+        },
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe06__age_imputation_title": {
@@ -208,7 +297,21 @@
       "decision_tree": 0.005,
       "random_forest": 0.003
     },
-    "notable_improvements": {},
+    "recommended_model_tradeoffs": {
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "random_forest": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe07__age_imputation_title_pclass": {
@@ -236,11 +339,23 @@
       "logreg": 0.013,
       "random_forest": 0.004
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
       "logreg": {
-        "test_f1_mean": 0.012
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.013,
+        "secondary_pros": {
+          "test_f1_mean": 0.012
+        },
+        "secondary_cons": {}
+      },
+      "random_forest": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {},
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe08__fare_per_family_member": {
@@ -268,7 +383,21 @@
       "logreg": 0.003,
       "decision_tree": 0.004
     },
-    "notable_improvements": {},
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe09__ticket_group_size": {
@@ -295,11 +424,17 @@
     "recommended_model_deltas": {
       "svc": 0.005
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
       "svc": {
-        "test_f1_mean": 0.01
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe10__fare_per_ticket_member": {
@@ -328,11 +463,29 @@
       "knn": 0.005,
       "decision_tree": 0.007
     },
-    "notable_improvements": {
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
       "decision_tree": {
-        "test_f1_mean": 0.023
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.007,
+        "secondary_pros": {
+          "test_f1_mean": 0.023
+        },
+        "secondary_cons": {}
       }
     },
+    "notable_secondary_improvements": {},
     "discard": false
   },
   "fe11__age_bin": {
