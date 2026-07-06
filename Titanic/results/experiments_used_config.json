@@ -429,7 +429,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe01__family__knn": {
     "name": "fe01__family__knn",
@@ -482,7 +483,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe01__family__svc": {
     "name": "fe01__family__svc",
@@ -539,7 +541,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe01__family__decision_tree": {
     "name": "fe01__family__decision_tree",
@@ -594,7 +597,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe01__family__random_forest": {
     "name": "fe01__family__random_forest",
@@ -651,7 +655,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe01__family__extra_trees": {
     "name": "fe01__family__extra_trees",
@@ -708,7 +713,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe01__family__xgb": {
     "name": "fe01__family__xgb",
@@ -767,7 +773,8 @@
     "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
     "stage": "fe01",
     "feature_group": "family",
-    "group": "fe01__family"
+    "group": "fe01__family",
+    "domain": "family"
   },
   "fe02__has_cabin__logreg": {
     "name": "fe02__has_cabin__logreg",
@@ -823,7 +830,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe02__has_cabin__knn": {
     "name": "fe02__has_cabin__knn",
@@ -878,7 +886,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe02__has_cabin__svc": {
     "name": "fe02__has_cabin__svc",
@@ -937,7 +946,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe02__has_cabin__decision_tree": {
     "name": "fe02__has_cabin__decision_tree",
@@ -994,7 +1004,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe02__has_cabin__random_forest": {
     "name": "fe02__has_cabin__random_forest",
@@ -1053,7 +1064,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe02__has_cabin__extra_trees": {
     "name": "fe02__has_cabin__extra_trees",
@@ -1112,7 +1124,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe02__has_cabin__xgb": {
     "name": "fe02__has_cabin__xgb",
@@ -1173,7 +1186,8 @@
     "notes": "Feature engineering 02: adds Has_Cabin feature, which indicates whether the passenger had a known cabin or not. This is a simple binary feature that attempts to check if the missingess is a signal in itself.",
     "stage": "fe02",
     "feature_group": "has_cabin",
-    "group": "fe02__has_cabin"
+    "group": "fe02__has_cabin",
+    "domain": "cabin"
   },
   "fe03__deck__logreg": {
     "name": "fe03__deck__logreg",
@@ -1229,7 +1243,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe03__deck__knn": {
     "name": "fe03__deck__knn",
@@ -1284,7 +1299,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe03__deck__svc": {
     "name": "fe03__deck__svc",
@@ -1343,7 +1359,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe03__deck__decision_tree": {
     "name": "fe03__deck__decision_tree",
@@ -1400,7 +1417,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe03__deck__random_forest": {
     "name": "fe03__deck__random_forest",
@@ -1459,7 +1477,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe03__deck__extra_trees": {
     "name": "fe03__deck__extra_trees",
@@ -1518,7 +1537,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe03__deck__xgb": {
     "name": "fe03__deck__xgb",
@@ -1579,7 +1599,8 @@
     "notes": "Feature engineering 03: adds Deck feature, which indicates the deck level of the passenger's cabin. This is a categorical feature that can be a signal for survival.",
     "stage": "fe03",
     "feature_group": "deck",
-    "group": "fe03__deck"
+    "group": "fe03__deck",
+    "domain": "cabin"
   },
   "fe04__cabin_features__logreg": {
     "name": "fe04__cabin_features__logreg",
@@ -1637,7 +1658,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe04__cabin_features__knn": {
     "name": "fe04__cabin_features__knn",
@@ -1694,7 +1716,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe04__cabin_features__svc": {
     "name": "fe04__cabin_features__svc",
@@ -1755,7 +1778,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe04__cabin_features__decision_tree": {
     "name": "fe04__cabin_features__decision_tree",
@@ -1814,7 +1838,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe04__cabin_features__random_forest": {
     "name": "fe04__cabin_features__random_forest",
@@ -1875,7 +1900,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe04__cabin_features__extra_trees": {
     "name": "fe04__cabin_features__extra_trees",
@@ -1936,7 +1962,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe04__cabin_features__xgb": {
     "name": "fe04__cabin_features__xgb",
@@ -1999,7 +2026,8 @@
     "notes": "Feature engineering 04: adds both Has_Cabin and Deck features, which indicate the presence of a cabin and its level, respectively.",
     "stage": "fe04",
     "feature_group": "cabin_features",
-    "group": "fe04__cabin_features"
+    "group": "fe04__cabin_features",
+    "domain": "cabin"
   },
   "fe05__title__logreg": {
     "name": "fe05__title__logreg",
@@ -2055,7 +2083,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe05__title__knn": {
     "name": "fe05__title__knn",
@@ -2110,7 +2139,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe05__title__svc": {
     "name": "fe05__title__svc",
@@ -2169,7 +2199,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe05__title__decision_tree": {
     "name": "fe05__title__decision_tree",
@@ -2226,7 +2257,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe05__title__random_forest": {
     "name": "fe05__title__random_forest",
@@ -2285,7 +2317,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe05__title__extra_trees": {
     "name": "fe05__title__extra_trees",
@@ -2344,7 +2377,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe05__title__xgb": {
     "name": "fe05__title__xgb",
@@ -2405,7 +2439,8 @@
     "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles.",
     "stage": "fe05",
     "feature_group": "title",
-    "group": "fe05__title"
+    "group": "fe05__title",
+    "domain": "title"
   },
   "fe06__age_imputation_title__logreg": {
     "name": "fe06__age_imputation_title__logreg",
@@ -2459,7 +2494,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe06__age_imputation_title__knn": {
     "name": "fe06__age_imputation_title__knn",
@@ -2512,7 +2548,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe06__age_imputation_title__svc": {
     "name": "fe06__age_imputation_title__svc",
@@ -2569,7 +2606,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe06__age_imputation_title__decision_tree": {
     "name": "fe06__age_imputation_title__decision_tree",
@@ -2624,7 +2662,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe06__age_imputation_title__random_forest": {
     "name": "fe06__age_imputation_title__random_forest",
@@ -2681,7 +2720,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe06__age_imputation_title__extra_trees": {
     "name": "fe06__age_imputation_title__extra_trees",
@@ -2738,7 +2778,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe06__age_imputation_title__xgb": {
     "name": "fe06__age_imputation_title__xgb",
@@ -2797,7 +2838,8 @@
     "notes": "Feature engineering 06: imputing age by grouped impute using title, expected to give better results then mean imputation",
     "stage": "fe06",
     "feature_group": "age_imputation_title",
-    "group": "fe06__age_imputation_title"
+    "group": "fe06__age_imputation_title",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__logreg": {
     "name": "fe07__age_imputation_title_pclass__logreg",
@@ -2851,7 +2893,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__knn": {
     "name": "fe07__age_imputation_title_pclass__knn",
@@ -2904,7 +2947,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__svc": {
     "name": "fe07__age_imputation_title_pclass__svc",
@@ -2961,7 +3005,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__decision_tree": {
     "name": "fe07__age_imputation_title_pclass__decision_tree",
@@ -3016,7 +3061,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__random_forest": {
     "name": "fe07__age_imputation_title_pclass__random_forest",
@@ -3073,7 +3119,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__extra_trees": {
     "name": "fe07__age_imputation_title_pclass__extra_trees",
@@ -3130,7 +3177,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe07__age_imputation_title_pclass__xgb": {
     "name": "fe07__age_imputation_title_pclass__xgb",
@@ -3189,7 +3237,8 @@
     "notes": "Feature engineering 07: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe07",
     "feature_group": "age_imputation_title_pclass",
-    "group": "fe07__age_imputation_title_pclass"
+    "group": "fe07__age_imputation_title_pclass",
+    "domain": "age"
   },
   "fe08__fare_per_family_member__logreg": {
     "name": "fe08__fare_per_family_member__logreg",
@@ -3243,7 +3292,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe08__fare_per_family_member__knn": {
     "name": "fe08__fare_per_family_member__knn",
@@ -3296,7 +3346,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe08__fare_per_family_member__svc": {
     "name": "fe08__fare_per_family_member__svc",
@@ -3353,7 +3404,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe08__fare_per_family_member__decision_tree": {
     "name": "fe08__fare_per_family_member__decision_tree",
@@ -3408,7 +3460,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe08__fare_per_family_member__random_forest": {
     "name": "fe08__fare_per_family_member__random_forest",
@@ -3465,7 +3518,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe08__fare_per_family_member__extra_trees": {
     "name": "fe08__fare_per_family_member__extra_trees",
@@ -3522,7 +3576,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe08__fare_per_family_member__xgb": {
     "name": "fe08__fare_per_family_member__xgb",
@@ -3581,7 +3636,8 @@
     "notes": "Feature engineering 08: Dividing fare by family size, expected to give a small increase in accuracy.",
     "stage": "fe08",
     "feature_group": "fare_per_family_member",
-    "group": "fe08__fare_per_family_member"
+    "group": "fe08__fare_per_family_member",
+    "domain": "fare"
   },
   "fe09__ticket_group_size__logreg": {
     "name": "fe09__ticket_group_size__logreg",
@@ -3637,7 +3693,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe09__ticket_group_size__knn": {
     "name": "fe09__ticket_group_size__knn",
@@ -3692,7 +3749,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe09__ticket_group_size__svc": {
     "name": "fe09__ticket_group_size__svc",
@@ -3751,7 +3809,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe09__ticket_group_size__decision_tree": {
     "name": "fe09__ticket_group_size__decision_tree",
@@ -3808,7 +3867,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe09__ticket_group_size__random_forest": {
     "name": "fe09__ticket_group_size__random_forest",
@@ -3867,7 +3927,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe09__ticket_group_size__extra_trees": {
     "name": "fe09__ticket_group_size__extra_trees",
@@ -3926,7 +3987,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe09__ticket_group_size__xgb": {
     "name": "fe09__ticket_group_size__xgb",
@@ -3987,7 +4049,8 @@
     "notes": "Feature engineering 09: imputing age by grouped impute using title and pclass, expected to give better results then imputing with only title",
     "stage": "fe09",
     "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size"
+    "group": "fe09__ticket_group_size",
+    "domain": "ticket"
   },
   "fe10__fare_per_ticket_member__logreg": {
     "name": "fe10__fare_per_ticket_member__logreg",
@@ -4041,7 +4104,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe10__fare_per_ticket_member__knn": {
     "name": "fe10__fare_per_ticket_member__knn",
@@ -4094,7 +4158,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe10__fare_per_ticket_member__svc": {
     "name": "fe10__fare_per_ticket_member__svc",
@@ -4151,7 +4216,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe10__fare_per_ticket_member__decision_tree": {
     "name": "fe10__fare_per_ticket_member__decision_tree",
@@ -4206,7 +4272,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe10__fare_per_ticket_member__random_forest": {
     "name": "fe10__fare_per_ticket_member__random_forest",
@@ -4263,7 +4330,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe10__fare_per_ticket_member__extra_trees": {
     "name": "fe10__fare_per_ticket_member__extra_trees",
@@ -4320,7 +4388,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe10__fare_per_ticket_member__xgb": {
     "name": "fe10__fare_per_ticket_member__xgb",
@@ -4379,7 +4448,8 @@
     "notes": "Feature engineering 10: Dividing fare by Ticket member, expected to give a small increase in accuracy, better then fare/Family size.",
     "stage": "fe10",
     "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member"
+    "group": "fe10__fare_per_ticket_member",
+    "domain": "fare"
   },
   "fe11__age_bin__logreg": {
     "name": "fe11__age_bin__logreg",
@@ -4431,7 +4501,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe11__age_bin__knn": {
     "name": "fe11__age_bin__knn",
@@ -4482,7 +4553,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe11__age_bin__svc": {
     "name": "fe11__age_bin__svc",
@@ -4537,7 +4609,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe11__age_bin__decision_tree": {
     "name": "fe11__age_bin__decision_tree",
@@ -4590,7 +4663,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe11__age_bin__random_forest": {
     "name": "fe11__age_bin__random_forest",
@@ -4645,7 +4719,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe11__age_bin__extra_trees": {
     "name": "fe11__age_bin__extra_trees",
@@ -4700,7 +4775,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe11__age_bin__xgb": {
     "name": "fe11__age_bin__xgb",
@@ -4757,7 +4833,8 @@
     "notes": "Feature engineering 11: Creating age bins, expected to give better results then using raw age values, by better evaluating the survival chances based on the passenger's age group.",
     "stage": "fe11",
     "feature_group": "age_bin",
-    "group": "fe11__age_bin"
+    "group": "fe11__age_bin",
+    "domain": "age"
   },
   "fe12__sex_pclass__logreg": {
     "name": "fe12__sex_pclass__logreg",
@@ -4804,7 +4881,8 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
   },
   "fe12__sex_pclass__knn": {
     "name": "fe12__sex_pclass__knn",
@@ -4850,7 +4928,8 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
   },
   "fe12__sex_pclass__svc": {
     "name": "fe12__sex_pclass__svc",
@@ -4900,7 +4979,8 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
   },
   "fe12__sex_pclass__decision_tree": {
     "name": "fe12__sex_pclass__decision_tree",
@@ -4948,7 +5028,8 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
   },
   "fe12__sex_pclass__random_forest": {
     "name": "fe12__sex_pclass__random_forest",
@@ -4998,7 +5079,8 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
   },
   "fe12__sex_pclass__extra_trees": {
     "name": "fe12__sex_pclass__extra_trees",
@@ -5048,7 +5130,8 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
   },
   "fe12__sex_pclass__xgb": {
     "name": "fe12__sex_pclass__xgb",
@@ -5100,6 +5183,406 @@
     "notes": "Feature engineering 12: Combines Sex and Pclass into a single feature.",
     "stage": "fe12",
     "feature_group": "sex_pclass",
-    "group": "fe12__sex_pclass"
+    "group": "fe12__sex_pclass",
+    "domain": "sex"
+  },
+  "cb01__age_and_bins__logreg": {
+    "name": "cb01__age_and_bins__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
+  },
+  "cb01__age_and_bins__knn": {
+    "name": "cb01__age_and_bins__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
+  },
+  "cb01__age_and_bins__svc": {
+    "name": "cb01__age_and_bins__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
+  },
+  "cb01__age_and_bins__decision_tree": {
+    "name": "cb01__age_and_bins__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
+  },
+  "cb01__age_and_bins__random_forest": {
+    "name": "cb01__age_and_bins__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
+  },
+  "cb01__age_and_bins__extra_trees": {
+    "name": "cb01__age_and_bins__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
+  },
+  "cb01__age_and_bins__xgb": {
+    "name": "cb01__age_and_bins__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb01",
+    "feature_group": "age_and_bins",
+    "group": "cb01__age_and_bins",
+    "domain": "age"
   }
 }

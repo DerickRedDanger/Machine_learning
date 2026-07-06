@@ -882,6 +882,60 @@ This experiment also exposed a limitation in the current interpretation system. 
 
 </details>
 
+### cb01__age_and_bins
+
+Combo using both raw Age and Age_bin.
+
+This experiment explores whether the original continuous Age feature and its binned version provide complementary information, or mostly overlap.
+
+It also serves as a proof of concept for combo experiments: testing whether the effect of combining features can be predicted from their individual effects, or whether combinations behave differently enough to require separate evaluation.
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: general_positive
+- Recommended for all models
+- Mean delta: 0.003
+
+
+#### Conclusion
+
+Using both raw Age and Age_bin showed that feature combinations are not simply the sum of their individual effects.
+
+KNN suffered substantially from the combination, likely because both features represent the same underlying information and distort the distance calculation when used together. Compared to Age_bin alone, this combo appears mainly useful for Logistic Regression. Other models that improved with the combo generally benefited more from Age_bin alone.
+
+This experiment also exposed a limitation in the interpretation system. The current recommendation labeled the feature as broadly useful, even though KNN clearly performed worse. I will update the interpretation logic so that features are only recommended for all models when no model has a meaningful negative reaction. Otherwise, the result should be labeled as mostly positive or model-specific.
+
+As a proof of concept, this experiment showed that combo effects can be unpredictable. It is better to explore combinations in small, related groups before creating large feature sets. A useful next step is to investigate combinations within the same feature domain, such as Age, Fare, Family, and Cabin, before moving on to cross-domain combinations.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group      | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb01__age_and_bins | logreg        |                          0.786 |                        0.795 |                      0.009 |                    0.713 |                  0.722 |                0.009 |
+| baseline__raw     | cb01__age_and_bins | knn           |                          0.809 |                        0.795 |                     -0.014 |                    0.742 |                  0.718 |               -0.024 |
+| baseline__raw     | cb01__age_and_bins | svc           |                          0.827 |                        0.828 |                      0.001 |                    0.76  |                  0.762 |                0.002 |
+| baseline__raw     | cb01__age_and_bins | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.719 |                0.017 |
+| baseline__raw     | cb01__age_and_bins | random_forest |                          0.822 |                        0.828 |                      0.006 |                    0.744 |                  0.755 |                0.011 |
+| baseline__raw     | cb01__age_and_bins | extra_trees   |                          0.804 |                        0.815 |                      0.011 |                    0.721 |                  0.738 |                0.017 |
+| baseline__raw     | cb01__age_and_bins | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.754 |               -0.004 |
+
+#### Summary
+
+| compare_group      |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb01__age_and_bins |                      0.00257143 |                         -0.014 |                          0.011 |                     0.004 |                   -0.024 |                    0.017 |
+
+</details>
+
 </details>
 
 </details>

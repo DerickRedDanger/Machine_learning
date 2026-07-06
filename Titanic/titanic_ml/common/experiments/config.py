@@ -178,6 +178,7 @@ fe01__family = create_experiment_group(
     feature_group="family",
     base_configs=baseline__raw,
     group_override=fe01__family_override,
+    domain="family"
 )
 ALL_EXPERIMENTS['fe01__family'] = fe01__family
 
@@ -204,6 +205,7 @@ fe02__has_cabin = create_experiment_group(
     feature_group="has_cabin",
     base_configs=baseline__raw,
     group_override=fe02__has_cabin_override,
+    domain="cabin"
 )
 ALL_EXPERIMENTS['fe02__has_cabin'] = fe02__has_cabin
 
@@ -230,6 +232,7 @@ fe03__deck = create_experiment_group(
     feature_group="deck",
     base_configs=baseline__raw,
     group_override=fe03__deck_override,
+    domain="cabin"
 )
 ALL_EXPERIMENTS['fe03__deck'] = fe03__deck
 
@@ -256,6 +259,7 @@ fe04__cabin_features = create_experiment_group(
     feature_group="cabin_features",
     base_configs=baseline__raw,
     group_override=fe04__cabin_features_override,
+    domain="cabin"
 )
 ALL_EXPERIMENTS['fe04__cabin_features'] = fe04__cabin_features
 
@@ -281,6 +285,7 @@ fe05__title = create_experiment_group(
     feature_group="title",
     base_configs=baseline__raw,
     group_override=fe05__title_override,
+    domain="title"
 )
 ALL_EXPERIMENTS['fe05__title'] = fe05__title
 
@@ -298,6 +303,7 @@ fe06__age_imputation_title = create_experiment_group(
     feature_group="age_imputation_title",
     base_configs=baseline__raw,
     group_override=fe06__age_imputation_title_override,
+    domain="age"
 )
 ALL_EXPERIMENTS['fe06__age_imputation_title'] = fe06__age_imputation_title
 
@@ -315,6 +321,7 @@ fe07__age_imputation_title_pclass = create_experiment_group(
     feature_group="age_imputation_title_pclass",
     base_configs=baseline__raw,
     group_override=fe07__age_imputation_title_pclass_override,
+    domain="age"
 )
 ALL_EXPERIMENTS['fe07__age_imputation_title_pclass'] = fe07__age_imputation_title_pclass
 
@@ -342,6 +349,7 @@ fe08__fare_per_family_member = create_experiment_group(
     feature_group="fare_per_family_member",
     base_configs=baseline__raw,
     group_override=fe08__fare_per_family_member_override,
+    domain="fare"
 )
 ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member
 
@@ -370,6 +378,7 @@ fe09__ticket_group_size = create_experiment_group(
     feature_group="ticket_group_size",
     base_configs=baseline__raw,
     group_override=fe09__ticket_group_size_override,
+    domain="ticket"
 )
 ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size
 
@@ -396,6 +405,7 @@ fe10__fare_per_ticket_member = create_experiment_group(
     feature_group="fare_per_ticket_member",
     base_configs=baseline__raw,
     group_override=fe10__fare_per_ticket_member_override,
+    domain="fare"
 )
 ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member
 
@@ -424,6 +434,7 @@ fe11__age_bin = create_experiment_group(
     feature_group="age_bin",
     base_configs=baseline__raw,
     group_override=fe11__age_bin_override,
+    domain="age"
 )
 
 ALL_EXPERIMENTS['fe11__age_bin'] = fe11__age_bin
@@ -458,6 +469,7 @@ fe12__sex_pclass = create_experiment_group(
     feature_group="sex_pclass",
     base_configs=baseline__raw,
     group_override=fe12__sex_pclass,
+    domain="sex"
 )
 ALL_EXPERIMENTS['fe12__sex_pclass'] = fe12__sex_pclass
 
@@ -488,6 +500,34 @@ EXPERIMENTS_GUIDE = [
         "notes": "Base logistic regression, using raw configuration. Baseline for comparission"
     },
 ]
+
+# Combo group 01: Age and bins - Combo utilizing both the raw age and age bins.
+# meant to explore the effect of having both the raw and bins feature together, to see if they add new information together, or overlap.
+cb01__age_and_bins = {}
+
+cb01__age_and_bins_override = {
+    "feature_engineering": [add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Combo 01: Exploring the effect of using both raw age and age bins."
+}
+
+cb01__age_and_bins = create_experiment_group(
+    stage="cb01",
+    feature_group="age_and_bins",
+    base_configs=baseline__raw,
+    group_override=cb01__age_and_bins_override,
+    domain="age"
+)
+
+ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins
 
 '''
 | Feature family | Experiments      |

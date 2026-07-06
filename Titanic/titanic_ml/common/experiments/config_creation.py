@@ -41,7 +41,7 @@ def validate_experiment_override(override):
         raise TypeError("'evaluation' must be a dictionary.")
 
 
-def create_experiment_group(stage, feature_group, base_configs, group_override=None):
+def create_experiment_group(stage, feature_group, base_configs, group_override=None, domain=None):
     if not stage:
         raise ValueError("Experiment group needs a stage, like 'fe01'.")
 
@@ -59,12 +59,14 @@ def create_experiment_group(stage, feature_group, base_configs, group_override=N
 
     for exp in configs:
         model_name = exp["model_name"]
+
         exp.update(group_override)
 
         exp["name"] = f"{stage}__{feature_group}__{model_name}"
         exp["stage"] = stage
         exp["feature_group"] = feature_group
         exp["group"] = f"{stage}__{feature_group}"
+        exp["domain"] = domain or feature_group
 
 
     return configs
