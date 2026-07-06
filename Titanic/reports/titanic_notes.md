@@ -896,9 +896,18 @@ It also serves as a proof of concept for combo experiments: testing whether the 
 
 #### Interpretation
 
-- Verdict: general_positive
-- Recommended for all models
-- Mean delta: 0.003
+- Verdict: mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.009
+  - decision_tree: test_accuracy_mean: 0.004
+    - Secondary gains:
+      - test_f1_mean: 0.017
+  - random_forest: test_accuracy_mean: 0.006
+    - Secondary gains:
+      - test_f1_mean: 0.011
+  - extra_trees: test_accuracy_mean: 0.011
+    - Secondary gains:
+      - test_f1_mean: 0.017
 
 
 #### Conclusion

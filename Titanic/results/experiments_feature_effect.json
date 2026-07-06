@@ -607,8 +607,8 @@
     "negative_models": [
       "knn"
     ],
-    "verdict": "general_positive",
-    "recommended_for_all": true,
+    "verdict": "mixed",
+    "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.009,
       "decision_tree": 0.004,

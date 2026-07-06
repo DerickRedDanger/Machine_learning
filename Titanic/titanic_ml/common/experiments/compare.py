@@ -192,6 +192,7 @@ def analyze_feature_effect(
 
     for secondary_metric in secondary_metrics:
         secondary_delta_col = f"{secondary_metric}_delta"
+
         if secondary_delta_col not in comparison_df.columns:
             raise ValueError(f"Delta column '{secondary_delta_col}' not found.")
 
@@ -259,17 +260,26 @@ def analyze_feature_effect(
         n_models = len(group_df)
         n_positive = len(positive_models)
         n_negative = len(negative_models)
+        n_neutral = len(neutral_models)
 
-        if mean_delta >= strong_threshold and n_positive >= max(1, int(0.7 * n_models)):
+        all_positive = n_positive == n_models
+        all_negative = n_negative == n_models
+        has_positive = n_positive > 0
+        has_negative = n_negative > 0
+        has_neutral = n_neutral > 0
+
+        if all_positive and mean_delta >= strong_threshold:
             verdict = "strong_general"
-        elif n_positive >= max(1, int(0.7 * n_models)):
+        elif all_positive:
             verdict = "general_positive"
-        elif n_positive > 0 and n_negative > 0:
-            verdict = "model_specific_mixed"
-        elif n_positive > 0:
-            verdict = "model_specific_positive"
-        elif n_negative >= max(1, int(0.7 * n_models)):
+        elif all_negative:
             verdict = "general_negative"
+        elif has_positive and has_negative:
+            verdict = "mixed"
+        elif has_positive and has_neutral:
+            verdict = "model_specific_positive"
+        elif has_negative and has_neutral:
+            verdict = "model_specific_negative"
         else:
             verdict = "neutral"
 
@@ -287,7 +297,7 @@ def analyze_feature_effect(
             "recommended_model_deltas": recommended_model_deltas,
             "recommended_model_tradeoffs": recommended_model_tradeoffs,
             "notable_secondary_improvements": notable_secondary_improvements,
-            "discard": verdict in ["general_negative", "neutral"] and max_delta < positive_threshold,
+            "discard": verdict == "general_negative",
         })
 
     return rows
