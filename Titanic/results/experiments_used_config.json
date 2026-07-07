@@ -5584,5 +5584,817 @@
     "feature_group": "age_and_bins",
     "group": "cb01__age_and_bins",
     "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__logreg": {
+    "name": "cb02__age_imputed_title_and_bins__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__knn": {
+    "name": "cb02__age_imputed_title_and_bins__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__svc": {
+    "name": "cb02__age_imputed_title_and_bins__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__decision_tree": {
+    "name": "cb02__age_imputed_title_and_bins__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__random_forest": {
+    "name": "cb02__age_imputed_title_and_bins__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__extra_trees": {
+    "name": "cb02__age_imputed_title_and_bins__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb02__age_imputed_title_and_bins__xgb": {
+    "name": "cb02__age_imputed_title_and_bins__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb02",
+    "feature_group": "age_imputed_title_and_bins",
+    "group": "cb02__age_imputed_title_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__logreg": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__knn": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__svc": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__decision_tree": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__random_forest": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__extra_trees": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
+  },
+  "cb03__age_imputed_title_Pclass_and_bins__xgb": {
+    "name": "cb03__age_imputed_title_Pclass_and_bins__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins.",
+    "stage": "cb03",
+    "feature_group": "age_imputed_title_Pclass_and_bins",
+    "group": "cb03__age_imputed_title_Pclass_and_bins",
+    "domain": "age"
   }
 }

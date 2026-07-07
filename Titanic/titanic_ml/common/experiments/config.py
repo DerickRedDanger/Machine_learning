@@ -529,6 +529,60 @@ cb01__age_and_bins = create_experiment_group(
 
 ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins
 
+# Combo group 02: Age imputed by title and bins - Combo utilizing both the age imputed by title and age bins.
+# meant to explore the effect of having both the age imputed by title and bins feature together
+cb02__age_imputed_title_and_bins = {}
+
+cb02__age_imputed_title_and_bins_override = {
+    "feature_engineering": [age_imputed_by_title, add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Combo 02: Exploring the effect of using both raw age and age bins."
+}
+
+cb02__age_imputed_title_and_bins = create_experiment_group(
+    stage="cb02",
+    feature_group="age_imputed_title_and_bins",
+    base_configs=baseline__raw,
+    group_override=cb02__age_imputed_title_and_bins_override,
+    domain="age"
+)
+
+ALL_EXPERIMENTS['cb02__age_imputed_title_and_bins'] = cb02__age_imputed_title_and_bins
+
+# Combo group 03: Age imputed by title and pclass and bins - Combo utilizing both the age imputed by title and pclass and age bins.
+# meant to explore the effect of having both the age imputed by title and pclass and
+cb03__age_imputed_title_Pclass_and_bins_override = {
+    "feature_engineering": [age_imputed_by_title_pclass, add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Combo 03: Exploring the effect of using both raw age and age bins."
+}
+
+cb03__age_imputed_title_Pclass_and_bins = create_experiment_group(
+    stage="cb03",
+    feature_group="age_imputed_title_Pclass_and_bins",
+    base_configs=baseline__raw,
+    group_override=cb03__age_imputed_title_Pclass_and_bins_override,
+    domain="age"
+)
+
+ALL_EXPERIMENTS['cb03__age_imputed_title_Pclass_and_bins'] = cb03__age_imputed_title_Pclass_and_bins
+
 '''
 | Feature family | Experiments      |
 | -------------- | ---------------- |

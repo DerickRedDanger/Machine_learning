@@ -65,6 +65,17 @@ def titanic_notes_leaderboard(results_df, top_n=10, only_success=True):
         .reset_index(drop=True)
     ).to_markdown(index=False)
 
+def get_config_group(experiment_configs):
+    if not experiment_configs:
+        raise ValueError("No experiment configs provided.")
+
+    groups = {exp.get("group") for exp in experiment_configs}
+
+    if len(groups) != 1:
+        raise ValueError(f"Expected one group, found: {groups}")
+
+    return groups.pop()
+
 def compare_experiment_groups(
     results_df,
     reference_group,
@@ -99,6 +110,8 @@ def compare_experiment_groups(
     comparison_rows = []
 
     for compare_group in compare_groups:
+        if not isinstance(compare_group, str):
+            compare_group = get_config_group(compare_group)
         compare_df = df[df["group"] == compare_group]
 
         if compare_df.empty:
