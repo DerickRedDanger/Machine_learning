@@ -171,6 +171,7 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3, de
                 "error_type": "",
                 "error_message": "",
                 **model_result,
+                "domain": exp.get("domain", ""),
                 "notes": exp.get("notes", ""),
             }
 

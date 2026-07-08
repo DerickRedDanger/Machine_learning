@@ -18,7 +18,7 @@
       "knn",
       "random_forest"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.009,
@@ -62,7 +62,7 @@
       "random_forest",
       "xgb"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.005,
@@ -106,7 +106,7 @@
       "extra_trees",
       "xgb"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.005,
@@ -150,7 +150,7 @@
       "decision_tree",
       "random_forest"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.005,
@@ -333,7 +333,7 @@
     "negative_models": [
       "knn"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.013,
@@ -377,7 +377,7 @@
       "random_forest",
       "xgb"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.003,
@@ -419,7 +419,7 @@
       "decision_tree",
       "xgb"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "svc": 0.005
@@ -456,7 +456,7 @@
       "random_forest",
       "xgb"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.003,
@@ -507,7 +507,7 @@
     "negative_models": [
       "logreg"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "decision_tree": 0.006,
@@ -561,7 +561,7 @@
       "random_forest",
       "xgb"
     ],
-    "verdict": "model_specific_mixed",
+    "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.009,
