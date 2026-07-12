@@ -314,3 +314,76 @@ def analyze_feature_effect(
         })
 
     return rows
+
+def domain_best_by_model(
+    results_df,
+    domain,
+    metric="test_accuracy_mean",
+    include_baseline=True,
+    only_success=True,
+):
+    df = results_df.copy()
+
+    if only_success and "status" in df.columns:
+        df = df[df["status"] == "success"]
+
+    if metric not in df.columns:
+        raise ValueError(f"Metric '{metric}' not found in results dataframe.")
+
+    domain_df = df[df["domain"] == domain]
+
+    if include_baseline:
+        baseline_df = df[df["group"] == "baseline__raw"]
+        domain_df = pd.concat([baseline_df, domain_df], ignore_index=True)
+
+    if domain_df.empty:
+        raise ValueError(f"No results found for domain: {domain}")
+
+    best_rows = (
+        domain_df
+        .sort_values(metric, ascending=False)
+        .groupby("model_name", as_index=False)
+        .first()
+    )
+
+    columns = [
+        "model_name",
+        "experiment",
+        "group",
+        "domain",
+        metric,
+        "test_f1_mean",
+    ]
+
+    columns = [col for col in columns if col in best_rows.columns]
+
+    return (
+        best_rows[columns]
+        .sort_values(metric, ascending=False)
+        .reset_index(drop=True)
+    )
+
+def domain_best_by_model_with_baseline_delta(
+    results_df,
+    domain,
+    metric="test_accuracy_mean",
+):
+    best_df = domain_best_by_model(
+        results_df=results_df,
+        domain=domain,
+        metric=metric,
+        include_baseline=True,
+    )
+
+    baseline = (
+        results_df[results_df["group"] == "baseline__raw"]
+        [["model_name", metric]]
+        .rename(columns={metric: f"{metric}_baseline"})
+    )
+
+    best_df = best_df.merge(baseline, on="model_name", how="left")
+    best_df[f"{metric}_delta_vs_baseline"] = (
+        best_df[metric] - best_df[f"{metric}_baseline"]
+    )
+
+    return best_df

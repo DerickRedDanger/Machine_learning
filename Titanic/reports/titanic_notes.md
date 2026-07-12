@@ -22,7 +22,7 @@
 
 ### Dataframe
 
-891 rows, 12 columns, no duplicate, 708 rows with at least 1 missing column (79.46% of the rwos), total 866 missing values.
+891 rows, 12 columns, no duplicate, 708 rows with at least 1 missing column (79.46% of the rows), total 866 missing values.
 
 Most columns actually have no missing values. Age have about 20% missing values, will need careful imputation for best results. Cabing has 687 (77%) missing values, far too many to impute, far too few for reliable use; not nescessarely useless, but very limited use; could the missingness itself be a signal?
 
