@@ -401,7 +401,6 @@ Following the initial hypotheses, each original feature was investigated individ
 
 ### Parch and SibSp
 
-
 #### Hypothesis
 
 SibSp and Parch describe complementary aspects of family composition.
@@ -464,10 +463,220 @@ One exception being LogReg, which had a small gain in accuracy. Was it unable to
 
 #### Findings
 
-- Most models appear capable of extracting the information contained in SibSp and Parch without explicit feature engineering. Explicitly constructing FamilySize and IsAlone therefore provides little additional information in most cases.
+- Most models appear capable of extracting the information contained in SibSp and Parch without explicit feature engineering. Explicitly constructing FamilySize and IsAlone therefore provides little additional information to all models but Logreg.
 
 #### Current recommendation
 
 - Prefer the original SibSp and Parch features for most models.
 - Consider FamilySize + IsAlone only for Logistic Regression.
 - Revisit after combination experiments are complete.
+
+---
+
+### Cabin
+
+#### Hypothesis
+
+Cabin contains a very large proportion of missing values, while most other features are relatively complete. This suggests that the missingness may not be entirely random, but instead related to some characteristic of the passengers or the data collection process.
+
+One possibility is that passengers whose cabin is unknown are systematically different from those whose cabin is known. For example, because around 70% of passengers without cabin information did not survive, the absence of cabin information may itself contain predictive information.
+
+This hypothesis is tested through the Has_Cabin feature.
+
+Cabin's values always starts with a letter, which likely points to a location within the ship, like it's deck. Perhaps knowing the passenges' cabin position on the ship makes it easier to predict their survival.
+
+This hypothesis is tested throught the Deck feature.
+
+#### Experiments performed:
+
+#### fe02__has_cabin
+
+Experiment meant to tests if the missingness of the cabins is a signal in itself.
+
+<details>
+<summary>Conclusion</summary>
+
+##### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.01
+  - extra_trees: test_accuracy_mean: 0.003
+
+##### Conclusion
+
+Negligible changes on it's own, likely on the level of noise. Surprisingly, LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on it's own.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe02__has_cabin | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.723 |                0.01  |
+| baseline__raw     | fe02__has_cabin | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.743 |                0.001 |
+| baseline__raw     | fe02__has_cabin | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.756 |               -0.004 |
+| baseline__raw     | fe02__has_cabin | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.701 |               -0.001 |
+| baseline__raw     | fe02__has_cabin | random_forest |                          0.822 |                        0.818 |                     -0.004 |                    0.744 |                  0.739 |               -0.005 |
+| baseline__raw     | fe02__has_cabin | extra_trees   |                          0.804 |                        0.807 |                      0.003 |                    0.721 |                  0.729 |                0.008 |
+| baseline__raw     | fe02__has_cabin | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.752 |               -0.006 |
+
+##### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe02__has_cabin |                    -0.000714286 |                         -0.004 |                          0.005 |               0.000428571 |                   -0.006 |                     0.01 |
+
+</details>
+
+#### fe03__deck
+
+Testing the impact of the feature deck in the models. Expecting a higher impact then has_cabin, but not by a large margen, given that only 23% of the decks are know.
+
+<details>
+<summary>Conclusion</summary>
+
+##### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.005
+  - knn: test_accuracy_mean: 0.009
+    - Secondary gains:
+      - test_f1_mean: 0.01
+
+##### Conclusion
+
+Cabin-derived features showed only minor impact. Interestingly, Logistic Regression gained exactly the same accuracy improvement (+0.005) as with Has_Cabin. At this point it is unclear whether this reflects a genuine pattern or simply coincidence, so later experiments will help determine which explanation is more likely.
+
+However, approximately 77% of cabin values are missing, leaving usable cabin information for only about 23% of passengers. This severely limits the feature's potential contribution. The weak results may therefore reflect limited coverage rather than lack of predictive signal. Cabin-based features remain an interesting indicator, but their usefulness is constrained by the large amount of missing data.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe03__deck      | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.722 |                0.009 |
+| baseline__raw     | fe03__deck      | knn           |                          0.809 |                        0.818 |                      0.009 |                    0.742 |                  0.752 |                0.01  |
+| baseline__raw     | fe03__deck      | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.757 |               -0.003 |
+| baseline__raw     | fe03__deck      | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.701 |               -0.001 |
+| baseline__raw     | fe03__deck      | random_forest |                          0.822 |                        0.813 |                     -0.009 |                    0.744 |                  0.734 |               -0.01  |
+| baseline__raw     | fe03__deck      | extra_trees   |                          0.804 |                        0.799 |                     -0.005 |                    0.721 |                  0.719 |               -0.002 |
+| baseline__raw     | fe03__deck      | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.751 |               -0.007 |
+
+##### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe03__deck      |                     -0.00128571 |                         -0.009 |                          0.009 |              -0.000571429 |                    -0.01 |                     0.01 |
+
+</details>
+
+#### fe04__cabin_features
+
+Testing the impact of using both has_cabin and deck together, to see if this union generates better information or if they are redundant.
+
+<details>
+<summary>Conclusion</summary>
+
+##### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.011
+  - knn: test_accuracy_mean: 0.008
+    - Secondary gains:
+      - test_f1_mean: 0.01
+  - xgb: test_accuracy_mean: 0.006
+
+##### Conclusion
+
+Results were surprising. Meanwhile the mean delta is essentially 0, this combination had greater influence on the models then deck or has_cabin. This suggests that the two features capture different aspects of the underlying information rather than simply encoding the same signal. 
+
+Random forest was the model that suffered the most from it, One possible explanation is that Random Forest already extracts most of the available information from the existing variables, making the additional Cabin-derived features partially redundant.
+
+Logreg continued to gain exactly 0.005 on all three attempts, meaning that it's likely getting the same information from all three approaches, initially telling me that just using one of them would do. But Fe04 also increased it's f1 by 0.011, meaning it's actually generalizing better when using both features together
+
+Knn gains were about the same as using Deck features, accuracy's slightly lower (-0.001), but the difference's small enough to be confused with noise or coincidence.
+
+Xgb benefited from explicitly separating cabin presence (Has_Cabin) from cabin location (Deck), rather than having to infer both from a single feature. Enough to raise it to the top of the current leaderboard, with a mean accuracy of 0.832 (+0.006 compared to raw), ahead of Raw SVC by 0.005.
+
+These results strengthen the hypothesis that Cabin contains useful information, although its practical value is heavily limited by the large amount of missing data.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group        | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:---------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe04__cabin_features | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.724 |                0.011 |
+| baseline__raw     | fe04__cabin_features | knn           |                          0.809 |                        0.817 |                      0.008 |                    0.742 |                  0.752 |                0.01  |
+| baseline__raw     | fe04__cabin_features | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.757 |               -0.003 |
+| baseline__raw     | fe04__cabin_features | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.701 |               -0.001 |
+| baseline__raw     | fe04__cabin_features | random_forest |                          0.822 |                        0.808 |                     -0.014 |                    0.744 |                  0.726 |               -0.018 |
+| baseline__raw     | fe04__cabin_features | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.728 |                0.007 |
+| baseline__raw     | fe04__cabin_features | xgb           |                          0.826 |                        0.832 |                      0.006 |                    0.758 |                  0.767 |                0.009 |
+
+##### Summary
+
+| compare_group        |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:---------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe04__cabin_features |                     0.000142857 |                         -0.014 |                          0.008 |                0.00214286 |                   -0.018 |                    0.011 |
+
+</details>
+
+#### Overall conclusion
+
+Although none of the Cabin-derived features produced large improvements in isolation, combining Has_Cabin and Deck consistently outperformed either feature individually for several models.
+
+This suggests that Cabin contains meaningful information, but its predictive power is fundamentally limited by the fact that approximately 77% of cabin values are missing.
+
+#### Findings
+
+- Cabin contains useful predictive information despite its extremely high missing rate.
+
+- Separating Cabin into Has_Cabin and Deck preserves more information than using either feature alone.
+
+- The usefulness of Cabin-derived features appears to be model dependent.
+
+
+#### Working hypotheses
+
+- Logistic Regression appears to benefit from explicit feature refinement. If this pattern continues across unrelated feature engineering experiments, it may indicate that the model performs better when informative relationships are made explicit rather than left for the model to infer.
+
+- KNN may benefit from explicit one-hot representations of categorical information. Future experiments using additional categorical features will help determine whether this is a consistent pattern or simply an artifact of the Cabin experiments.
+
+- XGBoost showed its largest improvement when Has_Cabin and Deck were used together rather than separately. This may indicate that the model benefits from having multiple related features available instead of relying on a single representation. Future experiments combining and fusing features will help determine whether this is a broader characteristic of the model.
+
+#### Current recommendation
+
+- Logistic Regression
+    - Cabin Features
+
+- KNN
+    - Deck
+    - Cabin Features
+
+- XGBoost
+    - Cabin Features
+
+
+## Lessons learned
+
+Hypothesis ✓ Confirmed
+Hypothesis ✗ Rejected
+Hypothesis ~ Partially confirmed
