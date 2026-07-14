@@ -10,8 +10,9 @@
 
 
 <details>
+<summary>Reference:</summary>
 
-- Dataframe Health:
+- **Dataframe Health**:
 
 |                      |                                                                                                                      |
 |:---------------------|:---------------------------------------------------------------------------------------------------------------------|
@@ -26,7 +27,7 @@
 | memory_usage         | Total memory usage: 315.03 KB                                                        
 |                      |                                                                                                                      |
 
-- Dataframe summary:
+- **Dataframe summary**:
 
 |             | dtype   |   non_null_count |   missing_count |   missing_% |   unique |   cardinality_% | cardinality_label   | top_value           |   dominance_% | dominance_label   | bottom_value             |
 |:------------|:--------|-----------------:|----------------:|------------:|---------:|----------------:|:--------------------|:--------------------|--------------:|:------------------|:-------------------------|
@@ -43,7 +44,7 @@
 | Cabin       | object  |              204 |             687 |       77.1  |      148 |           16.61 | high_cardinality    | MISSING             |     77.1044   | some_dominance    | C148                     |
 | Embarked    | object  |              889 |               2 |        0.22 |        4 |            0.45 | low_cardinality     | S                   |     72.2783   | some_dominance    | MISSING                  |
 
-Sample from the dataframe:
+- **Sample from the dataframe**:
 
 |   PassengerId |   Survived |   Pclass | Name                                                | Sex    |   Age |   SibSp |   Parch | Ticket           |    Fare | Cabin   | Embarked   |
 |--------------:|-----------:|---------:|:----------------------------------------------------|:-------|------:|--------:|--------:|:-----------------|--------:|:--------|:-----------|
@@ -64,31 +65,33 @@ Sample from the dataframe:
 
 ### Numerical features
 
-General observations.
 
-- Outliers:
+
+**General observations.**
+
+- **Outliers:**
     - Age: 11 (1.54%)
     - SibSp: 46 (5.16%)
     - Parch: 213 (23.91%)
     - Fare: 116 (13.2%)
 
-- Distributions
+- **Distributions:**
     - Pclass: Moderate skew and normal Tail
     - Age: Low skew and normal tail
     - SibSp: High skew and heavy tail
     - Parch: High skew and heavy tail
     - Fare: High skew and heavy tail
 
-- Correlation with the target variable:
+- **Correlation with the target variable:**
 
-|             |   Survived |
-|:------------|-----------:|
-| Pclass      |     -0.338 |
-| Fare        |      0.257 |
-| Parch       |      0.082 |
-| Age         |     -0.077 |
-| SibSp       |     -0.035 |
-| PassengerId |     -0.005 |
+    |             |   Survived |
+    |:------------|-----------:|
+    | Pclass      |     -0.338 |
+    | Fare        |      0.257 |
+    | Parch       |      0.082 |
+    | Age         |     -0.077 |
+    | SibSp       |     -0.035 |
+    | PassengerId |     -0.005 |
 
     - Pclass has the strongest linear relationship with survival. Were passengers in higher classes better positioned to reach the lifeboats, or did they receive preferential treatment?
 
@@ -96,22 +99,28 @@ General observations.
 
     - Age has a surprisingly weak linear correlation. Would a nonlinear transformation capture its information better? Or perhaps grouping?
 
-- Preprocessing considerations:
+- **Preprocessing considerations**:
 
     - Fare contains many extreme values, likely to benefit from scaling or transformation.
     - Age has 20% missing values, too many for a median imputation to suffice. will likely require a more informative imputation to make the most of it.
     - PassengerId is purely an identifier, thus unlikely to contribute to predictions.
 
-- Feature engineering ideas:
+- **Feature engineering ideas**:
 
 
     - Some third-class passengers paid more than first-class passengers. This suggests Fare may represent the total price paid by a travelling group rather than an individual passenger.
 
+
+
 <details>
+<summary>Reference:</summary>
 
-Numerical summary:
+---
 
- PassengerId:
+**Numerical summary:**
+
+ - **PassengerId:**
+
 |                      |                                                                                                                      |
 |:------------------------|:--------------------|
 | count                   | 891.0               |
@@ -131,7 +140,8 @@ Numerical summary:
 | kurtosis                | -1.1999999999999997 |
 | kurtosis_classification | normal_tails        |
 
-Pclass:
+- **Pclass:**
+
 |                      |                                                                                                                      |
 |:------------------------|:--------------------|
 | count                   | 891.0               |
@@ -151,7 +161,8 @@ Pclass:
 | kurtosis                | -1.2800149715782825 |
 | kurtosis_classification | normal_tails        |
 
-Age:
+- **Age:**
+
 |                      |                                                                                                                      |
 |:------------------------|:--------------------|
 | count                   | 714.0               |
@@ -171,7 +182,8 @@ Age:
 | kurtosis                | 0.1782741536421022  |
 | kurtosis_classification | normal_tails        |
 
-SibSp:
+- **SibSp:**
+
 |                      |                                                                                                                      |
 |:------------------------|:-------------------|
 | count                   | 891.0              |
@@ -191,7 +203,8 @@ SibSp:
 | kurtosis                | 17.880419726645968 |
 | kurtosis_classification | heavy_tails        |
 
-Parch:
+- **Parch:**
+
 |                      |                                                                                                                      |
 |:------------------------|:--------------------|
 | count                   | 891.0               |
@@ -211,7 +224,8 @@ Parch:
 | kurtosis                | 9.778125179021648   |
 | kurtosis_classification | heavy_tails         |
 
-Fare:
+- **Fare:**
+
 |                      |                                                                                                                      |
 |:------------------------|:-------------------|
 | count                   | 891.0              |
@@ -232,7 +246,8 @@ Fare:
 | kurtosis_classification | heavy_tails        |
 
 
-Correlation matrix:
+- **Correlation matrix:**
+
 |             |   PassengerId |   Survived |   Pclass |    Age |   SibSp |   Parch |   Fare |
 |:------------|--------------:|-----------:|---------:|-------:|--------:|--------:|-------:|
 | PassengerId |         1     |     -0.005 |   -0.035 |  0.037 |  -0.058 |  -0.002 |  0.013 |
@@ -251,46 +266,49 @@ Correlation matrix:
 
 ### Categorical features
 
-General observations.
+**General observations.**
 
-- Cardinality
+- **Cardinality**
     - Name: 100% - Potential Id
     - Sex: 0.22% - Low cardinality
     - Ticket: 76.43% - Higt cardinality
     - Cabin: 16.61% - High cardinality
     - Embarked: 0.45% - Low cardinality
 
-- Rare categories
+- **Rare categories**
     - Name: No rare categories - too many unique values
     - Sex: No rare categories
     - Ticket: No rare categories - too many unique values
     - Cabin: No rare categories - too many unique values
     - Embarked: MISSING - 2 (0.22%)
 
-- Missing values
+- **Missing values**
     - Name: 0
     - Sex: 0
     - Ticket: 0
     - Cabin: 687 (77.1%)
     - Embarked: 2 (0.22%)
 
-- Feature engineering ideas:
+- **Feature engineering ideas**:
     - Name contains titles and family names.
     - Cabin is missing most of its values, could this be a signal in itself?
     - All cabins starts with a letter, position on the ship? deck?
     - Many passengers have the same ticket. Shared tickets? are they traveling in groups?
 
-<details>
-Categorical summary:
 
-- Sex:
+<details>
+<summary>Reference:</summary>
+
+**Categorical summary**:
+
+- **Sex:**
 
 | Sex    |   count |   percent |   Survived_0_% |   Survived_1_% |
 |:-------|--------:|----------:|---------------:|---------------:|
 | male   |     577 |     64.76 |          81.11 |          18.89 |
 | female |     314 |     35.24 |          25.8  |          74.2  |
 
-- Embarked:
+- **Embarked:**
 
 | Embarked   |   count |   percent |   Survived_0_% |   Survived_1_% |
 |:-----------|--------:|----------:|---------------:|---------------:|
@@ -300,9 +318,9 @@ Categorical summary:
 | MISSING    |       2 |      0.22 |           0    |         100    |
 
 
-Categorical samples:
+**Categorical samples**:
 
-- Name:
+- **Name:**
 
 |                          |   count |   percent |   Survived_0_% |   Survived_1_% |
 |:-------------------------|--------:|----------:|---------------:|---------------:|
@@ -312,7 +330,7 @@ Categorical samples:
 | Moran, Mr. James         |       1 |      0.11 |            100 |              0 |
 | Bonnell, Miss. Elizabeth |       1 |      0.11 |              0 |            100 |
 
-- Ticket:
+- **Ticket:**
 
 |                  |   count |   percent |   Survived_0_% |   Survived_1_% |
 |:-----------------|--------:|----------:|---------------:|---------------:|
@@ -322,7 +340,7 @@ Categorical samples:
 | 382652           |       5 |      0.56 |         100    |           0    |
 | STON/O2. 3101282 |       1 |      0.11 |           0    |         100    |
 
-- Cabin:
+- **Cabin:**
 
 |         |   count |   percent |   Survived_0_% |   Survived_1_% |
 |:--------|--------:|----------:|---------------:|---------------:|
@@ -338,12 +356,12 @@ Categorical samples:
 
 ### Initial preprocessing plan
 
-- drop:
+- **drop:**
     - PassengerId
-- Impute:
+- **Impute:**
     - Age
     - Embarked
-- Engineer:
+- **Engineer:**
     - Title
     - Deck
     - Family
@@ -354,24 +372,102 @@ Categorical samples:
 
 ### Initial hypotheses
 
-#### Age
-- Investigate better imputation
-
-#### Name
-- Investigate title
-- ~~Investigate family name~~ - Discarded. SibSp and Parch already provide sufficient information
+#### Parch and SibSp
+- Combine SibSp and Parch into family
 
 #### Cabin
 - Investigate if missingness is a signal
 - Extract Deck
 
-#### Family
-- Combine SibSp and Parch into family
+#### Name
+- Investigate title
+- ~~Investigate family name~~ - Discarded. SibSp and Parch already provide sufficient information
 
-#### Ticket
-- Investigate ticket groups
+#### Age
+- Investigate better imputation
 
 #### Fare
 - investigate effects of scaling and transformations
 - Fare seems to be the price paid per ticket. Divide by family and ticket groups to find individual fare
 
+#### Ticket
+- Investigate ticket groups
+
+---
+
+## Feature Investigation
+
+Following the initial hypotheses, each original feature was investigated individually. Each new feature created from there were grouped inside their progenitor feature, together with each of their experiments.
+
+### Parch and SibSp
+
+
+#### Hypothesis
+
+SibSp and Parch describe complementary aspects of family composition.
+
+Combining them into FamilySize may strengthen the information available to the model.
+
+A binary IsAlone feature may further highlight passengers travelling alone.
+
+
+#### Experiments performed:
+
+#### Fe01__family
+
+Experiment testing the effects of the creation of the features Familysize and IsAlone, and whether they effectively replace SibSp and Parch.
+
+<details>
+<summary>Conclusion</summary>
+
+##### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.009
+  - decision_tree: test_accuracy_mean: 0.003
+    - Secondary gains:
+      - test_f1_mean: 0.01
+
+##### Conclusion
+
+Small/negligible impact overall. LogReg improved slightly.
+Apparently, most models already manage to extract the information from SibSp and Parch, making this feature engineering mostly unescessary.
+
+One exception being LogReg, which had a small gain in accuracy. Was it unable to make the most of these features on it's own? or it just gained from receiving processed information?
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe01__family    | logreg        |                          0.786 |                        0.795 |                      0.009 |                    0.713 |                  0.721 |                0.008 |
+| baseline__raw     | fe01__family    | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.737 |               -0.005 |
+| baseline__raw     | fe01__family    | svc           |                          0.827 |                        0.826 |                     -0.001 |                    0.76  |                  0.756 |               -0.004 |
+| baseline__raw     | fe01__family    | decision_tree |                          0.803 |                        0.806 |                      0.003 |                    0.702 |                  0.712 |                0.01  |
+| baseline__raw     | fe01__family    | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.735 |               -0.009 |
+| baseline__raw     | fe01__family    | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.726 |                0.005 |
+| baseline__raw     | fe01__family    | xgb           |                          0.826 |                        0.826 |                      0     |                    0.758 |                  0.756 |               -0.002 |
+
+##### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe01__family    |                     0.000428571 |                         -0.006 |                          0.009 |               0.000428571 |                   -0.009 |                     0.01 |
+
+</details>
+
+
+#### Findings
+
+- Most models appear capable of extracting the information contained in SibSp and Parch without explicit feature engineering. Explicitly constructing FamilySize and IsAlone therefore provides little additional information in most cases.
+
+#### Current recommendation
+
+- Prefer the original SibSp and Parch features for most models.
+- Consider FamilySize + IsAlone only for Logistic Regression.
+- Revisit after combination experiments are complete.
