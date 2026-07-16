@@ -466,9 +466,12 @@ One exception being LogReg, which had a small gain in accuracy. Was it unable to
 - Most models appear capable of extracting the information contained in SibSp and Parch without explicit feature engineering. Explicitly constructing FamilySize and IsAlone therefore provides little additional information to all models but Logreg.
 
 #### Current recommendation
+- Logistic Regression
+    - FamilySize + IsAlone.
 
-- Prefer the original SibSp and Parch features for most models.
-- Consider FamilySize + IsAlone only for Logistic Regression.
+- All other models
+    - Raw SibSp and Parch features.
+
 - Revisit after combination experiments are complete.
 
 ---
@@ -674,6 +677,93 @@ This suggests that Cabin contains meaningful information, but its predictive pow
 - XGBoost
     - Cabin Features
 
+---
+
+### Name
+
+#### Hypothesis
+
+Every passenger's name contains a title (e.g., Mr., Mrs., Miss., Master). These titles may encode information about the passenger's gender, approximate age, and social status.
+
+Since Sex, Pclass and Fare already capture part of this information, I initially expected Title to provide only a modest improvement. Nevertheless, because it combines multiple characteristics into a single feature, it was worth investigating. Additionally, Title may prove useful for imputing missing Age values.
+
+#### Experiments performed:
+
+
+### fe05__title
+
+Title is expected to encode information related to the passenger's gender, age and social status. This experiment evaluates how much additional predictive power this feature provides beyond the variables already present in the baseline model.
+
+<details>
+<summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: strong_general
+- Recommended for all models
+- Mean delta: 0.016
+
+#### Conclusion
+
+Unlike the previous feature engineering experiments, Title produced consistent improvements across every tested model. The feature appears to summarize multiple passenger characteristics—including age, gender and social status—into a single, highly informative variable. Given the magnitude and consistency of the improvements, Title is a strong candidate for inclusion in future feature sets.
+
+The addition of Title also reshaped the leaderboard. Title + XGBoost and Title + SVC moved into first and second place respectively, while Title + Random Forest climbed close behind Cabin Features + XGBoost.
+
+One particularly interesting observation is that Logistic Regression improved by 0.039 accuracy, the largest gain obtained by any model from a single feature engineering experiment so far. Combined with its positive response to previous engineered features, this suggests that Logistic Regression benefits substantially from features that make informative relationships explicit, rather than requiring the model to infer them from the original variables.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe05__title     | logreg        |                          0.786 |                        0.825 |                      0.039 |                    0.713 |                  0.765 |                0.052 |
+| baseline__raw     | fe05__title     | knn           |                          0.809 |                        0.822 |                      0.013 |                    0.742 |                  0.76  |                0.018 |
+| baseline__raw     | fe05__title     | svc           |                          0.827 |                        0.834 |                      0.007 |                    0.76  |                  0.771 |                0.011 |
+| baseline__raw     | fe05__title     | decision_tree |                          0.803 |                        0.823 |                      0.02  |                    0.702 |                  0.756 |                0.054 |
+| baseline__raw     | fe05__title     | random_forest |                          0.822 |                        0.832 |                      0.01  |                    0.744 |                  0.768 |                0.024 |
+| baseline__raw     | fe05__title     | extra_trees   |                          0.804 |                        0.82  |                      0.016 |                    0.721 |                  0.754 |                0.033 |
+| baseline__raw     | fe05__title     | xgb           |                          0.826 |                        0.836 |                      0.01  |                    0.758 |                  0.772 |                0.014 |
+
+#### Summary
+
+| compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe05__title     |                       0.0164286 |                          0.007 |                          0.039 |                 0.0294286 |                    0.011 |                    0.054 |
+
+</details>
+
+#### Overall conclusion
+
+Title feature produced the largest improvements so far and it extended to all models, meaning this is a good feature to use in future datasets.
+
+Title proved to be the most informative engineered feature explored so far, improving every tested model. Unlike previous feature engineering attempts, its benefits were both consistent and substantial.
+
+One possible explanation is that Title summarizes several relevant passenger characteristics—such as gender, approximate age and social status—into a single feature. Rather than introducing entirely new information, it appears to organize information already present in the dataset into a representation that models can exploit more effectively.
+
+#### Findings
+
+- Title proved considerably more predictive than initially expected.
+
+- Title is the first engineered feature to consistently improve every tested model.
+
+- Logistic Regression obtained the largest improvement observed so far (+0.039 accuracy), reinforcing the hypothesis that explicit feature engineering benefits linear models.
+
+#### Working hypotheses
+
+- Title may be effective because it combines multiple weak signals (age, gender and social status) into a single informative feature.
+
+- Logistic Regression appears to benefit substantially from explicit feature refinement. Future feature engineering experiments will help determine whether this remains a consistent pattern.
+
+#### Current recommendation
+
+- All models
+    - Title feature
+
+---
 
 ## Lessons learned
 
