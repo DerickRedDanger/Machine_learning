@@ -363,7 +363,7 @@ fe09__ticket_group_size_override = {
     "feature_engineering": [add_ticket_group_size],
     "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "TicketGroupSize"],
     "preprocessing": {
-        "numeric_features": ["Age", "SibSp", "Parch", "Fare", "TicketGroupSize"],
+        "numeric_features": ["SibSp", "Parch","Age", "Fare", "TicketGroupSize"],
         "onehot_features": ["Sex", "Embarked",],
         "ordinal_features": ["Pclass"],
         "numeric_imputer": "median",

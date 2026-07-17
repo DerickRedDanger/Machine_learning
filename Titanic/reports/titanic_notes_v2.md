@@ -386,12 +386,13 @@
 #### Age
 - Investigate better imputation
 
+#### Ticket
+- Investigate ticket groups
+
 #### Fare
 - investigate effects of scaling and transformations
 - Fare seems to be the price paid per ticket. Divide by family and ticket groups to find individual fare
 
-#### Ticket
-- Investigate ticket groups
 
 ---
 
@@ -430,7 +431,7 @@ Experiment testing the effects of the creation of the features Familysize and Is
 
 ##### Conclusion
 
-Small/negligible impact overall. LogReg improved slightly.
+Small impact overall. LogReg improved slightly.
 Apparently, most models already manage to extract the information from SibSp and Parch, making this feature engineering mostly unescessary.
 
 One exception being LogReg, which had a small gain in accuracy. Was it unable to make the most of these features on it's own? or it just gained from receiving processed information?
@@ -769,19 +770,17 @@ One possible explanation is that Title summarizes several relevant passenger cha
 
 #### Hypothesis
 
-Age's an important raw feature as it can define how experience and physically capable one it to handle situations or emergency. From children that need their parent's support, to young adults with the physical condition to race for rescue but that lacks the experience to do so. From adults with the knowledge and body, but family to care for, to Elderly that have the experience, but might require assistance.
+Age is expected to influence survival because it affects both physical capability and independence during an emergency. Children may depend on accompanying adults, while elderly passengers may have reduced mobility. Adults occupy an intermediate range where physical capability and experience may both contribute to survival.
 
-It's 20% missing values should reduce the model's accuracy, but that's nor a value a mean imputation will improve with satisfatory precision. Instead, it's better to use other feature to base the imputation. For that, two options were choosen.
+This investigation explores three independent questions:
 
-An imputation based solely on the mean of Title, as they contain indirect information about age.
-
-Another using both Title and Pclass, in an attempt to give a less generic mean imputation.
-
-Another hypothesis  was that the models might struggle with properly learning how to use age as the importance on the difference of 10 years between a 20 years and a 30 years old might not be as important to Titanic as one between a 10 and 20 years. So It might be better to bin the ages in groups that share some similarities.
-
-But to rather then using one hot, it might be better to use ordinal to keep the features binned, but closer to continuos values. With that said, ordinal means that the order of the bins matters. Perhaps keeping the order as it will not bring the best result, will need to experiment to find the best bins and order for the labels
+- Can missing Age values be estimated more accurately than simple median imputation?
+- Is Age better represented as a continuous or ordinal variable?
+- Does combining both representations provide complementary information?
 
 #### Experiments performed:
+
+#### Age Imputation:
 
 #### fe06__age_imputation_title
 
@@ -879,6 +878,8 @@ The overall gains remain small, likely because Age is only missing for approxima
 
 </details>
 
+#### Age representation:
+
 #### fe11__age_bin
 
 Test whether changing the representation of Age changes what the models learn.
@@ -933,7 +934,9 @@ But compared to them, Decision, random and extra tree had significant gains on b
 
 </details>
 
-### cb01__age_and_bins
+#### Age representation combination
+
+#### cb01__age_and_bins
 
 Combo using both raw Age and Age_bin.
 
@@ -945,7 +948,7 @@ It also serves as a proof of concept for combo experiments: testing whether the 
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: mixed
 - Recommended for specific models:
@@ -961,22 +964,20 @@ It also serves as a proof of concept for combo experiments: testing whether the 
       - test_f1_mean: 0.017
 
 
-#### Conclusion
+##### Conclusion
 
 Using both raw Age and Age_bin showed that feature combinations are not simply the sum of their individual effects.
 
 KNN suffered substantially from the combination, likely because both features represent the same underlying information and distort the distance calculation when used together. Compared to Age_bin alone, this combo appears mainly useful for Logistic Regression. Other models that improved with the combo generally benefited more from Age_bin alone.
 
-This experiment also exposed a limitation in the interpretation system. The current recommendation labeled the feature as broadly useful, even though KNN clearly performed worse. I will update the interpretation logic so that features are only recommended for all models when no model has a meaningful negative reaction. Otherwise, the result should be labeled as mostly positive or model-specific.
-
-As a proof of concept, this experiment showed that combo effects can be unpredictable. It is better to explore combinations in small, related groups before creating large feature sets. A useful next step is to investigate combinations within the same feature domain, such as Age, Fare, Family, and Cabin, before moving on to cross-domain combinations.
+As a proof of concept, this experiment showed that combo effects can be unpredictable. It is better to explore combinations in small, related groups before creating large feature sets.
 
 </details>
 
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group      | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:-------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -988,7 +989,7 @@ As a proof of concept, this experiment showed that combo effects can be unpredic
 | baseline__raw     | cb01__age_and_bins | extra_trees   |                          0.804 |                        0.815 |                      0.011 |                    0.721 |                  0.738 |                0.017 |
 | baseline__raw     | cb01__age_and_bins | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.754 |               -0.004 |
 
-#### Summary
+##### Summary
 
 | compare_group      |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -996,7 +997,7 @@ As a proof of concept, this experiment showed that combo effects can be unpredic
 
 </details>
 
-### cb02__age_imputed_title_and_bins
+#### cb02__age_imputed_title_and_bins
 
 Experiment testing the effect of imputing raw age with Title before binning it.
 
@@ -1004,7 +1005,7 @@ Experiment testing the effect of imputing raw age with Title before binning it.
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: mixed
 - Recommended for specific models:
@@ -1020,7 +1021,7 @@ Experiment testing the effect of imputing raw age with Title before binning it.
   - xgb: test_accuracy_mean: 0.006
 
 
-#### Conclusion
+##### Conclusion
 
 Adding Title-based Age imputation to the Age + Age_bin combo improved the combo compared to cb01, especially for KNN, SVC, and XGB. This suggests that improving the quality of the continuous Age feature makes it more useful when used alongside Age_bin.
 
@@ -1031,7 +1032,7 @@ However, the combo is still not clearly superior to Age_bin alone for tree-based
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                    | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:---------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1043,7 +1044,7 @@ However, the combo is still not clearly superior to Age_bin alone for tree-based
 | baseline__raw     | cb02__age_imputed_title_and_bins | extra_trees   |                          0.804 |                        0.818 |                      0.014 |                    0.721 |                  0.741 |                0.02  |
 | baseline__raw     | cb02__age_imputed_title_and_bins | xgb           |                          0.826 |                        0.832 |                      0.006 |                    0.758 |                  0.762 |                0.004 |
 
-#### Summary
+##### Summary
 
 | compare_group                    |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:---------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -1051,7 +1052,7 @@ However, the combo is still not clearly superior to Age_bin alone for tree-based
 
 </details>
 
-### cb03__age_imputed_title_Pclass_and_bins
+#### cb03__age_imputed_title_Pclass_and_bins
 
 Experiment akin to Cb02, but imputing age with both title and pclass.
 
@@ -1059,7 +1060,7 @@ Experiment akin to Cb02, but imputing age with both title and pclass.
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: model_specific_positive
 - Recommended for specific models:
@@ -1075,7 +1076,7 @@ Experiment akin to Cb02, but imputing age with both title and pclass.
   - decision_tree: test_f1_mean: 0.012
 
 
-#### Conclusion
+##### Conclusion
 
 Cb03 greately improved the results of Logreg while getting results worse or aking in to experiments cb01/02. Surprisingly it was the bin that least hurt Knn, likely meaning that this imputation helped it better distribute it's distance.
 
@@ -1086,7 +1087,7 @@ These experiments suggest that there is no universally optimal representation of
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:----------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1098,7 +1099,7 @@ These experiments suggest that there is no universally optimal representation of
 | baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | extra_trees   |                          0.804 |                        0.817 |                      0.013 |                    0.721 |                  0.741 |                0.02  |
 | baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.756 |               -0.002 |
 
-#### Summary
+##### Summary
 
 | compare_group                           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:----------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -1150,6 +1151,86 @@ Overall, there is no universally best representation of Age. The optimal approac
 - Would learned bins outperform manually designed ones?
 
 - Would nonlinear transformations (log, spline, quantile) outperform fixed bins?
+
+---
+
+### Ticket
+
+#### Hypothesis
+
+Multiple passengers share the same Ticket identifier, suggesting that tickets may represent travel groups rather than individuals. If passengers sharing a ticket remained together during boarding or evacuation, the number of passengers associated with a ticket may contain information beyond the family relationships captured by SibSp and Parch.
+
+Unlike FamilySize, TicketGroupSize depends entirely on the passengers present in the current dataset. If members of the same ticket group are absent from the dataset, the feature underestimates the true group size. This makes it inherently dataset-dependent, and its effect on unseen data is uncertain.
+
+#### Experiments performed:
+
+#### fe09__ticket_group_size
+
+TicketGroupSize counts the number of passengers sharing the same ticket. The objective is to determine whether actual travel groups contain more predictive information than family relationships alone.
+
+<details>
+<summary>Conclusion</summary>
+
+##### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - svc: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.01
+
+
+##### Conclusion
+
+Ambiguous results, it helped some models, but hurt others. Considering how low it's effects are, the feature either introduces noise or captures information that is already available through existing features, such as Parch and SibSp or Fare. Only Svc seemed to have gained something meaningful from it.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe09__ticket_group_size | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | fe09__ticket_group_size | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.733 |               -0.009 |
+| baseline__raw     | fe09__ticket_group_size | svc           |                          0.827 |                        0.832 |                      0.005 |                    0.76  |                  0.77  |                0.01  |
+| baseline__raw     | fe09__ticket_group_size | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.702 |                0     |
+| baseline__raw     | fe09__ticket_group_size | random_forest |                          0.822 |                        0.82  |                     -0.002 |                    0.744 |                  0.747 |                0.003 |
+| baseline__raw     | fe09__ticket_group_size | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.724 |                0.003 |
+| baseline__raw     | fe09__ticket_group_size | xgb           |                          0.826 |                        0.818 |                     -0.008 |                    0.758 |                  0.749 |               -0.009 |
+
+##### Summary
+
+| compare_group           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe09__ticket_group_size |                     -0.00128571 |                         -0.008 |                          0.005 |                         0 |                   -0.009 |                     0.01 |
+
+</details>
+
+#### Overall conclusion
+
+TicketGroupSize alone appears to provide only limited additional information. The modest improvements suggest that passengers traveling together do share some survival characteristics, but this information is either weak or already partially represented by existing features.
+
+The remaining question is whether TicketGroupSize becomes more informative when combined with Ticket-derived features such as Fare per Ticket Member.
+
+#### Findings
+
+- TicketGroupSize contains some predictive information, but considerably less than initially expected.
+- SVC was the only model to benefit consistently from the feature.
+- The overlap between TicketGroupSize and existing family-related features appears larger than originally hypothesized.
+
+#### hypotheses
+
+- TicketGroupSize may become more useful when combined with other Ticket-derived features.
+- The partial overlap between TicketGroupSize and FamilySize may explain the limited improvements observed.
+- Dataset-specific ticket groups may limit generalization to unseen passengers.
+
+#### Current recommendation
+
+- SVC
+  - Ticket_group_size
 
 ---
 

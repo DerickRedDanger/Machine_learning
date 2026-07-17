@@ -3644,9 +3644,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
@@ -3701,9 +3701,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
@@ -3757,9 +3757,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
@@ -3817,9 +3817,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
@@ -3875,9 +3875,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
@@ -3935,9 +3935,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
@@ -3995,9 +3995,9 @@
     "features": [
       "Pclass",
       "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
       "Embarked",
       "TicketGroupSize"
