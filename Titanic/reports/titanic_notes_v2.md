@@ -1234,6 +1234,227 @@ The remaining question is whether TicketGroupSize becomes more informative when 
 
 ---
 
+### Fare
+
+#### Hypothesis
+
+Fare's values doens't directly align with passengers class, meaning fare isn't always the value paid by a single passenger, but by a group. Two possible ways to define that group is throught family and Ticket size.
+
+Family is a reliable feature, as it returns the exact number of family members on the ship during the incident. But being in a family doesn't nescessarely means travelling together.
+
+Ticket size, on the otherside, is less certain, as it's dataset dependent in order to find the number of passengers sharing the ticket. But it's much more likely for a group sharing the same ticket to travel toghether.
+
+#### Experiments performed:
+
+### fe08__fare_per_family_member
+
+I expected that fare is not the amount paid by one passenger, but rather the whole family. By dividing fare by the family member, I expect to give the model a more precise feature to work with. This feature is expected to give precise values across test and train data, even on unseen data. As even if some passengers aren't in one dataframe, they are still counted through SibSp/Parch.
+
+<details>
+<summary>Conclusion</summary>
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.003
+  - decision_tree: test_accuracy_mean: 0.004
+
+#### Conclusion
+
+Fare / FamilySize appears to contain some useful information, but the underlying assumption is only approximately correct. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe08__fare_per_family_member | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.717 |                0.004 |
+| baseline__raw     | fe08__fare_per_family_member | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.735 |               -0.007 |
+| baseline__raw     | fe08__fare_per_family_member | svc           |                          0.827 |                        0.826 |                     -0.001 |                    0.76  |                  0.759 |               -0.001 |
+| baseline__raw     | fe08__fare_per_family_member | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.711 |                0.009 |
+| baseline__raw     | fe08__fare_per_family_member | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.732 |               -0.012 |
+| baseline__raw     | fe08__fare_per_family_member | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe08__fare_per_family_member | xgb           |                          0.826 |                        0.823 |                     -0.003 |                    0.758 |                  0.752 |               -0.006 |
+
+#### Summary
+
+| compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe08__fare_per_family_member |                    -0.000857143 |                         -0.006 |                          0.004 |               -0.00171429 |                   -0.012 |                    0.009 |
+
+</details>
+
+### fe10__fare_per_ticket_member
+ 
+Feature akin to Fare/family size, but based on ticket member instead. Expected to give better results them family size, since ticket member better represents the situation inside the dataframe. But this result can vary between train/test, as it only counts the passenger inside that dataframe.
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.003
+  - knn: test_accuracy_mean: 0.005
+  - decision_tree: test_accuracy_mean: 0.007
+    - Secondary gains:
+      - test_f1_mean: 0.023
+
+
+#### Conclusion
+
+Fare/ticket member performs better then fare/family size, suggesting that ticket groups are a better approximation of shared payment than family size.
+
+But, none of the Fare-derived features consistently outperform the original Fare feature across all models, so they should be considered optional, model-specific enhancements rather than default features.
+
+This proves that Fare contains useful information and should be retained.
+
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe10__fare_per_ticket_member | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.716 |                0.003 |
+| baseline__raw     | fe10__fare_per_ticket_member | knn           |                          0.809 |                        0.814 |                      0.005 |                    0.742 |                  0.747 |                0.005 |
+| baseline__raw     | fe10__fare_per_ticket_member | svc           |                          0.827 |                        0.823 |                     -0.004 |                    0.76  |                  0.755 |               -0.005 |
+| baseline__raw     | fe10__fare_per_ticket_member | decision_tree |                          0.803 |                        0.81  |                      0.007 |                    0.702 |                  0.725 |                0.023 |
+| baseline__raw     | fe10__fare_per_ticket_member | random_forest |                          0.822 |                        0.815 |                     -0.007 |                    0.744 |                  0.73  |               -0.014 |
+| baseline__raw     | fe10__fare_per_ticket_member | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe10__fare_per_ticket_member | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.748 |               -0.01  |
+
+#### Summary
+
+| compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe10__fare_per_ticket_member |                     0.000142857 |                         -0.007 |                          0.007 |               0.000428571 |                   -0.014 |                    0.023 |
+
+</details>
+
+### cb04__fare_and_fare_per_family
+
+Combination exploring the effects of using both Fare and Fare/family. To find whether they bring aditional information together, a new representation, or are redundant.
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.008
+    - Secondary gains:
+      - test_f1_mean: 0.028
+
+
+#### Conclusion
+
+Keeping both Fare and Fare_per_family did not improve performance for most models. Since both features describe closely related information, the additional representation appears to introduce more redundancy than useful information for most learning algorithms.
+
+Decision Tree was a notable exception, achieving the largest improvement among all models (+0.008 accuracy and +0.028 F1). This suggests that tree-based partitioning can exploit the complementary thresholds provided by the two fare representations, even when they are highly correlated.
+
+Overall, Fare_per_family does not appear to be broadly useful when added alongside Fare, but it may still provide meaningful complementary information for specific tree-based models.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb04__fare_and_fare_per_family | logreg        |                          0.786 |                        0.785 |                     -0.001 |                    0.713 |                  0.711 |               -0.002 |
+| baseline__raw     | cb04__fare_and_fare_per_family | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.734 |               -0.008 |
+| baseline__raw     | cb04__fare_and_fare_per_family | svc           |                          0.827 |                        0.823 |                     -0.004 |                    0.76  |                  0.754 |               -0.006 |
+| baseline__raw     | cb04__fare_and_fare_per_family | decision_tree |                          0.803 |                        0.811 |                      0.008 |                    0.702 |                  0.73  |                0.028 |
+| baseline__raw     | cb04__fare_and_fare_per_family | random_forest |                          0.822 |                        0.82  |                     -0.002 |                    0.744 |                  0.739 |               -0.005 |
+| baseline__raw     | cb04__fare_and_fare_per_family | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.724 |                0.003 |
+| baseline__raw     | cb04__fare_and_fare_per_family | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.756 |               -0.002 |
+
+#### Summary
+
+| compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb04__fare_and_fare_per_family |                     -0.00114286 |                         -0.007 |                          0.008 |                0.00114286 |                   -0.008 |                    0.028 |
+
+</details>
+
+### cb05__fare_and_fare_per_ticket
+
+_Description pending._
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: model_specific_negative
+- Recommended for specific models:
+- Notable secondary improvements in non-recommended models:
+  - decision_tree: test_f1_mean: 0.012
+
+
+#### Conclusion
+
+_Conclusion pending._
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb05__fare_and_fare_per_ticket | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.739 |               -0.003 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket | svc           |                          0.827 |                        0.822 |                     -0.005 |                    0.76  |                  0.754 |               -0.006 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket | decision_tree |                          0.803 |                        0.805 |                      0.002 |                    0.702 |                  0.714 |                0.012 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket | random_forest |                          0.822 |                        0.815 |                     -0.007 |                    0.744 |                  0.73  |               -0.014 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
+| baseline__raw     | cb05__fare_and_fare_per_ticket | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.759 |                0.001 |
+
+#### Summary
+
+| compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb05__fare_and_fare_per_ticket |                     -0.00185714 |                         -0.007 |                          0.002 |               -0.00114286 |                   -0.014 |                    0.012 |
+
+</details>
+
+#### Overall conclusion
+
+_.Conclusion._
+
+#### Findings
+
+_.Findings._
+
+#### hypotheses
+
+_.Hypotheses._
+
+#### Current recommendation
+
+_.Recommendation._
+
+---
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).

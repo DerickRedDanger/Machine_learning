@@ -6396,5 +6396,831 @@
     "feature_group": "age_imputed_title_Pclass_and_bins",
     "group": "cb03__age_imputed_title_Pclass_and_bins",
     "domain": "age"
+  },
+  "cb04__fare_and_fare_per_family__logreg": {
+    "name": "cb04__fare_and_fare_per_family__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb04__fare_and_fare_per_family__knn": {
+    "name": "cb04__fare_and_fare_per_family__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb04__fare_and_fare_per_family__svc": {
+    "name": "cb04__fare_and_fare_per_family__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb04__fare_and_fare_per_family__decision_tree": {
+    "name": "cb04__fare_and_fare_per_family__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb04__fare_and_fare_per_family__random_forest": {
+    "name": "cb04__fare_and_fare_per_family__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb04__fare_and_fare_per_family__extra_trees": {
+    "name": "cb04__fare_and_fare_per_family__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb04__fare_and_fare_per_family__xgb": {
+    "name": "cb04__fare_and_fare_per_family__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/FamilySize"
+    ],
+    "feature_engineering": [
+      "add_fare_per_familysize"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family.",
+    "stage": "cb04",
+    "feature_group": "fare_and_fare_per_family",
+    "group": "cb04__fare_and_fare_per_family",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__logreg": {
+    "name": "cb05__fare_and_fare_per_ticket__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__knn": {
+    "name": "cb05__fare_and_fare_per_ticket__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__svc": {
+    "name": "cb05__fare_and_fare_per_ticket__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__decision_tree": {
+    "name": "cb05__fare_and_fare_per_ticket__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__random_forest": {
+    "name": "cb05__fare_and_fare_per_ticket__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__extra_trees": {
+    "name": "cb05__fare_and_fare_per_ticket__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
+  },
+  "cb05__fare_and_fare_per_ticket__xgb": {
+    "name": "cb05__fare_and_fare_per_ticket__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "Age",
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Fare/TicketMember"
+    ],
+    "feature_engineering": [
+      "add_fare_per_ticket_member"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket.",
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket",
+    "group": "cb05__fare_and_fare_per_ticket",
+    "domain": "fare"
   }
 }

@@ -583,6 +583,79 @@ cb03__age_imputed_title_Pclass_and_bins = create_experiment_group(
 
 ALL_EXPERIMENTS['cb03__age_imputed_title_Pclass_and_bins'] = cb03__age_imputed_title_Pclass_and_bins
 
+
+cb04__fare_and_fare_per_family_override = {
+    "feature_engineering": [add_fare_per_familysize],
+        "features": ["Pclass", "Sex", "Age","Fare", "SibSp", "Parch", "Embarked", "Fare/FamilySize"],
+            "preprocessing": {
+                "numeric_features": ["Age","Fare", "SibSp", "Parch", "Fare/FamilySize"],
+                "onehot_features": ["Sex", "Embarked",],
+                "ordinal_features": ["Pclass"],
+                "numeric_imputer": "median",
+                "categorical_imputer": "most_frequent",
+                "scaler": "standard",
+        },
+    "notes": "Combo 04: Exploring the effect of using both fare and fare per family."
+}
+
+cb04__fare_and_fare_per_family = create_experiment_group(
+    stage="cb04",
+    feature_group="fare_and_fare_per_family",
+    base_configs=baseline__raw,
+    group_override=cb04__fare_and_fare_per_family_override,
+    domain="fare"
+)
+
+ALL_EXPERIMENTS['cb04__fare_and_fare_per_family'] = cb04__fare_and_fare_per_family
+
+cb05__fare_and_fare_per_ticket_override = {
+    "feature_engineering": [add_fare_per_ticket_member],
+        "features": ["Pclass", "Sex", "Age","Fare", "SibSp", "Parch", "Embarked", "Fare/TicketMember"],
+            "preprocessing": {
+                "numeric_features": ["Age","Fare", "SibSp", "Parch", "Fare/TicketMember"],
+                "onehot_features": ["Sex", "Embarked",],
+                "ordinal_features": ["Pclass"],
+                "numeric_imputer": "median",
+                "categorical_imputer": "most_frequent",
+                "scaler": "standard",
+        },
+    "notes": "Combo 05: Exploring the effect of using both fare and fare per ticket."
+}
+
+cb05__fare_and_fare_per_ticket = create_experiment_group(
+    stage="cb05",
+    feature_group="fare_and_fare_per_ticket",
+    base_configs=baseline__raw,
+    group_override=cb05__fare_and_fare_per_ticket_override,
+    domain="fare"
+)
+
+ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket'] = cb05__fare_and_fare_per_ticket
+
+cb06__all_fare_features_override = {
+    "feature_engineering": [add_fare_per_familysize, add_fare_per_ticket_member],
+        "features": ["Pclass", "Sex", "Age","Fare", "SibSp", "Parch", "Embarked", "Fare/FamilySize", "Fare/TicketMember"],
+            "preprocessing": {
+                "numeric_features": ["Age","Fare", "SibSp", "Parch", "Fare/FamilySize", "Fare/TicketMember"],
+                "onehot_features": ["Sex", "Embarked",],
+                "ordinal_features": ["Pclass"],
+                "numeric_imputer": "median",
+                "categorical_imputer": "most_frequent",
+                "scaler": "standard",
+        },
+    "notes": "Combo 06: Exploring the effect of using both fare and fare per family."
+}
+
+cb06__all_fare_features = create_experiment_group(
+    stage="cb06",
+    feature_group="all_fare_features",
+    base_configs=baseline__raw,
+    group_override=cb06__all_fare_features_override,
+    domain="fare"
+)
+
+ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features
+
 '''
 | Feature family | Experiments      |
 | -------------- | ---------------- |
