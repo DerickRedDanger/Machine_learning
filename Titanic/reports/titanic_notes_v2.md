@@ -434,7 +434,7 @@ Experiment testing the effects of the creation of the features Familysize and Is
 Small impact overall. LogReg improved slightly.
 Apparently, most models already manage to extract the information from SibSp and Parch, making this feature engineering mostly unescessary.
 
-One exception being LogReg, which had a small gain in accuracy. Was it unable to make the most of these features on it's own? or it just gained from receiving processed information?
+One exception being LogReg, which had a small gain in accuracy. Was it unable to make the most of these features on its own? or it just gained from receiving processed information?
 
 </details>
 
@@ -487,9 +487,9 @@ One possibility is that passengers whose cabin is unknown are systematically dif
 
 This hypothesis is tested through the Has_Cabin feature.
 
-Cabin's values always starts with a letter, which likely points to a location within the ship, like it's deck. Perhaps knowing the passenges' cabin position on the ship makes it easier to predict their survival.
+Cabin's values always starts with a letter, which likely points to a location within the ship, like its deck. Perhaps knowing the passenges' cabin position on the ship makes it easier to predict their survival.
 
-This hypothesis is tested throught the Deck feature.
+This hypothesis is tested through the Deck feature.
 
 #### Experiments performed:
 
@@ -511,7 +511,7 @@ Experiment meant to tests if the missingness of the cabins is a signal in itself
 
 ##### Conclusion
 
-Negligible changes on it's own, likely on the level of noise. Surprisingly, LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on it's own.
+Negligible changes on its own, likely on the level of noise. Surprisingly, LogReg had a small improvement. Going to explore the impact of Deck and Deck + has_cabin to find out whether they complement each other or if Deck's enough on its own.
 
 </details>
 
@@ -540,7 +540,7 @@ Negligible changes on it's own, likely on the level of noise. Surprisingly, LogR
 
 #### fe03__deck
 
-Testing the impact of the feature deck in the models. Expecting a higher impact then has_cabin, but not by a large margen, given that only 23% of the decks are know.
+Testing the impact of the feature deck in the models. Expecting a higher impact than has_cabin, but not by a large margen, given that only 23% of the decks are know.
 
 <details>
 <summary>Conclusion</summary>
@@ -606,11 +606,11 @@ Testing the impact of using both has_cabin and deck together, to see if this uni
 
 ##### Conclusion
 
-Results were surprising. Meanwhile the mean delta is essentially 0, this combination had greater influence on the models then deck or has_cabin. This suggests that the two features capture different aspects of the underlying information rather than simply encoding the same signal. 
+Results were surprising. Meanwhile the mean delta is essentially 0, this combination had greater influence on the models than deck or has_cabin. This suggests that the two features capture different aspects of the underlying information rather than simply encoding the same signal. 
 
 Random forest was the model that suffered the most from it, One possible explanation is that Random Forest already extracts most of the available information from the existing variables, making the additional Cabin-derived features partially redundant.
 
-Logreg continued to gain exactly 0.005 on all three attempts, meaning that it's likely getting the same information from all three approaches, initially telling me that just using one of them would do. But Fe04 also increased it's f1 by 0.011, meaning it's actually generalizing better when using both features together
+Logreg continued to gain exactly 0.005 on all three attempts, meaning that its likely getting the same information from all three approaches, initially telling me that just using one of them would do. But Fe04 also increased its f1 by 0.011, meaning its actually generalizing better when using both features together
 
 Knn gains were about the same as using Deck features, accuracy's slightly lower (-0.001), but the difference's small enough to be confused with noise or coincidence.
 
@@ -784,7 +784,7 @@ This investigation explores three independent questions:
 
 #### fe06__age_imputation_title
 
-Age have 20% of it's values missing, imputing with median is decent, but not nescesarely the best. This experiments test how good imputing age with group by title is, and how this would affect the accuracy of the models.
+Age have 20% of its values missing, imputing with median is decent, but not nescesarely the best. This experiments test how good imputing age with group by title is, and how this would affect the accuracy of the models.
 
 <details>
 <summary>Conclusion</summary>
@@ -831,7 +831,7 @@ Interesting how Xgb and Extra tree had no change in accuracy and barely any in f
 
 #### fe07__age_imputation_title_pclass
 
-Testing the effect of imputing using both Title and Pclass, expecting better results then imputing with title alone.
+Testing the effect of imputing using both Title and Pclass, expecting better results than imputing with title alone.
 
 <details>
 <summary>Conclusion</summary>
@@ -884,7 +884,7 @@ The overall gains remain small, likely because Age is only missing for approxima
 
 Test whether changing the representation of Age changes what the models learn.
 
-These bin were made based from previous exploratory experiments, while it's order are meant to represent the survival rate of the passenger based on it's age, rather then the age itself.
+These bin were made based from previous exploratory experiments, while its order are meant to represent the survival rate of the passenger based on its age, rather than the age itself.
 
 <details>
 <summary>Conclusion</summary>
@@ -1078,7 +1078,7 @@ Experiment akin to Cb02, but imputing age with both title and pclass.
 
 ##### Conclusion
 
-Cb03 greately improved the results of Logreg while getting results worse or aking in to experiments cb01/02. Surprisingly it was the bin that least hurt Knn, likely meaning that this imputation helped it better distribute it's distance.
+Cb03 greately improved the results of Logreg while getting results worse or aking in to experiments cb01/02. Surprisingly it was the bin that least hurt Knn, likely meaning that this imputation helped it better distribute its distance.
 
 These experiments suggest that there is no universally optimal representation of Age. Linear models benefited from combining a well-imputed continuous Age with Age_bin, while tree-based models generally obtained most of the available information from Age_bin alone. This reinforces the idea that feature engineering should be considered together with the learning algorithm rather than independently.
 
@@ -1182,7 +1182,7 @@ TicketGroupSize counts the number of passengers sharing the same ticket. The obj
 
 ##### Conclusion
 
-Ambiguous results, it helped some models, but hurt others. Considering how low it's effects are, the feature either introduces noise or captures information that is already available through existing features, such as Parch and SibSp or Fare. Only Svc seemed to have gained something meaningful from it.
+Ambiguous results, it helped some models, but hurt others. Considering how low its effects are, the feature either introduces noise or captures information that is already available through existing features, such as Parch and SibSp or Fare. Only Svc seemed to have gained something meaningful from it.
 
 </details>
 
@@ -1238,38 +1238,43 @@ The remaining question is whether TicketGroupSize becomes more informative when 
 
 #### Hypothesis
 
-Fare's values doens't directly align with passengers class, meaning fare isn't always the value paid by a single passenger, but by a group. Two possible ways to define that group is throught family and Ticket size.
+Fare does not map cleanly to Pclass, and multiple passengers sometimes share the same Ticket identifier. This suggests that Fare may not always represent the amount paid by one individual passenger. In some cases, it may instead represent the cost associated with a family or ticket group.
 
-Family is a reliable feature, as it returns the exact number of family members on the ship during the incident. But being in a family doesn't nescessarely means travelling together.
+This investigation considers two possible ways to estimate the number of passengers covered by a fare:
 
-Ticket size, on the otherside, is less certain, as it's dataset dependent in order to find the number of passengers sharing the ticket. But it's much more likely for a group sharing the same ticket to travel toghether.
+- **FamilySize**, which uses SibSp and Parch to approximate the passenger's family group.
+- **TicketGroupSize**, which counts the passengers sharing the same Ticket identifier within the available dataframe.
+
+Neither approach is guaranteed to represent the true paying group. Family members may have travelled under different tickets, while passengers sharing a ticket may not all appear in the same dataframe. The objective is therefore not to recover an exact individual fare, but to test whether either approximation produces a more useful representation than raw Fare.
 
 #### Experiments performed:
 
-### fe08__fare_per_family_member
+#### Alternative Fare representations
 
-I expected that fare is not the amount paid by one passenger, but rather the whole family. By dividing fare by the family member, I expect to give the model a more precise feature to work with. This feature is expected to give precise values across test and train data, even on unseen data. As even if some passengers aren't in one dataframe, they are still counted through SibSp/Parch.
+#### fe08__fare_per_family_member
+
+I expected that fare is not the amount paid by one passenger, but rather the whole family. By dividing fare by the family member, I expect to give the model a more precise feature to work with. FamilySize provides a dataset-independent approximation of the passenger’s immediate family group because it is calculated from SibSp and Parch rather than by counting matching rows.
 
 <details>
 <summary>Conclusion</summary>
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
   - logreg: test_accuracy_mean: 0.003
   - decision_tree: test_accuracy_mean: 0.004
 
-#### Conclusion
+##### Conclusion
 
-Fare / FamilySize appears to contain some useful information, but the underlying assumption is only approximately correct. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
+Fare_per_family appears to contain some useful information, but FamilySize is likely an imperfect approximation of the number of passengers covered by a fare. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
 
 </details>
 
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1289,7 +1294,7 @@ Fare / FamilySize appears to contain some useful information, but the underlying
 
 </details>
 
-### fe10__fare_per_ticket_member
+#### fe10__fare_per_ticket_member
  
 Feature akin to Fare/family size, but based on ticket member instead. Expected to give better results them family size, since ticket member better represents the situation inside the dataframe. But this result can vary between train/test, as it only counts the passenger inside that dataframe.
 
@@ -1297,7 +1302,7 @@ Feature akin to Fare/family size, but based on ticket member instead. Expected t
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: model_specific_mixed
 - Recommended for specific models:
@@ -1308,21 +1313,18 @@ Feature akin to Fare/family size, but based on ticket member instead. Expected t
       - test_f1_mean: 0.023
 
 
-#### Conclusion
+##### Conclusion
 
-Fare/ticket member performs better then fare/family size, suggesting that ticket groups are a better approximation of shared payment than family size.
+Fare_per_ticket_member performed somewhat better than Fare_per_family_member, particularly for KNN and Decision Tree. This suggests that passengers sharing a ticket may provide a more useful approximation of the fare group than family relationships alone.
 
-But, none of the Fare-derived features consistently outperform the original Fare feature across all models, so they should be considered optional, model-specific enhancements rather than default features.
-
-This proves that Fare contains useful information and should be retained.
-
+However, the results remain strongly model-dependent. Neither derived feature consistently outperformed the baseline across all models, so neither should replace raw Fare by default. At this stage, raw Fare remains the more dependable general representation, while Fare_per_ticket_member may be useful for selected models.
 
 </details>
 
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1334,7 +1336,7 @@ This proves that Fare contains useful information and should be retained.
 | baseline__raw     | fe10__fare_per_ticket_member | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.722 |                0.001 |
 | baseline__raw     | fe10__fare_per_ticket_member | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.748 |               -0.01  |
 
-#### Summary
+##### Summary
 
 | compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -1342,15 +1344,17 @@ This proves that Fare contains useful information and should be retained.
 
 </details>
 
-### cb04__fare_and_fare_per_family
+#### Fare representation combinations
 
-Combination exploring the effects of using both Fare and Fare/family. To find whether they bring aditional information together, a new representation, or are redundant.
+#### cb04__fare_and_fare_per_family
+
+Combination exploring the effects of using both Fare and Fare/family. To find whether they bring additional information together, a new representation, or are redundant.
 
 <details>
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: mixed
 - Recommended for specific models:
@@ -1359,11 +1363,11 @@ Combination exploring the effects of using both Fare and Fare/family. To find wh
       - test_f1_mean: 0.028
 
 
-#### Conclusion
+##### Conclusion
 
 Keeping both Fare and Fare_per_family did not improve performance for most models. Since both features describe closely related information, the additional representation appears to introduce more redundancy than useful information for most learning algorithms.
 
-Decision Tree was a notable exception, achieving the largest improvement among all models (+0.008 accuracy and +0.028 F1). This suggests that tree-based partitioning can exploit the complementary thresholds provided by the two fare representations, even when they are highly correlated.
+Decision Tree was a notable exception, achieving the largest improvement among all models (+0.008 accuracy and +0.028 F1). This suggests that Decision Tree can exploit the additional split opportunities provided by the two Fare representations, even though other tree-based models did not obtain the same benefit.
 
 Overall, Fare_per_family does not appear to be broadly useful when added alongside Fare, but it may still provide meaningful complementary information for specific tree-based models.
 
@@ -1372,7 +1376,7 @@ Overall, Fare_per_family does not appear to be broadly useful when added alongsi
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1384,7 +1388,7 @@ Overall, Fare_per_family does not appear to be broadly useful when added alongsi
 | baseline__raw     | cb04__fare_and_fare_per_family | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.724 |                0.003 |
 | baseline__raw     | cb04__fare_and_fare_per_family | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.756 |               -0.002 |
 
-#### Summary
+##### Summary
 
 | compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -1392,15 +1396,15 @@ Overall, Fare_per_family does not appear to be broadly useful when added alongsi
 
 </details>
 
-### cb05__fare_and_fare_per_ticket
+#### cb05__fare_and_fare_per_ticket
 
-_Description pending._
+Combination exploring the use of Fare with Fare/Ticket, following the same idea as CB04. I'd expect results akin to Cb04, but am curious about its effect on Decision tree.
 
 <details>
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: model_specific_negative
 - Recommended for specific models:
@@ -1408,16 +1412,18 @@ _Description pending._
   - decision_tree: test_f1_mean: 0.012
 
 
-#### Conclusion
+##### Conclusion
 
-_Conclusion pending._
+Most models experienced either negligible changes or small performance losses. Decision Tree was the main exception: its accuracy increased by only 0.002, but its F1 score increased by 0.012, suggesting that the added representation affected its balance of survivor predictions more than its total number of correct predictions.
+
+This is the second experiment suggesting that Decision Tree benefits from having multiple representations of the same underlying information. Although the evidence is still limited, the consistency across experiments makes this hypothesis increasingly plausible.
 
 </details>
 
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1429,7 +1435,7 @@ _Conclusion pending._
 | baseline__raw     | cb05__fare_and_fare_per_ticket | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
 | baseline__raw     | cb05__fare_and_fare_per_ticket | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.759 |                0.001 |
 
-#### Summary
+##### Summary
 
 | compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -1437,23 +1443,105 @@ _Conclusion pending._
 
 </details>
 
+#### cb06__all_fare_features
+
+Combo experiment testing the effect of having all fare features together. The expected results is a configuration akin to CB04, roughly the same results or slightly worse, as too many representations of the same feature likely become redundant, diminishing its return. 
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.004
+    - Secondary gains:
+      - test_f1_mean: 0.025
+
+
+##### Conclusion
+
+Using all three Fare representations confirmed the pattern observed in the previous combination experiments. Most models either showed negligible changes or slight performance degradation, suggesting that the additional representations provide little information beyond what is already available through Fare itself.
+
+Decision Tree remained the exception, achieving a meaningful improvement in F1 (+0.025) despite a modest accuracy gain (+0.004). This is the third consecutive experiment in which Decision Tree benefited from multiple representations of Fare, strengthening the hypothesis that Decision Tree configuration can exploit correlated representations more effectively than the other evaluated models.
+
+However, the improvement was smaller than the one obtained with Fare + Fare_per_Family alone. This suggests that additional representations exhibit diminishing returns: once the most useful complementary information has been introduced, further correlated features become increasingly redundant.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb06__all_fare_features | logreg        |                          0.786 |                        0.786 |                      0     |                    0.713 |                  0.712 |               -0.001 |
+| baseline__raw     | cb06__all_fare_features | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.742 |                0     |
+| baseline__raw     | cb06__all_fare_features | svc           |                          0.827 |                        0.82  |                     -0.007 |                    0.76  |                  0.752 |               -0.008 |
+| baseline__raw     | cb06__all_fare_features | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.727 |                0.025 |
+| baseline__raw     | cb06__all_fare_features | random_forest |                          0.822 |                        0.818 |                     -0.004 |                    0.744 |                  0.741 |               -0.003 |
+| baseline__raw     | cb06__all_fare_features | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.72  |               -0.001 |
+| baseline__raw     | cb06__all_fare_features | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.751 |               -0.007 |
+
+##### Summary
+
+| compare_group           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb06__all_fare_features |                          -0.002 |                         -0.007 |                          0.004 |               0.000714286 |                   -0.008 |                    0.025 |
+
+</details>
+
 #### Overall conclusion
 
-_.Conclusion._
+Neither Fare_per_family_member nor Fare_per_ticket_member consistently outperformed raw Fare across all models. Fare_per_ticket_member produced somewhat stronger individual results, suggesting that ticket groups may approximate shared fares better than family relationships, but its usefulness remained model-dependent.
+
+For most models, combining raw Fare with one or more derived representations introduced redundancy without adding enough new information to improve performance. Raw Fare therefore remains the strongest general-purpose representation.
+
+Decision Tree was the clear exception. It benefited in all three combination experiments, particularly when Fare was paired with Fare_per_family_member. However, adding Fare_per_ticket_member as a third representation did not improve on that result, indicating diminishing returns as the representations became increasingly redundant.
+
+Overall, the Fare investigation shows that alternative representations can expose useful model-specific relationships, but more representations are not automatically better. Their usefulness depends both on the quality of the transformation and on the learning algorithm receiving it.
 
 #### Findings
 
-_.Findings._
+- Neither FamilySize nor TicketGroupSize provides a perfect estimate of the number of passengers covered by a fare.
+
+- Fare_per_ticket_member was generally more useful than Fare_per_family_member, but neither derived feature consistently outperformed raw Fare.
+
+- Raw Fare remains the most reliable general-purpose representation, while normalized Fare features are better treated as model-specific alternatives.
+
+- Multiple representations of the same underlying information should not be assumed to outperform their individual components. They may provide useful split opportunities for some models while creating redundancy for others.
+
+- Decision Tree consistently benefited from combining raw Fare with a normalized representation, but the same pattern did not extend to Random Forest, Extra Trees, or XGBoost.
+
+- Adding a third Fare representation produced diminishing returns, suggesting that complementary information eventually gives way to redundancy.
 
 #### hypotheses
 
-_.Hypotheses._
+- Decision Tree may benefit from receiving multiple representations of the same underlying feature because each representation provides different candidate split thresholds.
+
+- The benefit appears to show diminishing returns once additional representations become strongly redundant. Future experiments in other feature domains are needed to determine whether this is a general Decision Tree pattern or specific to Fare.
 
 #### Current recommendation
 
-_.Recommendation._
+- **Default for all models**
+  - Raw Fare
+
+- **Logistic Regression**
+  - Fare_per_family_member or Fare_per_ticket_member may be tested as alternatives, although gains were small.
+
+- **KNN**
+  - Fare_per_ticket_member
+
+- **Decision Tree**
+  - Fare + Fare_per_family_member
+
+- **SVC, Random Forest, Extra Trees, and XGBoost**
+  - Keep raw Fare; no derived or combined representation produced a meaningful improvement.
 
 ---
+
 
 ## Lessons learned
 

@@ -851,5 +851,42 @@
       }
     },
     "discard": false
+  },
+  "cb06__all_fare_features": {
+    "compare_group": "cb06__all_fare_features",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": 0.004,
+    "min_delta": -0.007,
+    "positive_models": [
+      "decision_tree"
+    ],
+    "neutral_models": [
+      "logreg",
+      "extra_trees"
+    ],
+    "negative_models": [
+      "knn",
+      "svc",
+      "random_forest",
+      "xgb"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "decision_tree": 0.004
+    },
+    "recommended_model_tradeoffs": {
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {
+          "test_f1_mean": 0.025
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
   }
 }
