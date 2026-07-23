@@ -507,9 +507,9 @@ cb01__age_and_bins = {}
 
 cb01__age_and_bins_override = {
     "feature_engineering": [add_age_bin],
-    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "features": ["Pclass", "Sex", "SibSp", "Fare", "Parch", "Embarked", "Age", "Age_bin"],
     "preprocessing": {
-            "numeric_features": ["SibSp", "Parch","Age",],
+            "numeric_features": ["Fare","SibSp", "Parch","Age",],
             "onehot_features": ["Sex", "Embarked",],
             "ordinal_features": ["Pclass", "Age_bin",],
             "numeric_imputer": "median",
@@ -535,9 +535,9 @@ cb02__age_imputed_title_and_bins = {}
 
 cb02__age_imputed_title_and_bins_override = {
     "feature_engineering": [age_imputed_by_title, add_age_bin],
-    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "features": ["Pclass", "Sex", "SibSp", "Fare", "Parch", "Embarked", "Age", "Age_bin"],
     "preprocessing": {
-            "numeric_features": ["SibSp", "Parch","Age",],
+            "numeric_features": ["Fare","SibSp", "Parch","Age",],
             "onehot_features": ["Sex", "Embarked",],
             "ordinal_features": ["Pclass", "Age_bin",],
             "numeric_imputer": "median",
@@ -561,9 +561,9 @@ ALL_EXPERIMENTS['cb02__age_imputed_title_and_bins'] = cb02__age_imputed_title_an
 # meant to explore the effect of having both the age imputed by title and pclass and
 cb03__age_imputed_title_Pclass_and_bins_override = {
     "feature_engineering": [age_imputed_by_title_pclass, add_age_bin],
-    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "features": ["Pclass", "Sex", "SibSp", "Fare", "Parch", "Embarked", "Age", "Age_bin"],
     "preprocessing": {
-            "numeric_features": ["SibSp", "Parch","Age",],
+            "numeric_features": ["Fare","SibSp", "Parch","Age",],
             "onehot_features": ["Sex", "Embarked",],
             "ordinal_features": ["Pclass", "Age_bin",],
             "numeric_imputer": "median",
@@ -655,6 +655,92 @@ cb06__all_fare_features = create_experiment_group(
 )
 
 ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features
+
+# Ablation, experiments made without an original raw feature
+
+# Ablation 01: Age and bins - Originally mistakenly made Combo utilizing both the raw age and age bins without fare.
+# meant to explore the effect of having both the raw and bins feature together, to see if they add new information together, or overlap.
+ab01__age_and_bins_without_fare = {}
+
+ab01__age_and_bins_without_fare_override = {
+    "feature_engineering": [add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare."
+}
+
+ab01__age_and_bins_without_fare = create_experiment_group(
+    stage="ab01",
+    feature_group="age_and_bins",
+    base_configs=baseline__raw,
+    group_override=ab01__age_and_bins_without_fare_override,
+    domain="age"
+)
+
+ALL_EXPERIMENTS['ab01__age_and_bins_without_fare'] = ab01__age_and_bins_without_fare
+
+# Ablation 02: Age imputed by title and bins without fare - Ablation utilizing both the age imputed by title and age bins but without the raw feature fare.
+# meant to explore the effect of having both the age imputed by title and bins feature together
+ab02__age_imputed_title_and_bins_without_fare = {}
+
+ab02__age_imputed_title_and_bins_without_fare_override = {
+    "feature_engineering": [age_imputed_by_title, add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare."
+}
+
+ab02__age_imputed_title_and_bins_without_fare = create_experiment_group(
+    stage="ab02",
+    feature_group="age_imputed_title_and_bins",
+    base_configs=baseline__raw,
+    group_override=ab02__age_imputed_title_and_bins_without_fare_override,
+    domain="age"
+)
+
+ALL_EXPERIMENTS['ab02__age_imputed_title_and_bins_without_fare'] = ab02__age_imputed_title_and_bins_without_fare
+
+# Ablation 03: Age imputed by title and pclass and bins - Ablation utilizing both the age imputed by title and pclass and age bins.
+# meant to explore the effect of having both the age imputed by title and pclass and
+ab03__age_imputed_title_Pclass_and_bins_without_fare={}
+
+ab03__age_imputed_title_Pclass_and_bins_without_fare_override = {
+    "feature_engineering": [age_imputed_by_title_pclass, add_age_bin],
+    "features": ["Pclass", "Sex", "SibSp", "Parch", "Embarked", "Age", "Age_bin"],
+    "preprocessing": {
+            "numeric_features": ["SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked",],
+            "ordinal_features": ["Pclass", "Age_bin",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare."
+}
+
+ab03__age_imputed_title_Pclass_and_bins_without_fare = create_experiment_group(
+    stage="ab03",
+    feature_group="age_imputed_title_Pclass_and_bins",
+    base_configs=baseline__raw,
+    group_override=ab03__age_imputed_title_Pclass_and_bins_without_fare_override,
+    domain="age"
+)
+
+ALL_EXPERIMENTS['ab03__age_imputed_title_Pclass_and_bins_without_fare'] = ab03__age_imputed_title_Pclass_and_bins_without_fare
 
 '''
 | Feature family | Experiments      |
