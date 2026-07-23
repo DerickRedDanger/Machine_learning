@@ -1057,5 +1057,63 @@
       }
     },
     "discard": false
+  },
+  "cb07__family_features": {
+    "compare_group": "cb07__family_features",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.001,
+    "max_delta": 0.004,
+    "min_delta": -0.008,
+    "positive_models": [
+      "logreg",
+      "decision_tree",
+      "extra_trees",
+      "xgb"
+    ],
+    "neutral_models": [
+      "svc",
+      "random_forest"
+    ],
+    "negative_models": [
+      "knn"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "logreg": 0.004,
+      "decision_tree": 0.004,
+      "extra_trees": 0.003,
+      "xgb": 0.003
+    },
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {
+          "test_f1_mean": 0.012
+        },
+        "secondary_cons": {}
+      },
+      "extra_trees": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "xgb": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
   }
 }

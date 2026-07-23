@@ -461,19 +461,112 @@ One exception being LogReg, which had a small gain in accuracy. Was it unable to
 
 </details>
 
+### cb07__family_features
+
+This experiment keeps both the engineered and original family to see if they complimet each other.
+
+<details>
+<summary>Conclusion</summary>
+
+
+#### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.004
+  - decision_tree: test_accuracy_mean: 0.004
+    - Secondary gains:
+      - test_f1_mean: 0.012
+  - extra_trees: test_accuracy_mean: 0.003
+  - xgb: test_accuracy_mean: 0.003
+
+
+#### Conclusion
+
+The results suggest that FamilySize and IsAlone contain useful information, but
+not enough to replace SibSp and Parch. Instead, the engineered features appear
+to complement the original representation for some models.
+
+Logistic Regression remained one of the main beneficiaries, while Decision Tree
+and XGBoost also showed small improvements. Random Forest recovered the losses
+observed in fe01, suggesting that replacing the original features discarded
+information, whereas keeping both representations preserved it.
+
+Overall, the combination produced small but broadly positive results, indicating
+that FamilySize and IsAlone are better viewed as complementary features than as
+replacements for SibSp and Parch.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+#### Comparison vs baseline__raw
+
+| reference_group   | compare_group         | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb07__family_features | logreg        |                          0.786 |                        0.79  |                      0.004 |                    0.713 |                  0.719 |                0.006 |
+| baseline__raw     | cb07__family_features | knn           |                          0.809 |                        0.801 |                     -0.008 |                    0.742 |                  0.733 |               -0.009 |
+| baseline__raw     | cb07__family_features | svc           |                          0.827 |                        0.828 |                      0.001 |                    0.76  |                  0.763 |                0.003 |
+| baseline__raw     | cb07__family_features | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.714 |                0.012 |
+| baseline__raw     | cb07__family_features | random_forest |                          0.822 |                        0.824 |                      0.002 |                    0.744 |                  0.752 |                0.008 |
+| baseline__raw     | cb07__family_features | extra_trees   |                          0.804 |                        0.807 |                      0.003 |                    0.721 |                  0.727 |                0.006 |
+| baseline__raw     | cb07__family_features | xgb           |                          0.826 |                        0.829 |                      0.003 |                    0.758 |                  0.763 |                0.005 |
+
+#### Summary
+
+| compare_group         |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb07__family_features |                      0.00128571 |                         -0.008 |                          0.004 |                0.00442857 |                   -0.009 |                    0.012 |
+
+</details>
+
+#### Overall conclusion
+
+Overall, the experiments indicate that the relationship between SibSp and Parchis already well exploited by most models.
+
+Constructing FamilySize and IsAlone alone rarely improves performance enough to justify replacing the original variables. However, keeping both the engineered and original representations often produces small positive gains, suggesting that the engineered features provide complementary information rather than strictly redundant information.
+
+The strongest and most consistent improvements were observed for Logistic
+Regression, indicating that simpler models benefit more from receiving explicit family-related representations than tree-based models.
 
 #### Findings
 
-- Most models appear capable of extracting the information contained in SibSp and Parch without explicit feature engineering. Explicitly constructing FamilySize and IsAlone therefore provides little additional information to all models but Logreg.
+- FamilySize and IsAlone do not consistently outperform the original SibSp and Parch features when used as replacements.
+
+- Keeping both the engineered and original family features generally performs better than replacing the originals.
+
+- Logistic Regression consistently benefits from engineered family features.
+
+- Most tree-based models gain only modest improvements, suggesting they already extract much of the relationship between SibSp and Parch directly.
+
+- FamilySize and IsAlone appear to provide complementary rather than redundant information.
 
 #### Current recommendation
+
 - Logistic Regression
-    - FamilySize + IsAlone.
+    - SibSp + Parch + FamilySize + IsAlone.
+    - The engineered features consistently improve performance, and the combination performs better than replacing the original variables.
 
-- All other models
-    - Raw SibSp and Parch features.
+- Decision Tree
+    - SibSp + Parch + FamilySize + IsAlone may be worthwhile.
+    - The gains are modest but consistently positive.
 
-- Revisit after combination experiments are complete.
+- Random Forest
+    - Prefer the combined representation.
+
+- Extra Trees
+    - The combined representation provides small improvements but is not essential.
+
+- XGBoost
+    - Small improvement from the combined representation.
+    - Either approach is acceptable.
+
+- KNN
+    - Prefer the original SibSp and Parch features.
+
+- SVC
+    - Prefer the original SibSp and Parch features.
 
 ---
 

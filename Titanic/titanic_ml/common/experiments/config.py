@@ -656,6 +656,38 @@ cb06__all_fare_features = create_experiment_group(
 
 ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features
 
+# Feature engineering group 01: Family features - replaces SibSp/Parch with FamilySize and IsAlone.
+cb07__family_features = {}
+
+cb07__family_features_override = {
+    "feature_engineering": [add_family_features],
+
+    "features": [
+        "Pclass", "Sex", "Age", "Fare", "SibSp", "Parch", "Embarked",
+        "FamilySize", "IsAlone",
+    ],
+
+    "preprocessing": {
+        "numeric_features": ["Age", "Fare", "SibSp", "Parch", "FamilySize", "IsAlone"],
+        "onehot_features": ["Sex", "Embarked"],
+        "ordinal_features": ["Pclass"],
+        "numeric_imputer": "median",
+        "categorical_imputer": "most_frequent",
+        "scaler": "standard",
+    },
+
+    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+}
+
+cb07__family_features = create_experiment_group(
+    stage="cb07",
+    feature_group="family_features",
+    base_configs=baseline__raw,
+    group_override=cb07__family_features_override,
+    domain="family"
+)
+ALL_EXPERIMENTS['cb07__family_features'] = cb07__family_features
+
 # Ablation, experiments made without an original raw feature
 
 # Ablation 01: Age and bins - Originally mistakenly made Combo utilizing both the raw age and age bins without fare.
