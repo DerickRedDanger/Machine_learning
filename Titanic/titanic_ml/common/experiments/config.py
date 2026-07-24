@@ -656,7 +656,7 @@ cb06__all_fare_features = create_experiment_group(
 
 ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features
 
-# Feature engineering group 01: Family features - replaces SibSp/Parch with FamilySize and IsAlone.
+# Combo 07: Family features - Using SibSp/Parch with FamilySize and IsAlone.
 cb07__family_features = {}
 
 cb07__family_features_override = {
@@ -676,7 +676,7 @@ cb07__family_features_override = {
         "scaler": "standard",
     },
 
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
 }
 
 cb07__family_features = create_experiment_group(
@@ -687,6 +687,31 @@ cb07__family_features = create_experiment_group(
     domain="family"
 )
 ALL_EXPERIMENTS['cb07__family_features'] = cb07__family_features
+
+cb08__pclass_sex_features = {}
+
+cb08__pclass_sex_features_override = {
+    "feature_engineering": [add_sex_pclass],
+    "features": ["Pclass", "Sex", "SibSp", "Fare", "Parch", "Embarked", "Age", "Sex_Pclass"],
+    "preprocessing": {
+            "numeric_features": ["Fare","SibSp", "Parch","Age",],
+            "onehot_features": ["Sex", "Embarked", "Sex_Pclass"],
+            "ordinal_features": ["Pclass",],
+            "numeric_imputer": "median",
+            "categorical_imputer": "most_frequent",
+            "scaler": "standard",
+        },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination."
+}
+
+cb08__pclass_sex_features = create_experiment_group(
+    stage="cb08",
+    feature_group="pclass_sex_features",
+    base_configs=baseline__raw,
+    group_override=cb08__pclass_sex_features_override,
+    domain="pclass_sex"
+)
+ALL_EXPERIMENTS['cb08__pclass_sex_features'] = cb08__pclass_sex_features
 
 # Ablation, experiments made without an original raw feature
 

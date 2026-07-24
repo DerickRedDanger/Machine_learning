@@ -9336,5 +9336,418 @@
     "feature_group": "family_features",
     "group": "cb07__family_features",
     "domain": "family"
+  },
+  "cb08__pclass_sex_features__logreg": {
+    "name": "cb08__pclass_sex_features__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
+  },
+  "cb08__pclass_sex_features__knn": {
+    "name": "cb08__pclass_sex_features__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
+  },
+  "cb08__pclass_sex_features__svc": {
+    "name": "cb08__pclass_sex_features__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
+  },
+  "cb08__pclass_sex_features__decision_tree": {
+    "name": "cb08__pclass_sex_features__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
+  },
+  "cb08__pclass_sex_features__random_forest": {
+    "name": "cb08__pclass_sex_features__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
+  },
+  "cb08__pclass_sex_features__extra_trees": {
+    "name": "cb08__pclass_sex_features__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
+  },
+  "cb08__pclass_sex_features__xgb": {
+    "name": "cb08__pclass_sex_features__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Fare",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Sex_Pclass"
+    ],
+    "feature_engineering": [
+      "add_sex_pclass"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Combo 08: Exploring the effect of using both raw Pclass, sex and their combination.",
+    "stage": "cb08",
+    "feature_group": "pclass_sex_features",
+    "group": "cb08__pclass_sex_features",
+    "domain": "pclass_sex"
   }
 }

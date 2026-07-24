@@ -1115,5 +1115,40 @@
     },
     "notable_secondary_improvements": {},
     "discard": false
+  },
+  "cb08__pclass_sex_features": {
+    "compare_group": "cb08__pclass_sex_features",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.002,
+    "max_delta": 0.016,
+    "min_delta": -0.005,
+    "positive_models": [
+      "logreg"
+    ],
+    "neutral_models": [
+      "knn",
+      "svc",
+      "decision_tree",
+      "extra_trees",
+      "xgb"
+    ],
+    "negative_models": [
+      "random_forest"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "logreg": 0.016
+    },
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.016,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
   }
 }

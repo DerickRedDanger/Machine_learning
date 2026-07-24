@@ -1673,22 +1673,208 @@ Overall, the Fare investigation shows that alternative representations can expos
 
 #### Current recommendation
 
-- **Default for all models**
+- Default for all models
   - Raw Fare
 
-- **Logistic Regression**
+- Logistic Regression
   - Fare_per_family_member or Fare_per_ticket_member may be tested as alternatives, although gains were small.
 
-- **KNN**
+- KNN
   - Fare_per_ticket_member
 
-- **Decision Tree**
+- Decision Tree
   - Fare + Fare_per_family_member
 
-- **SVC, Random Forest, Extra Trees, and XGBoost**
+- SVC, Random Forest, Extra Trees, and XGBoost
   - Keep raw Fare; no derived or combined representation produced a meaningful improvement.
 
+
 ---
+
+### Feature combination
+
+#### Hypothesis
+
+This investigation evaluates two complementary feature-engineering strategies.
+
+The first is replacing multiple informative features with a single engineered representation. The second is augmenting the original feature set by keeping both the engineered feature and its source variables.
+
+The objective is to determine whether engineered interactions replace existing information, complement it, or simply introduce redundancy.
+
+#### Experiments performed:
+
+#### fe12__sex_pclass
+
+Proof of concept: Evaluate whether combining two informative features into a single feature can improve predictive performance or whether the models already learn this interaction naturally.
+
+Sex and Pclass were chosen because they are among the strongest predictors in the dataset, increasing the likelihood that the experiment would produce a clear outcome rather than an ambiguous one.
+
+<details>
+<summary>Conclusion</summary>
+
+##### Interpretation
+
+- Verdict: model_specific_mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.009
+    - Secondary losses:
+      - test_f1_mean: -0.02
+  - extra_trees: test_accuracy_mean: 0.005
+    - Secondary losses:
+      - test_f1_mean: -0.019
+
+
+##### Conclusion
+
+Only Logistic Regression and Extra Trees showed a small improvement in accuracy after replacing Sex and Pclass with the combined Sex_Pclass feature. Most other models experienced a small decrease in accuracy.
+
+More importantly, every model suffered a noticeable reduction in F1 score (roughly -0.02 or more, with KNN being the only minor exception). This suggests that, although the combined feature may slightly improve overall accuracy for some models, it also leads to poorer balance between precision and recall. Even though the Titanic competition is evaluated solely on accuracy, this trade-off makes the usefulness of this feature questionable.
+
+A likely explanation is that most of these models are already capable of learning the interaction between Sex and Pclass. Replacing the original variables with a single combined feature removes flexibility from the model, preventing it from exploiting each variable independently and potentially reducing its ability to generalize.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group    | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe12__sex_pclass | logreg        |                          0.786 |                        0.795 |                      0.009 |                    0.713 |                  0.693 |               -0.02  |
+| baseline__raw     | fe12__sex_pclass | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.741 |               -0.001 |
+| baseline__raw     | fe12__sex_pclass | svc           |                          0.827 |                        0.824 |                     -0.003 |                    0.76  |                  0.732 |               -0.028 |
+| baseline__raw     | fe12__sex_pclass | decision_tree |                          0.803 |                        0.794 |                     -0.009 |                    0.702 |                  0.68  |               -0.022 |
+| baseline__raw     | fe12__sex_pclass | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.717 |               -0.027 |
+| baseline__raw     | fe12__sex_pclass | extra_trees   |                          0.804 |                        0.809 |                      0.005 |                    0.721 |                  0.702 |               -0.019 |
+| baseline__raw     | fe12__sex_pclass | xgb           |                          0.826 |                        0.82  |                     -0.006 |                    0.758 |                  0.743 |               -0.015 |
+
+##### Summary
+
+| compare_group    |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe12__sex_pclass |                     -0.00185714 |                         -0.009 |                          0.009 |                -0.0188571 |                   -0.028 |                   -0.001 |
+
+</details>
+
+#### cb08__pclass_sex_features
+
+Experiment exploring whether using combined features with their original ones leads to gains, or just adds noise.
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.016
+
+
+##### Conclusion
+
+Unlike fe12, this experiment preserves both the original variables and the engineered interaction.
+
+The results suggest that Sex_Pclass contains useful predictive information, but not enough to replace Sex and Pclass. Instead, keeping all three representations preserves the flexibility of the original variables while allowing some models to exploit the explicit interaction.
+
+Logistic Regression showed the largest improvement (+0.016 accuracy) without the substantial F1 loss observed in fe12, indicating that simpler models benefit from receiving the engineered interaction explicitly. Most other models experienced only minor changes, suggesting they already learn this relationship internally.
+
+Overall, Sex_Pclass is better viewed as a complementary feature than as a replacement for its source variables.
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group             | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:--------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb08__pclass_sex_features | logreg        |                          0.786 |                        0.802 |                      0.016 |                    0.713 |                  0.713 |                0     |
+| baseline__raw     | cb08__pclass_sex_features | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.738 |               -0.004 |
+| baseline__raw     | cb08__pclass_sex_features | svc           |                          0.827 |                        0.827 |                      0     |                    0.76  |                  0.75  |               -0.01  |
+| baseline__raw     | cb08__pclass_sex_features | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.702 |                0     |
+| baseline__raw     | cb08__pclass_sex_features | random_forest |                          0.822 |                        0.817 |                     -0.005 |                    0.744 |                  0.73  |               -0.014 |
+| baseline__raw     | cb08__pclass_sex_features | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.698 |               -0.023 |
+| baseline__raw     | cb08__pclass_sex_features | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.753 |               -0.005 |
+
+##### Summary
+
+| compare_group             |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:--------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb08__pclass_sex_features |                      0.00157143 |                         -0.005 |                          0.016 |                    -0.008 |                   -0.023 |                        0 |
+
+</details>
+
+Leaderboard
+| experiment                                   | model_name    |   test_accuracy_mean |   test_f1_mean |
+|:---------------------------------------------|:--------------|---------------------:|---------------:|
+| fe05__title__xgb                             | xgb           |                0.836 |          0.772 |
+| fe05__title__svc                             | svc           |                0.834 |          0.771 |
+| fe11__age_bin__random_forest                 | random_forest |                0.833 |          0.759 |
+| ab02__age_imputed_title_and_bins__svc        | svc           |                0.832 |          0.767 |
+| fe04__cabin_features__xgb                    | xgb           |                0.832 |          0.767 |
+| ab02__age_imputed_title_and_bins__xgb        | xgb           |                0.832 |          0.762 |
+| fe05__title__random_forest                   | random_forest |                0.832 |          0.768 |
+| fe09__ticket_group_size__svc                 | svc           |                0.832 |          0.77  |
+| cb02__age_imputed_title_and_bins__svc        | svc           |                0.831 |          0.767 |
+| cb03__age_imputed_title_Pclass_and_bins__svc | svc           |                0.831 |          0.767 |
+
+Comparison summary:
+|    | reference_group   | compare_group             | model_name    |   test_accuracy_mean_delta |   test_f1_mean_delta |
+|---:|:------------------|:--------------------------|:--------------|---------------------------:|---------------------:|
+|  0 | fe12__sex_pclass  | cb08__pclass_sex_features | logreg        |                      0.007 |                0.02  |
+|  1 | fe12__sex_pclass  | cb08__pclass_sex_features | knn           |                      0.003 |               -0.003 |
+|  2 | fe12__sex_pclass  | cb08__pclass_sex_features | svc           |                      0.003 |                0.018 |
+|  3 | fe12__sex_pclass  | cb08__pclass_sex_features | decision_tree |                      0.009 |                0.022 |
+|  4 | fe12__sex_pclass  | cb08__pclass_sex_features | random_forest |                      0.001 |                0.013 |
+|  5 | fe12__sex_pclass  | cb08__pclass_sex_features | extra_trees   |                     -0.004 |               -0.004 |
+|  6 | fe12__sex_pclass  | cb08__pclass_sex_features | xgb           |                      0.005 |                0.01  |
+
+
+#### Overall conclusion
+
+Three feature interaction studies (Family, Age, and Sex/Pclass) revealed that the usefulness of engineered feature interactions depends not only on the interaction itself, but also on how it is incorporated into the feature set.
+
+Replacing informative variables with engineered interactions frequently reduced model flexibility and degraded performance. In contrast, augmenting the original representation sometimes produced modest but consistent improvements, particularly for simpler models such as Logistic Regression.
+
+These experiments suggest that feature engineering should be viewed as a strategy for enriching the feature space rather than necessarily replacing existing variables.
+
+#### Findings
+
+- Replacing informative features with engineered interactions often reduces model flexibility and degrades performance.
+
+- Engineered interaction features are generally more useful as complementary representations than as direct replacements.
+
+- Logistic Regression consistently benefited from explicit engineered representations.
+
+- Most tree-based models already learn many feature interactions internally and therefore gained less from explicit interaction features.
+
+- Whether an engineered feature should replace or augment its source variables depends on both the feature and the learning algorithm.
+
+#### Open hypotheses
+
+- Does the benefit of explicit interaction features decrease as model complexity increases?
+
+- Would automatically learned interaction features outperform manually designed ones?
+
+- Which feature interactions genuinely introduce new information, and which merely duplicate information already available to the model?
+
+- Can feature importance or SHAP analysis explain why Logistic Regression consistently benefits more from engineered representations than tree-based models?
+
+#### Current recommendation
+
+- Logistic Regression
+    - Use the combined and original representations together (Sex, Pclass, and Sex_Pclass).
+    - The combined representation consistently improved performance without the large F1 degradation observed when replacing the original variables.
+
+- All other models
+    - Prefer the original Sex and Pclass features.
+    - The explicit interaction provides little additional benefit and may unnecessarily increase feature redundancy.
+
+---
+
 
 
 ## Lessons learned
