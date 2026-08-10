@@ -2,19 +2,19 @@
 
 ## Current leaderboard
 
+Leaderboard
 | experiment                                   | model_name    |   test_accuracy_mean |   test_f1_mean |
 |:---------------------------------------------|:--------------|---------------------:|---------------:|
 | fe05__title__xgb                             | xgb           |                0.836 |          0.772 |
 | fe05__title__svc                             | svc           |                0.834 |          0.771 |
 | fe11__age_bin__random_forest                 | random_forest |                0.833 |          0.759 |
-| fe05__title__random_forest                   | random_forest |                0.832 |          0.768 |
-| cb02__age_imputed_title_and_bins__xgb        | xgb           |                0.832 |          0.762 |
-| cb02__age_imputed_title_and_bins__svc        | svc           |                0.832 |          0.767 |
-| fe09__ticket_group_size__svc                 | svc           |                0.832 |          0.77  |
+| ab02__age_imputed_title_and_bins__svc        | svc           |                0.832 |          0.767 |
 | fe04__cabin_features__xgb                    | xgb           |                0.832 |          0.767 |
-| cb03__age_imputed_title_Pclass_and_bins__svc | svc           |                0.831 |          0.766 |
-| fe06__age_imputation_title__svc              | svc           |                0.829 |          0.764 |
-
+| ab02__age_imputed_title_and_bins__xgb        | xgb           |                0.832 |          0.762 |
+| fe05__title__random_forest                   | random_forest |                0.832 |          0.768 |
+| fe09__ticket_group_size__svc                 | svc           |                0.832 |          0.77  |
+| cb02__age_imputed_title_and_bins__svc        | svc           |                0.831 |          0.767 |
+| cb03__age_imputed_title_Pclass_and_bins__svc | svc           |                0.831 |          0.767 |
 ## EDA observations
 
 <details>

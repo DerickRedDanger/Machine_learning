@@ -469,7 +469,7 @@ fe12__sex_pclass = create_experiment_group(
     feature_group="sex_pclass",
     base_configs=baseline__raw,
     group_override=fe12__sex_pclass,
-    domain="sex"
+    domain="pclass_sex"
 )
 ALL_EXPERIMENTS['fe12__sex_pclass'] = fe12__sex_pclass
 
@@ -735,10 +735,10 @@ ab01__age_and_bins_without_fare_override = {
 
 ab01__age_and_bins_without_fare = create_experiment_group(
     stage="ab01",
-    feature_group="age_and_bins",
+    feature_group="age_and_bins_without_fare",
     base_configs=baseline__raw,
     group_override=ab01__age_and_bins_without_fare_override,
-    domain="age"
+    domain="ablation"
 )
 
 ALL_EXPERIMENTS['ab01__age_and_bins_without_fare'] = ab01__age_and_bins_without_fare
@@ -763,10 +763,10 @@ ab02__age_imputed_title_and_bins_without_fare_override = {
 
 ab02__age_imputed_title_and_bins_without_fare = create_experiment_group(
     stage="ab02",
-    feature_group="age_imputed_title_and_bins",
+    feature_group="age_imputed_title_and_bins_without_fare",
     base_configs=baseline__raw,
     group_override=ab02__age_imputed_title_and_bins_without_fare_override,
-    domain="age"
+    domain="ablation"
 )
 
 ALL_EXPERIMENTS['ab02__age_imputed_title_and_bins_without_fare'] = ab02__age_imputed_title_and_bins_without_fare
@@ -791,13 +791,43 @@ ab03__age_imputed_title_Pclass_and_bins_without_fare_override = {
 
 ab03__age_imputed_title_Pclass_and_bins_without_fare = create_experiment_group(
     stage="ab03",
-    feature_group="age_imputed_title_Pclass_and_bins",
+    feature_group="age_imputed_title_Pclass_and_bins_without_fare",
     base_configs=baseline__raw,
     group_override=ab03__age_imputed_title_Pclass_and_bins_without_fare_override,
-    domain="age"
+    domain="ablation"
 )
 
 ALL_EXPERIMENTS['ab03__age_imputed_title_Pclass_and_bins_without_fare'] = ab03__age_imputed_title_Pclass_and_bins_without_fare
+
+# Final experiments
+
+Final_experiments_baseline = {experiment['model_name']:experiment for experiment in ALL_EXPERIMENTS['baseline__raw']}
+
+Final_experiments_v1 = {}
+
+# **LogReg**: Title, Age imputed by title/Pclass and bins, Pclass/Sex features, family, deck.
+logred_v1_override = {
+    "feature_engineering": [add_full_title_feature,age_imputed_by_title,add_age_bin, add_sex_pclass,add_family_features,add_deck],
+    "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "Title","Age_bin", "Sex_Pclass", "FamilySize", "IsAlone","Deck"],
+    "preprocessing": {
+        "numeric_features": ["Age", "SibSp", "Parch", "Fare","FamilySize", "IsAlone"],
+        "onehot_features": ["Sex", "Embarked", "Title", "Sex_Pclass","Deck"],
+        "ordinal_features": ["Pclass","Age_bin"],
+        "numeric_imputer": "median",
+        "categorical_imputer": "most_frequent",
+        "scaler": "standard",
+        },
+    "notes": "Feature engineering 05: adds Title feature, which extracts the title from the passenger's name. This is expected to give more information about the passenger's social status, which can be a strong signal for survival. The title is extracted and then grouped into common titles and a 'Rare' category for less common titles."
+}
+
+logred_v1 = create_experiment_group(
+    stage="fi",
+    feature_group="title",
+    base_configs=Final_experiments_baseline,
+    group_override=logred_v1_override,
+    domain="Final_v1"
+)
+Final_experiments_v1['logred_v1'] = logred_v1
 
 '''
 | Feature family | Experiments      |

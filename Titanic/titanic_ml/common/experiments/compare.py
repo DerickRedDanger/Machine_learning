@@ -387,3 +387,283 @@ def domain_best_by_model_with_baseline_delta(
     )
 
     return best_df
+
+
+METRIC_COLUMNS = {
+    "accuracy": "test_accuracy_mean",
+    "precision": "test_precision_mean",
+    "recall": "test_recall_mean",
+    "f1": "test_f1_mean",
+}
+
+
+def recommended_by_domain_for_model(
+    results_df,
+    model_name,
+    thresholds,
+    baseline_group="baseline__raw",
+    only_success=True,
+):
+    """
+    Selects at most one recommended experiment per domain for a model.
+
+    Experiments must satisfy every metric threshold relative to the model's
+    baseline result. Among valid experiments in each domain, the best one is
+    selected according to the priority order of the metrics in `thresholds`.
+
+    Parameters
+    ----------
+    results_df : pd.DataFrame
+        DataFrame containing experiment results.
+
+    model_name : str
+        Model to evaluate.
+
+    thresholds : dict[str, float]
+        Minimum acceptable delta for each metric.
+
+        Supported keys:
+            - "accuracy"
+            - "precision"
+            - "recall"
+            - "f1"
+
+        Dictionary insertion order determines ranking priority.
+
+        Example:
+            {
+                "accuracy": 0.003,
+                "f1": -0.01,
+            }
+
+        means:
+            1. accuracy delta must be >= 0.003
+            2. f1 delta must be >= -0.01
+            3. accuracy is the primary ranking metric
+            4. f1 is the secondary ranking metric
+
+    baseline_group : str, default="baseline__raw"
+        Experiment group used as baseline.
+
+    only_success : bool, default=True
+        If True, ignores failed experiments.
+
+    Returns
+    -------
+    dict
+        {
+            "df": all model experiments with calculated deltas,
+            "recommended_df": best valid experiment per domain,
+            "recommended": compact list of recommendations,
+        }
+    """
+
+    if not thresholds:
+        raise ValueError("At least one metric threshold must be provided.")
+
+    invalid_metrics = [
+        metric
+        for metric in thresholds
+        if metric not in METRIC_COLUMNS
+    ]
+
+    if invalid_metrics:
+        raise ValueError(
+            f"Unsupported metrics: {invalid_metrics}. "
+            f"Supported metrics are: {list(METRIC_COLUMNS)}"
+        )
+
+    df = results_df.copy()
+
+    if only_success and "status" in df.columns:
+        df = df[df["status"] == "success"]
+
+    # ---------------------------------------------------------
+    # 1. Select the requested model
+    # ---------------------------------------------------------
+
+    model_df = df[df["model_name"] == model_name].copy()
+
+    if model_df.empty:
+        raise ValueError(
+            f"No results found for model '{model_name}'."
+        )
+
+    # ---------------------------------------------------------
+    # 2. Retrieve exactly one baseline row
+    # ---------------------------------------------------------
+
+    baseline_df = model_df[
+        model_df["group"] == baseline_group
+    ]
+
+    if len(baseline_df) != 1:
+        raise ValueError(
+            f"Expected exactly one baseline result for model "
+            f"'{model_name}' in group '{baseline_group}', "
+            f"found {len(baseline_df)}."
+        )
+
+    baseline_row = baseline_df.iloc[0]
+
+    # ---------------------------------------------------------
+    # 3. Remove baseline from candidate experiments
+    # ---------------------------------------------------------
+
+    experiment_df = model_df[
+        model_df["group"] != baseline_group
+    ].copy()
+
+    if experiment_df.empty:
+        raise ValueError(
+            f"No non-baseline experiments found for model "
+            f"'{model_name}'."
+        )
+
+    # Domain is now required metadata for experiment selection.
+    missing_domain = experiment_df["domain"].isna()
+
+    if missing_domain.any():
+        missing_groups = (
+            experiment_df.loc[missing_domain, "group"]
+            .drop_duplicates()
+            .tolist()
+        )
+
+        raise ValueError(
+            "Some non-baseline experiments have no domain: "
+            f"{missing_groups}"
+        )
+
+    # ---------------------------------------------------------
+    # 4. Calculate deltas for requested metrics
+    # ---------------------------------------------------------
+
+    delta_columns = []
+
+    for metric in thresholds:
+        metric_col = METRIC_COLUMNS[metric]
+
+        if metric_col not in experiment_df.columns:
+            raise ValueError(
+                f"Metric column '{metric_col}' not found "
+                "in results dataframe."
+            )
+
+        baseline_value = baseline_row[metric_col]
+
+        delta_col = f"{metric}_delta_vs_baseline"
+
+        experiment_df[delta_col] = (
+            experiment_df[metric_col] - baseline_value
+        )
+
+        delta_columns.append(delta_col)
+
+    # ---------------------------------------------------------
+    # 5. Apply every threshold
+    # ---------------------------------------------------------
+
+    candidate_mask = pd.Series(
+        True,
+        index=experiment_df.index,
+    )
+
+    for metric, threshold in thresholds.items():
+        delta_col = f"{metric}_delta_vs_baseline"
+
+        candidate_mask &= (
+            experiment_df[delta_col] >= threshold
+        )
+
+    candidate_df = experiment_df[candidate_mask].copy()
+
+    # ---------------------------------------------------------
+    # 6. Rank candidates according to metric priority
+    # ---------------------------------------------------------
+
+    if candidate_df.empty:
+        recommended_df = candidate_df.copy()
+
+    else:
+        recommended_df = (
+            candidate_df
+            .sort_values(
+                by=delta_columns,
+                ascending=[False] * len(delta_columns),
+                kind="stable",
+            )
+            .drop_duplicates(
+                subset="domain",
+                keep="first",
+            )
+            .reset_index(drop=True)
+        )
+
+    # ---------------------------------------------------------
+    # 7. Build compact recommendation output
+    # ---------------------------------------------------------
+
+    recommended = []
+
+    for _, row in recommended_df.iterrows():
+
+        deltas = {
+            metric: round(
+                row[f"{metric}_delta_vs_baseline"],
+                3,
+            )
+            for metric in thresholds
+        }
+
+        recommended.append({
+            "domain": row["domain"],
+            "group": row["group"],
+            "experiment": row["experiment"],
+            "deltas": deltas,
+        })
+
+    # ---------------------------------------------------------
+    # 8. Useful display dataframe
+    # ---------------------------------------------------------
+
+    display_columns = [
+        "domain",
+        "group",
+        "experiment",
+        "model_name",
+        *[
+            METRIC_COLUMNS[metric]
+            for metric in thresholds
+        ],
+        *delta_columns,
+    ]
+
+    display_columns = [
+        col
+        for col in display_columns
+        if col in experiment_df.columns
+    ]
+
+    experiment_df = (
+        experiment_df[display_columns]
+        .sort_values(
+            ["domain", *delta_columns],
+            ascending=[True] + [False] * len(delta_columns),
+        )
+        .reset_index(drop=True)
+    )
+
+    recommended_df = recommended_df[
+        [
+            col
+            for col in display_columns
+            if col in recommended_df.columns
+        ]
+    ]
+
+    return {
+        "df": experiment_df,
+        "recommended_df": recommended_df,
+        "recommended": recommended,
+    }

@@ -1,3 +1,39 @@
+# Feature Engineering and Model Behavior: A Titanic Case Study
+
+This project serves both as a machine-learning study and as a demonstration of
+a reproducible experimentation workflow.
+
+Using the Titanic dataset as a controlled environment, the project investigates
+how different feature-engineering strategies affect several classical machine-
+learning models. Rather than focusing only on achieving the highest possible
+score, the study aims to understand why particular feature representations help
+some models, harm others, or become redundant when combined.
+
+The process covers dataset exploration, feature engineering, controlled
+experiments, model-specific feature selection, and finally the construction and
+tuning of the strongest resulting models.
+
+Experiment definitions are maintained in
+`titanic_ml/common/experiments/config.py`, while experiment results and the
+configurations used to produce them are stored under `titanic_ml/results/`.
+
+## Current leaderboard
+
+Leaderboard
+| experiment                                                | model_name    |   test_accuracy_mean |   test_f1_mean |
+|:----------------------------------------------------------|:--------------|---------------------:|---------------:|
+| fe05__title__xgb                                          | xgb           |                0.836 |          0.772 |
+| fe05__title__svc                                          | svc           |                0.834 |          0.771 |
+| fe11__age_bin__random_forest                              | random_forest |                0.833 |          0.759 |
+| fe05__title__random_forest                                | random_forest |                0.832 |          0.768 |
+| fe09__ticket_group_size__svc                              | svc           |                0.832 |          0.77  |
+| fe04__cabin_features__xgb                                 | xgb           |                0.832 |          0.767 |
+| cb03__age_imputed_title_Pclass_and_bins__svc              | svc           |                0.831 |          0.767 |
+| cb02__age_imputed_title_and_bins__svc                     | svc           |                0.831 |          0.767 |
+| fe06__age_imputation_title__svc                           | svc           |                0.829 |          0.764 |
+| fe11__age_bin__svc                                        | svc           |                0.829 |          0.764 |
+
+
 ## Dataset exploration (EDA)
 
 ### Dataset overview
@@ -367,6 +403,8 @@
     - Family
     - Ticket_group
     - Age_bin
+- **Investigate:**
+    - Name 
 
 ---
 
@@ -393,7 +431,64 @@
 - investigate effects of scaling and transformations
 - Fare seems to be the price paid per ticket. Divide by family and ticket groups to find individual fare
 
+## Baseline experiment
 
+Before investigating feature engineering, a common baseline was established for
+all evaluated models. This provides a fixed reference against which later
+experiments can be compared.
+
+### Baseline features
+
+- Pclass
+- Sex
+- Age
+- SibSp
+- Parch
+- Fare
+- Embarked
+
+`PassengerId`, `Name`, `Ticket`, and `Cabin` were not used directly in the
+baseline. Although several of them later provided useful engineered features,
+their raw representations were either identifier-like, highly sparse, or
+high-cardinality.
+
+### Models evaluated
+
+- Logistic Regression
+- K-Nearest Neighbors
+- Support Vector Classifier
+- Decision Tree
+- Random Forest
+- Extra Trees
+- XGBoost
+
+The baseline model configurations are defined in
+`titanic_ml/common/experiments/config.py`. The exact configurations used for
+executed experiments are also preserved in
+`titanic_ml/results/experiments_used_config.json`.
+
+Except for the final model-selection and tuning stages, all experiments use the
+same baseline model parameters. Experimental changes are restricted to feature
+engineering and preprocessing so that differences in performance can be
+attributed as directly as possible to changes in the data representation.
+
+### Result
+
+| model_name    | accuracy      | f1            |
+|:--------------|:--------------|:--------------|
+| logreg        | 0.786 ± 0.018 | 0.713 ± 0.026 |
+| knn           | 0.809 ± 0.021 | 0.742 ± 0.026 |
+| svc           | 0.827 ± 0.015 | 0.76 ± 0.026  |
+| decision_tree | 0.803 ± 0.023 | 0.702 ± 0.055 |
+| random_forest | 0.822 ± 0.02  | 0.744 ± 0.041 |
+| extra_trees   | 0.804 ± 0.012 | 0.721 ± 0.025 |
+| xgb           | 0.826 ± 0.025 | 0.758 ± 0.041 |
+
+### Observations
+
+SVC and XGBoost produced the strongest initial baselines, followed closely by Random Forest.
+
+Logistic Regression began with the weakest accuracy among the evaluated models, but its simplicity makes it a useful reference model. Its later response to explicit feature engineering also makes it particularly informative when studying how feature representation affects simpler linear models.
 ---
 
 ## Feature Investigation
@@ -779,7 +874,7 @@ This suggests that Cabin contains meaningful information, but its predictive pow
 
 Every passenger's name contains a title (e.g., Mr., Mrs., Miss., Master). These titles may encode information about the passenger's gender, approximate age, and social status.
 
-Since Sex, Pclass and Fare already capture part of this information, I initially expected Title to provide only a modest improvement. Nevertheless, because it combines multiple characteristics into a single feature, it was worth investigating. Additionally, Title may prove useful for imputing missing Age values.
+Since Sex, Pclass and Fare already capture part of this information, I expect Title to provide only a modest improvement. Nevertheless, because it combines multiple characteristics into a single feature, it was worth investigating. Additionally, Title may prove useful for imputing missing Age values.
 
 #### Experiments performed:
 
@@ -831,8 +926,6 @@ One particularly interesting observation is that Logistic Regression improved by
 </details>
 
 #### Overall conclusion
-
-Title feature produced the largest improvements so far and it extended to all models, meaning this is a good feature to use in future datasets.
 
 Title proved to be the most informative engineered feature explored so far, improving every tested model. Unlike previous feature engineering attempts, its benefits were both consistent and substantial.
 
@@ -1053,7 +1146,7 @@ It also serves as a proof of concept for combo experiments: testing whether the 
 
 ##### Conclusion
 
-Using both continuous Age and Age_bin provides little universal benefit. Most models perform similarly to using one representation alone, while Decision Tree and Random Forest lose much of the benefit obtained from Age_bin by itself. Logistic Regression is the primary exception, suggesting that the continuous and ordinal representations contain complementary information for linear models.
+Using both continuous Age and Age_bin provides little universal benefit. Most models perform similarly to using one representation alone, while Decision Tree and Random Forest lose much of the benefit obtained from Age_bin by itself. Extra tree is the primary exception, having considerable gains in both accuracy and f1. Meanwhile Logistic Regression also had gain, suggesting that the continuous and ordinal representations contain complementary information for linear models.
 
 </details>
 
@@ -1314,7 +1407,7 @@ Unlike FamilySize, TicketGroupSize depends entirely on the passengers present in
 
 #### fe09__ticket_group_size
 
-TicketGroupSize counts the number of passengers sharing the same ticket. The objective is to determine whether actual travel groups contain more predictive information than family relationships alone.
+TicketGroupSize counts the number of passengers sharing the same ticket. The objective is to determine whether actual travel groups contain more predictive information than family relationships.
 
 <details>
 <summary>Conclusion</summary>
@@ -1394,6 +1487,8 @@ This investigation considers two possible ways to estimate the number of passeng
 - **TicketGroupSize**, which counts the passengers sharing the same Ticket identifier within the available dataframe.
 
 Neither approach is guaranteed to represent the true paying group. Family members may have travelled under different tickets, while passengers sharing a ticket may not all appear in the same dataframe. The objective is therefore not to recover an exact individual fare, but to test whether either approximation produces a more useful representation than raw Fare.
+
+Another approach worth of investigation is whether using both raw fate and the engineered one could lead to better predictions, or if it's just redundancy.
 
 #### Experiments performed:
 
@@ -1807,32 +1902,6 @@ Overall, Sex_Pclass is better viewed as a complementary feature than as a replac
 
 </details>
 
-Leaderboard
-| experiment                                   | model_name    |   test_accuracy_mean |   test_f1_mean |
-|:---------------------------------------------|:--------------|---------------------:|---------------:|
-| fe05__title__xgb                             | xgb           |                0.836 |          0.772 |
-| fe05__title__svc                             | svc           |                0.834 |          0.771 |
-| fe11__age_bin__random_forest                 | random_forest |                0.833 |          0.759 |
-| ab02__age_imputed_title_and_bins__svc        | svc           |                0.832 |          0.767 |
-| fe04__cabin_features__xgb                    | xgb           |                0.832 |          0.767 |
-| ab02__age_imputed_title_and_bins__xgb        | xgb           |                0.832 |          0.762 |
-| fe05__title__random_forest                   | random_forest |                0.832 |          0.768 |
-| fe09__ticket_group_size__svc                 | svc           |                0.832 |          0.77  |
-| cb02__age_imputed_title_and_bins__svc        | svc           |                0.831 |          0.767 |
-| cb03__age_imputed_title_Pclass_and_bins__svc | svc           |                0.831 |          0.767 |
-
-Comparison summary:
-|    | reference_group   | compare_group             | model_name    |   test_accuracy_mean_delta |   test_f1_mean_delta |
-|---:|:------------------|:--------------------------|:--------------|---------------------------:|---------------------:|
-|  0 | fe12__sex_pclass  | cb08__pclass_sex_features | logreg        |                      0.007 |                0.02  |
-|  1 | fe12__sex_pclass  | cb08__pclass_sex_features | knn           |                      0.003 |               -0.003 |
-|  2 | fe12__sex_pclass  | cb08__pclass_sex_features | svc           |                      0.003 |                0.018 |
-|  3 | fe12__sex_pclass  | cb08__pclass_sex_features | decision_tree |                      0.009 |                0.022 |
-|  4 | fe12__sex_pclass  | cb08__pclass_sex_features | random_forest |                      0.001 |                0.013 |
-|  5 | fe12__sex_pclass  | cb08__pclass_sex_features | extra_trees   |                     -0.004 |               -0.004 |
-|  6 | fe12__sex_pclass  | cb08__pclass_sex_features | xgb           |                      0.005 |                0.01  |
-
-
 #### Overall conclusion
 
 Three feature interaction studies (Family, Age, and Sex/Pclass) revealed that the usefulness of engineered feature interactions depends not only on the interaction itself, but also on how it is incorporated into the feature set.
@@ -1875,7 +1944,74 @@ These experiments suggest that feature engineering should be viewed as a strateg
 
 ---
 
+### Feature investigation closure
 
+The feature-combination investigation marks the end of the exploratory
+feature-engineering phase of this case study.
+
+Additional experiments are still possible, particularly interactions between
+features from unrelated domains. However, the experiments performed so far
+already demonstrate the major behaviors this study set out to investigate:
+features may be useful as replacements, complementary representations, or
+model-specific transformations, while additional combinations frequently show
+diminishing returns or introduce redundancy.
+
+At this point, further feature exploration is expected to provide relatively
+small additional learning compared with the effort required.
+
+The project therefore moves from exploration to model construction. The
+findings from the feature investigations will now be used to assemble a
+model-specific feature configuration for each algorithm. These configurations
+will be evaluated before the strongest candidates proceed to hyperparameter
+tuning.
+
+## Final experiments
+
+The exploratory experiments evaluated individual feature-engineering ideas in
+isolation. The final experiments test whether the most promising
+model-specific modifications continue to provide value when combined into a
+single configuration.
+
+This stage therefore serves as the bridge between feature investigation and
+model optimization.
+
+### Selecting candidate features
+
+Final configurations are constructed from the baseline configuration together
+with the strongest acceptable experiment from each feature domain.
+
+Because the Titanic competition evaluates accuracy, accuracy is used as the
+primary selection metric. F1 is retained as a secondary guardrail to avoid
+selecting configurations whose accuracy gains are accompanied by substantial
+losses in classification balance.
+
+An experiment is considered a candidate when:
+
+- its cross-validation accuracy improves by at least **+0.003** relative to the
+  baseline;
+- its F1 score does not decrease by more than **-0.010**;
+- it represents a canonical feature-engineering experiment rather than an
+  ablation.
+
+At most one experiment is selected from each feature domain.
+
+A helper function applies these rules to the stored experiment results and
+returns the strongest qualifying candidate for each domain. The resulting
+recommendations are then reviewed manually against the corresponding feature
+investigation before the final configuration is assembled.
+
+Diagnostic ablations are excluded from automatic candidate selection because their purpose is to measure the marginal contribution of an existing feature rather than propose an alternative feature representation. Their findings may still influence manual decisions when assembling the final configurations.
+
+| Model               | Selected experiment candidates                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Logistic Regression | `fe05__title`, `cb03__age_imputed_title_Pclass_and_bins`, `cb08__pclass_sex_features`, `fe01__family`, `fe04__cabin_features`, `fe08__fare_per_family_member` |
+| KNN                 | `fe05__title`, `fe03__deck`, `fe10__fare_per_ticket_member`                                                                                                   |
+| SVC                 | `fe05__title`, `fe09__ticket_group_size`, `cb02__age_imputed_title_and_bins`                                                                                  |
+| Decision Tree       | `fe05__title`, `cb04__fare_and_fare_per_family`, `fe11__age_bin`, `cb07__family_features`                                                                     |
+| Random Forest       | `fe11__age_bin`, `fe05__title`                                                                                                                                |
+| Extra Trees         | `fe05__title`, `cb03__age_imputed_title_Pclass_and_bins`, `fe02__has_cabin`, `cb07__family_features`, `fe09__ticket_group_size`                               |
+| XGBoost             | `fe05__title`, `fe04__cabin_features`, `cb07__family_features`                                                                                                |
+These experiments identify candidate modifications rather than complete configurations. Their feature-engineering and preprocessing requirements are manually reconciled before the final experiments are executed.
 
 ## Lessons learned
 

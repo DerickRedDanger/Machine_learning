@@ -4882,7 +4882,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "fe12__sex_pclass__knn": {
     "name": "fe12__sex_pclass__knn",
@@ -4929,7 +4929,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "fe12__sex_pclass__svc": {
     "name": "fe12__sex_pclass__svc",
@@ -4980,7 +4980,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "fe12__sex_pclass__decision_tree": {
     "name": "fe12__sex_pclass__decision_tree",
@@ -5029,7 +5029,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "fe12__sex_pclass__random_forest": {
     "name": "fe12__sex_pclass__random_forest",
@@ -5080,7 +5080,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "fe12__sex_pclass__extra_trees": {
     "name": "fe12__sex_pclass__extra_trees",
@@ -5131,7 +5131,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "fe12__sex_pclass__xgb": {
     "name": "fe12__sex_pclass__xgb",
@@ -5184,7 +5184,7 @@
     "stage": "fe12",
     "feature_group": "sex_pclass",
     "group": "fe12__sex_pclass",
-    "domain": "sex"
+    "domain": "pclass_sex"
   },
   "cb01__age_and_bins__logreg": {
     "name": "cb01__age_and_bins__logreg",
@@ -7752,7 +7752,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab01__age_and_bins__knn": {
     "name": "ab01__age_and_bins__knn",
@@ -7806,7 +7806,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab01__age_and_bins__svc": {
     "name": "ab01__age_and_bins__svc",
@@ -7864,7 +7864,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab01__age_and_bins__decision_tree": {
     "name": "ab01__age_and_bins__decision_tree",
@@ -7920,7 +7920,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab01__age_and_bins__random_forest": {
     "name": "ab01__age_and_bins__random_forest",
@@ -7978,7 +7978,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab01__age_and_bins__extra_trees": {
     "name": "ab01__age_and_bins__extra_trees",
@@ -8036,7 +8036,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab01__age_and_bins__xgb": {
     "name": "ab01__age_and_bins__xgb",
@@ -8096,7 +8096,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins",
     "group": "ab01__age_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__logreg": {
     "name": "ab02__age_imputed_title_and_bins__logreg",
@@ -8152,7 +8152,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__knn": {
     "name": "ab02__age_imputed_title_and_bins__knn",
@@ -8207,7 +8207,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__svc": {
     "name": "ab02__age_imputed_title_and_bins__svc",
@@ -8266,7 +8266,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__decision_tree": {
     "name": "ab02__age_imputed_title_and_bins__decision_tree",
@@ -8323,7 +8323,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__random_forest": {
     "name": "ab02__age_imputed_title_and_bins__random_forest",
@@ -8382,7 +8382,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__extra_trees": {
     "name": "ab02__age_imputed_title_and_bins__extra_trees",
@@ -8441,7 +8441,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab02__age_imputed_title_and_bins__xgb": {
     "name": "ab02__age_imputed_title_and_bins__xgb",
@@ -8502,7 +8502,7 @@
     "stage": "ab02",
     "feature_group": "age_imputed_title_and_bins",
     "group": "ab02__age_imputed_title_and_bins",
-    "domain": "age"
+    "domain": "ablation"
   },
   "ab03__age_imputed_title_Pclass_and_bins__logreg": {
     "name": "ab03__age_imputed_title_Pclass_and_bins__logreg",
@@ -8963,7 +8963,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9021,7 +9021,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9083,7 +9083,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9143,7 +9143,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9205,7 +9205,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9267,7 +9267,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9331,7 +9331,7 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Feature engineering 01: replaces SibSp/Parch with FamilySize and IsAlone.",
+    "notes": "Combo 07: Exploring the effect of using both SibSp and Parch raw features and family and isalone.",
     "stage": "cb07",
     "feature_group": "family_features",
     "group": "cb07__family_features",
@@ -9749,5 +9749,1216 @@
     "feature_group": "pclass_sex_features",
     "group": "cb08__pclass_sex_features",
     "domain": "pclass_sex"
+  },
+  "ab01__age_and_bins_without_fare__logreg": {
+    "name": "ab01__age_and_bins_without_fare__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab01__age_and_bins_without_fare__knn": {
+    "name": "ab01__age_and_bins_without_fare__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab01__age_and_bins_without_fare__svc": {
+    "name": "ab01__age_and_bins_without_fare__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab01__age_and_bins_without_fare__decision_tree": {
+    "name": "ab01__age_and_bins_without_fare__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab01__age_and_bins_without_fare__random_forest": {
+    "name": "ab01__age_and_bins_without_fare__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab01__age_and_bins_without_fare__extra_trees": {
+    "name": "ab01__age_and_bins_without_fare__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab01__age_and_bins_without_fare__xgb": {
+    "name": "ab01__age_and_bins_without_fare__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 01: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab01",
+    "feature_group": "age_and_bins_without_fare",
+    "group": "ab01__age_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__logreg": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__knn": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__svc": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__decision_tree": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__random_forest": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__extra_trees": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab02__age_imputed_title_and_bins_without_fare__xgb": {
+    "name": "ab02__age_imputed_title_and_bins_without_fare__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 02: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab02",
+    "feature_group": "age_imputed_title_and_bins_without_fare",
+    "group": "ab02__age_imputed_title_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__logreg": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__logreg",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__knn": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__knn",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__svc": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__svc",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__decision_tree": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__decision_tree",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__random_forest": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__random_forest",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__extra_trees": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__extra_trees",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
+  },
+  "ab03__age_imputed_title_Pclass_and_bins_without_fare__xgb": {
+    "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__xgb",
+    "features": [
+      "Pclass",
+      "Sex",
+      "SibSp",
+      "Parch",
+      "Embarked",
+      "Age",
+      "Age_bin"
+    ],
+    "feature_engineering": [
+      "age_imputed_by_title_pclass",
+      "add_age_bin"
+    ],
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "notes": "Ablation 03: Exploring the effect of using both raw age and age bins without fare.",
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_Pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_Pclass_and_bins_without_fare",
+    "domain": "ablation"
   }
 }

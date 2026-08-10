@@ -259,7 +259,7 @@ def run_experiment_group_workflow(
     top_models = leaderboard(
         results_df=all_results,
         metric=metrics[0],
-        top_n=10,
+        top_n=30,
     )
 
     # 5. Feature effect
