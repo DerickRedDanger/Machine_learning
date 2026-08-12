@@ -16,54 +16,190 @@ def validate_metrics(results_df, metrics):
         raise ValueError(f"Missing metric columns: {missing}")
     
 
-def leaderboard(results_df, metric="test_accuracy_mean", top_n=10, only_success=True):
+def leaderboard(
+    results_df,
+    metrics=None,
+    top_n=10,
+    only_success=True,
+    selection="all",
+    selection_column="domain",
+    selection_value="ablation",
+    sort_round_decimals=3,
+):
+    # ---------------------------------------------------------
+    # 1. Validate metrics
+    # ---------------------------------------------------------
+
+    if metrics is None:
+        metrics = ["test_accuracy_mean"]
+
+    if isinstance(metrics, str):
+        metrics = [metrics]
+
+    if not metrics:
+        raise ValueError("At least one metric must be provided.")
+
+    missing_metrics = [
+        metric
+        for metric in metrics
+        if metric not in results_df.columns
+    ]
+
+    if missing_metrics:
+        raise ValueError(
+            f"Metrics not found in results dataframe: "
+            f"{missing_metrics}"
+        )
+
+    
+
+    # ---------------------------------------------------------
+    # 2. Validate selection arguments
+    # ---------------------------------------------------------
+
+    if selection not in ["all", "only", "exclude"]:
+        raise ValueError(
+            f"Invalid selection: {selection}. "
+            "Must be one of 'all', 'only', or 'exclude'."
+        )
+
+    if selection != "all":
+        if selection_column not in results_df.columns:
+            raise ValueError(
+                f"Selection column '{selection_column}' "
+                "not found in results dataframe."
+            )
+
+        available_values = (
+            results_df[selection_column]
+            .dropna()
+            .unique()
+        )
+
+        if selection_value not in available_values:
+            raise ValueError(
+                f"Selection value '{selection_value}' "
+                f"not found in column '{selection_column}'."
+            )
+
+    # ---------------------------------------------------------
+    # 3. Copy after validation
+    # ---------------------------------------------------------
+
     df = results_df.copy()
+
+    # ---------------------------------------------------------
+    # 4. Apply selection
+    # ---------------------------------------------------------
+
+    if selection == "only":
+        df = df[df[selection_column] == selection_value]
+
+    elif selection == "exclude":
+        df = df[df[selection_column] != selection_value]
+
+    # ---------------------------------------------------------
+    # 5. Keep successful experiments only
+    # ---------------------------------------------------------
 
     if only_success and "status" in df.columns:
         df = df[df["status"] == "success"]
 
-    if metric not in df.columns:
-        raise ValueError(f"Metric '{metric}' not found in results dataframe.")
+    # ---------------------------------------------------------
+    # 6. Create temporary rounded sorting columns
+    # ---------------------------------------------------------
+
+    sort_columns = []
+
+    for metric in metrics:
+        sort_col = f"__sort_{metric}"
+
+        if sort_round_decimals is None:
+            df[sort_col] = df[metric]
+        else:
+            df[sort_col] = df[metric].round(sort_round_decimals)
+
+        sort_columns.append(sort_col)
+
+    # ---------------------------------------------------------
+    # 7. Select output columns
+    # ---------------------------------------------------------
 
     columns = [
         "experiment",
         "group",
         "model_name",
-        metric,
+        *metrics,
         "notes",
     ]
 
-    columns = [col for col in columns if col in df.columns]
+    columns = [
+        col
+        for col in columns
+        if col in df.columns
+    ]
+
+    # ---------------------------------------------------------
+    # 8. Sort using rounded metric values
+    # ---------------------------------------------------------
+
+    ranked_df = (
+        df
+        .sort_values(
+            by=sort_columns,
+            ascending=[False] * len(sort_columns),
+            kind="stable",
+        )
+        .head(top_n)
+    )
+
+    # ---------------------------------------------------------
+    # 9. Return original unrounded metric values
+    # ---------------------------------------------------------
 
     return (
-        df[columns]
-        .sort_values(metric, ascending=False)
-        .head(top_n)
+        ranked_df[columns]
         .reset_index(drop=True)
     )
 
-def titanic_notes_leaderboard(results_df, top_n=10, only_success=True):
-    df = results_df.copy()
-    metric = "test_accuracy_mean"
+def titanic_notes_leaderboard(
+    results_df,
+    top_n=10,
+    only_success=True,
+    selection="all",
+    selection_column="domain",
+    selection_value="ablation",
+):
+    metrics = [
+        "test_accuracy_mean",
+        "test_f1_mean",
+    ]
 
-    if only_success and "status" in df.columns:
-        df = df[df["status"] == "success"]
+    leaderboard_df = leaderboard(
+        results_df=results_df,
+        metrics=metrics,
+        top_n=top_n,
+        only_success=only_success,
+        selection=selection,
+        selection_column=selection_column,
+        selection_value=selection_value,
+    )
 
     columns = [
         "experiment",
         "model_name",
-        metric,
-        "test_f1_mean",
+        *metrics,
     ]
 
-    columns = [col for col in columns if col in df.columns]
+    columns = [
+        col
+        for col in columns
+        if col in leaderboard_df.columns
+    ]
 
-    return (
-        df[columns]
-        .sort_values(metric, ascending=False)
-        .head(top_n)
-        .reset_index(drop=True)
-    ).to_markdown(index=False)
+    return leaderboard_df[
+        columns
+    ].to_markdown(index=False)
 
 def get_config_group(experiment_configs):
     if not experiment_configs:

@@ -69,6 +69,22 @@ def build_preprocessor(preprocessing_config):
         verbose_feature_names_out=True,
     )
 
+def get_preprocessing_features(preprocessing):
+    feature_groups = [
+        "numeric_features",
+        "onehot_features",
+        "ordinal_features",
+    ]
+
+    features = []
+
+    for group in feature_groups:
+        features.extend(
+            preprocessing.get(group, [])
+        )
+
+    return features
+
 def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None):
     method = evaluation_config.get("method", "cross_validation")
 
@@ -116,41 +132,116 @@ def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None)
 
     return result
 
-def run_experiments(df, experiments, target, verbose=False, round_decimals=3, debug=False):
+def run_experiments(
+    df,
+    experiments,
+    target,
+    verbose=False,
+    round_decimals=3,
+    debug=False,
+):
     results = []
 
-    
-
     for exp in experiments:
-        print(f'running exp: {exp}')
+
         if verbose:
             print(f"Running experiment: {exp['name']}")
 
-        try:
-            working_df = df.copy()
-            for fn in exp.get("feature_engineering",[]):
-                if debug:
-                    print(f'Applying feature: {fn.__name__}')
-                working_df = fn(working_df)
-                if debug:
-                    print(f'Features after {fn.__name__}: {working_df.columns.tolist()}')
+        if debug:
+            print(f"Running config: {exp}")
 
-            features = exp["features"]
-            X = working_df[features]
+        try:
+            # ---------------------------------------------
+            # 1. Feature engineering
+            # ---------------------------------------------
+
+            working_df = df.copy()
+
+            for fn in exp.get("feature_engineering", []):
+
+                if debug:
+                    print(
+                        f"Applying feature: {fn.__name__}"
+                    )
+
+                working_df = fn(working_df)
+
+                if not isinstance(
+                    working_df,
+                    pd.DataFrame,
+                ):
+                    raise TypeError(
+                        "Feature engineering function "
+                        f"'{fn.__name__}' did not "
+                        "return a DataFrame."
+                    )
+
+                if debug:
+                    print(
+                        f"Features after {fn.__name__}: "
+                        f"{working_df.columns.tolist()}"
+                    )
+
+            # ---------------------------------------------
+            # 2. Validate expected model inputs
+            # ---------------------------------------------
+
+            required_features = (
+                get_preprocessing_features(
+                    exp["preprocessing"]
+                )
+            )
+
+            missing_features = [
+                feature
+                for feature in required_features
+                if feature not in working_df.columns
+            ]
+
+            if missing_features:
+                raise ValueError(
+                    "Required preprocessing features "
+                    "are missing after feature "
+                    f"engineering: {missing_features}"
+                )
+
+            # ---------------------------------------------
+            # 3. Split predictors / target
+            # ---------------------------------------------
+
+            X = working_df.drop(columns=[target])
             y = working_df[target]
 
-            preprocessor = build_preprocessor(exp["preprocessing"])
+            # ---------------------------------------------
+            # 4. Build model pipeline
+            # ---------------------------------------------
 
-            model_class = MODEL_REGISTRY.get(exp["model_name"])
+            preprocessor = build_preprocessor(
+                exp["preprocessing"]
+            )
+
+            model_class = MODEL_REGISTRY.get(
+                exp["model_name"]
+            )
+
             if model_class is None:
-                raise ValueError(f"Model '{exp['model_name']}' not found in registry.")
+                raise ValueError(
+                    f"Model '{exp['model_name']}' "
+                    "not found in registry."
+                )
 
-            model = model_class(**exp.get("model_params", {}))
+            model = model_class(
+                **exp.get("model_params", {})
+            )
 
             model_pipeline = Pipeline([
                 ("preprocessor", preprocessor),
                 ("model", model),
             ])
+
+            # ---------------------------------------------
+            # 5. Evaluate
+            # ---------------------------------------------
 
             model_result = evaluate_model(
                 model_pipeline=model_pipeline,
@@ -160,11 +251,11 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3, de
                 round_decimals=round_decimals,
             )
 
-
             result = {
                 "experiment": exp["name"],
                 "stage": exp.get("stage", ""),
-                "feature_group": exp.get("feature_group", ""),
+                "feature_group":
+                    exp.get("feature_group", ""),
                 "model_name": exp["model_name"],
                 "group": exp.get("group", ""),
                 "status": "success",
@@ -176,22 +267,41 @@ def run_experiments(df, experiments, target, verbose=False, round_decimals=3, de
             }
 
         except Exception as e:
-            result={
-                "experiment": exp["name"],
-                "model_name": exp.get("model_name", "N/A"),
+
+            result = {
+                "experiment":
+                    exp.get("name", "N/A"),
+                "stage":
+                    exp.get("stage", ""),
+                "feature_group":
+                    exp.get("feature_group", ""),
+                "model_name":
+                    exp.get("model_name", "N/A"),
+                "group":
+                    exp.get("group", ""),
                 "status": "failed",
                 "error_type": type(e).__name__,
                 "error_message": str(e),
-                "notes": exp.get("notes", ""),
+                "domain":
+                    exp.get("domain", ""),
+                "notes":
+                    exp.get("notes", ""),
             }
 
         if verbose:
-            print(f"\nExperiment '{exp['name']}' results:")
+            print(
+                f"\nExperiment "
+                f"'{exp['name']}' results:"
+            )
+
             for metric, value in result.items():
                 if metric != "experiment":
                     print(f"  {metric}: {value}")
 
-            print(f"\nExperiment '{exp['name']}' completed.")
+            print(
+                f"\nExperiment "
+                f"'{exp['name']}' completed."
+            )
             print("-" * 40)
 
         results.append(result)
@@ -258,7 +368,7 @@ def run_experiment_group_workflow(
     # 4. Leaderboard
     top_models = leaderboard(
         results_df=all_results,
-        metric=metrics[0],
+        metrics=metrics[0],
         top_n=30,
     )
 

@@ -801,18 +801,20 @@ ALL_EXPERIMENTS['ab03__age_imputed_title_Pclass_and_bins_without_fare'] = ab03__
 
 # Final experiments
 
-Final_experiments_baseline = {experiment['model_name']:experiment for experiment in ALL_EXPERIMENTS['baseline__raw']}
+Final_experiments_baseline = {
+    experiment["model_name"]: copy.deepcopy(experiment)
+    for experiment in ALL_EXPERIMENTS["baseline__raw"]
+}
 
 Final_experiments_v1 = {}
 
-# **LogReg**: Title, Age imputed by title/Pclass and bins, Pclass/Sex features, family, deck.
+# LogReg: Title, Age imputed by title/Pclass and bins, Pclass/Sex features, family, deck.
 logred_v1_override = {
-    "feature_engineering": [add_full_title_feature,age_imputed_by_title,add_age_bin, add_sex_pclass,add_family_features,add_deck],
-    "features": ["Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked", "Title","Age_bin", "Sex_Pclass", "FamilySize", "IsAlone","Deck"],
+    "feature_engineering": [add_full_title_feature,age_imputed_by_title_pclass,add_age_bin, add_sex_pclass,add_family_features,add_full_cabin_features, add_fare_per_familysize],
     "preprocessing": {
-        "numeric_features": ["Age", "SibSp", "Parch", "Fare","FamilySize", "IsAlone"],
+        "numeric_features": ["Age","FamilySize", "IsAlone", "Fare/FamilySize"],
         "onehot_features": ["Sex", "Embarked", "Title", "Sex_Pclass","Deck"],
-        "ordinal_features": ["Pclass","Age_bin"],
+        "ordinal_features": ["Pclass","Age_bin", "Has_Cabin"],
         "numeric_imputer": "median",
         "categorical_imputer": "most_frequent",
         "scaler": "standard",
@@ -821,11 +823,11 @@ logred_v1_override = {
 }
 
 logred_v1 = create_experiment_group(
-    stage="fi",
-    feature_group="title",
-    base_configs=Final_experiments_baseline,
+    stage="Final",
+    feature_group="v1",
+    base_configs=Final_experiments_baseline['logreg'],
     group_override=logred_v1_override,
-    domain="Final_v1"
+    domain="v1"
 )
 Final_experiments_v1['logred_v1'] = logred_v1
 
