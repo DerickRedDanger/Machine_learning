@@ -825,7 +825,7 @@ logred_v1_override = {
 logred_v1 = create_experiment_group(
     stage="Final",
     feature_group="v1",
-    base_configs=Final_experiments_baseline['logreg'],
+    base_configs=[Final_experiments_baseline['logreg']],
     group_override=logred_v1_override,
     domain="v1"
 )

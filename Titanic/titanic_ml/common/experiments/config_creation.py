@@ -103,52 +103,54 @@ def validate_feature_configuration(
     config,
     target="Survived",
 ):
-    preprocessing = config["preprocessing"]
 
-    groups = {
-        "numeric_features":
-            preprocessing.get("numeric_features", []),
+    for exp in config:
+        preprocessing = exp["preprocessing"]
 
-        "onehot_features":
-            preprocessing.get("onehot_features", []),
+        groups = {
+            "numeric_features":
+                preprocessing.get("numeric_features", []),
 
-        "ordinal_features":
-            preprocessing.get("ordinal_features", []),
-    }
+            "onehot_features":
+                preprocessing.get("onehot_features", []),
 
-    occurrences = {}
+            "ordinal_features":
+                preprocessing.get("ordinal_features", []),
+        }
 
-    for group_name, features in groups.items():
+        occurrences = {}
 
-        # Duplicates inside the same group
-        if len(features) != len(set(features)):
+        for group_name, features in groups.items():
+
+            # Duplicates inside the same group
+            if len(features) != len(set(features)):
+                raise ValueError(
+                    f"Duplicate feature found in "
+                    f"'{group_name}'."
+                )
+
+            for feature in features:
+                occurrences.setdefault(
+                    feature, []
+                ).append(group_name)
+
+        # Same feature assigned to multiple transformers
+        duplicates = {
+            feature: locations
+            for feature, locations in occurrences.items()
+            if len(locations) > 1
+        }
+
+        if duplicates:
             raise ValueError(
-                f"Duplicate feature found in "
-                f"'{group_name}'."
+                "Features assigned to multiple "
+                f"preprocessing groups: {duplicates}"
             )
 
-        for feature in features:
-            occurrences.setdefault(
-                feature, []
-            ).append(group_name)
-
-    # Same feature assigned to multiple transformers
-    duplicates = {
-        feature: locations
-        for feature, locations in occurrences.items()
-        if len(locations) > 1
-    }
-
-    if duplicates:
-        raise ValueError(
-            "Features assigned to multiple "
-            f"preprocessing groups: {duplicates}"
-        )
-
-    if target in occurrences:
-        raise ValueError(
-            f"Target '{target}' cannot be used "
-            "as an input feature."
-        )
+        if target in occurrences:
+            raise ValueError(
+                f"Target '{target}' cannot be used "
+                "as an input feature."
+            )
 
     return True
