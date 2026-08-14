@@ -380,13 +380,13 @@
   "fe01__family__logreg": {
     "name": "fe01__family__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -435,13 +435,13 @@
   "fe01__family__knn": {
     "name": "fe01__family__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -489,13 +489,13 @@
   "fe01__family__svc": {
     "name": "fe01__family__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -547,13 +547,13 @@
   "fe01__family__decision_tree": {
     "name": "fe01__family__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -603,13 +603,13 @@
   "fe01__family__random_forest": {
     "name": "fe01__family__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -661,13 +661,13 @@
   "fe01__family__extra_trees": {
     "name": "fe01__family__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -719,13 +719,13 @@
   "fe01__family__xgb": {
     "name": "fe01__family__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -779,13 +779,13 @@
   "fe02__has_cabin__logreg": {
     "name": "fe02__has_cabin__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -836,13 +836,13 @@
   "fe02__has_cabin__knn": {
     "name": "fe02__has_cabin__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -892,13 +892,13 @@
   "fe02__has_cabin__svc": {
     "name": "fe02__has_cabin__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -952,13 +952,13 @@
   "fe02__has_cabin__decision_tree": {
     "name": "fe02__has_cabin__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -1010,13 +1010,13 @@
   "fe02__has_cabin__random_forest": {
     "name": "fe02__has_cabin__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -1070,13 +1070,13 @@
   "fe02__has_cabin__extra_trees": {
     "name": "fe02__has_cabin__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -1130,13 +1130,13 @@
   "fe02__has_cabin__xgb": {
     "name": "fe02__has_cabin__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Has_Cabin"
     ],
     "feature_engineering": [
@@ -1192,14 +1192,14 @@
   "fe03__deck__logreg": {
     "name": "fe03__deck__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1249,14 +1249,14 @@
   "fe03__deck__knn": {
     "name": "fe03__deck__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1305,14 +1305,14 @@
   "fe03__deck__svc": {
     "name": "fe03__deck__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1365,14 +1365,14 @@
   "fe03__deck__decision_tree": {
     "name": "fe03__deck__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1423,14 +1423,14 @@
   "fe03__deck__random_forest": {
     "name": "fe03__deck__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1483,14 +1483,14 @@
   "fe03__deck__extra_trees": {
     "name": "fe03__deck__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1543,14 +1543,14 @@
   "fe03__deck__xgb": {
     "name": "fe03__deck__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Deck"
+      "Deck",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_deck"
@@ -1605,15 +1605,15 @@
   "fe04__cabin_features__logreg": {
     "name": "fe04__cabin_features__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -1664,15 +1664,15 @@
   "fe04__cabin_features__knn": {
     "name": "fe04__cabin_features__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -1722,15 +1722,15 @@
   "fe04__cabin_features__svc": {
     "name": "fe04__cabin_features__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -1784,15 +1784,15 @@
   "fe04__cabin_features__decision_tree": {
     "name": "fe04__cabin_features__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -1844,15 +1844,15 @@
   "fe04__cabin_features__random_forest": {
     "name": "fe04__cabin_features__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -1906,15 +1906,15 @@
   "fe04__cabin_features__extra_trees": {
     "name": "fe04__cabin_features__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -1968,15 +1968,15 @@
   "fe04__cabin_features__xgb": {
     "name": "fe04__cabin_features__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Has_Cabin",
-      "Deck"
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
     ],
     "feature_engineering": [
       "add_full_cabin_features"
@@ -2032,14 +2032,14 @@
   "fe05__title__logreg": {
     "name": "fe05__title__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2089,14 +2089,14 @@
   "fe05__title__knn": {
     "name": "fe05__title__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2145,14 +2145,14 @@
   "fe05__title__svc": {
     "name": "fe05__title__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2205,14 +2205,14 @@
   "fe05__title__decision_tree": {
     "name": "fe05__title__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2263,14 +2263,14 @@
   "fe05__title__random_forest": {
     "name": "fe05__title__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2323,14 +2323,14 @@
   "fe05__title__extra_trees": {
     "name": "fe05__title__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2383,14 +2383,14 @@
   "fe05__title__xgb": {
     "name": "fe05__title__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
+      "Sex",
       "Embarked",
-      "Title"
+      "Title",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_full_title_feature"
@@ -2445,13 +2445,13 @@
   "fe06__age_imputation_title__logreg": {
     "name": "fe06__age_imputation_title__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2500,13 +2500,13 @@
   "fe06__age_imputation_title__knn": {
     "name": "fe06__age_imputation_title__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2554,13 +2554,13 @@
   "fe06__age_imputation_title__svc": {
     "name": "fe06__age_imputation_title__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2612,13 +2612,13 @@
   "fe06__age_imputation_title__decision_tree": {
     "name": "fe06__age_imputation_title__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2668,13 +2668,13 @@
   "fe06__age_imputation_title__random_forest": {
     "name": "fe06__age_imputation_title__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2726,13 +2726,13 @@
   "fe06__age_imputation_title__extra_trees": {
     "name": "fe06__age_imputation_title__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2784,13 +2784,13 @@
   "fe06__age_imputation_title__xgb": {
     "name": "fe06__age_imputation_title__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title"
@@ -2844,13 +2844,13 @@
   "fe07__age_imputation_title_pclass__logreg": {
     "name": "fe07__age_imputation_title_pclass__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -2899,13 +2899,13 @@
   "fe07__age_imputation_title_pclass__knn": {
     "name": "fe07__age_imputation_title_pclass__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -2953,13 +2953,13 @@
   "fe07__age_imputation_title_pclass__svc": {
     "name": "fe07__age_imputation_title_pclass__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -3011,13 +3011,13 @@
   "fe07__age_imputation_title_pclass__decision_tree": {
     "name": "fe07__age_imputation_title_pclass__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -3067,13 +3067,13 @@
   "fe07__age_imputation_title_pclass__random_forest": {
     "name": "fe07__age_imputation_title_pclass__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -3125,13 +3125,13 @@
   "fe07__age_imputation_title_pclass__extra_trees": {
     "name": "fe07__age_imputation_title_pclass__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -3183,13 +3183,13 @@
   "fe07__age_imputation_title_pclass__xgb": {
     "name": "fe07__age_imputation_title_pclass__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "age_imputed_by_title_pclass"
@@ -3243,13 +3243,13 @@
   "fe08__fare_per_family_member__logreg": {
     "name": "fe08__fare_per_family_member__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3298,13 +3298,13 @@
   "fe08__fare_per_family_member__knn": {
     "name": "fe08__fare_per_family_member__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3352,13 +3352,13 @@
   "fe08__fare_per_family_member__svc": {
     "name": "fe08__fare_per_family_member__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3410,13 +3410,13 @@
   "fe08__fare_per_family_member__decision_tree": {
     "name": "fe08__fare_per_family_member__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3466,13 +3466,13 @@
   "fe08__fare_per_family_member__random_forest": {
     "name": "fe08__fare_per_family_member__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3524,13 +3524,13 @@
   "fe08__fare_per_family_member__extra_trees": {
     "name": "fe08__fare_per_family_member__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3582,13 +3582,13 @@
   "fe08__fare_per_family_member__xgb": {
     "name": "fe08__fare_per_family_member__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -3642,14 +3642,14 @@
   "fe09__ticket_group_size__logreg": {
     "name": "fe09__ticket_group_size__logreg",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -3699,14 +3699,14 @@
   "fe09__ticket_group_size__knn": {
     "name": "fe09__ticket_group_size__knn",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -3755,14 +3755,14 @@
   "fe09__ticket_group_size__svc": {
     "name": "fe09__ticket_group_size__svc",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -3815,14 +3815,14 @@
   "fe09__ticket_group_size__decision_tree": {
     "name": "fe09__ticket_group_size__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -3873,14 +3873,14 @@
   "fe09__ticket_group_size__random_forest": {
     "name": "fe09__ticket_group_size__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -3933,14 +3933,14 @@
   "fe09__ticket_group_size__extra_trees": {
     "name": "fe09__ticket_group_size__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -3993,14 +3993,14 @@
   "fe09__ticket_group_size__xgb": {
     "name": "fe09__ticket_group_size__xgb",
     "features": [
-      "Pclass",
-      "Sex",
-      "Age",
       "SibSp",
       "Parch",
+      "Age",
       "Fare",
+      "TicketGroupSize",
+      "Sex",
       "Embarked",
-      "TicketGroupSize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_ticket_group_size"
@@ -4055,13 +4055,13 @@
   "fe10__fare_per_ticket_member__logreg": {
     "name": "fe10__fare_per_ticket_member__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4110,13 +4110,13 @@
   "fe10__fare_per_ticket_member__knn": {
     "name": "fe10__fare_per_ticket_member__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4164,13 +4164,13 @@
   "fe10__fare_per_ticket_member__svc": {
     "name": "fe10__fare_per_ticket_member__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4222,13 +4222,13 @@
   "fe10__fare_per_ticket_member__decision_tree": {
     "name": "fe10__fare_per_ticket_member__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4278,13 +4278,13 @@
   "fe10__fare_per_ticket_member__random_forest": {
     "name": "fe10__fare_per_ticket_member__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4336,13 +4336,13 @@
   "fe10__fare_per_ticket_member__extra_trees": {
     "name": "fe10__fare_per_ticket_member__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4394,13 +4394,13 @@
   "fe10__fare_per_ticket_member__xgb": {
     "name": "fe10__fare_per_ticket_member__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -4454,11 +4454,11 @@
   "fe11__age_bin__logreg": {
     "name": "fe11__age_bin__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4507,11 +4507,11 @@
   "fe11__age_bin__knn": {
     "name": "fe11__age_bin__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4559,11 +4559,11 @@
   "fe11__age_bin__svc": {
     "name": "fe11__age_bin__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4615,11 +4615,11 @@
   "fe11__age_bin__decision_tree": {
     "name": "fe11__age_bin__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4669,11 +4669,11 @@
   "fe11__age_bin__random_forest": {
     "name": "fe11__age_bin__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4725,11 +4725,11 @@
   "fe11__age_bin__extra_trees": {
     "name": "fe11__age_bin__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4781,11 +4781,11 @@
   "fe11__age_bin__xgb": {
     "name": "fe11__age_bin__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
+      "Sex",
       "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -4841,8 +4841,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -4889,8 +4889,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -4936,8 +4936,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -4987,8 +4987,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -5036,8 +5036,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -5087,8 +5087,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -5138,8 +5138,8 @@
     "features": [
       "Age",
       "Fare",
-      "Embarked",
-      "Sex_Pclass"
+      "Sex_Pclass",
+      "Embarked"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -5189,13 +5189,13 @@
   "cb01__age_and_bins__logreg": {
     "name": "cb01__age_and_bins__logreg",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5246,13 +5246,13 @@
   "cb01__age_and_bins__knn": {
     "name": "cb01__age_and_bins__knn",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5302,13 +5302,13 @@
   "cb01__age_and_bins__svc": {
     "name": "cb01__age_and_bins__svc",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5362,13 +5362,13 @@
   "cb01__age_and_bins__decision_tree": {
     "name": "cb01__age_and_bins__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5420,13 +5420,13 @@
   "cb01__age_and_bins__random_forest": {
     "name": "cb01__age_and_bins__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5480,13 +5480,13 @@
   "cb01__age_and_bins__extra_trees": {
     "name": "cb01__age_and_bins__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5540,13 +5540,13 @@
   "cb01__age_and_bins__xgb": {
     "name": "cb01__age_and_bins__xgb",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5602,13 +5602,13 @@
   "cb02__age_imputed_title_and_bins__logreg": {
     "name": "cb02__age_imputed_title_and_bins__logreg",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5660,13 +5660,13 @@
   "cb02__age_imputed_title_and_bins__knn": {
     "name": "cb02__age_imputed_title_and_bins__knn",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5717,13 +5717,13 @@
   "cb02__age_imputed_title_and_bins__svc": {
     "name": "cb02__age_imputed_title_and_bins__svc",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5778,13 +5778,13 @@
   "cb02__age_imputed_title_and_bins__decision_tree": {
     "name": "cb02__age_imputed_title_and_bins__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5837,13 +5837,13 @@
   "cb02__age_imputed_title_and_bins__random_forest": {
     "name": "cb02__age_imputed_title_and_bins__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5898,13 +5898,13 @@
   "cb02__age_imputed_title_and_bins__extra_trees": {
     "name": "cb02__age_imputed_title_and_bins__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -5959,13 +5959,13 @@
   "cb02__age_imputed_title_and_bins__xgb": {
     "name": "cb02__age_imputed_title_and_bins__xgb",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6022,13 +6022,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__logreg": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__logreg",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6080,13 +6080,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__knn": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__knn",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6137,13 +6137,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__svc": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__svc",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6198,13 +6198,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__decision_tree": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6257,13 +6257,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__random_forest": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6318,13 +6318,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__extra_trees": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6379,13 +6379,13 @@
   "cb03__age_imputed_title_Pclass_and_bins__xgb": {
     "name": "cb03__age_imputed_title_Pclass_and_bins__xgb",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -6442,14 +6442,14 @@
   "cb04__fare_and_fare_per_family__logreg": {
     "name": "cb04__fare_and_fare_per_family__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6499,14 +6499,14 @@
   "cb04__fare_and_fare_per_family__knn": {
     "name": "cb04__fare_and_fare_per_family__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6555,14 +6555,14 @@
   "cb04__fare_and_fare_per_family__svc": {
     "name": "cb04__fare_and_fare_per_family__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6615,14 +6615,14 @@
   "cb04__fare_and_fare_per_family__decision_tree": {
     "name": "cb04__fare_and_fare_per_family__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6673,14 +6673,14 @@
   "cb04__fare_and_fare_per_family__random_forest": {
     "name": "cb04__fare_and_fare_per_family__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6733,14 +6733,14 @@
   "cb04__fare_and_fare_per_family__extra_trees": {
     "name": "cb04__fare_and_fare_per_family__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6793,14 +6793,14 @@
   "cb04__fare_and_fare_per_family__xgb": {
     "name": "cb04__fare_and_fare_per_family__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/FamilySize",
+      "Sex",
       "Embarked",
-      "Fare/FamilySize"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize"
@@ -6855,14 +6855,14 @@
   "cb05__fare_and_fare_per_ticket__logreg": {
     "name": "cb05__fare_and_fare_per_ticket__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -6912,14 +6912,14 @@
   "cb05__fare_and_fare_per_ticket__knn": {
     "name": "cb05__fare_and_fare_per_ticket__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -6968,14 +6968,14 @@
   "cb05__fare_and_fare_per_ticket__svc": {
     "name": "cb05__fare_and_fare_per_ticket__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -7028,14 +7028,14 @@
   "cb05__fare_and_fare_per_ticket__decision_tree": {
     "name": "cb05__fare_and_fare_per_ticket__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -7086,14 +7086,14 @@
   "cb05__fare_and_fare_per_ticket__random_forest": {
     "name": "cb05__fare_and_fare_per_ticket__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -7146,14 +7146,14 @@
   "cb05__fare_and_fare_per_ticket__extra_trees": {
     "name": "cb05__fare_and_fare_per_ticket__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -7206,14 +7206,14 @@
   "cb05__fare_and_fare_per_ticket__xgb": {
     "name": "cb05__fare_and_fare_per_ticket__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
       "Embarked",
-      "Fare/TicketMember"
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_ticket_member"
@@ -7268,15 +7268,15 @@
   "cb06__all_fare_features__logreg": {
     "name": "cb06__all_fare_features__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7328,15 +7328,15 @@
   "cb06__all_fare_features__knn": {
     "name": "cb06__all_fare_features__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7387,15 +7387,15 @@
   "cb06__all_fare_features__svc": {
     "name": "cb06__all_fare_features__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7450,15 +7450,15 @@
   "cb06__all_fare_features__decision_tree": {
     "name": "cb06__all_fare_features__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7511,15 +7511,15 @@
   "cb06__all_fare_features__random_forest": {
     "name": "cb06__all_fare_features__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7574,15 +7574,15 @@
   "cb06__all_fare_features__extra_trees": {
     "name": "cb06__all_fare_features__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7637,15 +7637,15 @@
   "cb06__all_fare_features__xgb": {
     "name": "cb06__all_fare_features__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "Fare/FamilySize",
-      "Fare/TicketMember"
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_fare_per_familysize",
@@ -7702,15 +7702,15 @@
   "cb07__family_features__logreg": {
     "name": "cb07__family_features__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -7761,15 +7761,15 @@
   "cb07__family_features__knn": {
     "name": "cb07__family_features__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -7819,15 +7819,15 @@
   "cb07__family_features__svc": {
     "name": "cb07__family_features__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -7881,15 +7881,15 @@
   "cb07__family_features__decision_tree": {
     "name": "cb07__family_features__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -7941,15 +7941,15 @@
   "cb07__family_features__random_forest": {
     "name": "cb07__family_features__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -8003,15 +8003,15 @@
   "cb07__family_features__extra_trees": {
     "name": "cb07__family_features__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -8065,15 +8065,15 @@
   "cb07__family_features__xgb": {
     "name": "cb07__family_features__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "Fare",
       "SibSp",
       "Parch",
-      "Embarked",
       "FamilySize",
-      "IsAlone"
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_family_features"
@@ -8129,14 +8129,14 @@
   "cb08__pclass_sex_features__logreg": {
     "name": "cb08__pclass_sex_features__logreg",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8186,14 +8186,14 @@
   "cb08__pclass_sex_features__knn": {
     "name": "cb08__pclass_sex_features__knn",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8242,14 +8242,14 @@
   "cb08__pclass_sex_features__svc": {
     "name": "cb08__pclass_sex_features__svc",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8302,14 +8302,14 @@
   "cb08__pclass_sex_features__decision_tree": {
     "name": "cb08__pclass_sex_features__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8360,14 +8360,14 @@
   "cb08__pclass_sex_features__random_forest": {
     "name": "cb08__pclass_sex_features__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8420,14 +8420,14 @@
   "cb08__pclass_sex_features__extra_trees": {
     "name": "cb08__pclass_sex_features__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8480,14 +8480,14 @@
   "cb08__pclass_sex_features__xgb": {
     "name": "cb08__pclass_sex_features__xgb",
     "features": [
-      "Pclass",
-      "Sex",
-      "SibSp",
       "Fare",
+      "SibSp",
       "Parch",
-      "Embarked",
       "Age",
-      "Sex_Pclass"
+      "Sex",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ],
     "feature_engineering": [
       "add_sex_pclass"
@@ -8542,12 +8542,12 @@
   "ab01__age_and_bins_without_fare__logreg": {
     "name": "ab01__age_and_bins_without_fare__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8597,12 +8597,12 @@
   "ab01__age_and_bins_without_fare__knn": {
     "name": "ab01__age_and_bins_without_fare__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8651,12 +8651,12 @@
   "ab01__age_and_bins_without_fare__svc": {
     "name": "ab01__age_and_bins_without_fare__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8709,12 +8709,12 @@
   "ab01__age_and_bins_without_fare__decision_tree": {
     "name": "ab01__age_and_bins_without_fare__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8765,12 +8765,12 @@
   "ab01__age_and_bins_without_fare__random_forest": {
     "name": "ab01__age_and_bins_without_fare__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8823,12 +8823,12 @@
   "ab01__age_and_bins_without_fare__extra_trees": {
     "name": "ab01__age_and_bins_without_fare__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8881,12 +8881,12 @@
   "ab01__age_and_bins_without_fare__xgb": {
     "name": "ab01__age_and_bins_without_fare__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8941,12 +8941,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__logreg": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -8997,12 +8997,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__knn": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9052,12 +9052,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__svc": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9111,12 +9111,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__decision_tree": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9168,12 +9168,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__random_forest": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9227,12 +9227,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__extra_trees": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9286,12 +9286,12 @@
   "ab02__age_imputed_title_and_bins_without_fare__xgb": {
     "name": "ab02__age_imputed_title_and_bins_without_fare__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9347,12 +9347,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__logreg": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9403,12 +9403,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__knn": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9458,12 +9458,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__svc": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9517,12 +9517,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__decision_tree": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9574,12 +9574,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__random_forest": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9633,12 +9633,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__extra_trees": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
@@ -9692,12 +9692,12 @@
   "ab03__age_imputed_title_Pclass_and_bins_without_fare__xgb": {
     "name": "ab03__age_imputed_title_Pclass_and_bins_without_fare__xgb",
     "features": [
-      "Pclass",
-      "Sex",
       "SibSp",
       "Parch",
-      "Embarked",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
       "Age_bin"
     ],
     "feature_engineering": [
