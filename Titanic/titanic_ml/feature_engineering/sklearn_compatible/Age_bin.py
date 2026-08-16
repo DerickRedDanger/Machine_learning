@@ -8,3 +8,11 @@ def age_bin_transformer():
         labels=["0", "2", "3", "1"],
         right=False,
     )
+
+AGE_BIN = {
+    "id": "age_bin",
+    "transformer": age_bin_transformer,
+    "requires": ["Age"],
+    "produces": ["Age_bin"],
+    "owns": ["Age_bin"],
+}

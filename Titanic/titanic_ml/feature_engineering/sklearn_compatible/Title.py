@@ -59,3 +59,12 @@ class TitleTransformer(BaseEstimator, TransformerMixin):
         )
 
         return X
+
+
+TITLE_TRANSFORM = {
+    "id": "title",
+    "transformer": TitleTransformer,
+    "requires": ["Name"],
+    "produces": ["Title"],
+    "owns": ["Title"],
+}
