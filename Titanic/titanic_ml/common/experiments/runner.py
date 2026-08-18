@@ -368,7 +368,7 @@ def run_experiment_group_workflow(
     # 4. Leaderboard
     top_models = leaderboard(
         results_df=all_results,
-        metrics=metrics[0],
+        metrics=metrics,
         top_n=30,
     )
 
