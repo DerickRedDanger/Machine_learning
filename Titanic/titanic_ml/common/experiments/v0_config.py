@@ -61,6 +61,8 @@ RAW_FEATURES = {
 #     },
 # }
 
+
+
 AGE_BIN_TRANSFORM = {
     "id": "age_bin",
 
@@ -118,6 +120,29 @@ FE11 = {
     },
 }
 
+FE11_LEGACY_TEST = {
+    "transformations": [
+        AGE_BIN_TRANSFORM,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Age",
+                "Fare",
+            ],
+        },
+    },
+}
+
 # Converting baseline_raw list into baseline_config dictionary
 
 baseline_config = {
@@ -136,7 +161,7 @@ validate_config_group(
 
 fe11_config = create_config_group(
     base_configs=baseline_config,
-    patches=[FE11],
+    patches=[FE11_LEGACY_TEST],
     raw_features=RAW_FEATURES,
     stage="fe11",
     feature_group="age_bin",
@@ -146,6 +171,29 @@ fe11_config = create_config_group(
         "replaces Age with Age_bin."
     ),
 )
+
+FE11_LEGACY_TEST = {
+    "transformations": [
+        AGE_BIN_TRANSFORM,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Age",
+                "Fare",
+            ],
+        },
+    },
+}
 
 # cb03_config = create_config(
 #     base_config=baseline__raw,

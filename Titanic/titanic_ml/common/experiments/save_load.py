@@ -1,5 +1,7 @@
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE, EXPERIMENT_FEATURE_EFFECT
 import pandas as pd
+import json
+from pathlib import Path
 
 def save_results(results_df, path=EXPERIMENT_RESULTS_FILE, append=True):
     path = Path(path)
@@ -23,8 +25,7 @@ def save_results(results_df, path=EXPERIMENT_RESULTS_FILE, append=True):
 def load_results(path=EXPERIMENT_RESULTS_FILE):
     return pd.read_csv(path)
 
-import json
-from pathlib import Path
+
 
 
 def make_config_json_safe(config):

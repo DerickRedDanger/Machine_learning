@@ -1,0 +1,26 @@
+{
+  "baseline__raw": {
+    "compare_group": "baseline__raw",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "logreg",
+      "knn",
+      "svc",
+      "decision_tree",
+      "random_forest",
+      "extra_trees",
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  }
+}

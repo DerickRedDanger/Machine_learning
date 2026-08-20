@@ -1,6 +1,7 @@
 import pandas as pd
 import pprint
 from pathlib import Path
+from titanic_ml.common.experiments.v0_revised_save_load import make_config_json_safe
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, titanic_notes_leaderboard
 from titanic_ml.common.experiments.presentation import feature_effect_interpretation
@@ -72,17 +73,33 @@ def baseline_summary_to_markdown(results_df):
 
 
 def experiment_config_to_markdown(config):
-    config = config.copy()
-    config['feature_engineering'] =[x.__name__ for x in config['feature_engineering']] 
-    return pprint.pformat(config, sort_dicts=False)
+    safe_config = make_config_json_safe(
+        config
+    )
+
+    return pprint.pformat(
+        safe_config,
+        sort_dicts=False,
+    )
 
 def experiment_report(results_df, experiment_configs, print_report=False):
     individual_reports = []
 
-    for result_row, config in zip(
-        results_df.to_dict(orient="records"),
-        experiment_configs
-    ):
+    configs_by_name = {
+        config["name"]: config
+        for config in experiment_configs.values()
+    }
+
+    for result_row in results_df.to_dict(orient="records"):
+        experiment_name = result_row["experiment"]
+
+        if experiment_name not in configs_by_name:
+            raise ValueError(
+                f"No configuration found for experiment "
+                f"'{experiment_name}'."
+            )
+
+        config = configs_by_name[experiment_name]
         experiment_name = result_row.get("experiment", "N/A")
 
         individual_reports.append({
@@ -136,10 +153,22 @@ def experiment_group_report_to_markdown(
     lines.append("<summary>Model details</summary>")
     lines.append("")
 
-    for result_row, config in zip(
-        results_df.to_dict(orient="records"),
-        experiment_configs
-    ):
+    configs_by_name = {
+        config["name"]: config
+        for config in experiment_configs.values()
+    }
+
+    for result_row in results_df.to_dict(orient="records"):
+        experiment_name = result_row["experiment"]
+
+        if experiment_name not in configs_by_name:
+            raise ValueError(
+                f"No configuration found for experiment "
+                f"'{experiment_name}'."
+            )
+
+        config = configs_by_name[experiment_name]
+        ...
         model_name = result_row.get("model_name", "N/A")
         exp_name = result_row.get("experiment", "N/A")
 

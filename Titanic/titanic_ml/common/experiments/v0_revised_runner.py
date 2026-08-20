@@ -7,6 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, MinMaxScaler, RobustScaler
 from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs, save_feature_effects, load_feature_effects
+from titanic_ml.common.experiments.v0_revised_save_load import save_results, load_results, save_configs, load_configs, save_feature_effects, load_feature_effects
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, analyze_feature_effect
 from titanic_ml.common.experiments.runner import build_preprocessor, evaluate_model
 
@@ -21,12 +22,8 @@ def run_experiments(
     results = []
 
     # New experiment groups are dictionaries.
-    if isinstance(experiments, dict):
-        experiment_iter = experiments.values()
-    else:
-        # Temporary compatibility while older configs still exist.
-        experiment_iter = experiments
-
+    # Temporary compatibility while older configs still exist.
+    experiment_iter = get_experiment_configs(experiments)
     for exp in experiment_iter:
 
         if verbose:
@@ -210,3 +207,141 @@ def run_experiments(
         results.append(result)
 
     return pd.DataFrame(results)
+
+def get_experiment_configs(experiment_configs):
+    if isinstance(experiment_configs, dict):
+        return experiment_configs.values()
+
+    return experiment_configs
+
+def get_config_group(experiment_configs):
+    if not experiment_configs:
+        raise ValueError(
+            "No experiment configs provided."
+        )
+
+    groups = {
+        exp.get("group")
+        for exp in get_experiment_configs(experiment_configs)
+    }
+
+    if len(groups) != 1:
+        raise ValueError(
+            f"Expected one group, found: {groups}"
+        )
+
+    return groups.pop()
+
+def run_experiment_group_workflow(
+    df,
+    experiment_configs,
+    target,
+    reference_group="baseline__raw",
+    metrics=None,
+    save=True,
+    verbose=False,
+    debug=False,
+):
+    if metrics is None:
+        metrics = [
+            "test_accuracy_mean",
+            "test_f1_mean",
+        ]
+
+    compare_group = get_config_group(
+        experiment_configs
+    )
+
+    # -------------------------------------------------
+    # 1. Run current experiment group
+    # -------------------------------------------------
+
+    group_results = run_experiments(
+        df=df,
+        experiments=experiment_configs,
+        target=target,
+        verbose=verbose,
+        debug=debug,
+    )
+
+    # -------------------------------------------------
+    # 2. Save/load combined results
+    # -------------------------------------------------
+
+    if save:
+        all_results = save_results(
+            group_results
+        )
+
+        save_configs(
+            experiment_configs
+        )
+
+    else:
+        all_results = group_results
+
+    # -------------------------------------------------
+    # 3. Compare with reference
+    # -------------------------------------------------
+
+    comparison = None
+    summary = None
+
+    if compare_group != reference_group:
+        comparison = (
+            compare_experiment_groups(
+                results_df=all_results,
+                reference_group=reference_group,
+                compare_groups=[
+                    compare_group
+                ],
+                metrics=metrics,
+            )
+        )
+
+        summary = (
+            summarize_group_comparison(
+                comparison_df=comparison,
+                metrics=metrics,
+            )
+        )
+
+    # -------------------------------------------------
+    # 4. Leaderboard
+    # -------------------------------------------------
+
+    top_models = leaderboard(
+        results_df=all_results,
+        metrics=metrics,
+        top_n=30,
+    )
+
+    # -------------------------------------------------
+    # 5. Feature effect
+    # -------------------------------------------------
+
+    feature_effect = None
+
+    if comparison is not None:
+        feature_effect = (
+            analyze_feature_effect(
+                comparison,
+                metric=metrics[0],
+            )
+        )
+
+        if save:
+            save_feature_effects(
+                feature_effect
+            )
+
+    return {
+        "group": compare_group,
+        "reference_group": reference_group,
+        "group_results": group_results,
+        "all_results": all_results,
+        "comparison": comparison,
+        "summary": summary,
+        "leaderboard": top_models,
+        "feature_effect": feature_effect,
+    }

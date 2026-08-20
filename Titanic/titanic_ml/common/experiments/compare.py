@@ -1,4 +1,5 @@
 import pandas as pd
+from titanic_ml.common.experiments.v0_revised_runner import get_experiment_configs, get_config_group
 from titanic_ml.common.models.registry import MODEL_REGISTRY
 
 DEFAULT_COMPARE_METRICS = [
@@ -200,17 +201,6 @@ def titanic_notes_leaderboard(
     return leaderboard_df[
         columns
     ].to_markdown(index=False)
-
-def get_config_group(experiment_configs):
-    if not experiment_configs:
-        raise ValueError("No experiment configs provided.")
-
-    groups = {exp.get("group") for exp in experiment_configs}
-
-    if len(groups) != 1:
-        raise ValueError(f"Expected one group, found: {groups}")
-
-    return groups.pop()
 
 def compare_experiment_groups(
     results_df,
