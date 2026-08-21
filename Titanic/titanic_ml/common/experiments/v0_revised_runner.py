@@ -10,6 +10,7 @@ from titanic_ml.common.experiments.save_load import save_results, load_results, 
 from titanic_ml.common.experiments.v0_revised_save_load import save_results, load_results, save_configs, load_configs, save_feature_effects, load_feature_effects
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, analyze_feature_effect
 from titanic_ml.common.experiments.runner import build_preprocessor, evaluate_model
+from titanic_ml.common.experiments.utils import get_experiment_configs, get_config_group
 
 def run_experiments(
     df,
@@ -207,30 +208,6 @@ def run_experiments(
         results.append(result)
 
     return pd.DataFrame(results)
-
-def get_experiment_configs(experiment_configs):
-    if isinstance(experiment_configs, dict):
-        return experiment_configs.values()
-
-    return experiment_configs
-
-def get_config_group(experiment_configs):
-    if not experiment_configs:
-        raise ValueError(
-            "No experiment configs provided."
-        )
-
-    groups = {
-        exp.get("group")
-        for exp in get_experiment_configs(experiment_configs)
-    }
-
-    if len(groups) != 1:
-        raise ValueError(
-            f"Expected one group, found: {groups}"
-        )
-
-    return groups.pop()
 
 def run_experiment_group_workflow(
     df,

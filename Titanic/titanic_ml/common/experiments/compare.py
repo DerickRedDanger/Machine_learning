@@ -1,5 +1,5 @@
 import pandas as pd
-from titanic_ml.common.experiments.v0_revised_runner import get_experiment_configs, get_config_group
+from titanic_ml.common.experiments.utils import get_experiment_configs, get_config_group
 from titanic_ml.common.models.registry import MODEL_REGISTRY
 
 DEFAULT_COMPARE_METRICS = [
