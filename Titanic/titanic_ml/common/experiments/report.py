@@ -1,7 +1,7 @@
 import pandas as pd
 import pprint
 from pathlib import Path
-from titanic_ml.common.experiments.v0_revised_save_load import make_config_json_safe
+from titanic_ml.common.experiments.save_load import make_config_json_safe
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, titanic_notes_leaderboard
 from titanic_ml.common.experiments.presentation import feature_effect_interpretation

@@ -1,25 +1,56 @@
 {
-  "baseline__raw": {
-    "compare_group": "baseline__raw",
+  "fe11__age_bin": {
+    "compare_group": "fe11__age_bin",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.0,
-    "max_delta": 0.0,
-    "min_delta": 0.0,
-    "positive_models": [],
-    "neutral_models": [
-      "logreg",
-      "knn",
-      "svc",
+    "mean_delta": 0.005,
+    "max_delta": 0.015,
+    "min_delta": -0.003,
+    "positive_models": [
       "decision_tree",
       "random_forest",
-      "extra_trees",
+      "extra_trees"
+    ],
+    "neutral_models": [
+      "knn",
+      "svc",
       "xgb"
     ],
-    "negative_models": [],
-    "verdict": "neutral",
+    "negative_models": [
+      "logreg"
+    ],
+    "verdict": "mixed",
     "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "recommended_model_deltas": {
+      "decision_tree": 0.006,
+      "random_forest": 0.011,
+      "extra_trees": 0.015
+    },
+    "recommended_model_tradeoffs": {
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.006,
+        "secondary_pros": {
+          "test_f1_mean": 0.02
+        },
+        "secondary_cons": {}
+      },
+      "random_forest": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.011,
+        "secondary_pros": {
+          "test_f1_mean": 0.015
+        },
+        "secondary_cons": {}
+      },
+      "extra_trees": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.015,
+        "secondary_pros": {
+          "test_f1_mean": 0.016
+        },
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
     "discard": false
   }

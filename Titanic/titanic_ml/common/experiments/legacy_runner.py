@@ -7,10 +7,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, MinMaxScaler, RobustScaler
 from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs, save_feature_effects, load_feature_effects
-from titanic_ml.common.experiments.save_load import save_results, load_results, save_configs, load_configs, save_feature_effects, load_feature_effects
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, analyze_feature_effect
-# from titanic_ml.common.experiments.runner import build_preprocessor, evaluate_model
-from titanic_ml.common.experiments.utils import get_experiment_configs, get_config_group
 
 def build_preprocessor(preprocessing_config):
     numeric_features = preprocessing_config.get("numeric_features", [])
@@ -72,6 +69,22 @@ def build_preprocessor(preprocessing_config):
         verbose_feature_names_out=True,
     )
 
+def get_preprocessing_features(preprocessing):
+    feature_groups = [
+        "numeric_features",
+        "onehot_features",
+        "ordinal_features",
+    ]
+
+    features = []
+
+    for group in feature_groups:
+        features.extend(
+            preprocessing.get(group, [])
+        )
+
+    return features
+
 def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None):
     method = evaluation_config.get("method", "cross_validation")
 
@@ -129,10 +142,7 @@ def run_experiments(
 ):
     results = []
 
-    # New experiment groups are dictionaries.
-    # Temporary compatibility while older configs still exist.
-    experiment_iter = get_experiment_configs(experiments)
-    for exp in experiment_iter:
+    for exp in experiments:
 
         if verbose:
             print(f"Running experiment: {exp['name']}")
@@ -141,51 +151,74 @@ def run_experiments(
             print(f"Running config: {exp}")
 
         try:
-            # -------------------------------------------------
-            # 1. Validate target
-            # -------------------------------------------------
+            # ---------------------------------------------
+            # 1. Feature engineering
+            # ---------------------------------------------
 
-            if target not in df.columns:
-                raise ValueError(
-                    f"Target column '{target}' "
-                    "not found in dataframe."
+            working_df = df.copy()
+
+            for fn in exp.get("feature_engineering", []):
+
+                if debug:
+                    print(
+                        f"Applying feature: {fn.__name__}"
+                    )
+
+                working_df = fn(working_df)
+
+                if not isinstance(
+                    working_df,
+                    pd.DataFrame,
+                ):
+                    raise TypeError(
+                        "Feature engineering function "
+                        f"'{fn.__name__}' did not "
+                        "return a DataFrame."
+                    )
+
+                if debug:
+                    print(
+                        f"Features after {fn.__name__}: "
+                        f"{working_df.columns.tolist()}"
+                    )
+
+            # ---------------------------------------------
+            # 2. Validate expected model inputs
+            # ---------------------------------------------
+
+            required_features = (
+                get_preprocessing_features(
+                    exp["preprocessing"]
                 )
-
-            # -------------------------------------------------
-            # 2. Reject legacy feature engineering
-            # -------------------------------------------------
-
-            legacy_fe = exp.get(
-                "feature_engineering",
-                []
             )
 
-            if legacy_fe:
+            missing_features = [
+                feature
+                for feature in required_features
+                if feature not in working_df.columns
+            ]
+
+            if missing_features:
                 raise ValueError(
-                    "Legacy 'feature_engineering' "
-                    "functions are not supported by "
-                    "the CV-safe runner. Convert this "
-                    "experiment to 'feature_pipeline'."
+                    "Required preprocessing features "
+                    "are missing after feature "
+                    f"engineering: {missing_features}"
                 )
 
-            # -------------------------------------------------
-            # 3. Split raw predictors / target
-            # -------------------------------------------------
+            # ---------------------------------------------
+            # 3. Split predictors / target
+            # ---------------------------------------------
 
-            X = df.drop(columns=[target])
-            y = df[target]
+            X = working_df.drop(columns=[target])
+            y = working_df[target]
 
-            # -------------------------------------------------
-            # 4. Build preprocessor
-            # -------------------------------------------------
+            # ---------------------------------------------
+            # 4. Build model pipeline
+            # ---------------------------------------------
 
             preprocessor = build_preprocessor(
                 exp["preprocessing"]
             )
-
-            # -------------------------------------------------
-            # 5. Build model
-            # -------------------------------------------------
 
             model_class = MODEL_REGISTRY.get(
                 exp["model_name"]
@@ -201,37 +234,14 @@ def run_experiments(
                 **exp.get("model_params", {})
             )
 
-            # -------------------------------------------------
-            # 6. Build complete CV-safe pipeline
-            # -------------------------------------------------
-
-            feature_pipeline = exp.get(
-                "feature_pipeline",
-                []
-            )
-
-            pipeline_steps = [
-                *feature_pipeline,
+            model_pipeline = Pipeline([
                 ("preprocessor", preprocessor),
                 ("model", model),
-            ]
+            ])
 
-            model_pipeline = Pipeline(
-                pipeline_steps
-            )
-
-            if debug:
-                print("Pipeline steps:")
-
-                for step_name, step in pipeline_steps:
-                    print(
-                        f"  {step_name}: "
-                        f"{type(step).__name__}"
-                    )
-
-            # -------------------------------------------------
-            # 7. Evaluate
-            # -------------------------------------------------
+            # ---------------------------------------------
+            # 5. Evaluate
+            # ---------------------------------------------
 
             model_result = evaluate_model(
                 model_pipeline=model_pipeline,
@@ -244,10 +254,8 @@ def run_experiments(
             result = {
                 "experiment": exp["name"],
                 "stage": exp.get("stage", ""),
-                "feature_group": exp.get(
-                    "feature_group",
-                    "",
-                ),
+                "feature_group":
+                    exp.get("feature_group", ""),
                 "model_name": exp["model_name"],
                 "group": exp.get("group", ""),
                 "status": "success",
@@ -261,37 +269,23 @@ def run_experiments(
         except Exception as e:
 
             result = {
-                "experiment": exp.get(
-                    "name",
-                    "N/A",
-                ),
-                "stage": exp.get(
-                    "stage",
-                    "",
-                ),
-                "feature_group": exp.get(
-                    "feature_group",
-                    "",
-                ),
-                "model_name": exp.get(
-                    "model_name",
-                    "N/A",
-                ),
-                "group": exp.get(
-                    "group",
-                    "",
-                ),
+                "experiment":
+                    exp.get("name", "N/A"),
+                "stage":
+                    exp.get("stage", ""),
+                "feature_group":
+                    exp.get("feature_group", ""),
+                "model_name":
+                    exp.get("model_name", "N/A"),
+                "group":
+                    exp.get("group", ""),
                 "status": "failed",
                 "error_type": type(e).__name__,
                 "error_message": str(e),
-                "domain": exp.get(
-                    "domain",
-                    "",
-                ),
-                "notes": exp.get(
-                    "notes",
-                    "",
-                ),
+                "domain":
+                    exp.get("domain", ""),
+                "notes":
+                    exp.get("notes", ""),
             }
 
         if verbose:
@@ -302,9 +296,7 @@ def run_experiments(
 
             for metric, value in result.items():
                 if metric != "experiment":
-                    print(
-                        f"  {metric}: {value}"
-                    )
+                    print(f"  {metric}: {value}")
 
             print(
                 f"\nExperiment "
@@ -316,6 +308,17 @@ def run_experiments(
 
     return pd.DataFrame(results)
 
+def get_config_group(experiment_configs):
+    if not experiment_configs:
+        raise ValueError("No experiment configs provided.")
+
+    groups = {exp.get("group") for exp in experiment_configs}
+
+    if len(groups) != 1:
+        raise ValueError(f"Expected one group, found: {groups}")
+
+    return groups.pop()
+
 def run_experiment_group_workflow(
     df,
     experiment_configs,
@@ -324,100 +327,62 @@ def run_experiment_group_workflow(
     metrics=None,
     save=True,
     verbose=False,
-    debug=False,
 ):
     if metrics is None:
-        metrics = [
-            "test_accuracy_mean",
-            "test_f1_mean",
-        ]
+        metrics = ["test_accuracy_mean", "test_f1_mean"]
 
-    compare_group = get_config_group(
-        experiment_configs
-    )
+    compare_group = get_config_group(experiment_configs)
 
-    # -------------------------------------------------
     # 1. Run current experiment group
-    # -------------------------------------------------
-
     group_results = run_experiments(
         df=df,
         experiments=experiment_configs,
         target=target,
         verbose=verbose,
-        debug=debug,
     )
 
-    # -------------------------------------------------
     # 2. Save/load combined results
-    # -------------------------------------------------
-
     if save:
-        all_results = save_results(
-            group_results
-        )
-
-        save_configs(
-            experiment_configs
-        )
-
+        all_results = save_results(group_results)
+        save_configs(experiment_configs)
     else:
         all_results = group_results
 
-    # -------------------------------------------------
-    # 3. Compare with reference
-    # -------------------------------------------------
-
+    # 3. Compare with reference group
     comparison = None
     summary = None
 
     if compare_group != reference_group:
-        comparison = (
-            compare_experiment_groups(
-                results_df=all_results,
-                reference_group=reference_group,
-                compare_groups=[
-                    compare_group
-                ],
-                metrics=metrics,
-            )
+        comparison = compare_experiment_groups(
+            results_df=all_results,
+            reference_group=reference_group,
+            compare_groups=[compare_group],
+            metrics=metrics,
         )
 
-        summary = (
-            summarize_group_comparison(
-                comparison_df=comparison,
-                metrics=metrics,
-            )
+        summary = summarize_group_comparison(
+            comparison_df=comparison,
+            metrics=metrics,
         )
 
-    # -------------------------------------------------
     # 4. Leaderboard
-    # -------------------------------------------------
-
     top_models = leaderboard(
         results_df=all_results,
         metrics=metrics,
         top_n=30,
     )
 
-    # -------------------------------------------------
     # 5. Feature effect
-    # -------------------------------------------------
-
     feature_effect = None
 
     if comparison is not None:
-        feature_effect = (
-            analyze_feature_effect(
-                comparison,
-                metric=metrics[0],
-            )
+        feature_effect = analyze_feature_effect(
+            comparison,
+            metric=metrics[0],
         )
 
         if save:
-            save_feature_effects(
-                feature_effect
-            )
+            save_feature_effects(feature_effect)
 
     return {
         "group": compare_group,
@@ -427,5 +392,55 @@ def run_experiment_group_workflow(
         "comparison": comparison,
         "summary": summary,
         "leaderboard": top_models,
-        "feature_effect": feature_effect,
+        "feature_effect": feature_effect
     }
+
+
+# def run_experiment(df, target_col, experiment_config, model_registry, logger=None):
+#     """
+#     Run one ML experiment and return a structured result dict.
+#     """
+    ...
+
+    '''
+    Example of result dict:
+    
+    {
+    "experiment_name": "rf_title_family",
+    "model_name": "rf",
+    "model_params": {
+        "n_estimators": 200,
+        "max_depth": 5,
+        "random_state": 42
+    },
+    "features": [
+        "Pclass", "Sex", "Age", "Fare", "Embarked",
+        "Title", "Family_size", "Alone"
+    ],
+    "n_features": 8,
+    "cv_accuracy_mean": 0.831,
+    "cv_accuracy_std": 0.018,
+    "cv_precision_mean": 0.812,
+    "cv_recall_mean": 0.770,
+    "cv_f1_mean": 0.789,
+    "status": "success",
+    "error_message": None,
+    "notes": "Random forest with selected engineered features"
+}
+
+Example of failed result dict:
+{
+    "experiment_name": "svc_bad_test",
+    "model_name": "svc",
+    "model_params": {...},
+    "features": [...],
+    "n_features": 7,
+    "cv_accuracy_mean": None,
+    "cv_accuracy_std": None,
+    "cv_precision_mean": None,
+    "cv_recall_mean": None,
+    "cv_f1_mean": None,
+    "status": "failed",
+    "error_message": "ValueError: ...",
+    "notes": "Testing unstable configuration"
+}'''

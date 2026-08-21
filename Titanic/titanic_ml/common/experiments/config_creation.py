@@ -1,44 +1,370 @@
 import copy
-import json
 
-VALID_EXPERIMENT_KEYS = {
-    "name",
-    "features",
-    "feature_engineering",
-    "preprocessing",
-    "model_name",
-    "model_params",
-    "evaluation",
-    "notes",
-}
 
-def validate_experiment_override(override):
-    unknown_keys = set(override) - VALID_EXPERIMENT_KEYS
+def create_config(
+    base_config,
+    patches,
+    raw_features,
+    stage,
+    feature_group,
+    domain=None,
+    notes=None,
+):
+    if not isinstance(base_config, dict):
+        raise TypeError(
+            "base_config must be a single experiment configuration dictionary."
+        )
 
-    if unknown_keys:
-        raise ValueError(f"Unknown override keys: {unknown_keys}")
+    if not stage:
+        raise ValueError("Experiment needs a stage.")
 
-    if "features" in override and not isinstance(override["features"], list):
-        raise TypeError("'features' must be a list.")
+    if not feature_group:
+        raise ValueError("Experiment needs a feature_group.")
 
-    if "feature_engineering" in override:
-        feature_engineering = override["feature_engineering"]
+    if not patches:
+        patches = []
 
-        if not isinstance(feature_engineering, list):
-            raise TypeError("'feature_engineering' must be a list of functions.")
+    if isinstance(patches, dict):
+        raise TypeError(
+            "patches must be a list of patch dictionaries, "
+            "even when only one patch is used."
+        )
 
-        for fn in feature_engineering:
-            if not callable(fn):
-                raise TypeError(f"Feature engineering item is not callable: {fn}")
+    config = copy.deepcopy(base_config)
 
-    if "preprocessing" in override and not isinstance(override["preprocessing"], dict):
-        raise TypeError("'preprocessing' must be a dictionary.")
+    model_name = config.get("model_name")
 
-    if "model_params" in override and not isinstance(override["model_params"], dict):
-        raise TypeError("'model_params' must be a dictionary.")
+    if not model_name:
+        raise ValueError(
+            "Base configuration must contain 'model_name'."
+        )
 
-    if "evaluation" in override and not isinstance(override["evaluation"], dict):
-        raise TypeError("'evaluation' must be a dictionary.")
+    # ---------------------------------------------------------
+    # State used while resolving transformations
+    # ---------------------------------------------------------
+
+    available_features = set(raw_features)
+
+    used_transform_ids = set()
+
+    owned_features = {}
+
+    feature_pipeline = []
+
+    # ---------------------------------------------------------
+    # Apply patches in the order provided
+    # ---------------------------------------------------------
+
+    for patch in patches:
+
+        if not isinstance(patch, dict):
+            raise TypeError(
+                "Each patch must be a dictionary."
+            )
+
+        # -----------------------------------------------------
+        # Transformations
+        # -----------------------------------------------------
+
+        for transformation in patch.get(
+            "transformations",
+            [],
+        ):
+            transform_id = transformation["id"]
+
+            # Exact same transformation requested twice:
+            # use it only once.
+            if transform_id in used_transform_ids:
+                continue
+
+            # -------------------------------------------------
+            # Check required features
+            # -------------------------------------------------
+
+            required = set(
+                transformation.get(
+                    "requires",
+                    [],
+                )
+            )
+
+            missing_required = (
+                required - available_features
+            )
+
+            if missing_required:
+                raise ValueError(
+                    f"Transformation '{transform_id}' "
+                    "requires unavailable features: "
+                    f"{sorted(missing_required)}"
+                )
+
+            # -------------------------------------------------
+            # Check ownership conflicts
+            # -------------------------------------------------
+
+            for feature in transformation.get(
+                "owns",
+                [],
+            ):
+                if feature in owned_features:
+                    previous_owner = (
+                        owned_features[feature]
+                    )
+
+                    raise ValueError(
+                        f"Transformation '{transform_id}' "
+                        f"attempts to own '{feature}', "
+                        f"but it is already owned by "
+                        f"'{previous_owner}'."
+                    )
+
+            # -------------------------------------------------
+            # Instantiate transformer
+            # -------------------------------------------------
+
+            transformer_factory = (
+                transformation["transformer"]
+            )
+
+            transformer = (
+                transformer_factory()
+            )
+
+            feature_pipeline.append(
+                (
+                    transform_id,
+                    transformer,
+                )
+            )
+
+            used_transform_ids.add(
+                transform_id
+            )
+
+            # -------------------------------------------------
+            # Update ownership and available features
+            # -------------------------------------------------
+
+            for feature in transformation.get(
+                "owns",
+                [],
+            ):
+                owned_features[feature] = (
+                    transform_id
+                )
+
+            available_features.update(
+                transformation.get(
+                    "produces",
+                    [],
+                )
+            )
+
+        # -----------------------------------------------------
+        # Apply normal configuration changes
+        # -----------------------------------------------------
+
+        _apply_add(
+            config,
+            patch.get("add", {}),
+        )
+
+        _apply_remove(
+            config,
+            patch.get("remove", {}),
+        )
+
+        _apply_update(
+            config,
+            patch.get("update", {}),
+        )
+
+    # ---------------------------------------------------------
+    # Attach resolved feature pipeline
+    # ---------------------------------------------------------
+
+    config["feature_pipeline"] = (
+        feature_pipeline
+    )
+
+    # Legacy FE must no longer survive into the new config.
+    config.pop(
+        "feature_engineering",
+        None,
+    )
+
+    # ---------------------------------------------------------
+    # Validate model input availability
+    # ---------------------------------------------------------
+
+    model_features = (
+        features_from_preprocessing(
+            config["preprocessing"]
+        )
+    )
+
+    unavailable_model_features = (
+        set(model_features)
+        - available_features
+    )
+
+    if unavailable_model_features:
+        raise ValueError(
+            "Preprocessing requests unavailable "
+            "features: "
+            f"{sorted(unavailable_model_features)}"
+        )
+
+    # ---------------------------------------------------------
+    # Metadata
+    # ---------------------------------------------------------
+
+    config["stage"] = stage
+    config["feature_group"] = feature_group
+    config["group"] = (
+        f"{stage}__{feature_group}"
+    )
+
+    config["name"] = (
+        f"{stage}__{feature_group}__"
+        f"{model_name}"
+    )
+
+    config["domain"] = (
+        domain
+        if domain is not None
+        else feature_group
+    )
+
+    if notes is not None:
+        config["notes"] = notes
+
+    # Human-readable derived metadata.
+    config["features"] = model_features
+
+    return config
+
+def create_config_group(
+    base_configs,
+    patches,
+    raw_features,
+    stage,
+    feature_group,
+    domain=None,
+    notes=None,
+):
+    if not isinstance(base_configs, dict):
+        raise TypeError(
+            "base_configs must be a dictionary "
+            "of experiment configurations."
+        )
+
+    if not base_configs:
+        raise ValueError(
+            "No base configurations provided."
+        )
+
+    configs = {}
+
+    for base_key, base_config in (
+        base_configs.items()
+    ):
+        config = create_config(
+            base_config=base_config,
+            patches=patches,
+            raw_features=raw_features,
+            stage=stage,
+            feature_group=feature_group,
+            domain=domain,
+            notes=notes,
+        )
+
+        model_name = config["model_name"]
+
+        config_key = (
+            f"{model_name}__{feature_group}"
+        )
+
+        if config_key in configs:
+            raise ValueError(
+                f"Duplicate config key generated: "
+                f"'{config_key}'."
+            )
+
+        configs[config_key] = config
+
+    validate_config_group(configs)
+
+    return configs
+
+# Append Helper
+def _append_unique(target_list, values):
+    for value in values:
+        if value not in target_list:
+            target_list.append(value)
+
+# Add Helper
+def _apply_add(config, additions):
+    for section, changes in additions.items():
+
+        if section not in config:
+            config[section] = {}
+
+        for key, value in changes.items():
+
+            if isinstance(value, list):
+                current = config[section].setdefault(
+                    key,
+                    []
+                )
+
+                _append_unique(
+                    current,
+                    value,
+                )
+
+            else:
+                if key not in config[section]:
+                    config[section][key] = value
+# Remove Helper
+def _apply_remove(config, removals):
+    for section, changes in removals.items():
+
+        if section not in config:
+            continue
+
+        for key, values in changes.items():
+
+            if key not in config[section]:
+                continue
+
+            if not isinstance(
+                config[section][key],
+                list,
+            ):
+                raise ValueError(
+                    f"Cannot remove list values "
+                    f"from non-list config field "
+                    f"'{section}.{key}'."
+                )
+
+            config[section][key] = [
+                item
+                for item
+                in config[section][key]
+                if item not in values
+            ]
+
+# Update Helper
+def _apply_update(config, updates):
+    for section, changes in updates.items():
+
+        if section not in config:
+            config[section] = {}
+
+        for key, value in changes.items():
+            config[section][key] = value
 
 def features_from_preprocessing(preprocessing):
     feature_groups = [
@@ -63,94 +389,27 @@ def features_from_preprocessing(preprocessing):
 
     return features
 
-def create_experiment_group(stage, feature_group, base_configs, group_override=None, domain=None):
-    if not stage:
-        raise ValueError("Experiment group needs a stage, like 'fe01'.")
+def validate_config_group(configs):
+    for key, config in configs.items():
 
-    if not feature_group:
-        raise ValueError("Experiment group needs a feature group, like 'family'.")
-
-    if not base_configs:
-        raise ValueError("No base configs provided.")
-
-    group_override = group_override or {}
-
-    validate_experiment_override(group_override)
-
-    configs = copy.deepcopy(base_configs)
-
-    for exp in configs:
-        model_name = exp["model_name"]
-
-        exp.update(group_override)
-
-        exp["name"] = f"{stage}__{feature_group}__{model_name}"
-        exp["stage"] = stage
-        exp["feature_group"] = feature_group
-        exp["group"] = f"{stage}__{feature_group}"
-        exp["domain"] = domain or feature_group
-
-    validate_feature_configuration(configs)
-
-    for exp in configs:
-        exp["features"] = features_from_preprocessing(
-            exp["preprocessing"]
+        model_name = config.get(
+            "model_name"
         )
 
-    return configs
-
-def validate_feature_configuration(
-    config,
-    target="Survived",
-):
-
-    for exp in config:
-        preprocessing = exp["preprocessing"]
-
-        groups = {
-            "numeric_features":
-                preprocessing.get("numeric_features", []),
-
-            "onehot_features":
-                preprocessing.get("onehot_features", []),
-
-            "ordinal_features":
-                preprocessing.get("ordinal_features", []),
-        }
-
-        occurrences = {}
-
-        for group_name, features in groups.items():
-
-            # Duplicates inside the same group
-            if len(features) != len(set(features)):
-                raise ValueError(
-                    f"Duplicate feature found in "
-                    f"'{group_name}'."
-                )
-
-            for feature in features:
-                occurrences.setdefault(
-                    feature, []
-                ).append(group_name)
-
-        # Same feature assigned to multiple transformers
-        duplicates = {
-            feature: locations
-            for feature, locations in occurrences.items()
-            if len(locations) > 1
-        }
-
-        if duplicates:
+        if not model_name:
             raise ValueError(
-                "Features assigned to multiple "
-                f"preprocessing groups: {duplicates}"
+                f"Config '{key}' has no "
+                "'model_name'."
             )
 
-        if target in occurrences:
+        if (
+            model_name.lower()
+            not in key.lower()
+        ):
             raise ValueError(
-                f"Target '{target}' cannot be used "
-                "as an input feature."
+                f"Config key '{key}' must "
+                f"contain model_name "
+                f"'{model_name}'."
             )
 
     return True

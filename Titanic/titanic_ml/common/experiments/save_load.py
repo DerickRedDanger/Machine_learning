@@ -1,7 +1,14 @@
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE, EXPERIMENT_FEATURE_EFFECT
 import pandas as pd
 import json
+from sklearn.base import BaseEstimator
+import numpy as np
 from pathlib import Path
+
+# temporary test overwrite
+EXPERIMENT_RESULTS_FILE = "test_results.csv"
+EXPERIMENT_CONFIGS_FILE = "test_configs.json"
+EXPERIMENT_FEATURE_EFFECT = "test_feature_effects.json"
 
 def save_results(results_df, path=EXPERIMENT_RESULTS_FILE, append=True):
     path = Path(path)
@@ -28,43 +35,105 @@ def load_results(path=EXPERIMENT_RESULTS_FILE):
 
 
 
+def make_json_safe(value):
+    if isinstance(value, dict):
+        return {
+            key: make_json_safe(item)
+            for key, item in value.items()
+        }
+
+    if isinstance(value, (list, tuple)):
+        return [
+            make_json_safe(item)
+            for item in value
+        ]
+
+    if isinstance(value, BaseEstimator):
+        return {
+            "class": value.__class__.__name__,
+            "params": make_json_safe(
+                value.get_params(deep=False)
+            ),
+        }
+
+    if isinstance(value, np.ndarray):
+        return value.tolist()
+
+    if isinstance(value, np.generic):
+        return value.item()
+
+    if callable(value):
+        return getattr(
+            value,
+            "__name__",
+            str(value),
+        )
+
+    return value
+
 def make_config_json_safe(config):
-    safe_config = {}
+    return make_json_safe(config)
 
-    for key, value in config.items():
-        if key == "feature_engineering" and isinstance(value, list):
-            safe_config[key] = [
-                fn.__name__ if callable(fn) else str(fn)
-                for fn in value
-            ]
-        else:
-            safe_config[key] = value
+def _config_values(configs):
+    if isinstance(configs, dict):
+        # Single experiment config
+        if "name" in configs and "model_name" in configs:
+            return [configs]
 
-    return safe_config
+        # Experiment group
+        return configs.values()
 
+    if isinstance(configs, (list, tuple)):
+        return configs
 
-def save_configs(configs, path=EXPERIMENT_CONFIGS_FILE, append=True):
+    raise TypeError(
+        "configs must be a configuration dictionary, "
+        "a dictionary of configurations, or a list/tuple "
+        "of configurations."
+    )
+
+def save_configs(
+    configs,
+    path=EXPERIMENT_CONFIGS_FILE,
+    append=True,
+):
     path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     new_configs = {
-        config["name"]: make_config_json_safe(config)
-        for config in configs
+        config["name"]:
+            make_config_json_safe(config)
+
+        for config in _config_values(configs)
     }
 
     if append and path.exists():
-        with open(path, "r", encoding="utf-8") as file:
+        with open(
+            path,
+            "r",
+            encoding="utf-8",
+        ) as file:
             old_configs = json.load(file)
     else:
         old_configs = {}
 
     old_configs.update(new_configs)
 
-    with open(path, "w", encoding="utf-8") as file:
-        json.dump(old_configs, file, indent=2)
+    with open(
+        path,
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(
+            old_configs,
+            file,
+            indent=2,
+        )
 
     return old_configs
-
 
 def load_configs(path=EXPERIMENT_CONFIGS_FILE):
     with open(path, "r", encoding="utf-8") as file:
