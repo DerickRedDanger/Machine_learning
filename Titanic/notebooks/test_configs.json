@@ -1,16 +1,5 @@
 {
   "baseline__raw__logreg": {
-    "name": "baseline__raw__logreg",
-    "features": [
-      "Pclass",
-      "Sex",
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -29,40 +18,41 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "logreg",
     "model_params": {
       "max_iter": 1000,
       "random_state": 42
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Base logistic regression, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "baseline__raw__knn": {
-    "name": "baseline__raw__knn",
+    "notes": "Base logistic regression using the raw feature configuration. Baseline for comparison.",
+    "name": "baseline__raw__logreg",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "baseline__raw__knn": {
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -81,39 +71,40 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "knn",
     "model_params": {
       "n_neighbors": 5
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Base kneighbors classifier, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "baseline__raw__svc": {
-    "name": "baseline__raw__svc",
+    "notes": "Base K-neighbors classifier using the raw feature configuration. Baseline for comparison.",
+    "name": "baseline__raw__knn",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "baseline__raw__svc": {
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -132,6 +123,23 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "svc",
     "model_params": {
       "C": 1.0,
@@ -140,35 +148,19 @@
       "probability": false,
       "random_state": 42
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Base SVC, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "baseline__raw__decision_tree": {
-    "name": "baseline__raw__decision_tree",
+    "notes": "Base SVC using the raw feature configuration. Baseline for comparison.",
+    "name": "baseline__raw__svc",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "baseline__raw__decision_tree": {
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -187,41 +179,42 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "decision_tree",
     "model_params": {
       "max_depth": 4,
       "min_samples_leaf": 5,
       "random_state": 42
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
     "notes": "Base decision tree, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "baseline__raw__random_forest": {
-    "name": "baseline__raw__random_forest",
+    "name": "baseline__raw__decision_tree",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "baseline__raw__random_forest": {
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -240,6 +233,23 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "random_forest",
     "model_params": {
       "n_estimators": 200,
@@ -248,35 +258,19 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Base random forest, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "baseline__raw__extra_trees": {
-    "name": "baseline__raw__extra_trees",
+    "notes": "Base random forest, using raw configuration.Baseline for comparison.",
+    "name": "baseline__raw__random_forest",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "baseline__raw__extra_trees": {
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -295,6 +289,23 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "extra_trees",
     "model_params": {
       "n_estimators": 200,
@@ -303,35 +314,19 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
     "notes": "Base extra trees, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "baseline__raw__xgb": {
-    "name": "baseline__raw__xgb",
+    "name": "baseline__raw__extra_trees",
     "features": [
-      "Pclass",
-      "Sex",
       "Age",
       "SibSp",
       "Parch",
       "Fare",
-      "Embarked"
-    ],
-    "feature_engineering": [],
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "baseline__raw__xgb": {
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -350,6 +345,23 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "baseline",
+    "feature_group": "raw",
+    "group": "baseline__raw",
+    "domain": null,
     "model_name": "xgb",
     "model_params": {
       "n_estimators": 200,
@@ -360,6 +372,62 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
+    "notes": "Base xgb, using raw configuration. Baseline for comparison.",
+    "name": "baseline__raw__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe11__age_bin__logreg": {
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
     "evaluation": {
       "method": "cross_validation",
       "cv": 5,
@@ -372,12 +440,16 @@
       "return_train_score": true,
       "n_jobs": -1
     },
-    "notes": "Base xgb, using raw configuration. Baseline for comparison.",
-    "stage": "baseline",
-    "feature_group": "raw",
-    "group": "baseline__raw"
-  },
-  "fe11__age_bin__logreg": {
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Feature engineering 11: replaces Age with Age_bin.",
     "name": "fe11__age_bin__logreg",
     "features": [
       "SibSp",
@@ -386,7 +458,9 @@
       "Embarked",
       "Pclass",
       "Age_bin"
-    ],
+    ]
+  },
+  "fe11__age_bin__knn": {
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -404,27 +478,6 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
     "feature_pipeline": [
       [
         "age_bin",
@@ -451,9 +504,27 @@
         }
       ]
     ],
-    "domain": "age"
-  },
-  "fe11__age_bin__knn": {
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Feature engineering 11: replaces Age with Age_bin.",
     "name": "fe11__age_bin__knn",
     "features": [
       "SibSp",
@@ -462,7 +533,9 @@
       "Embarked",
       "Pclass",
       "Age_bin"
-    ],
+    ]
+  },
+  "fe11__age_bin__svc": {
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -480,26 +553,6 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
     "feature_pipeline": [
       [
         "age_bin",
@@ -526,35 +579,22 @@
         }
       ]
     ],
-    "domain": "age"
-  },
-  "fe11__age_bin__svc": {
-    "name": "fe11__age_bin__svc",
-    "features": [
-      "SibSp",
-      "Parch",
-      "Sex",
-      "Embarked",
-      "Pclass",
-      "Age_bin"
-    ],
-    "preprocessing": {
-      "numeric_features": [
-        "SibSp",
-        "Parch"
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
       ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
+      "return_train_score": true,
+      "n_jobs": -1
     },
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
     "model_name": "svc",
     "model_params": {
       "C": 1.0,
@@ -563,22 +603,35 @@
       "probability": false,
       "random_state": 42
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
     "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
+    "name": "fe11__age_bin__svc",
+    "features": [
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fe11__age_bin__decision_tree": {
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
     "feature_pipeline": [
       [
         "age_bin",
@@ -605,9 +658,29 @@
         }
       ]
     ],
-    "domain": "age"
-  },
-  "fe11__age_bin__decision_tree": {
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Feature engineering 11: replaces Age with Age_bin.",
     "name": "fe11__age_bin__decision_tree",
     "features": [
       "SibSp",
@@ -616,7 +689,9 @@
       "Embarked",
       "Pclass",
       "Age_bin"
-    ],
+    ]
+  },
+  "fe11__age_bin__random_forest": {
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -634,28 +709,6 @@
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
     },
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
     "feature_pipeline": [
       [
         "age_bin",
@@ -682,35 +735,22 @@
         }
       ]
     ],
-    "domain": "age"
-  },
-  "fe11__age_bin__random_forest": {
-    "name": "fe11__age_bin__random_forest",
-    "features": [
-      "SibSp",
-      "Parch",
-      "Sex",
-      "Embarked",
-      "Pclass",
-      "Age_bin"
-    ],
-    "preprocessing": {
-      "numeric_features": [
-        "SibSp",
-        "Parch"
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
       ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
+      "return_train_score": true,
+      "n_jobs": -1
     },
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
     "model_name": "random_forest",
     "model_params": {
       "n_estimators": 200,
@@ -719,22 +759,35 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
     "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
+    "name": "fe11__age_bin__random_forest",
+    "features": [
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fe11__age_bin__extra_trees": {
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
     "feature_pipeline": [
       [
         "age_bin",
@@ -761,35 +814,22 @@
         }
       ]
     ],
-    "domain": "age"
-  },
-  "fe11__age_bin__extra_trees": {
-    "name": "fe11__age_bin__extra_trees",
-    "features": [
-      "SibSp",
-      "Parch",
-      "Sex",
-      "Embarked",
-      "Pclass",
-      "Age_bin"
-    ],
-    "preprocessing": {
-      "numeric_features": [
-        "SibSp",
-        "Parch"
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
       ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
+      "return_train_score": true,
+      "n_jobs": -1
     },
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
     "model_name": "extra_trees",
     "model_params": {
       "n_estimators": 200,
@@ -798,22 +838,35 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
     "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
+    "name": "fe11__age_bin__extra_trees",
+    "features": [
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fe11__age_bin__xgb": {
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
     "feature_pipeline": [
       [
         "age_bin",
@@ -840,35 +893,22 @@
         }
       ]
     ],
-    "domain": "age"
-  },
-  "fe11__age_bin__xgb": {
-    "name": "fe11__age_bin__xgb",
-    "features": [
-      "SibSp",
-      "Parch",
-      "Sex",
-      "Embarked",
-      "Pclass",
-      "Age_bin"
-    ],
-    "preprocessing": {
-      "numeric_features": [
-        "SibSp",
-        "Parch"
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
       ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
+      "return_train_score": true,
+      "n_jobs": -1
     },
+    "stage": "fe11",
+    "feature_group": "age_bin",
+    "group": "fe11__age_bin",
+    "domain": "age",
     "model_name": "xgb",
     "model_params": {
       "n_estimators": 200,
@@ -879,48 +919,15 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
     "notes": "Feature engineering 11: replaces Age with Age_bin.",
-    "stage": "fe11",
-    "feature_group": "age_bin",
-    "group": "fe11__age_bin",
-    "feature_pipeline": [
-      [
-        "age_bin",
-        {
-          "class": "BinTransformer",
-          "params": {
-            "bins": [
-              0,
-              14,
-              35,
-              60,
-              100
-            ],
-            "labels": [
-              "0",
-              "2",
-              "3",
-              "1"
-            ],
-            "output_col": "Age_bin",
-            "right": false,
-            "source_col": "Age"
-          }
-        }
-      ]
-    ],
-    "domain": "age"
+    "name": "fe11__age_bin__xgb",
+    "features": [
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
   }
 }

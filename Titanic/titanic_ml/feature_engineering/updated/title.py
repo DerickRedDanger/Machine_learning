@@ -1,6 +1,5 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 
-
 class TitleTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):
         self.source_col = "Name"
@@ -61,10 +60,9 @@ class TitleTransformer(BaseEstimator, TransformerMixin):
         return X
 
 
-TITLE_TRANSFORM = {
+ADD_TITLE = {
     "id": "title",
     "transformer": TitleTransformer,
     "requires": ["Name"],
     "produces": ["Title"],
-    "owns": ["Title"],
 }
