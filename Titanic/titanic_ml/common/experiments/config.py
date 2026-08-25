@@ -558,7 +558,7 @@ ALL_EXPERIMENTS['fe08_fare_per_family_member'] = fe08_fare_per_family_member_con
 
 fe09__ticket_group_size_patch = {
     "transformations": [
-        FE.ticket,
+        FE.ticket_group_size,
     ],
 
     "add": {
@@ -583,12 +583,50 @@ fe09__ticket_group_size_config = create_config_group(
             "Adding Ticket group size."),
 )
 
-ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size_patch_config
+ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size_config
 
+# Fe 10 - Fare per Ticket Member
 
+fe10__fare_per_ticket_member_patch = {
+    "transformations": [
+        FE.ticket_group_size, FE.fare_ticket,
+    ],
 
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
 
-FE11 = {
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+fe10__fare_per_ticket_member_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe10__fare_per_ticket_member_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe10",
+    feature_group="fare_per_ticket_member",
+    domain="fare",
+    notes=("Features Engineering 10."
+            "Replacing Fare with Fare/TicketMember."),
+)
+
+ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member_config
+
+# Fe 11 - Age Bin
+
+fe11__age_bin_patch = {
     "transformations": [
         FE.age_bin,
     ],
@@ -610,6 +648,432 @@ FE11 = {
     },
 }
 
+fe11__age_bin_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe11__age_bin_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe11",
+    feature_group="age_bin",
+    domain="Age",
+    notes=("Feature Engineering 11."
+            "Replacing Age with Age bin."),
+)
+
+ALL_EXPERIMENTS['fe11__age_bin'] = fe11__age_bin_config
+
+# FE 12 - Sex Pclass
+
+fe12__sex_pclass_patch = {
+    "transformations": [
+        FE.sex_pclass,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "onehot_features": [
+                "Sex_Pclass",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "onehot_features": [
+                "Sex", "Pclass"
+            ],
+        },
+    },
+}
+
+fe12__sex_pclass_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe12__sex_pclass_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe12",
+    feature_group="sex_pclass",
+    domain="sex_pclass",
+    notes=("Feature Engineering 12."
+            "Replacing Sex and Pclass with Sex_Pclass."),
+)
+
+ALL_EXPERIMENTS['fe12__sex_pclass'] = fe12__sex_pclass_config
+
+
+# Combo experiments
+
+# Cb 01 - Age and bins
+
+cb01__age_and_bins_patch = {
+    "transformations": [
+        FE.age_bin,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+}
+
+cb01__age_and_bins_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb01__age_and_bins_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb01",
+    feature_group="age_and_bins",
+    domain="age",
+    notes=("Combo Experiment 01."
+            "Adding Age bins."),
+)
+
+ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins_config
+
+# Cb 02 - Age imputed by Title and Bins
+
+cb02__age_imputed_title_and_bins_patch = {
+    "transformations": [
+        FE.age_imputer_title,FE.age_bin
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+}
+
+cb02__age_imputed_title_and_bins_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb02__age_imputed_title_and_bins_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb02",
+    feature_group="age_imputed_title_and_bins",
+    domain="age",
+    notes=("Combo Experiment 02."
+            "Imputing Age by Title, then adding Age bins."),
+)
+
+ALL_EXPERIMENTS['cb02__age_imputed_title_and_bins'] = cb02__age_imputed_title_and_bins_config
+
+# Cb 03 - Age imputed by Title and Pclass and adding Bins
+
+cb03__age_imputed_title_pclass_and_bins_patch = {
+    "transformations": [
+        FE.age_imputer_title_pclass,FE.age_bin
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+}
+
+cb03__age_imputed_title_pclass_and_bins_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb03__age_imputed_title_pclass_and_bins_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb03",
+    feature_group="age_imputed_title_Pclass_and_bins",
+    domain="age",
+    notes=("Combo Experiment 03."
+            "Imputing Age by Title and Pclass then adding Age bin."),
+)
+
+ALL_EXPERIMENTS['cb03__age_imputed_title_pclass_and_bins'] = cb03__age_imputed_title_pclass_and_bins_config
+
+
+# Cb 04 - Fare and Fare per Family Member
+
+cb04_fare_and_fare_per_family_patch = {
+    "transformations": [
+        FE.fare_family,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize",
+            ],
+        },
+    },
+}
+
+cb04_fare_and_fare_per_family_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb04_fare_and_fare_per_family_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb04",
+    feature_group="fare_and_fare_per_family",
+    domain="fare",
+    notes=("Combo Experiment 04."
+            "Adding Fare per Family member."),
+)
+
+ALL_EXPERIMENTS['cb04_fare_and_fare_per_family'] = cb04_fare_and_fare_per_family_config
+
+# Cb 05 - Fare and Fare per Ticket member
+
+cb05__fare_and_fare_per_ticket_patch = {
+    "transformations": [
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb05__fare_and_fare_per_ticket_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb05__fare_and_fare_per_ticket_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb05",
+    feature_group="fare_and_fare_per_ticket",
+    domain="fare",
+    notes=("Combo Experiment 05."
+            "Adding Fare per Ticket member."),
+)
+
+ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket'] = cb05__fare_and_fare_per_ticket_config
+
+# Cb 06 - All Fare features
+
+cb06__all_fare_features_patch = {
+    "transformations": [
+        FE.fare_family,FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb06__all_fare_features_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb06__all_fare_features_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fcb06",
+    feature_group="all_fare_features",
+    domain="fare",
+    notes=("Combo Experiment 06."
+            "Adding Fare/FamilySize and Fare/TicketMember."),
+)
+
+ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features_config
+
+# Cb 07 - Family features
+
+cb07__family_features_patch = {
+    "transformations": [
+        FE.family,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "FamilySize",
+            ],
+        },
+    },
+}
+
+cb07__family_features_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb07__family_features_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb07",
+    feature_group="family_features",
+    domain="family",
+    notes=("Combo Experiment 07."
+            "Adding Family Size."),
+)
+
+ALL_EXPERIMENTS['cb07__family_features'] = cb07__family_features_config
+
+# Cb 08 - Sex Pclass features
+
+cb08__sex_pclass_features_patch = {
+    "transformations": [
+        FE.sex_pclass,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "onehot_features": [
+                "Sex_Pclass",
+            ],
+        },
+    },
+}
+
+cb08__sex_pclass_features_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb08__sex_pclass_features_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb08",
+    feature_group="sex_pclass_features",
+    domain="sex_pclass",
+    notes=("Combo Experiment 08."
+            "Adding Sex_Pclass."),
+)
+
+ALL_EXPERIMENTS['cb08__sex_pclass_features'] = cb08__sex_pclass_features_config
+
+# Ablations
+
+# Ab 01 - Age and bins without fare
+
+ab01__age_and_bins_without_fare_patch= {
+    "transformations": [
+        FE.age_bin,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+ab01__age_and_bins_without_fare_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        ab01__age_and_bins_without_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="ab01",
+    feature_group="age_and_bins_without_fare",
+    domain="exampablatione_domain",
+    notes=("Ablation Experiment 01."
+            "Adding Age bins and removing Fare."),
+)
+
+ALL_EXPERIMENTS['ab01__age_and_bins_without_fare'] = ab01__age_and_bins_without_fare_config
+
+# Ab 02 - Age imputed by title, then Age bin without Fare
+
+ab02__age_imputed_title_and_bins_without_fare_patch = {
+    "transformations": [
+        FE.age_imputer_title, FE.age_bin
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+ab02__age_imputed_title_and_bins_without_fare_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        ab02__age_imputed_title_and_bins_without_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="ab02",
+    feature_group="age_imputed_title_and_bins_without_fare",
+    domain="ablation",
+    notes=("Ablation Experiment."
+            "Age imputed by Title then adding Age bin while removing Fare."),
+)
+
+ALL_EXPERIMENTS['ab02__age_imputed_title_and_bins_without_fare'] = ab02__age_imputed_title_and_bins_without_fare_config
+
+# Ab 03 - Age imputed by both Title and Pclass, then age bin, without Fare
+
+ab03__age_imputed_title_Pclass_and_bins_without_fare_patch = {
+    "transformations": [
+        FE.age_imputer_title_pclass,FE.age_bin
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+ab03__age_imputed_title_Pclass_and_bins_without_fare_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        ab03__age_imputed_title_Pclass_and_bins_without_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="ab03",
+    feature_group="age_imputed_title_Pclass_and_bins_without_fare",
+    domain="ablation",
+    notes=("Ablation Experiment 03."
+            "Age imputed by Title and Pclass, then binned, without Fare."),
+)
+
+ALL_EXPERIMENTS['ab03__age_imputed_title_Pclass_and_bins_without_fare'] = ab03__age_imputed_title_Pclass_and_bins_without_fare_config
+
+# ablation
 FE11_LEGACY_TEST = {
     "transformations": [
         FE.age_bin,

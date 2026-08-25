@@ -1,5 +1,6 @@
 
 from titanic_ml.common.utils.sklearn_compatible.HasFeature import HasFeatureTransformer
+from sklearn.base import BaseEstimator, TransformerMixin
 
 def has_cabin_transformer():
     return HasFeatureTransformer(
@@ -14,7 +15,6 @@ HAS_CABIN = {
     "produces": ["Has_Cabin"],
 }
 
-from sklearn.base import BaseEstimator, TransformerMixin
 
 class HasCabinTransformer(BaseEstimator, TransformerMixin):
     def __init__(self):

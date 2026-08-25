@@ -4,6 +4,7 @@ from .title import ADD_TITLE
 from .family import ADD_FAMILY_SIZE, ADD_IS_ALONE
 from .sex_pclass import ADD_SEX_PCLASS
 from .fare import ADD_FARE_PER_FAMILYSIZE, ADD_FARE_PER_TICKET
+from .ticket import ADD_TICKET_GROUP_SIZE
 
 age_bin = ADD_AGE_BIN
 age_imputer_title = ADD_AGE_IMPUTED_TITLE
@@ -16,3 +17,4 @@ is_alone = ADD_IS_ALONE
 sex_pclass = ADD_SEX_PCLASS
 fare_ticket = ADD_FARE_PER_TICKET
 fare_family = ADD_FARE_PER_FAMILYSIZE
+ticket_group_size = ADD_TICKET_GROUP_SIZE
