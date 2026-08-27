@@ -6,5 +6,3 @@ from titanic_ml.feature_engineering.fare_per_familysize import add_fare_per_fami
 from titanic_ml.feature_engineering.fare_per_ticket import add_ticket_group_size, add_fare_per_ticket_member
 from titanic_ml.feature_engineering.age_bin import add_age_bin
 from titanic_ml.feature_engineering.sex_pclass import add_sex_pclass
-from titanic_ml.feature_engineering.Updated.Age_bin import age_bin_transformer
-from titanic_ml.feature_engineering.Updated.Title import TitleTransformer

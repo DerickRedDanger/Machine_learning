@@ -1,10 +1,11 @@
 from .age import ADD_AGE_IMPUTED_TITLE, ADD_AGE_IMPUTED_TITLE_PCLASS, ADD_AGE_BIN
-from .cabin import ADD_HAS_CABIN, ADD_DECK
+from .cabin import ADD_HAS_CABIN
 from .title import ADD_TITLE
 from .family import ADD_FAMILY_SIZE, ADD_IS_ALONE
 from .sex_pclass import ADD_SEX_PCLASS
 from .fare import ADD_FARE_PER_FAMILYSIZE, ADD_FARE_PER_TICKET
 from .ticket import ADD_TICKET_GROUP_SIZE
+from .deck import ADD_DECK
 
 age_bin = ADD_AGE_BIN
 age_imputer_title = ADD_AGE_IMPUTED_TITLE

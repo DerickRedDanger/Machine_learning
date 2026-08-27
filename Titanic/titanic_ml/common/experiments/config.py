@@ -373,7 +373,7 @@ ALL_EXPERIMENTS["fe02__has_cabin"] = fe02__has_cabin_config
 
 # Fe 03 - Deck
 
-fe03__Deck_patch = {
+fe03__deck_patch = {
     "transformations": [
         FE.deck,
     ],
@@ -387,20 +387,20 @@ fe03__Deck_patch = {
     },
 }
 
-fe03__Deck_config = create_config_group(
+fe03__deck_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        fe03__Deck_patch,
+        fe03__deck_patch,
     ],
     raw_features=RAW_FEATURES,
     stage="fe03",
-    feature_group="Deck",
+    feature_group="deck",
     domain="cabin",
     notes=("Feature engineering 03."
             "Adding Deck."),
 )
 
-ALL_EXPERIMENTS['Fe03__deck'] = fe03__Deck_config
+ALL_EXPERIMENTS['fe03__deck'] = fe03__deck_config
 
 #Fe 04
 
@@ -412,7 +412,7 @@ fe04__cabin_features_patch = {
     "add": {
         "preprocessing": {
             "ordinal_features": [
-                "Has_cabin",
+                "Has_Cabin",
             ],
             "onehot_feature":[
                 "Deck",
@@ -470,16 +470,17 @@ ALL_EXPERIMENTS['fe05__title'] = fe05__title_config
 
 # Fe 06 - Age imputation by title
 
-fe06_age_imputation_title_patch = {
+fe06__age_imputation_title_patch = {
     "transformations": [
+        FE.title,
         FE.age_imputer_title,
     ],
 }
 
-fe06_age_imputation_title_config = create_config_group(
+fe06__age_imputation_title_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        fe06_age_imputation_title_patch,
+        fe06__age_imputation_title_patch,
     ],
     raw_features=RAW_FEATURES,
     stage="fe06",
@@ -489,12 +490,13 @@ fe06_age_imputation_title_config = create_config_group(
             "Imputting Age by Title."),
 )
 
-ALL_EXPERIMENTS['fe06_age_imputation_title'] = fe06_age_imputation_title_config
+ALL_EXPERIMENTS['fe06__age_imputation_title'] = fe06__age_imputation_title_config
 
 # Fe 07 - Age imputation by Title and Pclass
 
 fe07__age_imputation_title_pclass_patch = {
     "transformations": [
+        FE.title,
         FE.age_imputer_title_pclass,
     ],
 }
@@ -505,7 +507,7 @@ fe07__age_imputation_title_pclass_config = create_config_group(
         fe07__age_imputation_title_pclass_patch,
     ],
     raw_features=RAW_FEATURES,
-    stage="fe04",
+    stage="fe07",
     feature_group="age_imputation_title_pclass",
     domain="age",
     notes=("feature engineering 07."
@@ -516,8 +518,9 @@ ALL_EXPERIMENTS['fe07__age_imputation_title_pclass'] = fe07__age_imputation_titl
 
 #Fe 08 - Fare per family member
 
-fe08_fare_per_family_member_patch = {
+fe08__fare_per_family_member_patch = {
     "transformations": [
+        FE.family,
         FE.fare_family,
     ],
 
@@ -539,10 +542,10 @@ fe08_fare_per_family_member_patch = {
 
 }
 
-fe08_fare_per_family_member_config = create_config_group(
+fe08__fare_per_family_member_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        fe08_fare_per_family_member_patch,
+        fe08__fare_per_family_member_patch,
     ],
     raw_features=RAW_FEATURES,
     stage="fe08",
@@ -552,7 +555,7 @@ fe08_fare_per_family_member_config = create_config_group(
             "Replacing Fare with Fare/FamilySize."),
 )
 
-ALL_EXPERIMENTS['fe08_fare_per_family_member'] = fe08_fare_per_family_member_config
+ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member_config
 
 # Fe 09 - Ticket group size
 
@@ -740,7 +743,9 @@ ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins_config
 
 cb02__age_imputed_title_and_bins_patch = {
     "transformations": [
-        FE.age_imputer_title,FE.age_bin
+        FE.title,
+        FE.age_imputer_title,
+        FE.age_bin
     ],
 
     "add": {
@@ -771,7 +776,9 @@ ALL_EXPERIMENTS['cb02__age_imputed_title_and_bins'] = cb02__age_imputed_title_an
 
 cb03__age_imputed_title_pclass_and_bins_patch = {
     "transformations": [
-        FE.age_imputer_title_pclass,FE.age_bin
+        FE.title,
+        FE.age_imputer_title_pclass,
+        FE.age_bin
     ],
 
     "add": {
@@ -790,7 +797,7 @@ cb03__age_imputed_title_pclass_and_bins_config = create_config_group(
     ],
     raw_features=RAW_FEATURES,
     stage="cb03",
-    feature_group="age_imputed_title_Pclass_and_bins",
+    feature_group="age_imputed_title_pclass_and_bins",
     domain="age",
     notes=("Combo Experiment 03."
             "Imputing Age by Title and Pclass then adding Age bin."),
@@ -801,8 +808,9 @@ ALL_EXPERIMENTS['cb03__age_imputed_title_pclass_and_bins'] = cb03__age_imputed_t
 
 # Cb 04 - Fare and Fare per Family Member
 
-cb04_fare_and_fare_per_family_patch = {
+cb04__fare_and_fare_per_family_patch = {
     "transformations": [
+        FE.family,
         FE.fare_family,
     ],
 
@@ -815,10 +823,10 @@ cb04_fare_and_fare_per_family_patch = {
     },
 }
 
-cb04_fare_and_fare_per_family_config = create_config_group(
+cb04__fare_and_fare_per_family_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        cb04_fare_and_fare_per_family_patch,
+        cb04__fare_and_fare_per_family_patch,
     ],
     raw_features=RAW_FEATURES,
     stage="cb04",
@@ -828,12 +836,13 @@ cb04_fare_and_fare_per_family_config = create_config_group(
             "Adding Fare per Family member."),
 )
 
-ALL_EXPERIMENTS['cb04_fare_and_fare_per_family'] = cb04_fare_and_fare_per_family_config
+ALL_EXPERIMENTS['cb04__fare_and_fare_per_family'] = cb04__fare_and_fare_per_family_config
 
 # Cb 05 - Fare and Fare per Ticket member
 
 cb05__fare_and_fare_per_ticket_patch = {
     "transformations": [
+        FE.ticket_group_size,
         FE.fare_ticket,
     ],
 
@@ -865,7 +874,10 @@ ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket'] = cb05__fare_and_fare_per_tick
 
 cb06__all_fare_features_patch = {
     "transformations": [
-        FE.fare_family,FE.fare_ticket
+        FE.family,
+        FE.ticket_group_size,
+        FE.fare_family,
+        FE.fare_ticket
     ],
 
     "add": {
@@ -883,7 +895,7 @@ cb06__all_fare_features_config = create_config_group(
         cb06__all_fare_features_patch,
     ],
     raw_features=RAW_FEATURES,
-    stage="fcb06",
+    stage="cb06",
     feature_group="all_fare_features",
     domain="fare",
     notes=("Combo Experiment 06."
@@ -999,7 +1011,9 @@ ALL_EXPERIMENTS['ab01__age_and_bins_without_fare'] = ab01__age_and_bins_without_
 
 ab02__age_imputed_title_and_bins_without_fare_patch = {
     "transformations": [
-        FE.age_imputer_title, FE.age_bin
+        FE.title,
+        FE.age_imputer_title, 
+        FE.age_bin
     ],
 
     "add": {
@@ -1038,7 +1052,9 @@ ALL_EXPERIMENTS['ab02__age_imputed_title_and_bins_without_fare'] = ab02__age_imp
 
 ab03__age_imputed_title_Pclass_and_bins_without_fare_patch = {
     "transformations": [
-        FE.age_imputer_title_pclass,FE.age_bin
+        FE.title,
+        FE.age_imputer_title_pclass,
+        FE.age_bin
     ],
 
     "add": {
@@ -1074,7 +1090,8 @@ ab03__age_imputed_title_Pclass_and_bins_without_fare_config = create_config_grou
 ALL_EXPERIMENTS['ab03__age_imputed_title_Pclass_and_bins_without_fare'] = ab03__age_imputed_title_Pclass_and_bins_without_fare_config
 
 # ablation
-FE11_LEGACY_TEST = {
+# Ab 04 - Age bin without Fare
+ab04__age_bin_without_fare_patch = {
     "transformations": [
         FE.age_bin,
     ],
@@ -1097,62 +1114,18 @@ FE11_LEGACY_TEST = {
     },
 }
 
-# Example config:
 
-fe11_config = create_config_group(
+ab04__age_bin_without_fare_config = create_config_group(
     base_configs=baseline_config,
-    patches=[FE11_LEGACY_TEST],
+    patches=[ab04__age_bin_without_fare_patch],
     raw_features=RAW_FEATURES,
-    stage="fe11",
-    feature_group="age_bin",
-    domain="age",
+    stage="ab04",
+    feature_group="age_bin_without_fare",
+    domain="ablation",
     notes=(
         "Feature engineering 11: "
         "replaces Age with Age_bin."
     ),
 )
 
-ALL_EXPERIMENTS['fe11__age_bin'] = fe11_config
-
-FE11_LEGACY_TEST = {
-    "transformations": [
-        FE.age_bin,
-    ],
-
-    "add": {
-        "preprocessing": {
-            "ordinal_features": [
-                "Age_bin",
-            ],
-        },
-    },
-
-    "remove": {
-        "preprocessing": {
-            "numeric_features": [
-                "Age",
-                "Fare",
-            ],
-        },
-    },
-}
-
-# cb03_config = create_config(
-#     base_config=baseline__raw,
-#     patches=[
-#         TITLE_ONLY,
-#         AGE_IMPUTATION_TITLE_PCLASS,
-#         AGE_BIN_FEATURE,
-#     ],
-#     raw_features=RAW_FEATURES,
-# )
-
-# config_meant_to_fail = create_config(
-#     base_config=baseline__raw,
-#     patches=[
-#         TITLE_ONLY,
-#         AGE_IMPUTATION_TITLE,
-#         AGE_IMPUTATION_TITLE_PCLASS,
-#     ],
-#     raw_features=RAW_FEATURES,
-# )
+ALL_EXPERIMENTS['ab04__age_bin_without_fare'] = ab04__age_bin_without_fare_config
