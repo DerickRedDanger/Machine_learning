@@ -1190,31 +1190,48 @@ ALL_EXPERIMENTS['ab05__sex_pclass_without_sibsp_parch'] = ab05__sex_pclass_witho
 
 # debugging
 
-cb01__age_and_bins_patch = {
-    "transformations": [
-        FE.age_bin,
-    ],
+# ============================================================
+# CONTROL TEST - CB01 with legacy preprocessing column order
+#
+# Purpose:
+# Test whether the RF / ExtraTrees / XGB result differences
+# are caused only by preprocessing feature order.
+# ============================================================
 
-    "add": {
-        "preprocessing": {
-            "ordinal_features": [
-                "Age_bin",
-            ],
-        },
-    },
-}
-
-cb01__age_and_bins_config = create_config_group(
-    base_configs=baseline_config,
-    patches=[
-        cb01__age_and_bins_patch,
-    ],
-    raw_features=RAW_FEATURES,
-    stage="cb01",
-    feature_group="age_and_bins",
-    domain="age",
-    notes=("Combo Experiment 01."
-            "Adding Age bins."),
+cb01__legacy_order_control_config = copy.deepcopy(
+    cb01__age_and_bins_config
 )
 
-ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins_config
+for config in cb01__legacy_order_control_config.values():
+
+    # Change ONLY the feature order to match legacy CB01.
+    config["preprocessing"]["numeric_features"] = [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age",
+    ]
+
+    # Give the control experiment its own identity.
+    model_name = config["model_name"]
+
+    config["stage"] = "control"
+    config["feature_group"] = "cb01_legacy_order"
+    config["group"] = "control__cb01_legacy_order"
+    config["name"] = (
+        f"control__cb01_legacy_order__{model_name}"
+    )
+
+    # Keep the derived human-readable feature list synchronized.
+    config["features"] = features_from_preprocessing(
+        config["preprocessing"]
+    )
+
+
+validate_config_group(
+    cb01__legacy_order_control_config
+)
+
+ALL_EXPERIMENTS[
+    "control__cb01_legacy_order"
+] = cb01__legacy_order_control_config

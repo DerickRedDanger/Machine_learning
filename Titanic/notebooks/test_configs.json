@@ -17113,5 +17113,579 @@
       "Sex_Pclass",
       "Pclass"
     ]
+  },
+  "control__cb01_legacy_order__logreg": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__logreg",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "control__cb01_legacy_order__knn": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__knn",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "control__cb01_legacy_order__svc": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__svc",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "control__cb01_legacy_order__decision_tree": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__decision_tree",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "control__cb01_legacy_order__random_forest": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__random_forest",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "control__cb01_legacy_order__extra_trees": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__extra_trees",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "control__cb01_legacy_order__xgb": {
+    "preprocessing": {
+      "numeric_features": [
+        "Fare",
+        "SibSp",
+        "Parch",
+        "Age"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "control",
+    "feature_group": "cb01_legacy_order",
+    "group": "control__cb01_legacy_order",
+    "domain": "age",
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Combo Experiment 01.Adding Age bins.",
+    "name": "control__cb01_legacy_order__xgb",
+    "features": [
+      "Fare",
+      "SibSp",
+      "Parch",
+      "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
   }
 }
