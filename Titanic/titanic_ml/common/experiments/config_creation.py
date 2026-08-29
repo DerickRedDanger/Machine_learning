@@ -1,5 +1,84 @@
 import copy
+import warnings
 
+
+VALID_PATCH_KEYS = {
+    "transformations",
+    "add",
+    "remove",
+    "update",
+}
+
+VALID_PREPROCESSING_KEYS = {
+    "numeric_features",
+    "onehot_features",
+    "ordinal_features",
+    "numeric_imputer",
+    "categorical_imputer",
+    "scaler",
+}
+
+PREPROCESSING_FEATURE_KEYS = {
+    "numeric_features",
+    "onehot_features",
+    "ordinal_features",
+}
+
+def _validate_patch_structure(patch):
+    unknown_patch_keys = (
+        set(patch)
+        - VALID_PATCH_KEYS
+    )
+
+    if unknown_patch_keys:
+        raise ValueError(
+            "Unknown patch keys: "
+            f"{sorted(unknown_patch_keys)}"
+        )
+
+    for operation_name in [
+        "add",
+        "remove",
+        "update",
+    ]:
+        operation = patch.get(
+            operation_name,
+            {},
+        )
+
+        if not isinstance(operation, dict):
+            raise TypeError(
+                f"Patch '{operation_name}' "
+                "must be a dictionary."
+            )
+
+        preprocessing_changes = (
+            operation.get("preprocessing")
+        )
+
+        if preprocessing_changes is None:
+            continue
+
+        if not isinstance(
+            preprocessing_changes,
+            dict,
+        ):
+            raise TypeError(
+                f"Patch '{operation_name}.preprocessing' "
+                "must be a dictionary."
+            )
+
+        unknown_keys = (
+            set(preprocessing_changes)
+            - VALID_PREPROCESSING_KEYS
+        )
+
+        if unknown_keys:
+            raise ValueError(
+                "Unknown preprocessing keys in "
+                f"'{operation_name}': "
+                f"{sorted(unknown_keys)}"
+            )
 
 def create_config(
     base_config,
@@ -51,6 +130,10 @@ def create_config(
 
     feature_pipeline = []
 
+    produced_features = set()
+
+    required_features = set()
+
     # ---------------------------------------------------------
     # Apply patches in the order provided
     # ---------------------------------------------------------
@@ -61,6 +144,12 @@ def create_config(
             raise TypeError(
                 "Each patch must be a dictionary."
             )
+
+        # -----------------------------------------------------
+        # Validation check
+        # -----------------------------------------------------
+        _validate_patch_structure(patch)
+
 
         # -----------------------------------------------------
         # Transformations
@@ -87,6 +176,8 @@ def create_config(
                     [],
                 )
             )
+
+            required_features.update(required)
 
             missing_required = (
                 required - available_features
@@ -154,12 +245,15 @@ def create_config(
                     transform_id
                 )
 
-            available_features.update(
+            produced = set(
                 transformation.get(
                     "produces",
                     [],
                 )
             )
+
+            produced_features.update(produced)
+            available_features.update(produced)
 
         # -----------------------------------------------------
         # Apply normal configuration changes
@@ -216,6 +310,20 @@ def create_config(
             f"{sorted(unavailable_model_features)}"
         )
 
+    unused_produced_features = (
+        produced_features
+        - required_features
+        - set(model_features)
+    )
+
+    if unused_produced_features:
+        warnings.warn(
+            "The following engineered features are produced "
+            "but are neither consumed by another transformation "
+            "nor included in preprocessing: "
+            f"{sorted(unused_produced_features)}",
+            UserWarning,
+        )
     # ---------------------------------------------------------
     # Metadata
     # ---------------------------------------------------------
@@ -299,10 +407,25 @@ def create_config_group(
     return configs
 
 # Append Helper
-def _append_unique(target_list, values):
+def _append_unique(
+    target_list,
+    values,
+    field_name=None,
+):
     for value in values:
-        if value not in target_list:
-            target_list.append(value)
+        if value in target_list:
+            warnings.warn(
+                f"'{value}' is already present"
+                + (
+                    f" in '{field_name}'."
+                    if field_name
+                    else "."
+                ),
+                UserWarning,
+            )
+            continue
+
+        target_list.append(value)
 
 # Add Helper
 def _apply_add(config, additions):
@@ -322,6 +445,7 @@ def _apply_add(config, additions):
                 _append_unique(
                     current,
                     value,
+                    field_name=f"{section}.{key}",
                 )
 
             else:
@@ -332,27 +456,44 @@ def _apply_remove(config, removals):
     for section, changes in removals.items():
 
         if section not in config:
-            continue
+            raise ValueError(
+                f"Cannot remove from unknown config "
+                f"section '{section}'."
+            )
 
         for key, values in changes.items():
 
             if key not in config[section]:
-                continue
+                raise ValueError(
+                    f"Cannot remove from unknown config field "
+                    f"'{section}.{key}'."
+                )
 
-            if not isinstance(
-                config[section][key],
-                list,
-            ):
+            current = config[section][key]
+
+            if not isinstance(current, list):
                 raise ValueError(
                     f"Cannot remove list values "
                     f"from non-list config field "
                     f"'{section}.{key}'."
                 )
 
+            missing_values = [
+                value
+                for value in values
+                if value not in current
+            ]
+
+            if missing_values:
+                raise ValueError(
+                    f"Cannot remove {missing_values} from "
+                    f"'{section}.{key}' because they are "
+                    "not present there."
+                )
+
             config[section][key] = [
                 item
-                for item
-                in config[section][key]
+                for item in current
                 if item not in values
             ]
 

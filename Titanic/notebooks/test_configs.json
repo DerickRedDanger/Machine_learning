@@ -13618,7 +13618,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "logreg",
     "model_params": {
       "max_iter": 1000,
@@ -13696,7 +13696,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "knn",
     "model_params": {
       "n_neighbors": 5
@@ -13773,7 +13773,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "svc",
     "model_params": {
       "C": 1.0,
@@ -13854,7 +13854,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "decision_tree",
     "model_params": {
       "max_depth": 4,
@@ -13933,7 +13933,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "random_forest",
     "model_params": {
       "n_estimators": 200,
@@ -14014,7 +14014,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "extra_trees",
     "model_params": {
       "n_estimators": 200,
@@ -14095,7 +14095,7 @@
     "stage": "ab01",
     "feature_group": "age_and_bins_without_fare",
     "group": "ab01__age_and_bins_without_fare",
-    "domain": "exampablatione_domain",
+    "domain": "ablation",
     "model_name": "xgb",
     "model_params": {
       "n_estimators": 200,
@@ -16636,16 +16636,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -16691,11 +16688,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__knn": {
@@ -16703,16 +16698,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -16757,11 +16749,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__svc": {
@@ -16769,16 +16759,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -16827,11 +16814,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__decision_tree": {
@@ -16839,16 +16824,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -16895,11 +16877,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__random_forest": {
@@ -16907,16 +16887,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -16965,11 +16942,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__extra_trees": {
@@ -16977,16 +16952,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -17035,11 +17007,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__xgb": {
@@ -17047,16 +17017,13 @@
       "numeric_features": [
         "Age",
         "SibSp",
-        "Parch",
         "Fare"
       ],
       "onehot_features": [
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -17107,11 +17074,9 @@
     "features": [
       "Age",
       "SibSp",
-      "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "control__cb01_legacy_order__logreg": {
