@@ -555,7 +555,7 @@ One exception being LogReg, which had a small gain in accuracy. Was it unable to
 
 </details>
 
-### cb07__family_features
+#### cb07__family_features
 
 This experiment keeps both the engineered and original family to see if they complimet each other.
 
@@ -1222,7 +1222,7 @@ Replacing median-imputed Age with Title-imputed Age changes which models benefit
 
 </details>
 
-#### cb03__age_imputed_title_Pclass_and_bins
+#### cb03__age_imputed_title_pclass_and_bins
 
 Experiment akin to Cb02, but imputing age with both title and pclass.
 
@@ -1851,7 +1851,7 @@ A likely explanation is that most of these models are already capable of learnin
 
 </details>
 
-#### cb08__pclass_sex_features
+#### cb08__sex_pclass_features
 
 Experiment exploring whether using combined features with their original ones leads to gains, or just adds noise.
 

@@ -4,7 +4,7 @@
 from math import exp
 
 from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature, age_imputed_by_title, age_imputed_by_title_pclass, add_fare_per_familysize, add_ticket_group_size, add_fare_per_ticket_member, add_deck, add_full_cabin_features
-from titanic_ml.common.experiments.config_creation import create_experiment_group
+from titanic_ml.common.experiments.legacy_config_creation import create_experiment_group
 import copy
 
 from titanic_ml.feature_engineering.age_bin import add_age_bin
@@ -913,3 +913,14 @@ example: {"n_estimators": [100, 200, 300], "max_depth": [3, 5, 7]}
 - notes: A brief description of the experiment and the reasoning behind it, or any additional information about the experiment.
 example: "This experiment tests the performance of a Random Forest model with default parameters. Meant to be used as baseline for comparison with tuned models."
 """
+
+for key, value in ALL_EXPERIMENTS.items():
+    print(key)
+    print(value[0]['features'])
+    # print('Raw features')
+    # print("['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']")
+    raw = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked']
+    missing_features = set(raw) - set(value[0]['features'])
+    print('missing features')
+    print(missing_features)
+    print('--------')

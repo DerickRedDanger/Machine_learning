@@ -388,9 +388,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -401,11 +401,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -419,6 +415,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -448,9 +454,9 @@
     "name": "fe01__family__logreg",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -460,9 +466,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -473,11 +479,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -491,6 +493,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -519,9 +531,9 @@
     "name": "fe01__family__knn",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -531,9 +543,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -544,11 +556,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -562,6 +570,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -594,9 +612,9 @@
     "name": "fe01__family__svc",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -606,9 +624,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -619,11 +637,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -637,6 +651,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -667,9 +691,9 @@
     "name": "fe01__family__decision_tree",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -679,9 +703,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -692,11 +716,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -710,6 +730,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -742,9 +772,9 @@
     "name": "fe01__family__random_forest",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -754,9 +784,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -767,11 +797,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -785,6 +811,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -817,9 +853,9 @@
     "name": "fe01__family__extra_trees",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -829,9 +865,9 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
+        "Fare",
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -842,11 +878,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "numerical_features": [
-        "Family",
-        "IsAlone"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -860,6 +892,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -894,9 +936,9 @@
     "name": "fe01__family__xgb",
     "features": [
       "Age",
-      "SibSp",
-      "Parch",
       "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -1843,7 +1885,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -1851,10 +1894,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -1905,6 +1945,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -1919,7 +1960,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -1927,10 +1969,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -1980,6 +2019,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -1994,7 +2034,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -2002,10 +2043,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -2059,6 +2097,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -2073,7 +2112,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -2081,10 +2121,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -2136,6 +2173,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -2150,7 +2188,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -2158,10 +2197,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -2215,6 +2251,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -2229,7 +2266,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -2237,10 +2275,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -2294,6 +2329,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -2308,7 +2344,8 @@
       ],
       "onehot_features": [
         "Sex",
-        "Embarked"
+        "Embarked",
+        "Deck"
       ],
       "ordinal_features": [
         "Pclass",
@@ -2316,10 +2353,7 @@
       ],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
-      "scaler": "standard",
-      "onehot_feature": [
-        "Deck"
-      ]
+      "scaler": "standard"
     },
     "feature_pipeline": [
       [
@@ -2375,6 +2409,7 @@
       "Fare",
       "Sex",
       "Embarked",
+      "Deck",
       "Pclass",
       "Has_Cabin"
     ]
@@ -6107,7 +6142,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "logreg",
     "model_params": {
       "max_iter": 1000,
@@ -6185,7 +6220,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "knn",
     "model_params": {
       "n_neighbors": 5
@@ -6262,7 +6297,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "svc",
     "model_params": {
       "C": 1.0,
@@ -6343,7 +6378,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "decision_tree",
     "model_params": {
       "max_depth": 4,
@@ -6422,7 +6457,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "random_forest",
     "model_params": {
       "n_estimators": 200,
@@ -6503,7 +6538,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "extra_trees",
     "model_params": {
       "n_estimators": 200,
@@ -6584,7 +6619,7 @@
     "stage": "fe11",
     "feature_group": "age_bin",
     "group": "fe11__age_bin",
-    "domain": "Age",
+    "domain": "age",
     "model_name": "xgb",
     "model_params": {
       "n_estimators": 200,
@@ -6619,9 +6654,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -6670,8 +6703,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "fe12__sex_pclass__knn": {
@@ -6686,9 +6718,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -6736,8 +6766,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "fe12__sex_pclass__svc": {
@@ -6752,9 +6781,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -6806,8 +6833,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "fe12__sex_pclass__decision_tree": {
@@ -6822,9 +6848,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -6874,8 +6898,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "fe12__sex_pclass__random_forest": {
@@ -6890,9 +6913,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -6944,8 +6965,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "fe12__sex_pclass__extra_trees": {
@@ -6960,9 +6980,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -7014,8 +7032,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "fe12__sex_pclass__xgb": {
@@ -7030,9 +7047,7 @@
         "Embarked",
         "Sex_Pclass"
       ],
-      "ordinal_features": [
-        "Pclass"
-      ],
+      "ordinal_features": [],
       "numeric_imputer": "median",
       "categorical_imputer": "most_frequent",
       "scaler": "standard"
@@ -7086,8 +7101,7 @@
       "Parch",
       "Fare",
       "Embarked",
-      "Sex_Pclass",
-      "Pclass"
+      "Sex_Pclass"
     ]
   },
   "cb01__age_and_bins__logreg": {
@@ -12466,7 +12480,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12491,6 +12506,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12524,6 +12549,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -12536,7 +12562,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12561,6 +12588,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12593,6 +12630,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -12605,7 +12643,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12630,6 +12669,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12666,6 +12715,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -12678,7 +12728,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12703,6 +12754,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12737,6 +12798,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -12749,7 +12811,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12774,6 +12837,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12810,6 +12883,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -12822,7 +12896,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12847,6 +12922,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12883,6 +12968,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -12895,7 +12981,8 @@
         "SibSp",
         "Parch",
         "Fare",
-        "FamilySize"
+        "FamilySize",
+        "IsAlone"
       ],
       "onehot_features": [
         "Sex",
@@ -12920,6 +13007,16 @@
               "SibSp",
               "Parch"
             ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
           }
         }
       ]
@@ -12958,6 +13055,7 @@
       "Parch",
       "Fare",
       "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Pclass"
@@ -16531,6 +16629,489 @@
       "Embarked",
       "Pclass",
       "Age_bin"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__logreg": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__knn": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__svc": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__decision_tree": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__random_forest": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__extra_trees": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
+    ]
+  },
+  "ab05__sex_pclass_without_sibsp_parch__xgb": {
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab05",
+    "feature_group": "sex_pclass_without_sibsp_parch",
+    "group": "ab05__sex_pclass_without_sibsp_parch",
+    "domain": "ablation",
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Ablation experiment 05.Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch.",
+    "name": "ab05__sex_pclass_without_sibsp_parch__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Embarked",
+      "Sex_Pclass",
+      "Pclass"
     ]
   }
 }

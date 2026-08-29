@@ -306,21 +306,26 @@ experiment groups.
 # FE 01 - Family
 fe01__family_patch = {
     "transformations":[
-        FE.family
+        FE.family,
+        FE.is_alone,
     ],
 
     "add":{
         "preprocessing":{
-            "numerical_features":[
-                "Family", "IsAlone"
-            ]
-        }
+            "numeric_features":[
+                "FamilySize",
+                "IsAlone",
+            ],
+        },
     },
 
     "remove":{
-        "numerical_features":[
-            "SibSp", "Parch"
-        ]
+        "preprocessing":{
+            "numeric_features":[
+                "SibSp",
+                "Parch",
+            ],
+        },
     },
 
 }
@@ -414,7 +419,7 @@ fe04__cabin_features_patch = {
             "ordinal_features": [
                 "Has_Cabin",
             ],
-            "onehot_feature":[
+            "onehot_features":[
                 "Deck",
             ]
         },
@@ -659,7 +664,7 @@ fe11__age_bin_config = create_config_group(
     raw_features=RAW_FEATURES,
     stage="fe11",
     feature_group="age_bin",
-    domain="Age",
+    domain="age",
     notes=("Feature Engineering 11."
             "Replacing Age with Age bin."),
 )
@@ -684,7 +689,10 @@ fe12__sex_pclass_patch = {
     "remove": {
         "preprocessing": {
             "onehot_features": [
-                "Sex", "Pclass"
+                "Sex",
+            ],
+            "ordinal_features":[
+                "Pclass",
             ],
         },
     },
@@ -909,12 +917,14 @@ ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features_config
 cb07__family_features_patch = {
     "transformations": [
         FE.family,
+        FE.is_alone
     ],
 
     "add": {
         "preprocessing": {
             "numeric_features": [
                 "FamilySize",
+                "IsAlone",
             ],
         },
     },
@@ -1000,7 +1010,7 @@ ab01__age_and_bins_without_fare_config = create_config_group(
     raw_features=RAW_FEATURES,
     stage="ab01",
     feature_group="age_and_bins_without_fare",
-    domain="exampablatione_domain",
+    domain="ablation",
     notes=("Ablation Experiment 01."
             "Adding Age bins and removing Fare."),
 )
@@ -1129,3 +1139,82 @@ ab04__age_bin_without_fare_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['ab04__age_bin_without_fare'] = ab04__age_bin_without_fare_config
+
+
+# Ab 05 - Sex _ Pclass without SibSp and Parch
+
+ab05__sex_pclass_without_sibsp_parch_patch = {
+    "transformations": [
+        FE.sex_pclass,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "onehot_features": [
+                "Sex_Pclass",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "onehot_features": [
+                "Sex",
+            ],
+            "ordinal_features":[
+                "Pclass",
+            ],
+            "numeric_features":[
+                "Sibsp",
+                "Parch",
+            ]
+        },
+    },
+}
+
+ab05__sex_pclass_without_sibsp_parch_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        ab05__sex_pclass_without_sibsp_parch_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="ab05",
+    feature_group="sex_pclass_without_sibsp_parch",
+    domain="ablation",
+    notes=("Ablation experiment 05."
+            "Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch."),
+)
+
+ALL_EXPERIMENTS['ab05__sex_pclass_without_sibsp_parch'] = ab05__sex_pclass_without_sibsp_parch_config
+
+
+# debugging
+
+cb01__age_and_bins_patch = {
+    "transformations": [
+        FE.age_bin,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "ordinal_features": [
+                "Age_bin",
+            ],
+        },
+    },
+}
+
+cb01__age_and_bins_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb01__age_and_bins_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb01",
+    feature_group="age_and_bins",
+    domain="age",
+    notes=("Combo Experiment 01."
+            "Adding Age bins."),
+)
+
+ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins_config
