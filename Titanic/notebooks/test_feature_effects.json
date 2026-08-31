@@ -1174,42 +1174,43 @@
   "ab05__sex_pclass_without_sibsp_parch": {
     "compare_group": "ab05__sex_pclass_without_sibsp_parch",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.001,
-    "max_delta": 0.013,
-    "min_delta": -0.005,
+    "mean_delta": -0.001,
+    "max_delta": 0.009,
+    "min_delta": -0.009,
     "positive_models": [
       "logreg",
-      "svc"
-    ],
-    "neutral_models": [
-      "knn",
-      "random_forest",
       "extra_trees"
     ],
+    "neutral_models": [],
     "negative_models": [
+      "knn",
+      "svc",
       "decision_tree",
+      "random_forest",
       "xgb"
     ],
     "verdict": "mixed",
     "recommended_for_all": false,
     "recommended_model_deltas": {
-      "logreg": 0.013,
-      "svc": 0.006
+      "logreg": 0.009,
+      "extra_trees": 0.007
     },
     "recommended_model_tradeoffs": {
       "logreg": {
         "primary_metric": "test_accuracy_mean",
-        "primary_delta": 0.013,
+        "primary_delta": 0.009,
         "secondary_pros": {},
         "secondary_cons": {
-          "test_f1_mean": -0.01
+          "test_f1_mean": -0.02
         }
       },
-      "svc": {
+      "extra_trees": {
         "primary_metric": "test_accuracy_mean",
-        "primary_delta": 0.006,
+        "primary_delta": 0.007,
         "secondary_pros": {},
-        "secondary_cons": {}
+        "secondary_cons": {
+          "test_f1_mean": -0.016
+        }
       }
     },
     "notable_secondary_improvements": {},

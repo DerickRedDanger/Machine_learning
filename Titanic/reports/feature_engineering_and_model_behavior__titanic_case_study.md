@@ -969,25 +969,23 @@ This investigation explores three independent questions:
 
 #### fe06__age_imputation_title
 
-Age have 20% of its values missing, imputing with median is decent, but not nescesarely the best. This experiments test how good imputing age with group by title is, and how this would affect the accuracy of the models.
+Age contains a substantial proportion of missing values. While median imputation provides a simple baseline, passenger title may provide additional information about likely age. This experiment tests median Age imputation grouped by Title. Group statistics are learned independently within each cross-validation training fold and applied to its validation fold, ensuring that validation observations do not influence the imputation statistics.
 
 <details>
 <summary>Conclusion</summary>
 
+
 ##### Interpretation
 
-- Verdict: model_specific_positive
+- Verdict: mixed
 - Recommended for specific models:
-  - decision_tree: test_accuracy_mean: 0.005
-  - random_forest: test_accuracy_mean: 0.003
+  - decision_tree: test_accuracy_mean: 0.003
+  - xgb: test_accuracy_mean: 0.003
+
 
 ##### Conclusion
 
-Overall, imputing by title lead to gains, even if only slightly.
-
-The relatively small improvements suggest that either the missing proportion is too small to have a large impact, or that median imputation was already providing a reasonable approximation.
-
-Interesting how Xgb and Extra tree had no change in accuracy and barely any in f1. They didn't care about the changes in age? Or they already got the information they needed from the other features?
+Title-based Age imputation is a viable alternative to global median imputation, but the CV-safe results do not show a strong general advantage. Its effects are model-dependent and generally small, with KNN showing a meaningful deterioration.
 
 </details>
 
@@ -998,45 +996,50 @@ Interesting how Xgb and Extra tree had no change in accuracy and barely any in f
 
 | reference_group   | compare_group              | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:---------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe06__age_imputation_title | logreg        |                          0.786 |                        0.787 |                      0.001 |                    0.713 |                  0.712 |               -0.001 |
-| baseline__raw     | fe06__age_imputation_title | knn           |                          0.809 |                        0.808 |                     -0.001 |                    0.742 |                  0.739 |               -0.003 |
+| baseline__raw     | fe06__age_imputation_title | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.714 |                0.001 |
+| baseline__raw     | fe06__age_imputation_title | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.73  |               -0.012 |
 | baseline__raw     | fe06__age_imputation_title | svc           |                          0.827 |                        0.829 |                      0.002 |                    0.76  |                  0.764 |                0.004 |
-| baseline__raw     | fe06__age_imputation_title | decision_tree |                          0.803 |                        0.808 |                      0.005 |                    0.702 |                  0.711 |                0.009 |
-| baseline__raw     | fe06__age_imputation_title | random_forest |                          0.822 |                        0.825 |                      0.003 |                    0.744 |                  0.749 |                0.005 |
+| baseline__raw     | fe06__age_imputation_title | decision_tree |                          0.803 |                        0.806 |                      0.003 |                    0.702 |                  0.703 |                0.001 |
+| baseline__raw     | fe06__age_imputation_title | random_forest |                          0.822 |                        0.823 |                      0.001 |                    0.744 |                  0.747 |                0.003 |
 | baseline__raw     | fe06__age_imputation_title | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
-| baseline__raw     | fe06__age_imputation_title | xgb           |                          0.826 |                        0.826 |                      0     |                    0.758 |                  0.756 |               -0.002 |
+| baseline__raw     | fe06__age_imputation_title | xgb           |                          0.826 |                        0.829 |                      0.003 |                    0.758 |                  0.761 |                0.003 |
 
 ##### Summary
 
 | compare_group              |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:---------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe06__age_imputation_title |                      0.00142857 |                         -0.001 |                          0.005 |                0.00171429 |                   -0.003 |                    0.009 |
+| fe06__age_imputation_title |                     0.000857143 |                         -0.005 |                          0.003 |                         0 |                   -0.012 |                    0.004 |
 
 </details>
 
 #### fe07__age_imputation_title_pclass
 
-Testing the effect of imputing using both Title and Pclass, expecting better results than imputing with title alone.
+Age contains a substantial proportion of missing values. The baseline uses median imputation, while FE06 investigated estimating missing Age values from passenger Title.
+
+This experiment tests whether adding Pclass as additional context improves the usefulness of the imputation. Missing Age values are therefore imputed using the median Age of passengers sharing both Title and Pclass.
+
+The grouped statistics are learned independently within each cross-validation training fold and applied to the corresponding validation fold.
 
 <details>
 <summary>Conclusion</summary>
 
+
 ##### Interpretation
 
-- Verdict: model_specific_mixed
+- Verdict: mixed
 - Recommended for specific models:
-  - logreg: test_accuracy_mean: 0.013
+  - logreg: test_accuracy_mean: 0.012
     - Secondary gains:
-      - test_f1_mean: 0.012
-  - random_forest: test_accuracy_mean: 0.004
+      - test_f1_mean: 0.011
+
 
 ##### Conclusion
 
-Imputing Age using Title and Pclass produced better results than imputing by Title alone. 
+Title-and-Pclass-based Age imputation is not a generally superior replacement for median imputation, but it is a promising model-specific choice for Logistic Regression.
 
-The strongest improvement was observed in Logistic Regression, suggesting that the more refined age estimates create relationships that are easier for linear models to exploit. 
+The experiment also demonstrates that increasing the contextual specificity of an imputation strategy can affect models very differently. More conditional imputation does not automatically produce a better representation: its value ultimately depends on how the resulting feature interacts with the model.
 
-The overall gains remain small, likely because Age is only missing for approximately 20% of passengers. Nevertheless, the experiment indicates that Pclass provides useful contextual information when estimating missing ages.
+Logistic Regression should retain this configuration as a candidate for later model-specific feature selection.
 
 </details>
 
@@ -1047,19 +1050,19 @@ The overall gains remain small, likely because Age is only missing for approxima
 
 | reference_group   | compare_group                     | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:----------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe07__age_imputation_title_pclass | logreg        |                          0.786 |                        0.799 |                      0.013 |                    0.713 |                  0.725 |                0.012 |
-| baseline__raw     | fe07__age_imputation_title_pclass | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.737 |               -0.005 |
+| baseline__raw     | fe07__age_imputation_title_pclass | logreg        |                          0.786 |                        0.798 |                      0.012 |                    0.713 |                  0.724 |                0.011 |
+| baseline__raw     | fe07__age_imputation_title_pclass | knn           |                          0.809 |                        0.799 |                     -0.01  |                    0.742 |                  0.733 |               -0.009 |
 | baseline__raw     | fe07__age_imputation_title_pclass | svc           |                          0.827 |                        0.829 |                      0.002 |                    0.76  |                  0.764 |                0.004 |
 | baseline__raw     | fe07__age_imputation_title_pclass | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.699 |               -0.003 |
-| baseline__raw     | fe07__age_imputation_title_pclass | random_forest |                          0.822 |                        0.826 |                      0.004 |                    0.744 |                  0.75  |                0.006 |
-| baseline__raw     | fe07__age_imputation_title_pclass | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
-| baseline__raw     | fe07__age_imputation_title_pclass | xgb           |                          0.826 |                        0.828 |                      0.002 |                    0.758 |                  0.761 |                0.003 |
+| baseline__raw     | fe07__age_imputation_title_pclass | random_forest |                          0.822 |                        0.824 |                      0.002 |                    0.744 |                  0.746 |                0.002 |
+| baseline__raw     | fe07__age_imputation_title_pclass | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe07__age_imputation_title_pclass | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.757 |               -0.001 |
 
 ##### Summary
 
 | compare_group                     |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:----------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe07__age_imputation_title_pclass |                           0.002 |                         -0.007 |                          0.013 |                0.00242857 |                   -0.005 |                    0.012 |
+| fe07__age_imputation_title_pclass |                     0.000857143 |                          -0.01 |                          0.012 |               0.000714286 |                   -0.009 |                    0.011 |
 
 </details>
 
@@ -1067,9 +1070,9 @@ The overall gains remain small, likely because Age is only missing for approxima
 
 #### fe11__age_bin
 
-Test whether changing the representation of Age changes what the models learn.
+This experiment tests whether replacing continuous Age with a discretized representation changes what the models learn.
 
-These bin were made based from previous exploratory experiments, while its order are meant to represent the survival rate of the passenger based on its age, rather than the age itself.
+Age is divided into bins derived from previous exploratory analysis. The bins are ordinally encoded according to their observed relationship with survival rather than chronological age, allowing the representation to emphasize survival-relevant age groups.
 
 <details>
 <summary>Conclusion</summary>
@@ -1077,22 +1080,21 @@ These bin were made based from previous exploratory experiments, while its order
 
 ##### Interpretation
 
-- Verdict: model_specific_mixed
+- Verdict: mixed
 - Recommended for specific models:
-  - decision_tree: 0.006
-  - random_forest: 0.011
-  - extra_trees: 0.015
-- Notable secondary improvements:
-  - decision_tree: test_f1_mean: 0.02
-  - random_forest: test_f1_mean: 0.015
-  - extra_trees: test_f1_mean: 0.016
+  - decision_tree: test_accuracy_mean: 0.01
+    - Secondary gains:
+      - test_f1_mean: 0.02
+  - random_forest: test_accuracy_mean: 0.003
 
 
 ##### Conclusion
 
-Age bin's results were significant, Logreg suffered slightly, Knn and Xgb had small accuracy gains while taking some losses in f1. Scv had small gains.
+Age binning is strongly model-specific rather than generally beneficial.
 
-But compared to them, Decision, random and extra tree had significant gains on both accuracy and F1. This' likely because the binning facilitated the creation of their's threshold, while the binning themselves apparently align well with the survival behavior.
+The representation should be retained as a candidate for Decision Tree, where it produced meaningful improvements in both accuracy and F1. Random Forest showed a smaller benefit worth retaining for comparison, while there is little evidence to prefer the binned representation for the remaining models.
+
+The results reinforce that feature engineering can be valuable when its representation aligns with a model's inductive structure, even when it does not introduce new information.
 
 </details>
 
@@ -1103,19 +1105,19 @@ But compared to them, Decision, random and extra tree had significant gains on b
 
 | reference_group   | compare_group   | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe11__age_bin   | logreg        |                          0.786 |                        0.783 |                     -0.003 |                    0.713 |                  0.71  |               -0.003 |
-| baseline__raw     | fe11__age_bin   | knn           |                          0.809 |                        0.81  |                      0.001 |                    0.742 |                  0.737 |               -0.005 |
-| baseline__raw     | fe11__age_bin   | svc           |                          0.827 |                        0.829 |                      0.002 |                    0.76  |                  0.764 |                0.004 |
-| baseline__raw     | fe11__age_bin   | decision_tree |                          0.803 |                        0.809 |                      0.006 |                    0.702 |                  0.722 |                0.02  |
-| baseline__raw     | fe11__age_bin   | random_forest |                          0.822 |                        0.833 |                      0.011 |                    0.744 |                  0.759 |                0.015 |
-| baseline__raw     | fe11__age_bin   | extra_trees   |                          0.804 |                        0.819 |                      0.015 |                    0.721 |                  0.737 |                0.016 |
-| baseline__raw     | fe11__age_bin   | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.752 |               -0.006 |
+| baseline__raw     | fe11__age_bin   | logreg        |                          0.786 |                        0.785 |                     -0.001 |                    0.713 |                  0.713 |                0     |
+| baseline__raw     | fe11__age_bin   | knn           |                          0.809 |                        0.801 |                     -0.008 |                    0.742 |                  0.74  |               -0.002 |
+| baseline__raw     | fe11__age_bin   | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.759 |               -0.001 |
+| baseline__raw     | fe11__age_bin   | decision_tree |                          0.803 |                        0.813 |                      0.01  |                    0.702 |                  0.722 |                0.02  |
+| baseline__raw     | fe11__age_bin   | random_forest |                          0.822 |                        0.825 |                      0.003 |                    0.744 |                  0.748 |                0.004 |
+| baseline__raw     | fe11__age_bin   | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.724 |                0.003 |
+| baseline__raw     | fe11__age_bin   | xgb           |                          0.826 |                        0.826 |                      0     |                    0.758 |                  0.756 |               -0.002 |
 
 ##### Summary
 
 | compare_group   |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe11__age_bin   |                      0.00471429 |                         -0.003 |                          0.015 |                0.00585714 |                   -0.006 |                     0.02 |
+| fe11__age_bin   |                     0.000428571 |                         -0.008 |                           0.01 |                0.00314286 |                   -0.002 |                     0.02 |
 
 </details>
 
@@ -1123,11 +1125,11 @@ But compared to them, Decision, random and extra tree had significant gains on b
 
 #### cb01__age_and_bins
 
-Combo using both raw Age and Age_bin.
+This experiment combines continuous Age with the ordinal Age_bin representation tested in FE11.
 
-This experiment explores whether the original continuous Age feature and its binned version provide complementary information, or mostly overlap.
+Rather than asking whether Age bins provide a better replacement for continuous Age, this experiment tests whether the two representations provide complementary information when available simultaneously.
 
-It also serves as a proof of concept for combo experiments: testing whether the effect of combining features can be predicted from their individual effects, or whether combinations behave differently enough to require separate evaluation.
+It also investigates whether the effect of a feature representation can be inferred from its performance in isolation, or whether interactions between alternative representations need to be evaluated directly.
 
 <details>
 <summary>Conclusion</summary>
@@ -1138,14 +1140,21 @@ It also serves as a proof of concept for combo experiments: testing whether the 
 - Verdict: mixed
 - Recommended for specific models:
   - logreg: test_accuracy_mean: 0.008
+  - random_forest: test_accuracy_mean: 0.003
   - extra_trees: test_accuracy_mean: 0.014
     - Secondary gains:
-      - test_f1_mean: 0.024
+      - test_f1_mean: 0.022
 
 
 ##### Conclusion
 
-Using both continuous Age and Age_bin provides little universal benefit. Most models perform similarly to using one representation alone, while Decision Tree and Random Forest lose much of the benefit obtained from Age_bin by itself. Extra tree is the primary exception, having considerable gains in both accuracy and f1. Meanwhile Logistic Regression also had gain, suggesting that the continuous and ordinal representations contain complementary information for linear models.
+Continuous Age and Age_bin should not be treated as interchangeable representations. Their usefulness depends both on the model and on whether they are used independently or together.
+
+Extra Trees is the strongest example of complementarity: Age_bin alone provides little benefit, while combining it with continuous Age produces substantial improvements in both accuracy and F1. Logistic Regression shows a similar, though smaller, pattern.
+
+Decision Tree shows the opposite behavior, benefiting from Age_bin as a replacement for continuous Age but not from their combination. This supports retaining Age_bin alone as the preferred Age representation for Decision Tree.
+
+The experiment demonstrates that the value of engineered representations cannot always be predicted from their isolated performance. Alternative representations that appear redundant independently may become useful when combined, while representations that perform well alone may lose their advantage when the original feature is restored.
 
 </details>
 
@@ -1160,22 +1169,26 @@ Using both continuous Age and Age_bin provides little universal benefit. Most mo
 | baseline__raw     | cb01__age_and_bins | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.734 |               -0.008 |
 | baseline__raw     | cb01__age_and_bins | svc           |                          0.827 |                        0.828 |                      0.001 |                    0.76  |                  0.764 |                0.004 |
 | baseline__raw     | cb01__age_and_bins | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.702 |                0     |
-| baseline__raw     | cb01__age_and_bins | random_forest |                          0.822 |                        0.824 |                      0.002 |                    0.744 |                  0.748 |                0.004 |
-| baseline__raw     | cb01__age_and_bins | extra_trees   |                          0.804 |                        0.818 |                      0.014 |                    0.721 |                  0.745 |                0.024 |
-| baseline__raw     | cb01__age_and_bins | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.757 |               -0.001 |
+| baseline__raw     | cb01__age_and_bins | random_forest |                          0.822 |                        0.825 |                      0.003 |                    0.744 |                  0.748 |                0.004 |
+| baseline__raw     | cb01__age_and_bins | extra_trees   |                          0.804 |                        0.818 |                      0.014 |                    0.721 |                  0.743 |                0.022 |
+| baseline__raw     | cb01__age_and_bins | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.761 |                0.003 |
 
 ##### Summary
 
 | compare_group      |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb01__age_and_bins |                      0.00242857 |                         -0.007 |                          0.014 |                0.00457143 |                   -0.008 |                    0.024 |
+| cb01__age_and_bins |                      0.00285714 |                         -0.007 |                          0.014 |                0.00485714 |                   -0.008 |                    0.022 |
 
 </details>
 
 
 #### cb02__age_imputed_title_and_bins
 
-Experiment testing the effect of imputing raw age with Title before binning it.
+This experiment combines title-based Age imputation from FE06 with the continuous-and-binned Age representation explored in CB01.
+
+Missing Age values are first imputed using the median Age of passengers sharing the same Title. The resulting Age is then retained as a continuous feature while also being transformed into the ordinal Age_bin representation.
+
+This tests whether a more contextual Age estimate changes the usefulness of combining continuous and discretized representations.
 
 <details>
 <summary>Conclusion</summary>
@@ -1187,15 +1200,20 @@ Experiment testing the effect of imputing raw age with Title before binning it.
 - Recommended for specific models:
   - logreg: test_accuracy_mean: 0.005
   - svc: test_accuracy_mean: 0.004
-  - decision_tree: test_accuracy_mean: 0.005
-  - extra_trees: test_accuracy_mean: 0.015
+  - decision_tree: test_accuracy_mean: 0.003
+  - random_forest: test_accuracy_mean: 0.005
+  - extra_trees: test_accuracy_mean: 0.018
     - Secondary gains:
-      - test_f1_mean: 0.025
+      - test_f1_mean: 0.027
 
 
-##### Conclusion
+#### Conclusion
 
-Replacing median-imputed Age with Title-imputed Age changes which models benefit from the combined representation but does not fundamentally alter the overall pattern. Combining continuous and ordinal Age remains primarily useful for selected models rather than as a universal strategy.
+Title-imputed continuous Age combined with Age_bin is a strong model-specific representation, particularly for Extra Trees, where it produces the best Age-related improvement observed so far.
+
+Random Forest and SVC also benefit, though more modestly. For KNN, the combination remains detrimental and should not be retained.
+
+The experiment further demonstrates that feature transformations should not be evaluated only in isolation. Neither Age binning nor title-based imputation independently predicts the substantial Extra Trees improvement produced when the representations are combined.
 
 </details>
 
@@ -1207,30 +1225,34 @@ Replacing median-imputed Age with Title-imputed Age changes which models benefit
 | reference_group   | compare_group                    | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:---------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
 | baseline__raw     | cb02__age_imputed_title_and_bins | logreg        |                          0.786 |                        0.791 |                      0.005 |                    0.713 |                  0.716 |                0.003 |
-| baseline__raw     | cb02__age_imputed_title_and_bins | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.734 |               -0.008 |
+| baseline__raw     | cb02__age_imputed_title_and_bins | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.729 |               -0.013 |
 | baseline__raw     | cb02__age_imputed_title_and_bins | svc           |                          0.827 |                        0.831 |                      0.004 |                    0.76  |                  0.767 |                0.007 |
-| baseline__raw     | cb02__age_imputed_title_and_bins | decision_tree |                          0.803 |                        0.808 |                      0.005 |                    0.702 |                  0.711 |                0.009 |
-| baseline__raw     | cb02__age_imputed_title_and_bins | random_forest |                          0.822 |                        0.824 |                      0.002 |                    0.744 |                  0.748 |                0.004 |
-| baseline__raw     | cb02__age_imputed_title_and_bins | extra_trees   |                          0.804 |                        0.819 |                      0.015 |                    0.721 |                  0.746 |                0.025 |
-| baseline__raw     | cb02__age_imputed_title_and_bins | xgb           |                          0.826 |                        0.828 |                      0.002 |                    0.758 |                  0.759 |                0.001 |
+| baseline__raw     | cb02__age_imputed_title_and_bins | decision_tree |                          0.803 |                        0.806 |                      0.003 |                    0.702 |                  0.703 |                0.001 |
+| baseline__raw     | cb02__age_imputed_title_and_bins | random_forest |                          0.822 |                        0.827 |                      0.005 |                    0.744 |                  0.753 |                0.009 |
+| baseline__raw     | cb02__age_imputed_title_and_bins | extra_trees   |                          0.804 |                        0.822 |                      0.018 |                    0.721 |                  0.748 |                0.027 |
+| baseline__raw     | cb02__age_imputed_title_and_bins | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.759 |                0.001 |
 
 ##### Summary
 
 | compare_group                    |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:---------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb02__age_imputed_title_and_bins |                      0.00414286 |                         -0.004 |                          0.015 |                0.00585714 |                   -0.008 |                    0.025 |
+| cb02__age_imputed_title_and_bins |                      0.00414286 |                         -0.007 |                          0.018 |                     0.005 |                   -0.013 |                    0.027 |
 
 </details>
 
-#### cb03__age_imputed_title_pclass_and_bins
+### cb03__age_imputed_title_pclass_and_bins
 
-Experiment akin to Cb02, but imputing age with both title and pclass.
+This experiment combines Title-and-Pclass-based Age imputation from FE07 with the continuous-and-binned Age representation explored in the previous combination experiments.
+
+Missing Age values are estimated from passengers sharing both Title and Pclass. The resulting Age is retained as a continuous feature while also being transformed into the ordinal Age_bin representation.
+
+This tests whether combining a more context-specific Age estimate with multiple representations provides additional predictive value.
 
 <details>
 <summary>Conclusion</summary>
 
 
-##### Interpretation
+#### Interpretation
 
 - Verdict: mixed
 - Recommended for specific models:
@@ -1238,38 +1260,44 @@ Experiment akin to Cb02, but imputing age with both title and pclass.
     - Secondary gains:
       - test_f1_mean: 0.022
   - svc: test_accuracy_mean: 0.004
-  - random_forest: test_accuracy_mean: 0.003
-  - extra_trees: test_accuracy_mean: 0.015
+  - random_forest: test_accuracy_mean: 0.006
+    - Secondary gains:
+      - test_f1_mean: 0.01
+  - extra_trees: test_accuracy_mean: 0.016
     - Secondary gains:
       - test_f1_mean: 0.026
 
 
-##### Conclusion
+#### Conclusion
 
-Using the most accurate Age imputation together with Age_bin produced the strongest combination results of the three experiments. Logistic Regression showed the largest improvement of the entire Age investigation (+0.020 accuracy), while Extra Trees consistently benefited from the richer representation. Decision Tree, however, gained no advantage, reinforcing that models benefiting from Age_bin alone do not necessarily benefit from combining multiple Age representations.
+Title-and-Pclass-imputed Age combined with Age_bin is a strong model-specific Age representation, particularly for Logistic Regression, where it produces the best Age-related result observed so far.
+
+Extra Trees also benefits substantially from the combined representation, reinforcing the evidence that continuous and ordinal Age provide complementary predictive structure for this model. Random Forest and SVC show smaller positive effects.
+
+The experiment further demonstrates that increasing preprocessing complexity is not universally beneficial: the same representation that substantially helps Logistic Regression and Extra Trees is detrimental to KNN and provides no advantage to Decision Tree or XGBoost.
 
 </details>
 
 <details>
 <summary>Experiment details</summary>
 
-##### Comparison vs baseline__raw
+#### Comparison vs baseline__raw
 
 | reference_group   | compare_group                           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:----------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | logreg        |                          0.786 |                        0.806 |                      0.02  |                    0.713 |                  0.735 |                0.022 |
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | knn           |                          0.809 |                        0.799 |                     -0.01  |                    0.742 |                  0.732 |               -0.01  |
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | svc           |                          0.827 |                        0.831 |                      0.004 |                    0.76  |                  0.767 |                0.007 |
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.699 |               -0.003 |
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | random_forest |                          0.822 |                        0.825 |                      0.003 |                    0.744 |                  0.75  |                0.006 |
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | extra_trees   |                          0.804 |                        0.819 |                      0.015 |                    0.721 |                  0.747 |                0.026 |
-| baseline__raw     | cb03__age_imputed_title_Pclass_and_bins | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.758 |                0     |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | logreg        |                          0.786 |                        0.806 |                      0.02  |                    0.713 |                  0.735 |                0.022 |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | knn           |                          0.809 |                        0.798 |                     -0.011 |                    0.742 |                  0.73  |               -0.012 |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | svc           |                          0.827 |                        0.831 |                      0.004 |                    0.76  |                  0.767 |                0.007 |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.699 |               -0.003 |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | random_forest |                          0.822 |                        0.828 |                      0.006 |                    0.744 |                  0.754 |                0.01  |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | extra_trees   |                          0.804 |                        0.82  |                      0.016 |                    0.721 |                  0.747 |                0.026 |
+| baseline__raw     | cb03__age_imputed_title_pclass_and_bins | xgb           |                          0.826 |                        0.824 |                     -0.002 |                    0.758 |                  0.756 |               -0.002 |
 
-##### Summary
+#### Summary
 
 | compare_group                           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:----------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb03__age_imputed_title_Pclass_and_bins |                      0.00442857 |                          -0.01 |                           0.02 |                0.00685714 |                    -0.01 |                    0.026 |
+| cb03__age_imputed_title_pclass_and_bins |                      0.00471429 |                         -0.011 |                           0.02 |                0.00685714 |                   -0.012 |                    0.026 |
 
 </details>
 
@@ -1278,119 +1306,161 @@ Using the most accurate Age imputation together with Age_bin produced the strong
 <details>
 <summary>Ablation details</summary>
 
+A configuration review found that Fare had been unintentionally omitted from several historical Age experiments. The affected experiments were corrected, and the corrected configurations are used as the canonical Age experiments.
 
-A later review found that Fare had been omitted from the original cb01–cb03configurations. The corrected versions are used as the canonical Age
-combination experiments.
+Because the original configurations differ from their corrected counterparts specifically through the absence of Fare, they were retained as explicit ablation experiments. This converts the accidental runs into controlled comparisons that can be used to examine Fare's marginal contribution under different Age representations.
 
-The original runs were retained as Fare ablations because they revealed a
-consistent, model-specific interaction between Fare and the engineered Age
-representations.
+Four Age configurations are represented:
 
-Although these configurations were created unintentionally, they effectively form a controlled Fare ablation, allowing the marginal contribution of Fare to be evaluated within progressively richer Age feature sets.
+- continuous Age combined with Age_bin;
+- Title-imputed Age combined with Age_bin;
+- Title-and-Pclass-imputed Age combined with Age_bin;
+- Age_bin replacing continuous Age.
+
+Together, these experiments test whether Fare's usefulness remains stable as the representation of Age changes.
 
 **Accuracy effect of removing Fare**
 
-| Model               |     cb01 |     cb02 |     cb03 | Pattern              |
-| ------------------- | ---------: | ---------: | ---------: | -------------------- |
-| Logistic Regression |     +0.001 |     **+0.004** | **-0.004** | Context-dependent    |
-| KNN                 | **-0.007** |     -0.001 | **+0.009** | Reverses in cb03   |
-| SVC                 |      0.000 |     +0.001 |      0.000 | Nearly irrelevant    |
-| Decision Tree       |     +0.004 |     -0.001 |     +0.001 | Generally improves performance  |
-| Random Forest       |     +0.004 |     +0.003 |     +0.003 | Consistently improves performance |
-| Extra Trees         | **-0.003** | **-0.001** | **-0.002** | consistently reduces performance |
-| XGBoost             |     +0.002 |     +0.004 |     +0.002 | Consistently improves performance |
+| Model               |      AB01 |      AB02 |      AB03 |      AB04 | Pattern                                               |
+| ------------------- | --------: | --------: | --------: | --------: | ----------------------------------------------------- |
+| Logistic Regression |     +.001 |     +.001 |     -.004 |     -.002 | Small, context-dependent                              |
+| KNN                 |     -.007 |     +.004 | **+.015** |     +.009 | Highly context-dependent; removal increasingly useful |
+| SVC                 |      .000 |     +.001 |      .000 |     +.004 | Mostly insensitive                                    |
+| Decision Tree       |     +.004 |      .000 |     +.002 |     -.004 | Small accuracy effects                                |
+| Random Forest       | **+.007** |     +.002 |     +.006 | **+.008** | **Consistently benefits from removal**                |
+| Extra Trees         |     -.001 | **-.005** |     -.001 | **+.014** | Strong representation interaction                     |
+| XGBoost             | **-.007** | **+.008** |      .000 |     +.001 | Highly context-dependent                              |
 
 **F1 effect of removing Fare**
 
-| Model               |     cb01 |     cb02 |     cb03 | Pattern                               |
-| ------------------- | ---------: | ---------: | ---------: | ------------------------------------- |
-| Logistic Regression |      0.000 |     +0.004 | **-0.005** | Context-dependent                     |
-| KNN                 | **-0.016** | **-0.009** |     -0.002 | reduction diminishes                    |
-| SVC                 |     -0.002 |      0.000 |     -0.001 | Nearly irrelevant                     |
-| Decision Tree       | **+0.017** |     +0.005 | **+0.015** | consistently improves performance                   |
-| Random Forest       |     **+0.007** |     +0.003 |     +0.001 | consistently improves performance, but diminishing |
-| Extra Trees         | **-0.007** | **-0.005** | **-0.006** | consistently reduces performance                  |
-| XGBoost             |     -0.003 |     +0.003 |     -0.002 | Inconsistent and negligible           |
+| Model               |      AB01 |      AB02 |      AB03 |      AB04 | Pattern                                |
+| ------------------- | --------: | --------: | --------: | --------: | -------------------------------------- |
+| Logistic Regression |      .000 |     +.002 |     -.005 |     -.003 | Small/context-dependent                |
+| KNN                 | **-.016** |     -.002 |     +.007 |     -.003 | Context-dependent                      |
+| SVC                 |     -.002 |      .000 |     -.001 |     +.005 | Mostly insensitive                     |
+| Decision Tree       | **+.017** | **+.011** | **+.015** |      .000 | Removal helps combinations             |
+| Random Forest       | **+.012** |     +.001 | **+.008** | **+.011** | **Consistently benefits from removal** |
+| Extra Trees         |      .000 |     -.006 |     -.001 | **+.013** | Strong representation interaction      |
+| XGBoost             | **-.017** |     +.007 |     -.008 |     -.004 | Highly context-dependent               |
+
 
 #### Fare ablation conclusion
 
-The accidental omission of Fare from the original cb01–cb03 configurations
-created an opportunity to examine Fare's contribution within several
-Age-engineered feature sets.
+Fare's contribution is strongly dependent on both the model and the surrounding Age representation. Removing Fare does not produce a universal improvement or deterioration; instead, several models show distinct and repeatable interactions.
 
-Fare did not produce a consistent improvement across the evaluated models.Instead, its inclusion redistributed performance between models, benefiting some while reducing performance for others. Its inclusion slightly reduced mean accuracy in all three configurations, while its effect on mean F1 was small. However, the model-level results showed several stable patterns.
+Random Forest shows the clearest consistent pattern. Removing Fare improves accuracy across all four Age configurations and either improves or preserves F1, with several configurations producing meaningful gains in both metrics. This provides sufficient evidence to justify explicitly testing Fare removal from the eventual Random Forest final candidate.
 
-Extra Trees benefited from Fare in every configuration, while Decision Tree consistently lost F1 and Random Forest experienced small performance losses. SVC was nearly unaffected. KNN initially benefited from Fare, but the benefit decreased as the Age-imputation strategy became more informative and reversed in accuracy under Title-and-Pclass imputation. Logistic Regression benefited only in the most structured Age-imputation configuration.
+Extra Trees exhibits a strong representation interaction. Fare is neutral or beneficial when continuous Age and Age_bin are available together, but becomes substantially detrimental when Age_bin replaces continuous Age. This suggests that Fare's marginal contribution depends on how other continuous and ordinal information is represented rather than being inherently useful or harmful to the model.
 
-These results suggest that Fare contains useful information, but much of that information overlaps with the surrounding feature set. Its marginal value is therefore strongly dependent on both the model and the way Age and socioeconomic information are represented.
+Decision Tree shows a different interaction. Removing Fare consistently improves F1 when continuous and binned Age are combined, but provides no benefit when Age_bin replaces continuous Age. Since the latter representation already performs substantially better for Decision Tree, Fare removal is not currently indicated for its preferred Age configuration.
+
+Logistic Regression and SVC are comparatively insensitive to Fare removal across these experiments, while KNN and XGBoost show context-dependent changes that do not support a general inclusion or exclusion rule.
+
+Overall, these ablations reinforce that the marginal value of a feature cannot be evaluated independently of the surrounding representation or model. Fare contains predictive information, but whether that information improves generalization depends on what alternative and overlapping structure is already available to the estimator.
 
 </details>
 
 #### Overall conclusion
 
-Age proved to be one of the richest features investigated, requiring improvements in both data quality (imputation) and feature representation (continuous versus ordinal).
+Age proved to be one of the richest features investigated, involving two distinct feature-engineering questions: how missing Age values should be estimated and how Age should be represented to each model.
 
-Improving the imputation method consistently produced modest gains, with Title + Pclass generally outperforming simpler strategies. Converting Age into an ordinal representation (Age_bin) produced the largest improvements for Decision Tree, Random Forest, and Extra Trees, suggesting that these models benefit from threshold-friendly representations aligned with passenger survival behavior.
+More contextual imputation did not provide a universal improvement. Title-based imputation was mostly neutral, while adding Pclass produced a substantial improvement for Logistic Regression but little or no additional benefit for several other models. This indicates that a more specific imputation strategy should not automatically be considered a better representation simply because it uses additional information.
 
-Combining continuous Age with Age_bin produced a much more model-dependent outcome. Logistic Regression consistently benefited from having access to both representations, culminating in the strongest result when combined with Title + Pclass imputation. Extra Trees also benefited from the richer representation, whereas Decision Tree and Random Forest generally preferred Age_bin alone.
+The representation experiments revealed stronger model-specific differences. Replacing continuous Age with the ordinal Age_bin representation produced a substantial improvement for Decision Tree, but little benefit for most other models. Conversely, retaining continuous Age alongside Age_bin produced substantial gains for Extra Trees and Logistic Regression under suitable imputation strategies. Extra Trees was particularly notable: neither Age binning nor contextual imputation was especially useful independently, yet their combination with continuous Age produced some of the strongest Age-related improvements observed.
 
-Overall, the investigation demonstrates that there is no universally optimal representation of Age. The best representation depends on both the learning algorithm and the surrounding feature set.
+KNN showed the opposite pattern. Every investigated Age transformation reduced its performance relative to the baseline, suggesting that the engineered representations tested here are poorly suited to its distance-based decision process.
+
+The Fare ablations further demonstrated that the usefulness of an Age representation cannot always be separated from the surrounding feature set. Random Forest consistently improved when Fare was removed from the tested Age configurations, while Extra Trees and Decision Tree showed interactions dependent on whether continuous and binned Age were provided together.
+
+Overall, there is no universally optimal treatment of Age. Its usefulness depends not only on the information contained in the transformation, but on how that representation interacts with the inductive behavior of the model and with other available features.
 
 #### Findings
 
-- Better Age imputation consistently improved performance, although the gains remained modest because only around 20% of Age values were missing.
+- More contextual Age imputation is not universally better. Title-based imputation produced mostly small effects, while Title + Pclass imputation was particularly beneficial to Logistic Regression but neutral or detrimental to some other models.
 
-- Age_bin was the single most beneficial Age transformation for tree-based models.
+- Age binning is strongly model-dependent rather than generally beneficial to tree models. Decision Tree clearly benefited from replacing continuous Age with Age_bin, while Random Forest and Extra Trees showed only small improvements from binning alone.
 
-- Combining continuous and ordinal Age representations primarily benefited Logistic Regression and Extra Trees rather than all models.
+- Multiple representations can be complementary even when neither transformation is particularly useful independently. This was clearest for Extra Trees, where continuous Age combined with Age_bin produced substantial gains despite little benefit from Age binning or contextual imputation alone.
 
-- Better feature representations do not simply accumulate. Their usefulness depends on the model architecture and the surrounding feature set.
+- Logistic Regression benefited from explicit Age structure. Its strongest Age result came from combining Title + Pclass imputation with continuous and ordinal Age representations, suggesting that explicitly engineered structure can expose relationships that the linear model cannot represent as easily from raw Age alone.
 
-- Feature interactions can change the value of existing features, as illustrated by the accidental Fare ablation.
+- Decision Tree favored simplification rather than representation multiplicity. Age_bin alone produced its strongest Age result, while restoring continuous Age alongside it removed that advantage.
+
+- KNN consistently responded negatively to the investigated Age engineering. All reviewed Age transformations reduced performance, making raw Age the strongest current choice for this model.
+
+- Feature effects depend on surrounding features as well as the model. Fare ablation showed repeatable model-specific interactions, particularly for Random Forest, Decision Tree, and Extra Trees.
 
 #### Current recommendation
 
 - Logistic Regression
-    - Use Age with Title + Pclass imputation together with Age_bin.
-    - This combination produced the strongest Age-related improvement (+0.020 accuracy) and consistently outperformed using either representation alone.
+  - Use Title + Pclass-imputed Age together with Age_bin (CB03).
+  - This produced the strongest Age-related result for Logistic Regression: +0.020 accuracy and +0.022 F1.
+  - Both the contextual imputation and alternative Age representation appear useful in combination.
 
 - SVC
-    - Use Age with Title imputation together with Age_bin.
-    - The combined representation produced small but consistent improvements while remaining stable across all combination experiments.
+  - Use Title-imputed Age together with Age_bin (CB02), although the benefit is modest.
+  - CB02 and CB03 both reached +0.004 accuracy and +0.007 F1, so the simpler Title-based variant is preferable unless later feature combinations change the result.
+  - Age engineering appears useful but not particularly important to SVC.
 
 - Decision Tree
-    - Prefer Age_bin alone.
-    - Binning Age consistently outperformed continuous Age, while combining both representations provided no additional benefit and often reduced performance.
+  - Replace continuous Age with Age_bin (FE11).
+  - This produced +0.010 accuracy and +0.020 F1, clearly outperforming the combined Age representations.
+  - Decision Tree appears to benefit from the simplified ordinal representation rather than having continuous and binned Age simultaneously.
 
 - Random Forest
-    - Prefer Age_bin alone.
-    - The binned representation captured nearly all of the available improvement, with combination experiments providing only marginal gains.
+  - Current Age candidate: Title + Pclass-imputed Age together with Age_bin (CB03).
+  - CB03 produced +0.006 accuracy and +0.010 F1, stronger than corrected FE11 and the other canonical Age experiments.
+  - However, Fare ablations consistently improved Random Forest, so the preferred Age representation should be reevaluated with and without Fare during final-model construction.
 
 - Extra Trees
-    - Use Age with Title imputation together with Age_bin.
-    - Extra Trees consistently benefited from the combined representation, producing the strongest and most stable improvements across the combination experiments.
+  - Use Title-imputed Age together with Age_bin (CB02).
+  - CB02 produced the strongest canonical Age result at +0.018 accuracy and +0.027 F1.
+  - CB03 was very close (+0.016/+0.026), but adding Pclass to the imputation provides no advantage, making CB02 the simpler choice.
+  - The evidence strongly favors retaining both continuous and ordinal Age representations rather than either alone.
 
 - KNN
-    - Prefer raw Age.
-    - Neither Age binning nor the combined representations consistently improved performance over the original continuous feature.
+  - Retain baseline Age processing.
+  - Every investigated Age transformation reduced performance relative to baseline.
+  - There is currently no evidence that additional Age engineering benefits KNN.
 
 - XGBoost
-    - Prefer raw Age or simple Title + Pclass imputation.
-    - More complex Age representations produced little additional benefit, indicating that the model already extracts most of the available information from the continuous feature.
+  - Retain baseline Age processing for now.
+  - None of the Age transformations produced a convincing improvement, and several were slightly detrimental.
+  - Age engineering therefore has low priority for XGBoost unless interactions with later final-model features justify reconsideration.
 
 #### Open questions
 
-- Why do linear models appear to benefit from having both continuous and ordinal representations of Age?
+- Why does Logistic Regression benefit so strongly from Title + Pclass Age imputation when most other models do not?
 
-- Why does Decision Tree prefer Age_bin alone while Extra Trees consistently benefits from combining Age and Age_bin?
+  - Is the imputation exposing a relationship that is easier for the linear decision boundary to exploit?
 
-- Would learned bins outperform manually designed ones?
+- Why does Decision Tree strongly prefer Age_bin alone, while Extra Trees benefits from continuous and binned Age together?
 
-- Would nonlinear transformations (log, spline, quantile) outperform fixed bins?
+  - Is the manually engineered threshold structure conserving the constrained Decision Tree's splitting capacity, while Extra Trees benefits from having multiple candidate representations available?
+
+- Why does KNN consistently deteriorate under Age engineering?
+
+  - Does adding correlated or discretized Age representations distort the distance space or effectively overweight Age-related information?
+
+- Would learned Age bins outperform the manually designed survival-informed bins?
+
+- Would other nonlinear representations—such as splines, quantile bins, or other continuous transformations—provide the benefits of Age binning without discarding within-bin information?
+
+- Imputation-quality experiment: mask a subset of known Age values and directly compare median, Title, and Title + Pclass imputation error.
+
+  - This would separate better Age estimation from better downstream survival prediction.
+
+- Final-model Fare ablation for Random Forest: compare the final RF candidate with and without Fare. Removing Fare improved RF accuracy across all four Age ablations and frequently improved F1 as well.
+
+- Conditional Fare ablation for Extra Trees: if the final Extra Trees model retains the continuous + binned Age representation, test Fare removal again rather than extrapolating from Age_bin alone. The current ablations show that Fare's effect reverses depending on the Age representation.
 
 #### Practical takeaway
 
-The optimal representation of Age depends on the learning algorithm. Tree-based models generally benefit from simpler ordinal representations, whereas some linear and ensemble methods can exploit complementary information from multiple Age representations. Consequently, feature engineering decisions should be validated for each model rather than assumed to generalize across algorithms.
+Age demonstrated that feature engineering is not simply a process of creating increasingly informative versions of a variable. The same underlying information can become more or less useful depending on how it is represented, which model receives it, and which other features are available.
+
+More contextual imputation helped some models but not others; discretization strongly benefited Decision Tree but was largely ineffective by itself for Extra Trees; and combining continuous and ordinal representations produced substantial gains for Logistic Regression and Extra Trees while consistently hurting KNN.
+
+Therefore, feature transformations should be treated as model-dependent representations rather than universal improvements to the data. Evaluate transformations individually, test potentially complementary representations together, and verify important interactions with the surrounding feature set before selecting the final configuration.
 
 ---
 

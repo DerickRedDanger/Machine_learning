@@ -1060,7 +1060,7 @@ ALL_EXPERIMENTS['ab02__age_imputed_title_and_bins_without_fare'] = ab02__age_imp
 
 # Ab 03 - Age imputed by both Title and Pclass, then age bin, without Fare
 
-ab03__age_imputed_title_Pclass_and_bins_without_fare_patch = {
+ab03__age_imputed_title_pclass_and_bins_without_fare_patch = {
     "transformations": [
         FE.title,
         FE.age_imputer_title_pclass,
@@ -1084,20 +1084,20 @@ ab03__age_imputed_title_Pclass_and_bins_without_fare_patch = {
     },
 }
 
-ab03__age_imputed_title_Pclass_and_bins_without_fare_config = create_config_group(
+ab03__age_imputed_title_pclass_and_bins_without_fare_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        ab03__age_imputed_title_Pclass_and_bins_without_fare_patch,
+        ab03__age_imputed_title_pclass_and_bins_without_fare_patch,
     ],
     raw_features=RAW_FEATURES,
     stage="ab03",
-    feature_group="age_imputed_title_Pclass_and_bins_without_fare",
+    feature_group="age_imputed_title_pclass_and_bins_without_fare",
     domain="ablation",
     notes=("Ablation Experiment 03."
             "Age imputed by Title and Pclass, then binned, without Fare."),
 )
 
-ALL_EXPERIMENTS['ab03__age_imputed_title_Pclass_and_bins_without_fare'] = ab03__age_imputed_title_Pclass_and_bins_without_fare_config
+ALL_EXPERIMENTS['ab03__age_imputed_title_pclass_and_bins_without_fare'] = ab03__age_imputed_title_pclass_and_bins_without_fare_config
 
 # ablation
 # Ab 04 - Age bin without Fare
@@ -1165,7 +1165,7 @@ ab05__sex_pclass_without_sibsp_parch_patch = {
                 "Pclass",
             ],
             "numeric_features":[
-                "Sibsp",
+                "SibSp",
                 "Parch",
             ]
         },

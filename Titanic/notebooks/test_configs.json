@@ -16635,7 +16635,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -16687,7 +16686,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__logreg",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
@@ -16697,7 +16695,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -16748,7 +16745,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__knn",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
@@ -16758,7 +16754,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -16813,7 +16808,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__svc",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
@@ -16823,7 +16817,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -16876,7 +16869,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__decision_tree",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
@@ -16886,7 +16878,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -16941,7 +16932,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__random_forest",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
@@ -16951,7 +16941,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -17006,7 +16995,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__extra_trees",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
@@ -17016,7 +17004,6 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "SibSp",
         "Fare"
       ],
       "onehot_features": [
@@ -17073,7 +17060,6 @@
     "name": "ab05__sex_pclass_without_sibsp_parch__xgb",
     "features": [
       "Age",
-      "SibSp",
       "Fare",
       "Embarked",
       "Sex_Pclass"
