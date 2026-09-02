@@ -12,6 +12,7 @@ def ticket_group_size_transform():
 
 ADD_TICKET_GROUP_SIZE = {
     "id": "ticket_group_size",
+    "stage": "cv",
     "transformer": ticket_group_size_transform,
     "requires": ["Ticket"],
     "produces": ["TicketGroupSize"],

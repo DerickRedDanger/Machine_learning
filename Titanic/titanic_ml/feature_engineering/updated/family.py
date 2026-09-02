@@ -12,6 +12,7 @@ def family_feature_transform():
 
 ADD_FAMILY_SIZE = {
     "id": "family_size",
+    "stage": "cv",
     "transformer":family_feature_transform,
     "requires": ["SibSp", "Parch"],
     "produces": ["FamilySize"],
@@ -25,6 +26,7 @@ def is_alone_transform():
 
 ADD_IS_ALONE = {
     "id": "is_alone",
+    "stage": "cv",
     "transformer": is_alone_transform,
     "requires": ["FamilySize"],
     "produces": ["IsAlone"],

@@ -35,6 +35,7 @@ class AddDeckTransformer(BaseEstimator, TransformerMixin):
 
 ADD_DECK = {
     "id": "add_deck",
+    "stage": "cv",
     "transformer": AddDeckTransformer,
     "requires": ["Cabin"],
     "produces": ["Deck"],

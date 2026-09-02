@@ -23,6 +23,10 @@ RAW_FEATURES = {
 # BASELINE CONFIGURATION
 # ============================================================#
 BASELINE_CONFIG_MODEL = {
+    
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": None,
+
     "preprocessing": {
         "numeric_features": [
             "Age",

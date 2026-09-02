@@ -62,6 +62,7 @@ class TitleTransformer(BaseEstimator, TransformerMixin):
 
 ADD_TITLE = {
     "id": "title",
+    "stage": "cv",
     "transformer": TitleTransformer,
     "requires": ["Name"],
     "produces": ["Title"],

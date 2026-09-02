@@ -19,3 +19,22 @@ sex_pclass = ADD_SEX_PCLASS
 fare_ticket = ADD_FARE_PER_TICKET
 fare_family = ADD_FARE_PER_FAMILYSIZE
 ticket_group_size = ADD_TICKET_GROUP_SIZE
+
+ALL_FEATURES = [
+    age_bin,
+    age_imputer_title,
+    age_imputer_title_pclass,
+    has_cabin,
+    deck,
+    title,
+    family,
+    is_alone,
+    sex_pclass,
+    fare_ticket,
+    fare_family,
+    ticket_group_size
+]
+
+for feature in ALL_FEATURES:
+    if feature["stage"] != "cv":
+        raise ValueError(f"Feature Engineering {feature['id']} has stage {feature['stage']}, expected 'cv'")

@@ -7,6 +7,7 @@ def sex_pclass_transform():
 
 ADD_SEX_PCLASS = {
     "id": "sex_pclass",
+    "stage": "cv",
     "transformer": sex_pclass_transform,
     "requires": ["Sex", "Pclass"],
     "produces": ["Sex_Pclass"],

@@ -24,6 +24,10 @@ PREPROCESSING_FEATURE_KEYS = {
     "ordinal_features",
 }
 
+VALID_PRE_CV_SCOPE_KEYS = {
+    "full_prediction_context",
+}
+
 def _validate_patch_structure(patch):
     unknown_patch_keys = (
         set(patch)
@@ -79,6 +83,14 @@ def _validate_patch_structure(patch):
                 f"'{operation_name}': "
                 f"{sorted(unknown_keys)}"
             )
+
+        pre_cv_scope = patch.get("pre_cv_scope", None)
+        if pre_cv_scope is not None and pre_cv_scope not in VALID_PRE_CV_SCOPE_KEYS:
+            raise ValueError(
+                f"Invalid pre_cv_scope '{pre_cv_scope}' in patch. "
+                f"Valid values are: {VALID_PRE_CV_SCOPE_KEYS}"
+            )
+
 
 def create_config(
     base_config,

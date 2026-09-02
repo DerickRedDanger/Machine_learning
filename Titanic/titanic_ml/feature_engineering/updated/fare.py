@@ -9,6 +9,7 @@ def fare_per_familysize_transform():
 
 ADD_FARE_PER_FAMILYSIZE = {
     "id": "fare_per_familysize",
+    "stage": "cv",
     "transformer": fare_per_familysize_transform,
     "requires": ["Fare", "FamilySize"],
     "produces": ["Fare/FamilySize"],
@@ -23,6 +24,7 @@ def fare_per_ticket_transform():
 
 ADD_FARE_PER_TICKET = {
     "id": "fare_per_ticket",
+    "stage": "cv",
     "transformer": fare_per_ticket_transform,
     "requires": ["Fare", "TicketGroupSize"],
     "produces": ["Fare/TicketMember"],

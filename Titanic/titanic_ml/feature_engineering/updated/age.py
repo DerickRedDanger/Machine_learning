@@ -12,6 +12,7 @@ def age_imputer_title_transform():
 
 ADD_AGE_IMPUTED_TITLE = {
     "id": "age_imputer_title",
+    "stage": "cv",
     "transformer": age_imputer_title_transform,
     "requires": ["Age", "Title"],
     "produces": ["Age"],
@@ -28,6 +29,7 @@ def age_imputer_title_pclass_transform():
 
 ADD_AGE_IMPUTED_TITLE_PCLASS = {
     "id": "age_imputer_title_pclass",
+    "stage": "cv",
     "transformer": age_imputer_title_pclass_transform,
     "requires": ["Age", "Title", "Pclass"],
     "produces": ["Age"],
@@ -45,6 +47,7 @@ def age_bin_transform():
 
 ADD_AGE_BIN = {
     "id": "age_bin",
+    "stage": "cv",
     "transformer": age_bin_transform,
     "requires": ["Age"],
     "produces": ["Age_bin"],

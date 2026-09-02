@@ -9,6 +9,7 @@ def has_cabin_transform():
 
 ADD_HAS_CABIN = {
     "id": "has_cabin",
+    "stage": "cv",
     "transformer": has_cabin_transform,
     "requires": ["Cabin"],
     "produces": ["Has_Cabin"],

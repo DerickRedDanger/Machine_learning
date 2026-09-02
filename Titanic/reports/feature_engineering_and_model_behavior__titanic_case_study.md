@@ -1679,7 +1679,7 @@ Combination exploring the effects of using both Fare and Fare/family. To find wh
 
 Keeping both Fare and Fare_per_family did not improve performance for most models. Since both features describe closely related information, the additional representation appears to introduce more redundancy than useful information for most learning algorithms.
 
-Decision Tree was a notable exception, achieving the largest improvement among all models (+0.008 accuracy and +0.028 F1). This suggests that Decision Tree can exploit the additional split opportunities provided by the two Fare representations, even though other tree-based models did not obtain the same benefit.
+Decision Tree was a notable exception, achieving the largest improvement among all models (+0.008 accuracy and +0.028 F1). Decision Tree appears able to exploit complementary information from raw Fare and a stable normalized Fare representation. The much larger improvement from using both features than from Fare_per_family alone suggests that the two representations expose different useful thresholds rather than merely duplicating the same information.
 
 Overall, Fare_per_family does not appear to be broadly useful when added alongside Fare, but it may still provide meaningful complementary information for specific tree-based models.
 
