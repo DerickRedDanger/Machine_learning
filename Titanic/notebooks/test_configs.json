@@ -1,5 +1,7 @@
 {
   "baseline__raw__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -53,6 +55,8 @@
     ]
   },
   "baseline__raw__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -105,6 +109,8 @@
     ]
   },
   "baseline__raw__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -161,6 +167,8 @@
     ]
   },
   "baseline__raw__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -215,6 +223,8 @@
     ]
   },
   "baseline__raw__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -271,6 +281,8 @@
     ]
   },
   "baseline__raw__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -327,6 +339,8 @@
     ]
   },
   "baseline__raw__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -385,6 +399,8 @@
     ]
   },
   "fe01__family__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -463,6 +479,8 @@
     ]
   },
   "fe01__family__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -540,6 +558,8 @@
     ]
   },
   "fe01__family__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -621,6 +641,8 @@
     ]
   },
   "fe01__family__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -700,6 +722,8 @@
     ]
   },
   "fe01__family__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -781,6 +805,8 @@
     ]
   },
   "fe01__family__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -862,6 +888,8 @@
     ]
   },
   "fe01__family__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -945,6 +973,8 @@
     ]
   },
   "fe02__has_cabin__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1011,6 +1041,8 @@
     ]
   },
   "fe02__has_cabin__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1076,6 +1108,8 @@
     ]
   },
   "fe02__has_cabin__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1145,6 +1179,8 @@
     ]
   },
   "fe02__has_cabin__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1212,6 +1248,8 @@
     ]
   },
   "fe02__has_cabin__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1281,6 +1319,8 @@
     ]
   },
   "fe02__has_cabin__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1350,6 +1390,8 @@
     ]
   },
   "fe02__has_cabin__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1421,6 +1463,8 @@
     ]
   },
   "fe03__deck__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1484,6 +1528,8 @@
     ]
   },
   "fe03__deck__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1546,6 +1592,8 @@
     ]
   },
   "fe03__deck__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1612,6 +1660,8 @@
     ]
   },
   "fe03__deck__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1676,6 +1726,8 @@
     ]
   },
   "fe03__deck__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1742,6 +1794,8 @@
     ]
   },
   "fe03__deck__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1808,6 +1862,8 @@
     ]
   },
   "fe03__deck__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1876,6 +1932,8 @@
     ]
   },
   "fe04__cabin_features__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -1951,6 +2009,8 @@
     ]
   },
   "fe04__cabin_features__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2025,6 +2085,8 @@
     ]
   },
   "fe04__cabin_features__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2103,6 +2165,8 @@
     ]
   },
   "fe04__cabin_features__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2179,6 +2243,8 @@
     ]
   },
   "fe04__cabin_features__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2257,6 +2323,8 @@
     ]
   },
   "fe04__cabin_features__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2335,6 +2403,8 @@
     ]
   },
   "fe04__cabin_features__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2415,6 +2485,8 @@
     ]
   },
   "fe05__title__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2478,6 +2550,8 @@
     ]
   },
   "fe05__title__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2540,6 +2614,8 @@
     ]
   },
   "fe05__title__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2606,6 +2682,8 @@
     ]
   },
   "fe05__title__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2670,6 +2748,8 @@
     ]
   },
   "fe05__title__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2736,6 +2816,8 @@
     ]
   },
   "fe05__title__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2802,6 +2884,8 @@
     ]
   },
   "fe05__title__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2870,6 +2954,8 @@
     ]
   },
   "fe06__age_imputation_title__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -2945,6 +3031,8 @@
     ]
   },
   "fe06__age_imputation_title__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -3019,6 +3107,8 @@
     ]
   },
   "fe06__age_imputation_title__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -3097,6 +3187,8 @@
     ]
   },
   "fe06__age_imputation_title__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -3173,6 +3265,8 @@
     ]
   },
   "fe06__age_imputation_title__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -3251,6 +3345,8 @@
     ]
   },
   "fe06__age_imputation_title__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -3329,6 +3425,8 @@
     ]
   },
   "fe06__age_imputation_title__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -3955,6 +4053,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4031,6 +4131,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4106,6 +4208,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4185,6 +4289,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4262,6 +4368,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4341,6 +4449,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4420,6 +4530,8 @@
     ]
   },
   "fe07__age_imputation_title_pclass__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4501,6 +4613,8 @@
     ]
   },
   "fe08__fare_per_family_member__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4580,6 +4694,8 @@
     ]
   },
   "fe08__fare_per_family_member__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4658,6 +4774,8 @@
     ]
   },
   "fe08__fare_per_family_member__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4740,6 +4858,8 @@
     ]
   },
   "fe08__fare_per_family_member__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4820,6 +4940,8 @@
     ]
   },
   "fe08__fare_per_family_member__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4902,6 +5024,8 @@
     ]
   },
   "fe08__fare_per_family_member__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -4984,6 +5108,8 @@
     ]
   },
   "fe08__fare_per_family_member__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5068,6 +5194,8 @@
     ]
   },
   "fe09__ticket_group_size__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5134,6 +5262,8 @@
     ]
   },
   "fe09__ticket_group_size__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5199,6 +5329,8 @@
     ]
   },
   "fe09__ticket_group_size__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5268,6 +5400,8 @@
     ]
   },
   "fe09__ticket_group_size__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5335,6 +5469,8 @@
     ]
   },
   "fe09__ticket_group_size__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5404,6 +5540,8 @@
     ]
   },
   "fe09__ticket_group_size__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5473,6 +5611,8 @@
     ]
   },
   "fe09__ticket_group_size__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5544,6 +5684,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5619,6 +5761,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5693,6 +5837,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5771,6 +5917,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5847,6 +5995,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -5925,6 +6075,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6003,6 +6155,8 @@
     ]
   },
   "fe10__fare_per_ticket_member__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6083,6 +6237,8 @@
     ]
   },
   "fe11__age_bin__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6161,6 +6317,8 @@
     ]
   },
   "fe11__age_bin__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6238,6 +6396,8 @@
     ]
   },
   "fe11__age_bin__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6319,6 +6479,8 @@
     ]
   },
   "fe11__age_bin__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6398,6 +6560,8 @@
     ]
   },
   "fe11__age_bin__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6479,6 +6643,8 @@
     ]
   },
   "fe11__age_bin__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6560,6 +6726,8 @@
     ]
   },
   "fe11__age_bin__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -6643,6 +6811,8 @@
     ]
   },
   "fe12__sex_pclass__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6707,6 +6877,8 @@
     ]
   },
   "fe12__sex_pclass__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6770,6 +6942,8 @@
     ]
   },
   "fe12__sex_pclass__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6837,6 +7011,8 @@
     ]
   },
   "fe12__sex_pclass__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6902,6 +7078,8 @@
     ]
   },
   "fe12__sex_pclass__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -6969,6 +7147,8 @@
     ]
   },
   "fe12__sex_pclass__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7036,6 +7216,8 @@
     ]
   },
   "fe12__sex_pclass__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7105,6 +7287,8 @@
     ]
   },
   "cb01__age_and_bins__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7185,6 +7369,8 @@
     ]
   },
   "cb01__age_and_bins__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7264,6 +7450,8 @@
     ]
   },
   "cb01__age_and_bins__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7347,6 +7535,8 @@
     ]
   },
   "cb01__age_and_bins__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7428,6 +7618,8 @@
     ]
   },
   "cb01__age_and_bins__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7511,6 +7703,8 @@
     ]
   },
   "cb01__age_and_bins__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7594,6 +7788,8 @@
     ]
   },
   "cb01__age_and_bins__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7679,6 +7875,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7780,6 +7978,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7880,6 +8080,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -7984,6 +8186,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -8086,6 +8290,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -8190,6 +8396,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -8294,6 +8502,8 @@
     ]
   },
   "cb02__age_imputed_title_and_bins__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9128,6 +9338,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9230,6 +9442,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9331,6 +9545,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9436,6 +9652,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9539,6 +9757,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9644,6 +9864,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9749,6 +9971,8 @@
     ]
   },
   "cb03__age_imputed_title_pclass_and_bins__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9856,6 +10080,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -9937,6 +10163,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10017,6 +10245,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10101,6 +10331,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10183,6 +10415,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10267,6 +10501,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10351,6 +10587,8 @@
     ]
   },
   "cb04__fare_and_fare_per_family__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10437,6 +10675,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10514,6 +10754,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10590,6 +10832,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10670,6 +10914,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10748,6 +10994,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10828,6 +11076,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -10908,6 +11158,8 @@
     ]
   },
   "cb05__fare_and_fare_per_ticket__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -11732,6 +11984,8 @@
     ]
   },
   "cb06__all_fare_features__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -11836,6 +12090,8 @@
     ]
   },
   "cb06__all_fare_features__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -11939,6 +12195,8 @@
     ]
   },
   "cb06__all_fare_features__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12046,6 +12304,8 @@
     ]
   },
   "cb06__all_fare_features__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12151,6 +12411,8 @@
     ]
   },
   "cb06__all_fare_features__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12258,6 +12520,8 @@
     ]
   },
   "cb06__all_fare_features__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12365,6 +12629,8 @@
     ]
   },
   "cb06__all_fare_features__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "f",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12474,6 +12740,8 @@
     ]
   },
   "cb07__family_features__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12556,6 +12824,8 @@
     ]
   },
   "cb07__family_features__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12637,6 +12907,8 @@
     ]
   },
   "cb07__family_features__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12722,6 +12994,8 @@
     ]
   },
   "cb07__family_features__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12805,6 +13079,8 @@
     ]
   },
   "cb07__family_features__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12890,6 +13166,8 @@
     ]
   },
   "cb07__family_features__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12975,6 +13253,8 @@
     ]
   },
   "cb07__family_features__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13062,6 +13342,8 @@
     ]
   },
   "cb08__sex_pclass_features__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13131,6 +13413,8 @@
     ]
   },
   "cb08__sex_pclass_features__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13199,6 +13483,8 @@
     ]
   },
   "cb08__sex_pclass_features__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13271,6 +13557,8 @@
     ]
   },
   "cb08__sex_pclass_features__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13341,6 +13629,8 @@
     ]
   },
   "cb08__sex_pclass_features__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13413,6 +13703,8 @@
     ]
   },
   "cb08__sex_pclass_features__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13485,6 +13777,8 @@
     ]
   },
   "cb08__sex_pclass_features__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13559,6 +13853,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13637,6 +13933,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13714,6 +14012,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13795,6 +14095,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13874,6 +14176,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -13955,6 +14259,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14036,6 +14342,8 @@
     ]
   },
   "ab01__age_and_bins_without_fare__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14119,6 +14427,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14218,6 +14528,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14316,6 +14628,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14418,6 +14732,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14518,6 +14834,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14620,6 +14938,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -14722,6 +15042,8 @@
     ]
   },
   "ab02__age_imputed_title_and_bins_without_fare__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16086,6 +16408,8 @@
     ]
   },
   "ab04__age_bin_without_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16162,6 +16486,8 @@
     ]
   },
   "ab04__age_bin_without_fare__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16237,6 +16563,8 @@
     ]
   },
   "ab04__age_bin_without_fare__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16316,6 +16644,8 @@
     ]
   },
   "ab04__age_bin_without_fare__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16393,6 +16723,8 @@
     ]
   },
   "ab04__age_bin_without_fare__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16472,6 +16804,8 @@
     ]
   },
   "ab04__age_bin_without_fare__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16551,6 +16885,8 @@
     ]
   },
   "ab04__age_bin_without_fare__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "SibSp",
@@ -16632,6 +16968,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16692,6 +17030,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16751,6 +17091,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16814,6 +17156,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16875,6 +17219,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16938,6 +17284,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17001,6 +17349,8 @@
     ]
   },
   "ab05__sex_pclass_without_sibsp_parch__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": "full_prediction_context",
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17066,6 +17416,8 @@
     ]
   },
   "control__cb01_legacy_order__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17146,6 +17498,8 @@
     ]
   },
   "control__cb01_legacy_order__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17225,6 +17579,8 @@
     ]
   },
   "control__cb01_legacy_order__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17308,6 +17664,8 @@
     ]
   },
   "control__cb01_legacy_order__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17389,6 +17747,8 @@
     ]
   },
   "control__cb01_legacy_order__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17472,6 +17832,8 @@
     ]
   },
   "control__cb01_legacy_order__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17555,6 +17917,8 @@
     ]
   },
   "control__cb01_legacy_order__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Fare",
@@ -17633,6 +17997,734 @@
       "SibSp",
       "Parch",
       "Age",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "ab03",
+    "feature_group": "age_imputed_title_pclass_and_bins_without_fare",
+    "group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "domain": "ablation",
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Ablation Experiment 03.Age imputed by Title and Pclass, then binned, without Fare.",
+    "name": "ab03__age_imputed_title_pclass_and_bins_without_fare__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
       "Sex",
       "Embarked",
       "Pclass",

@@ -7,6 +7,7 @@ VALID_PATCH_KEYS = {
     "add",
     "remove",
     "update",
+    "pre_cv_transformations",
 }
 
 VALID_PREPROCESSING_KEYS = {
@@ -84,13 +85,38 @@ def _validate_patch_structure(patch):
                 f"{sorted(unknown_keys)}"
             )
 
-        pre_cv_scope = patch.get("pre_cv_scope", None)
-        if pre_cv_scope is not None and pre_cv_scope not in VALID_PRE_CV_SCOPE_KEYS:
-            raise ValueError(
-                f"Invalid pre_cv_scope '{pre_cv_scope}' in patch. "
-                f"Valid values are: {VALID_PRE_CV_SCOPE_KEYS}"
-            )
+def _validate_pre_cv_config(config):
+    pre_cv_pipeline = config.get(
+        "pre_cv_feature_pipeline",
+        [],
+    )
 
+    pre_cv_scope = config.get(
+        "pre_cv_scope",
+        None,
+    )
+
+    if pre_cv_pipeline and pre_cv_scope is None:
+        raise ValueError(
+            "Configurations using pre-CV feature engineering "
+            "must define 'pre_cv_scope'."
+        )
+
+    if not pre_cv_pipeline and pre_cv_scope is not None:
+        raise ValueError(
+            "'pre_cv_scope' was provided, but "
+            "'pre_cv_feature_pipeline' is empty."
+        )
+
+    if (
+        pre_cv_scope is not None
+        and pre_cv_scope not in VALID_PRE_CV_SCOPE_KEYS
+    ):
+        raise ValueError(
+            f"Invalid pre_cv_scope '{pre_cv_scope}'. "
+            f"Valid values are: "
+            f"{sorted(VALID_PRE_CV_SCOPE_KEYS)}"
+        )
 
 def create_config(
     base_config,
@@ -100,6 +126,7 @@ def create_config(
     feature_group,
     domain=None,
     notes=None,
+    pre_cv_scope=None
 ):
     if not isinstance(base_config, dict):
         raise TypeError(
@@ -146,6 +173,10 @@ def create_config(
 
     required_features = set()
 
+    pre_cv_transformations = []
+
+    cv_transformations = []
+
     # ---------------------------------------------------------
     # Apply patches in the order provided
     # ---------------------------------------------------------
@@ -162,15 +193,55 @@ def create_config(
         # -----------------------------------------------------
         _validate_patch_structure(patch)
 
+        pre_cv_transformations.extend(
+            patch.get("pre_cv_transformations", [])
+        )
+
+        cv_transformations.extend(
+            patch.get("transformations", [])
+        )
+
+        # -----------------------------------------------------
+        # Apply normal configuration changes
+        # -----------------------------------------------------
+
+        _apply_add(
+            config,
+            patch.get("add", {}),
+        )
+
+        _apply_remove(
+            config,
+            patch.get("remove", {}),
+        )
+
+        _apply_update(
+            config,
+            patch.get("update", {}),
+        )
+
+
+    # ---------------------------------------------------------
+    # resolve transformation helper
+    # ---------------------------------------------------------
+
+    def _resolve_transformations(
+        transformations,
+        expected_stage,
+    ):
+        pipeline = []
+
 
         # -----------------------------------------------------
         # Transformations
         # -----------------------------------------------------
 
-        for transformation in patch.get(
-            "transformations",
-            [],
-        ):
+        for transformation in transformations:
+            actual_stage = transformation.get("stage")
+
+            if actual_stage != expected_stage:
+                raise ValueError(f"Transformation '{transformation['id']}' has stage '{actual_stage}', expected '{expected_stage}'")
+
             transform_id = transformation["id"]
 
             # Exact same transformation requested twice:
@@ -234,7 +305,7 @@ def create_config(
                 transformer_factory()
             )
 
-            feature_pipeline.append(
+            pipeline.append(
                 (
                     transform_id,
                     transformer,
@@ -265,31 +336,29 @@ def create_config(
             )
 
             produced_features.update(produced)
+
             available_features.update(produced)
 
-        # -----------------------------------------------------
-        # Apply normal configuration changes
-        # -----------------------------------------------------
-
-        _apply_add(
-            config,
-            patch.get("add", {}),
-        )
-
-        _apply_remove(
-            config,
-            patch.get("remove", {}),
-        )
-
-        _apply_update(
-            config,
-            patch.get("update", {}),
-        )
+        return pipeline
 
     # ---------------------------------------------------------
     # Attach resolved feature pipeline
     # ---------------------------------------------------------
 
+    pre_cv_feature_pipeline = _resolve_transformations(
+        transformations=pre_cv_transformations,
+        expected_stage="pre_cv",
+    )
+    
+    feature_pipeline = _resolve_transformations(
+        transformations=cv_transformations,
+        expected_stage="cv",
+    )
+
+    config["pre_cv_feature_pipeline"] = (
+            pre_cv_feature_pipeline
+    )
+    
     config["feature_pipeline"] = (
         feature_pipeline
     )
@@ -360,6 +429,10 @@ def create_config(
     if notes is not None:
         config["notes"] = notes
 
+    config["pre_cv_scope"] = pre_cv_scope
+
+    _validate_pre_cv_config(config)
+
     # Human-readable derived metadata.
     config["features"] = model_features
 
@@ -373,6 +446,7 @@ def create_config_group(
     feature_group,
     domain=None,
     notes=None,
+    pre_cv_scope=None
 ):
     if not isinstance(base_configs, dict):
         raise TypeError(
@@ -398,6 +472,7 @@ def create_config_group(
             feature_group=feature_group,
             domain=domain,
             notes=notes,
+            pre_cv_scope=pre_cv_scope,
         )
 
         model_name = config["model_name"]

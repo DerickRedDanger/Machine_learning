@@ -1259,5 +1259,77 @@
     },
     "notable_secondary_improvements": {},
     "discard": false
+  },
+  "ab03__age_imputed_title_pclass_and_bins_without_fare": {
+    "compare_group": "ab03__age_imputed_title_pclass_and_bins_without_fare",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.007,
+    "max_delta": 0.016,
+    "min_delta": -0.002,
+    "positive_models": [
+      "logreg",
+      "knn",
+      "svc",
+      "random_forest",
+      "extra_trees"
+    ],
+    "neutral_models": [
+      "decision_tree",
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "model_specific_positive",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "logreg": 0.016,
+      "knn": 0.004,
+      "svc": 0.004,
+      "random_forest": 0.012,
+      "extra_trees": 0.015
+    },
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.016,
+        "secondary_pros": {
+          "test_f1_mean": 0.017
+        },
+        "secondary_cons": {}
+      },
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "svc": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      },
+      "random_forest": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.012,
+        "secondary_pros": {
+          "test_f1_mean": 0.018
+        },
+        "secondary_cons": {}
+      },
+      "extra_trees": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.015,
+        "secondary_pros": {
+          "test_f1_mean": 0.025
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {
+      "decision_tree": {
+        "test_f1_mean": 0.012
+      }
+    },
+    "discard": false
   }
 }
