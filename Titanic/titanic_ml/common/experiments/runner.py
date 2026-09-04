@@ -119,6 +119,50 @@ def evaluate_model(model_pipeline, X, y, evaluation_config, round_decimals=None)
 
     return result
 
+def apply_pre_cv_feature_pipeline(
+    X,
+    exp,
+    context_df=None,
+):
+    pipeline = exp.get(
+        "pre_cv_feature_pipeline",
+        [],
+    )
+
+    if not pipeline:
+        return X
+
+    scope = exp["pre_cv_scope"]
+
+    if scope == "full_prediction_context":
+        if context_df is None:
+            raise ValueError(
+                "Experiment uses pre-CV scope "
+                "'full_prediction_context', but no "
+                "context_df was provided."
+            )
+
+        combined = pd.concat(
+            [X, context_df],
+            axis=0,
+        )
+
+        pre_cv_pipeline = Pipeline(
+            pipeline
+        )
+
+        transformed = (
+            pre_cv_pipeline.fit_transform(
+                combined
+            )
+        )
+
+        return transformed.iloc[:len(X)]
+
+    raise ValueError(
+        f"Unsupported pre-CV scope: '{scope}'."
+    )
+
 def run_experiments(
     df,
     experiments,
@@ -126,6 +170,7 @@ def run_experiments(
     verbose=False,
     round_decimals=3,
     debug=False,
+    context_df=None,
 ):
     results = []
 
@@ -175,6 +220,21 @@ def run_experiments(
             X = df.drop(columns=[target])
             y = df[target]
 
+            # -------------------------------------------------
+            # 3.1 Apply pre-CV feature pipeline if specified
+            # -------------------------------------------------
+
+            pre_cv_feature_pipeline = exp.get(
+                "pre_cv_feature_pipeline",
+                [],
+            )
+
+            if pre_cv_feature_pipeline:
+                X = apply_pre_cv_feature_pipeline(
+                    X=X,
+                    exp=exp,
+                    context_df=context_df,
+                )
             # -------------------------------------------------
             # 4. Build preprocessor
             # -------------------------------------------------
@@ -243,6 +303,12 @@ def run_experiments(
 
             result = {
                 "experiment": exp["name"],
+                "uses_pre_cv_fe":bool(
+                                exp.get(
+                                    "pre_cv_feature_pipeline",
+                                    [],
+                                )
+                            ),
                 "stage": exp.get("stage", ""),
                 "feature_group": exp.get(
                     "feature_group",
@@ -254,6 +320,7 @@ def run_experiments(
                 "error_type": "",
                 "error_message": "",
                 **model_result,
+                "pre_cv_scope": exp.get("pre_cv_scope", None),
                 "domain": exp.get("domain", ""),
                 "notes": exp.get("notes", ""),
             }
@@ -264,6 +331,12 @@ def run_experiments(
                 "experiment": exp.get(
                     "name",
                     "N/A",
+                ),
+                "uses_pre_cv_fe":bool(
+                    exp.get(
+                        "pre_cv_feature_pipeline",
+                        [],
+                    )
                 ),
                 "stage": exp.get(
                     "stage",
@@ -284,6 +357,7 @@ def run_experiments(
                 "status": "failed",
                 "error_type": type(e).__name__,
                 "error_message": str(e),
+                "pre_cv_scope": exp.get("pre_cv_scope", None),
                 "domain": exp.get(
                     "domain",
                     "",
@@ -325,6 +399,7 @@ def run_experiment_group_workflow(
     save=True,
     verbose=False,
     debug=False,
+    context_df=None,
 ):
     if metrics is None:
         metrics = [
@@ -342,6 +417,7 @@ def run_experiment_group_workflow(
 
     group_results = run_experiments(
         df=df,
+        context_df=context_df,
         experiments=experiment_configs,
         target=target,
         verbose=verbose,

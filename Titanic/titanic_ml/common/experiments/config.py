@@ -910,7 +910,7 @@ cb06__all_fare_features_config = create_config_group(
     stage="cb06",
     feature_group="all_fare_features",
     domain="fare",
-    pre_cv_scope= "full_prediction_context",
+    pre_cv_scope= None,
     notes=("Combo Experiment 06."
             "Adding Fare/FamilySize and Fare/TicketMember."),
 )

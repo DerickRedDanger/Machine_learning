@@ -126,7 +126,7 @@ def create_config(
     feature_group,
     domain=None,
     notes=None,
-    pre_cv_scope=None
+    pre_cv_scope=None,
 ):
     if not isinstance(base_config, dict):
         raise TypeError(

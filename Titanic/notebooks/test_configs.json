@@ -11985,7 +11985,7 @@
   },
   "cb06__all_fare_features__logreg": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12091,7 +12091,7 @@
   },
   "cb06__all_fare_features__knn": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12196,7 +12196,7 @@
   },
   "cb06__all_fare_features__svc": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12305,7 +12305,7 @@
   },
   "cb06__all_fare_features__decision_tree": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12412,7 +12412,7 @@
   },
   "cb06__all_fare_features__random_forest": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12521,7 +12521,7 @@
   },
   "cb06__all_fare_features__extra_trees": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -12630,7 +12630,7 @@
   },
   "cb06__all_fare_features__xgb": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "f",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -16969,7 +16969,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__logreg": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17031,7 +17031,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__knn": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17092,7 +17092,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__svc": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17157,7 +17157,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__decision_tree": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17220,7 +17220,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__random_forest": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17285,7 +17285,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__extra_trees": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
@@ -17350,7 +17350,7 @@
   },
   "ab05__sex_pclass_without_sibsp_parch__xgb": {
     "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": "full_prediction_context",
+    "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
