@@ -5217,9 +5217,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5285,9 +5285,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5352,9 +5352,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5423,9 +5423,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5492,9 +5492,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5563,9 +5563,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5634,9 +5634,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5706,9 +5706,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5783,9 +5783,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5859,9 +5859,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -5939,9 +5939,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -6017,9 +6017,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -6097,9 +6097,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -6177,9 +6177,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -10698,9 +10698,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -10777,9 +10777,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -10855,9 +10855,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -10937,9 +10937,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -11017,9 +11017,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -11099,9 +11099,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -11181,9 +11181,9 @@
     },
     "feature_pipeline": [
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12022,9 +12022,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12128,9 +12128,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12233,9 +12233,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12342,9 +12342,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12449,9 +12449,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12558,9 +12558,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -12667,9 +12667,9 @@
         }
       ],
       [
-        "ticket_group_size",
+        "ticket_group_size_batch",
         {
-          "class": "ValueCountTransformer",
+          "class": "BatchValueCountTransformer",
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
@@ -18729,6 +18729,1476 @@
       "Embarked",
       "Pclass",
       "Age_bin"
+    ]
+  },
+  "fe__ticket_group_size_batch__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Base logistic regression using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_batch__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Base K-neighbors classifier using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_batch__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Base SVC using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_batch__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Base decision tree, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_batch__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Base random forest, using raw configuration.Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_batch__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Base extra trees, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_batch__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_batch",
+    "group": "fe__ticket_group_size_batch",
+    "domain": "ticket",
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Base xgb, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_batch__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Base logistic regression using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Base K-neighbors classifier using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Base SVC using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Base decision tree, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Base random forest, using raw configuration.Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Base extra trees, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_fitted",
+    "group": "fe__ticket_group_size_fitted",
+    "domain": "ticket",
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Base xgb, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__logreg": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Base logistic regression using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Base K-neighbors classifier using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Base SVC using the raw feature configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__decision_tree": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Base decision tree, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__random_forest": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Base random forest, using raw configuration.Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Base extra trees, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "fe__ticket_group_size_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fe",
+    "feature_group": "ticket_group_size_full_context",
+    "group": "fe__ticket_group_size_full_context",
+    "domain": "ticket",
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Base xgb, using raw configuration. Baseline for comparison.",
+    "name": "fe__ticket_group_size_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass"
     ]
   }
 }

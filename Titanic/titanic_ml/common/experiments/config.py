@@ -1,7 +1,7 @@
 from titanic_ml.common.experiments.config_creation import create_config, create_config_group, features_from_preprocessing, validate_config_group
 import copy
-from titanic_ml.feature_engineering.updated import FE
-
+from titanic_ml.feature_engineering.updated import fe as FE
+from titanic_ml.pre_cv_feature_engineering import pre_cv_fe as PRE_CV_FE
 # Dictionary to hold all experiment configurations
 ALL_EXPERIMENTS = {}
 
@@ -570,7 +570,7 @@ ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member_c
 
 fe09__ticket_group_size_patch = {
     "transformations": [
-        FE.ticket_group_size,
+        FE.ticket_group_size_batch,
     ],
 
     "add": {
@@ -601,7 +601,8 @@ ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size_config
 
 fe10__fare_per_ticket_member_patch = {
     "transformations": [
-        FE.ticket_group_size, FE.fare_ticket,
+        FE.ticket_group_size_batch, 
+        FE.fare_ticket,
     ],
 
     "add": {
@@ -854,7 +855,7 @@ ALL_EXPERIMENTS['cb04__fare_and_fare_per_family'] = cb04__fare_and_fare_per_fami
 
 cb05__fare_and_fare_per_ticket_patch = {
     "transformations": [
-        FE.ticket_group_size,
+        FE.ticket_group_size_batch,
         FE.fare_ticket,
     ],
 
@@ -887,7 +888,7 @@ ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket'] = cb05__fare_and_fare_per_tick
 cb06__all_fare_features_patch = {
     "transformations": [
         FE.family,
-        FE.ticket_group_size,
+        FE.ticket_group_size_batch,
         FE.fare_family,
         FE.fare_ticket
     ],
@@ -1240,3 +1241,88 @@ validate_config_group(
 ALL_EXPERIMENTS[
     "control__cb01_legacy_order"
 ] = cb01__legacy_order_control_config
+
+
+# new Ticket groupsize experiment
+
+TICKET_GROUP_SIZE_BATCH = {
+    "transformations": [
+        FE.ticket_group_size_batch,
+    ],
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "TicketGroupSize",
+            ],
+        },
+    },
+}
+
+
+TICKET_GROUP_SIZE_FITTED = {
+    "transformations": [
+        FE.ticket_group_size_fitted,
+    ],
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "TicketGroupSize",
+            ],
+        },
+    },
+}
+
+TICKET_GROUP_SIZE_FULL_CONTEXT = {
+    "pre_cv_transformations": [
+        PRE_CV_FE.ticket_group_size_full_context,
+    ],
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "TicketGroupSize",
+            ],
+        },
+    },
+}
+
+ticket_batch_configs = create_config_group(
+    base_configs=baseline_config,
+    patches=[TICKET_GROUP_SIZE_BATCH],
+    raw_features=RAW_FEATURES,
+    stage="fe",
+    feature_group="ticket_group_size_batch",
+    domain="ticket",
+)
+
+ticket_fitted_configs = create_config_group(
+    base_configs=baseline_config,
+    patches=[TICKET_GROUP_SIZE_FITTED],
+    raw_features=RAW_FEATURES,
+    stage="fe",
+    feature_group="ticket_group_size_fitted",
+    domain="ticket",
+)
+
+ticket_full_context_configs = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        TICKET_GROUP_SIZE_FULL_CONTEXT,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe",
+    feature_group="ticket_group_size_full_context",
+    domain="ticket",
+    pre_cv_scope="full_prediction_context",
+)
+
+ALL_EXPERIMENTS[
+    "fe__ticket_group_size_batch"
+] = ticket_batch_configs
+
+ALL_EXPERIMENTS[
+    "fe__ticket_group_size_fitted"
+] = ticket_fitted_configs
+
+ALL_EXPERIMENTS[
+    "fe__ticket_group_size_full_context"
+] = ticket_full_context_configs

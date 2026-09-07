@@ -4,7 +4,7 @@ from .title import ADD_TITLE
 from .family import ADD_FAMILY_SIZE, ADD_IS_ALONE
 from .sex_pclass import ADD_SEX_PCLASS
 from .fare import ADD_FARE_PER_FAMILYSIZE, ADD_FARE_PER_TICKET
-from .ticket import ADD_TICKET_GROUP_SIZE
+from .ticket import ADD_TICKET_GROUP_SIZE_BATCH, ADD_TICKET_GROUP_SIZE_FITTED, ADD_TICKET_GROUP_SIZE_BATCH
 from .deck import ADD_DECK
 
 age_bin = ADD_AGE_BIN
@@ -18,7 +18,8 @@ is_alone = ADD_IS_ALONE
 sex_pclass = ADD_SEX_PCLASS
 fare_ticket = ADD_FARE_PER_TICKET
 fare_family = ADD_FARE_PER_FAMILYSIZE
-ticket_group_size = ADD_TICKET_GROUP_SIZE
+ticket_group_size_batch = ADD_TICKET_GROUP_SIZE_BATCH
+ticket_group_size_fitted = ADD_TICKET_GROUP_SIZE_FITTED
 
 ALL_FEATURES = [
     age_bin,
@@ -32,7 +33,8 @@ ALL_FEATURES = [
     sex_pclass,
     fare_ticket,
     fare_family,
-    ticket_group_size
+    ticket_group_size_batch,
+    ticket_group_size_fitted
 ]
 
 for feature in ALL_FEATURES:

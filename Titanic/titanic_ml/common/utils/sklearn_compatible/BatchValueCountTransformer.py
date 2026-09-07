@@ -1,9 +1,17 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 
-class ValueCountTransformer(
+class BatchValueCountTransformer(
     BaseEstimator,
     TransformerMixin,
 ):
+
+    """
+    A transformer that counts the occurrences of each unique value in a specified source column and creates a new column with these counts.
+    This transformer is compatible with scikit-learn's fit/transform interface.
+    
+    The output depends on the batch currently being transformed.
+    
+    """
     def __init__(
         self,
         source_col,
