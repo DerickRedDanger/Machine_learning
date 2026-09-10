@@ -323,6 +323,7 @@ def run_experiments(
                 "pre_cv_scope": exp.get("pre_cv_scope", None),
                 "domain": exp.get("domain", ""),
                 "notes": exp.get("notes", ""),
+                "tags": exp.get("tags", set()),
             }
 
         except Exception as e:
@@ -366,6 +367,7 @@ def run_experiments(
                     "notes",
                     "",
                 ),
+                "tags": exp.get("tags", set()),
             }
 
         if verbose:

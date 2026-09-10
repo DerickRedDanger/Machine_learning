@@ -65,6 +65,7 @@ BASELINE_CONFIG_MODEL = {
     "feature_group": "raw",
     "group": "baseline__raw",
     "domain": None,
+    "tags":None,
 }
 
 # ============================================================#
@@ -1019,6 +1020,7 @@ ab01__age_and_bins_without_fare_config = create_config_group(
     domain="ablation",
     notes=("Ablation Experiment 01."
             "Adding Age bins and removing Fare."),
+    tags=set(["ablation"])
 )
 
 ALL_EXPERIMENTS['ab01__age_and_bins_without_fare'] = ab01__age_and_bins_without_fare_config
@@ -1060,6 +1062,7 @@ ab02__age_imputed_title_and_bins_without_fare_config = create_config_group(
     domain="ablation",
     notes=("Ablation Experiment."
             "Age imputed by Title then adding Age bin while removing Fare."),
+    tags=set(["ablation"])
 )
 
 ALL_EXPERIMENTS['ab02__age_imputed_title_and_bins_without_fare'] = ab02__age_imputed_title_and_bins_without_fare_config
@@ -1101,6 +1104,7 @@ ab03__age_imputed_title_pclass_and_bins_without_fare_config = create_config_grou
     domain="ablation",
     notes=("Ablation Experiment 03."
             "Age imputed by Title and Pclass, then binned, without Fare."),
+    tags={"ablation"}
 )
 
 ALL_EXPERIMENTS['ab03__age_imputed_title_pclass_and_bins_without_fare'] = ab03__age_imputed_title_pclass_and_bins_without_fare_config
@@ -1142,6 +1146,7 @@ ab04__age_bin_without_fare_config = create_config_group(
         "Feature engineering 11: "
         "replaces Age with Age_bin."
     ),
+    tags=set(["ablation"]),
 )
 
 ALL_EXPERIMENTS['ab04__age_bin_without_fare'] = ab04__age_bin_without_fare_config
@@ -1189,6 +1194,7 @@ ab05__sex_pclass_without_sibsp_parch_config = create_config_group(
     domain="ablation",
     notes=("Ablation experiment 05."
             "Replacing Sex and Pclass with Sex_Pclass while removing SibSp and Parch."),
+    tags=set(["ablation"]),
 )
 
 ALL_EXPERIMENTS['ab05__sex_pclass_without_sibsp_parch'] = ab05__sex_pclass_without_sibsp_parch_config
@@ -1245,7 +1251,7 @@ ALL_EXPERIMENTS[
 
 # new Ticket groupsize experiment
 
-TICKET_GROUP_SIZE_BATCH = {
+fe09__ticket_group_size_batch_patch = {
     "transformations": [
         FE.ticket_group_size_batch,
     ],
@@ -1259,7 +1265,7 @@ TICKET_GROUP_SIZE_BATCH = {
 }
 
 
-TICKET_GROUP_SIZE_FITTED = {
+fe09__ticket_group_size_fitted_patch = {
     "transformations": [
         FE.ticket_group_size_fitted,
     ],
@@ -1272,7 +1278,7 @@ TICKET_GROUP_SIZE_FITTED = {
     },
 }
 
-TICKET_GROUP_SIZE_FULL_CONTEXT = {
+fe09__ticket_group_size_full_context_patch = {
     "pre_cv_transformations": [
         PRE_CV_FE.ticket_group_size_full_context,
     ],
@@ -1285,44 +1291,44 @@ TICKET_GROUP_SIZE_FULL_CONTEXT = {
     },
 }
 
-ticket_batch_configs = create_config_group(
+fe09__ticket_group_size_batch_configs = create_config_group(
     base_configs=baseline_config,
-    patches=[TICKET_GROUP_SIZE_BATCH],
+    patches=[fe09__ticket_group_size_batch_patch],
     raw_features=RAW_FEATURES,
-    stage="fe",
+    stage="fe09",
     feature_group="ticket_group_size_batch",
     domain="ticket",
 )
 
-ticket_fitted_configs = create_config_group(
+fe09__ticket_group_size_fitted_configs = create_config_group(
     base_configs=baseline_config,
-    patches=[TICKET_GROUP_SIZE_FITTED],
+    patches=[fe09__ticket_group_size_fitted_patch],
     raw_features=RAW_FEATURES,
-    stage="fe",
+    stage="fe09",
     feature_group="ticket_group_size_fitted",
     domain="ticket",
 )
 
-ticket_full_context_configs = create_config_group(
+fe09__ticket_group_size_full_context_configs = create_config_group(
     base_configs=baseline_config,
     patches=[
-        TICKET_GROUP_SIZE_FULL_CONTEXT,
+        fe09__ticket_group_size_full_context_patch,
     ],
     raw_features=RAW_FEATURES,
-    stage="fe",
+    stage="fe09",
     feature_group="ticket_group_size_full_context",
     domain="ticket",
     pre_cv_scope="full_prediction_context",
 )
 
 ALL_EXPERIMENTS[
-    "fe__ticket_group_size_batch"
-] = ticket_batch_configs
+    "fe09__ticket_group_size_batch"
+] = fe09__ticket_group_size_batch_configs
 
 ALL_EXPERIMENTS[
-    "fe__ticket_group_size_fitted"
-] = ticket_fitted_configs
+    "fe09__ticket_group_size_fitted"
+] = fe09__ticket_group_size_fitted_configs
 
 ALL_EXPERIMENTS[
-    "fe__ticket_group_size_full_context"
-] = ticket_full_context_configs
+    "fe09__ticket_group_size_full_context"
+] = fe09__ticket_group_size_full_context_configs

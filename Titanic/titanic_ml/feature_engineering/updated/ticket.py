@@ -17,6 +17,7 @@ ADD_TICKET_GROUP_SIZE_BATCH = {
     "requires": ["Ticket"],
     "produces": ["TicketGroupSize"],
     "owns": ["TicketGroupSize"],
+    "tags":{"batch_context"}
 }
 
 from titanic_ml.common.utils.sklearn_compatible.FittedValueCountTransformer import FittedValueCountTransformer

@@ -15,4 +15,5 @@ ADD_TICKET_GROUP_SIZE_FULL_CONTEXT = {
     "requires": ["Ticket"],
     "produces": ["TicketGroupSize"],
     "owns": ["TicketGroupSize"],
+    "tags":{"full_context"}
 }

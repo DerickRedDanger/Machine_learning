@@ -127,6 +127,7 @@ def create_config(
     domain=None,
     notes=None,
     pre_cv_scope=None,
+    tags=None,
 ):
     if not isinstance(base_config, dict):
         raise TypeError(
@@ -176,6 +177,8 @@ def create_config(
     pre_cv_transformations = []
 
     cv_transformations = []
+
+    resolved_tags = set(tags or ())
 
     # ---------------------------------------------------------
     # Apply patches in the order provided
@@ -339,6 +342,10 @@ def create_config(
 
             available_features.update(produced)
 
+            resolved_tags.update(
+                transformation.get("tags", set())
+            )
+
         return pipeline
 
     # ---------------------------------------------------------
@@ -431,10 +438,19 @@ def create_config(
 
     config["pre_cv_scope"] = pre_cv_scope
 
-    _validate_pre_cv_config(config)
+    #debug
+    print(f"config['tags'] before update: {config.get('tags', set())}")
+    config_tags = set(config.get("tags") or [])
+    config_tags.update(resolved_tags)
+    print(f"config['tags'] after update: {config_tags}")
+    config["tags"] = config_tags
 
     # Human-readable derived metadata.
-    config["features"] = model_features
+    config["features"] = model_features 
+
+    _validate_pre_cv_config(config)
+
+
 
     return config
 
@@ -446,7 +462,8 @@ def create_config_group(
     feature_group,
     domain=None,
     notes=None,
-    pre_cv_scope=None
+    pre_cv_scope=None,
+    tags=None,
 ):
     if not isinstance(base_configs, dict):
         raise TypeError(
@@ -473,6 +490,7 @@ def create_config_group(
             domain=domain,
             notes=notes,
             pre_cv_scope=pre_cv_scope,
+            tags=tags,
         )
 
         model_name = config["model_name"]
