@@ -172,7 +172,7 @@ def experiment_group_report_to_markdown(
         model_name = result_row.get("model_name", "N/A")
         exp_name = result_row.get("experiment", "N/A")
 
-        lines.append(f"#### {model_name}")
+        lines.append(f"##### {model_name}")
         lines.append("")
         lines.append(experiment_result_to_markdown(result_row))
         lines.append("")
@@ -220,24 +220,24 @@ def experiment_group_summary_report(
     )
 
     lines = [
-        f"### {compare_group}",
+        f"#### {compare_group}",
         "",
         description or "_Description pending._",
         "",
         "<details>",
         "<summary>Comparison details</summary>",
         "",
-        "#### Comparison vs baseline",
+        "##### Comparison vs baseline",
         "",
         comparison.to_markdown(index=False),
         "",
-        "#### Summary",
+        "##### Summary",
         "",
         summary.to_markdown(index=False),
         "",
         "</details>",
         "",
-        "#### Conclusion",
+        "##### Conclusion",
         "",
         conclusion or "_Conclusion pending._",
     ]
@@ -254,18 +254,18 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
     # For when refenrence and compare group are the same, so no comparison or summary is generated
     if comparison is None or summary is None:
         report = [
-            f"### {compare_group}",
+            f"#### {compare_group}",
             "",
             description or "_Description pending._",
             "",
-            "#### Conclusion",
+            "##### Conclusion",
             "",
             conclusion or "_Conclusion pending._",
             "",
             "<details>",
             "<summary>Details</summary>",
             "",
-            "#### Result",
+            "##### Result",
             "",
             baseline_summary_to_markdown(workflow["group_results"]),
             "",
@@ -274,7 +274,7 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
         ]
     else:
         report = [
-            f"### {compare_group}",
+            f"#### {compare_group}",
             "",
             description or "_Description pending._",
             "",
@@ -283,7 +283,7 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
             "",
             *feature_effect_interpretation(workflow['feature_effect']),
             "",     
-            "#### Conclusion",
+            "##### Conclusion",
             "",
             conclusion or "_Conclusion pending._",
             "",
@@ -292,11 +292,11 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
             "<details>",
             "<summary>Experiment details</summary>",
             "",
-            f"#### Comparison vs {reference_group}",
+            f"##### Comparison vs {reference_group}",
             "",
             comparison.to_markdown(index=False),
             "",
-            "#### Summary",
+            "##### Summary",
             "",
             summary.to_markdown(index=False),
             "",

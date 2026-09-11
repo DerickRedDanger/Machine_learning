@@ -438,11 +438,8 @@ def create_config(
 
     config["pre_cv_scope"] = pre_cv_scope
 
-    #debug
-    print(f"config['tags'] before update: {config.get('tags', set())}")
     config_tags = set(config.get("tags") or [])
     config_tags.update(resolved_tags)
-    print(f"config['tags'] after update: {config_tags}")
     config["tags"] = config_tags
 
     # Human-readable derived metadata.

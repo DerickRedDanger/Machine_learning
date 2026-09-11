@@ -16309,8 +16309,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16378,8 +16381,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16446,8 +16452,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16518,8 +16527,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16588,8 +16600,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16660,8 +16675,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16732,8 +16750,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": 1,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": 1
           }
         }
       ]
@@ -16785,8 +16806,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]
@@ -16856,8 +16880,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]
@@ -16926,8 +16953,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]
@@ -17000,8 +17030,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]
@@ -17072,8 +17105,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]
@@ -17146,8 +17182,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]
@@ -17220,8 +17259,11 @@
         {
           "class": "FittedValueCountTransformer",
           "params": {
+            "count_missing": false,
+            "missing_value": NaN,
             "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
+            "source_col": "Ticket",
+            "unseen_value": NaN
           }
         }
       ]

@@ -27,6 +27,9 @@ def ticket_group_size_fitted_transform():
     return FittedValueCountTransformer(
         source_col="Ticket",
         output_col="TicketGroupSize",
+        unseen_value=1,
+        missing_value=1,
+        count_missing=False,
     )
 
 

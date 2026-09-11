@@ -1467,32 +1467,65 @@ Therefore, feature transformations should be treated as model-dependent represen
 ### Ticket
 
 #### Hypothesis
+`Ticket` may contain information about passengers travelling as part of the same
+group. A `TicketGroupSize` feature was therefore created by counting passengers
+sharing the same ticket.
 
-Multiple passengers share the same Ticket identifier, suggesting that tickets may represent travel groups rather than individuals. If passengers sharing a ticket remained together during boarding or evacuation, the number of passengers associated with a ticket may contain information beyond the family relationships captured by SibSp and Parch.
+#### Prediction context
 
-Unlike FamilySize, TicketGroupSize depends entirely on the passengers present in the current dataset. If members of the same ticket group are absent from the dataset, the feature underestimates the true group size. This makes it inherently dataset-dependent, and its effect on unseen data is uncertain.
+Unlike most engineered features in this study, however, `TicketGroupSize` is
+population-dependent: its value changes according to which other passengers
+are available when the feature is constructed.
 
-#### Experiments performed:
+For example, a passenger belonging to a four-person ticket group may appear to
+have a group size of one if the other members are absent from the population
+used to construct the feature. This makes the information boundary used to
+calculate `TicketGroupSize` part of the feature's meaning.
 
-#### fe09__ticket_group_size
+To investigate this, three strategies were compared:
 
-TicketGroupSize counts the number of passengers sharing the same ticket. The objective is to determine whether actual travel groups contain more predictive information than family relationships.
+- **Batch context:** group size is calculated independently from the rows in
+  each transformed batch. During cross-validation, training and validation
+  folds therefore observe their own ticket groups independently.
 
+- **Fitted:** ticket counts are learned from the training fold and mapped onto
+  validation rows. Tickets not observed during fitting are treated as singleton
+  groups (`TicketGroupSize = 1`).
+
+- **Full prediction context:** ticket counts are calculated using the complete
+  feature-only population available at prediction time. For this Titanic case
+  study, this consists of the training population together with the supplied
+  prediction/test population. No target information from the prediction
+  population is used.
+
+<details>
+<summary>Comparison of TicketGroupSize strategies</summary>
+
+| Model | Batch ΔAcc | Batch ΔF1 | Fitted ΔAcc | Fitted ΔF1 | Full context ΔAcc | Full context ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | +0.003 | +0.003 | +0.001 | 0.000 | -0.003 | -0.003 |
+| KNN | -0.010 | -0.014 | 0.000 | -0.001 | 0.000 | +0.005 |
+| SVC | -0.003 | 0.000 | +0.004 | +0.007 | +0.006 | +0.012 |
+| Decision Tree | -0.002 | +0.004 | +0.002 | +0.007 | +0.005 | +0.014 |
+| Random Forest | -0.012 | -0.011 | -0.006 | -0.004 | -0.006 | -0.005 |
+| Extra Trees | -0.007 | -0.006 | -0.002 | +0.001 | +0.002 | +0.004 |
+| XGBoost | -0.001 | 0.000 | 0.000 | +0.001 | -0.004 | -0.004 |
+
+</details>
+
+<details>
+<summary>Individual experiment results</summary>
+
+#### fe09__ticket_group_size_batch
 <details>
 <summary>Conclusion</summary>
 
+
 ##### Interpretation
 
-- Verdict: model_specific_mixed
+- Verdict: mixed
 - Recommended for specific models:
-  - svc: test_accuracy_mean: 0.005
-    - Secondary gains:
-      - test_f1_mean: 0.01
-
-
-##### Conclusion
-
-Ambiguous results, it helped some models, but hurt others. Considering how low its effects are, the feature either introduces noise or captures information that is already available through existing features, such as Parch and SibSp or Fare. Only Svc seemed to have gained something meaningful from it.
+  - logreg: test_accuracy_mean: 0.003
 
 </details>
 
@@ -1501,46 +1534,219 @@ Ambiguous results, it helped some models, but hurt others. Considering how low i
 
 ##### Comparison vs baseline__raw
 
-| reference_group   | compare_group           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
-|:------------------|:------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe09__ticket_group_size | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
-| baseline__raw     | fe09__ticket_group_size | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.733 |               -0.009 |
-| baseline__raw     | fe09__ticket_group_size | svc           |                          0.827 |                        0.832 |                      0.005 |                    0.76  |                  0.77  |                0.01  |
-| baseline__raw     | fe09__ticket_group_size | decision_tree |                          0.803 |                        0.8   |                     -0.003 |                    0.702 |                  0.702 |                0     |
-| baseline__raw     | fe09__ticket_group_size | random_forest |                          0.822 |                        0.82  |                     -0.002 |                    0.744 |                  0.747 |                0.003 |
-| baseline__raw     | fe09__ticket_group_size | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.724 |                0.003 |
-| baseline__raw     | fe09__ticket_group_size | xgb           |                          0.826 |                        0.818 |                     -0.008 |                    0.758 |                  0.749 |               -0.009 |
+| reference_group   | compare_group                 | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe09__ticket_group_size_batch | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.716 |                0.003 |
+| baseline__raw     | fe09__ticket_group_size_batch | knn           |                          0.809 |                        0.799 |                     -0.01  |                    0.742 |                  0.728 |               -0.014 |
+| baseline__raw     | fe09__ticket_group_size_batch | svc           |                          0.827 |                        0.824 |                     -0.003 |                    0.76  |                  0.76  |                0     |
+| baseline__raw     | fe09__ticket_group_size_batch | decision_tree |                          0.803 |                        0.801 |                     -0.002 |                    0.702 |                  0.706 |                0.004 |
+| baseline__raw     | fe09__ticket_group_size_batch | random_forest |                          0.822 |                        0.81  |                     -0.012 |                    0.744 |                  0.733 |               -0.011 |
+| baseline__raw     | fe09__ticket_group_size_batch | extra_trees   |                          0.804 |                        0.797 |                     -0.007 |                    0.721 |                  0.715 |               -0.006 |
+| baseline__raw     | fe09__ticket_group_size_batch | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.758 |                0     |
 
 ##### Summary
 
-| compare_group           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
-|:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe09__ticket_group_size |                     -0.00128571 |                         -0.008 |                          0.005 |                         0 |                   -0.009 |                     0.01 |
+| compare_group                 |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe09__ticket_group_size_batch |                     -0.00457143 |                         -0.012 |                          0.003 |               -0.00342857 |                   -0.014 |                    0.004 |
 
 </details>
 
-#### Overall conclusion
+#### fe09__ticket_group_size_fitted
 
-TicketGroupSize alone appears to provide only limited additional information. The modest improvements suggest that passengers traveling together do share some survival characteristics, but this information is either weak or already partially represented by existing features.
+<details>
+<summary>Conclusion</summary>
 
-The remaining question is whether TicketGroupSize becomes more informative when combined with Ticket-derived features such as Fare per Ticket Member.
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - svc: test_accuracy_mean: 0.004
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe09__ticket_group_size_fitted | logreg        |                          0.786 |                        0.787 |                      0.001 |                    0.713 |                  0.713 |                0     |
+| baseline__raw     | fe09__ticket_group_size_fitted | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.741 |               -0.001 |
+| baseline__raw     | fe09__ticket_group_size_fitted | svc           |                          0.827 |                        0.831 |                      0.004 |                    0.76  |                  0.767 |                0.007 |
+| baseline__raw     | fe09__ticket_group_size_fitted | decision_tree |                          0.803 |                        0.805 |                      0.002 |                    0.702 |                  0.709 |                0.007 |
+| baseline__raw     | fe09__ticket_group_size_fitted | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.74  |               -0.004 |
+| baseline__raw     | fe09__ticket_group_size_fitted | extra_trees   |                          0.804 |                        0.802 |                     -0.002 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe09__ticket_group_size_fitted | xgb           |                          0.826 |                        0.826 |                      0     |                    0.758 |                  0.759 |                0.001 |
+
+##### Summary
+
+| compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe09__ticket_group_size_fitted |                    -0.000142857 |                         -0.006 |                          0.004 |                0.00157143 |                   -0.004 |                    0.007 |
+
+</details>
+
+#### fe09__ticket_group_size_full_context
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - svc: test_accuracy_mean: 0.006
+    - Secondary gains:
+      - test_f1_mean: 0.012
+  - decision_tree: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.014
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                        | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe09__ticket_group_size_full_context | logreg        |                          0.786 |                        0.783 |                     -0.003 |                    0.713 |                  0.71  |               -0.003 |
+| baseline__raw     | fe09__ticket_group_size_full_context | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.747 |                0.005 |
+| baseline__raw     | fe09__ticket_group_size_full_context | svc           |                          0.827 |                        0.833 |                      0.006 |                    0.76  |                  0.772 |                0.012 |
+| baseline__raw     | fe09__ticket_group_size_full_context | decision_tree |                          0.803 |                        0.808 |                      0.005 |                    0.702 |                  0.716 |                0.014 |
+| baseline__raw     | fe09__ticket_group_size_full_context | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.739 |               -0.005 |
+| baseline__raw     | fe09__ticket_group_size_full_context | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.725 |                0.004 |
+| baseline__raw     | fe09__ticket_group_size_full_context | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.754 |               -0.004 |
+
+##### Summary
+
+| compare_group                        |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe09__ticket_group_size_full_context |                               0 |                         -0.006 |                          0.006 |                0.00328571 |                   -0.005 |                    0.014 |
+
+</details>
+
+</details>
+
+#### Interpretation
+
+The usefulness of `TicketGroupSize` depends substantially on how its population
+context is defined.
+
+The batch-context representation is generally the weakest. It reduces mean
+accuracy and F1 across the tested models, with particularly negative effects
+for KNN, Random Forest, and Extra Trees. This suggests that independently
+fragmenting ticket groups between transformed batches produces a representation
+that is poorly aligned with the underlying group information.
+
+The fitted representation largely removes this penalty. Most models remain
+close to baseline, while SVC improves by +0.004 accuracy and +0.007 F1 and
+Decision Tree improves by +0.002 accuracy and +0.007 F1. This indicates that
+TicketGroupSize can contain useful predictive information even under an
+inductive setting, although its benefit remains model-specific.
+
+Full prediction context produces the strongest useful effects. SVC improves by
++0.006 accuracy and +0.012 F1, while Decision Tree improves by +0.005 accuracy
+and +0.014 F1. Extra Trees and KNN also show small F1 improvements. Logistic
+Regression, Random Forest, and XGBoost instead perform worse than baseline,
+showing that a more complete group representation does not make the feature
+universally beneficial.
+
+For SVC and Decision Tree in particular, performance improves progressively
+from batch to fitted to full-context representations. This supports the
+interpretation that these models can exploit ticket-group information, but
+that the quality and completeness of the group representation matter.
+
+#### Ticket groups vs family groups
+
+`TicketGroupSize` was initially expected to behave similarly to the engineered
+family features, since both can act as proxies for the number of passengers
+travelling together. Their observed model effects, however, differ substantially.
+
+<details>
+<summary>Family features vs full-context TicketGroupSize</summary>
+
+| Model | Family ΔAcc | Family ΔF1 | Ticket ΔAcc | Ticket ΔF1 |
+|---|---:|---:|---:|---:|
+| Logistic Regression | +0.004 | +0.006 | -0.003 | -0.003 |
+| KNN | -0.008 | -0.009 | 0.000 | +0.005 |
+| SVC | +0.001 | +0.003 | +0.006 | +0.012 |
+| Decision Tree | +0.004 | +0.012 | +0.005 | +0.014 |
+| Random Forest | -0.003 | -0.001 | -0.006 | -0.005 |
+| Extra Trees | +0.002 | +0.005 | +0.002 | +0.004 |
+| XGBoost | +0.001 | +0.003 | -0.004 | -0.004 |
+
+</details>
+
+Although the two representations overlap conceptually, the contrasting model
+responses indicate that they are not interchangeable proxies. Family features
+describe the passenger's recorded family structure (`SibSp` and `Parch`),
+whereas shared tickets describe a different grouping relationship. The latter
+may capture travelling groups that do not correspond directly to the recorded
+family unit.
+
+This distinction is especially visible for Logistic Regression and SVC:
+family features improve Logistic Regression while full-context TicketGroupSize
+hurts it, whereas SVC benefits considerably more from TicketGroupSize than from
+the family representation.
+
+The comparison therefore suggests that family structure and ticket-group
+structure provide partially distinct information about passenger relationships
+rather than alternative measurements of the same underlying feature.
+
+#### Conclusion
+
+`TicketGroupSize` is a useful example of a relational feature whose meaning
+depends on the population available when it is constructed.
+
+Batch-local construction is generally unreliable because ticket groups are
+fragmented by the evaluation batches. Fitted counts provide a valid inductive
+alternative and modest model-specific gains, while complete prediction context
+can strengthen the signal when that population is legitimately available.
+
+For this dataset, SVC and Decision Tree benefit most from a more complete
+ticket-group representation. The feature remains detrimental or neutral for
+several other models, so it should be selected according to both the model and
+the intended prediction context rather than treated as a universally useful
+engineered feature.
+
+Full-context results should also be interpreted specifically under the assumed
+deployment setting: they represent performance when the complete feature-only
+prediction population is available, rather than ordinary prediction of
+independent future observations.
 
 #### Findings
 
-- TicketGroupSize contains some predictive information, but considerably less than initially expected.
-- SVC was the only model to benefit consistently from the feature.
-- The overlap between TicketGroupSize and existing family-related features appears larger than originally hypothesized.
+- `TicketGroupSize` is strongly dependent on the population used to construct it. The three context strategies produced meaningfully different model behavior despite representing the same underlying feature concept.
+- Batch-local `TicketGroupSize` was generally detrimental, with mean changes of -0.0046 accuracy and -0.0034 F1. Fragmenting ticket groups between independently transformed batches appears to weaken the representation.
+- Fitted `TicketGroupSize` was substantially more stable, remaining near baseline overall while providing useful gains for SVC (+0.004 accuracy, +0.007 F1) and smaller gains for Decision Tree (+0.002 accuracy, +0.007 F1).
+- Full-context `TicketGroupSize` produced the strongest model-specific gains, particularly for SVC (+0.006 accuracy, +0.012 F1) and Decision Tree (+0.005 accuracy, +0.014 F1).
+- For SVC and Decision Tree, performance improved progressively from batch → fitted → full context, suggesting that these models benefit from increasingly complete ticket-group information.
+- More complete context does not make `TicketGroupSize` universally useful. Full context remained detrimental for Logistic Regression, Random Forest, and XGBoost.
+- `TicketGroupSize` and the engineered family representation are not interchangeable proxies. Their contrasting effects, particularly for Logistic Regression and SVC, indicate that ticket groups and recorded family groups capture partially distinct passenger relationships.
 
-#### hypotheses
+#### Hypotheses
 
-- TicketGroupSize may become more useful when combined with other Ticket-derived features.
-- The partial overlap between TicketGroupSize and FamilySize may explain the limited improvements observed.
-- Dataset-specific ticket groups may limit generalization to unseen passengers.
+- Batch-local counting weakens `TicketGroupSize` because the same underlying travel group can receive different representations depending on how its members are distributed between batches.
+- Fitted counting preserves a more stable historical group signal, explaining why it removes much of the degradation observed with batch-local counting.
+- Full prediction context provides the most complete representation of the actual ticket groups and may therefore expose relational structure that is partially lost under fitted or batch-local strategies.
+- SVC and Decision Tree may be particularly sensitive to the quality of this group representation, allowing them to exploit TicketGroupSize once the signal becomes sufficiently stable.
+- FamilySize and TicketGroupSize likely represent different forms of social structure: FamilySize describes recorded family relationships, while TicketGroupSize more broadly represents a shared travel/booking group. Their overlap is therefore only partial.
+- The usefulness of full-context TicketGroupSize may propagate more strongly into features that mathematically depend on it, particularly `Fare/TicketGroupSize`, where an incomplete group count directly changes the scale of the resulting feature.
 
 #### Current recommendation
 
-- SVC
-  - Ticket_group_size
+- Do not use batch-local `TicketGroupSize` as the preferred representation. Its overall behavior is unstable and generally worse than the alternatives.
+- Keep fitted `TicketGroupSize` as the default inductive representation when predictions must generalize to observations without access to the complete prediction population.
+- Consider full-context `TicketGroupSize` when the complete feature-only prediction population is legitimately available. Its results are especially promising for SVC and Decision Tree, but should be interpreted specifically under this context-aware deployment assumption.
+- Do not treat TicketGroupSize as a replacement for FamilySize. The two representations appear to capture complementary rather than equivalent relationship information.
+- Carry all three TicketGroupSize strategies into the `Fare/TicketGroupSize` investigation to test how context semantics propagate through a derived ratio.
+- Defer testing FamilySize and TicketGroupSize together until model-specific feature selection provides a reason to investigate their potential complementarity.
 
 ---
 
