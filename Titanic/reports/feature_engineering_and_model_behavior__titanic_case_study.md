@@ -1752,115 +1752,88 @@ independent future observations.
 
 ### Fare
 
-#### Hypothesis
+#### Normalized Fare
 
-Fare does not map cleanly to Pclass, and multiple passengers sometimes share the same Ticket identifier. This suggests that Fare may not always represent the amount paid by one individual passenger. In some cases, it may instead represent the cost associated with a family or ticket group.
+`Fare` may represent the price associated with more than one passenger rather
+than an individual passenger's effective fare. The earlier family and ticket
+investigations provided two different estimates of passenger grouping:
+`FamilySize`, representing recorded family structure, and `TicketGroupSize`,
+representing passengers sharing a ticket.
 
-This investigation considers two possible ways to estimate the number of passengers covered by a fare:
+To investigate whether group size could provide a more meaningful
+passenger-level representation of Fare, raw `Fare` was replaced by a normalized
+Fare calculated using each group definition.
 
-- **FamilySize**, which uses SibSp and Parch to approximate the passenger's family group.
-- **TicketGroupSize**, which counts the passengers sharing the same Ticket identifier within the available dataframe.
-
-Neither approach is guaranteed to represent the true paying group. Family members may have travelled under different tickets, while passengers sharing a ticket may not all appear in the same dataframe. The objective is therefore not to recover an exact individual fare, but to test whether either approximation produces a more useful representation than raw Fare.
-
-Another approach worth of investigation is whether using both raw fate and the engineered one could lead to better predictions, or if it's just redundancy.
-
-#### Experiments performed:
-
-#### Alternative Fare representations
-
-#### fe08__fare_per_family_member
-
-I expected that fare is not the amount paid by one passenger, but rather the whole family. By dividing fare by the family member, I expect to give the model a more precise feature to work with. FamilySize provides a dataset-independent approximation of the passenger’s immediate family group because it is calculated from SibSp and Parch rather than by counting matching rows.
+Because `TicketGroupSize` was previously found to depend on the population
+available during feature construction, all three Ticket context strategies
+were retained.
 
 <details>
-<summary>Conclusion</summary>
+<summary>Comparison of normalized Fare representations</summary>
 
-##### Interpretation
-
-- Verdict: model_specific_mixed
-- Recommended for specific models:
-  - logreg: test_accuracy_mean: 0.003
-  - decision_tree: test_accuracy_mean: 0.004
-
-##### Conclusion
-
-Fare_per_family appears to contain some useful information, but FamilySize is likely an imperfect approximation of the number of passengers covered by a fare. Because family size does not always correspond to the number of passengers sharing a fare, the feature introduces a considerable amount of noise. The experiments show inconsistent behavior across models: some (especially Decision Tree and, to a lesser extent, Logistic Regression) benefit slightly, while others lose performance. Overall, the feature does not consistently outperform the original Fare feature and is therefore not recommended as a general replacement.
+| Model | Fare/Family ΔAcc | ΔF1 | Fare/Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | +0.003 | +0.004 | +0.001 | +0.002 | +0.002 | +0.003 | +0.003 | +0.004 |
+| KNN | -0.005 | -0.007 | -0.004 | -0.008 | -0.004 | -0.008 | +0.011 | +0.013 |
+| SVC | -0.001 | -0.001 | -0.005 | -0.008 | -0.001 | 0.000 | 0.000 | +0.001 |
+| Decision Tree | +0.004 | +0.009 | -0.011 | +0.004 | -0.007 | +0.005 | -0.001 | +0.012 |
+| Random Forest | -0.006 | -0.012 | -0.013 | -0.012 | -0.004 | -0.003 | +0.001 | -0.002 |
+| Extra Trees | +0.002 | +0.001 | -0.005 | -0.004 | 0.000 | +0.001 | +0.001 | -0.001 |
+| XGBoost | -0.003 | -0.006 | -0.015 | -0.020 | -0.006 | -0.009 | +0.001 | +0.002 |
 
 </details>
 
-<details>
-<summary>Experiment details</summary>
+#### Interpretation
 
-##### Comparison vs baseline__raw
+Fare normalization is highly dependent on both the definition of passenger
+grouping and the model consuming the resulting feature.
 
-| reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
-|:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe08__fare_per_family_member | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.717 |                0.004 |
-| baseline__raw     | fe08__fare_per_family_member | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.735 |               -0.007 |
-| baseline__raw     | fe08__fare_per_family_member | svc           |                          0.827 |                        0.826 |                     -0.001 |                    0.76  |                  0.759 |               -0.001 |
-| baseline__raw     | fe08__fare_per_family_member | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.711 |                0.009 |
-| baseline__raw     | fe08__fare_per_family_member | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.732 |               -0.012 |
-| baseline__raw     | fe08__fare_per_family_member | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.722 |                0.001 |
-| baseline__raw     | fe08__fare_per_family_member | xgb           |                          0.826 |                        0.823 |                     -0.003 |                    0.758 |                  0.752 |               -0.006 |
+`Fare/FamilySize` is model-specific rather than generally beneficial.
+Logistic Regression improves modestly, while Decision Tree receives the
+clearest benefit (+0.004 accuracy, +0.009 F1). Several other models instead
+lose performance, indicating that replacing raw Fare with a family-normalized
+representation does not universally improve the feature.
 
-#### Summary
+The Ticket-based representations show a stronger dependency on population
+context. Batch-local normalization performs worst overall, while fitted counts
+substantially reduce its negative effects. Full prediction context reverses
+this pattern and is the only tested normalization with positive mean changes
+in both accuracy and F1.
 
-| compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
-|:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe08__fare_per_family_member |                    -0.000857143 |                         -0.006 |                          0.004 |               -0.00171429 |                   -0.012 |                    0.009 |
+KNN provides the clearest example. `Fare/TicketGroupSize` is detrimental under
+both batch and fitted construction (-0.004 accuracy, -0.008 F1), but improves
+by +0.011 accuracy and +0.013 F1 when complete prediction context is available.
+This indicates that the usefulness of the normalized Fare representation can
+depend directly on the completeness of the group information used as its
+denominator.
 
-</details>
+The differences between the three Ticket strategies are larger here than for
+TicketGroupSize alone. An incomplete group count does not merely alter a
+relational feature: when used as a denominator, it also changes the scale of
+the resulting Fare representation. Context semantics can therefore propagate
+and become more consequential in downstream engineered features.
 
-#### fe10__fare_per_ticket_member
- 
-Feature akin to Fare/family size, but based on ticket member instead. Expected to give better results them family size, since ticket member better represents the situation inside the dataframe. But this result can vary between train/test, as it only counts the passenger inside that dataframe.
+Finally, FamilySize and full-context TicketGroupSize remain non-interchangeable
+group definitions when used to normalize Fare. Their effects differ strongly
+for models such as KNN and Decision Tree, supporting the earlier finding that
+family structure and ticket-group structure capture partially distinct
+relationships.
 
-<details>
-<summary>Conclusion</summary>
+#### Interim conclusion
 
+Replacing raw Fare with a normalized representation is not universally
+beneficial. Family normalization provides useful model-specific information,
+particularly for Decision Tree, while Ticket normalization depends strongly on
+how completely the ticket group is represented.
 
-##### Interpretation
+Full-context `Fare/TicketGroupSize` is the strongest standalone Fare
+normalization tested so far, producing the only broadly non-detrimental result
+and a substantial improvement for KNN. Batch-local Ticket normalization should
+not be preferred, while fitted normalization remains a viable inductive
+representation but provides little evidence of improvement in isolation.
 
-- Verdict: model_specific_mixed
-- Recommended for specific models:
-  - logreg: test_accuracy_mean: 0.003
-  - knn: test_accuracy_mean: 0.005
-  - decision_tree: test_accuracy_mean: 0.007
-    - Secondary gains:
-      - test_f1_mean: 0.023
-
-
-##### Conclusion
-
-Fare_per_ticket_member performed somewhat better than Fare_per_family_member, particularly for KNN and Decision Tree. This suggests that passengers sharing a ticket may provide a more useful approximation of the fare group than family relationships alone.
-
-However, the results remain strongly model-dependent. Neither derived feature consistently outperformed the baseline across all models, so neither should replace raw Fare by default. At this stage, raw Fare remains the more dependable general representation, while Fare_per_ticket_member may be useful for selected models.
-
-</details>
-
-<details>
-<summary>Experiment details</summary>
-
-##### Comparison vs baseline__raw
-
-| reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
-|:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe10__fare_per_ticket_member | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.716 |                0.003 |
-| baseline__raw     | fe10__fare_per_ticket_member | knn           |                          0.809 |                        0.814 |                      0.005 |                    0.742 |                  0.747 |                0.005 |
-| baseline__raw     | fe10__fare_per_ticket_member | svc           |                          0.827 |                        0.823 |                     -0.004 |                    0.76  |                  0.755 |               -0.005 |
-| baseline__raw     | fe10__fare_per_ticket_member | decision_tree |                          0.803 |                        0.81  |                      0.007 |                    0.702 |                  0.725 |                0.023 |
-| baseline__raw     | fe10__fare_per_ticket_member | random_forest |                          0.822 |                        0.815 |                     -0.007 |                    0.744 |                  0.73  |               -0.014 |
-| baseline__raw     | fe10__fare_per_ticket_member | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.722 |                0.001 |
-| baseline__raw     | fe10__fare_per_ticket_member | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.748 |               -0.01  |
-
-##### Summary
-
-| compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
-|:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe10__fare_per_ticket_member |                     0.000142857 |                         -0.007 |                          0.007 |               0.000428571 |                   -0.014 |                    0.023 |
-
-</details>
+The next question is whether these normalized representations are better used
+as replacements for raw Fare or as complementary representations alongside it.
 
 #### Fare representation combinations
 

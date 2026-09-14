@@ -1332,3 +1332,124 @@ ALL_EXPERIMENTS[
 ALL_EXPERIMENTS[
     "fe09__ticket_group_size_full_context"
 ] = fe09__ticket_group_size_full_context_configs
+
+# fe10
+
+fe10__fare_per_ticket_member_batch_patch = {
+    "transformations": [
+        FE.ticket_group_size_batch, 
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+
+fe10__fare_per_ticket_member_fitted_patch = {
+    "transformations": [
+        FE.ticket_group_size_fitted, 
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+fe10__fare_per_ticket_member_full_context_patch = {
+    "pre_cv_transformations": [
+            PRE_CV_FE.ticket_group_size_full_context,
+        ],
+
+    "transformations": [
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+fe10__fare_per_ticket_member_batch_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe10__fare_per_ticket_member_batch_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe10",
+    feature_group="fare_per_ticket_member_batch",
+    domain="fare",
+    notes=("Features Engineering 10."
+            "Replacing Fare with Fare/TicketMember."),
+)
+
+fe10__fare_per_ticket_member_fitted_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe10__fare_per_ticket_member_fitted_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe10",
+    feature_group="fare_per_ticket_member_fitted",
+    domain="fare",
+    notes=("Features Engineering 10."
+            "Replacing Fare with Fare/TicketMember."),
+)
+
+fe10__fare_per_ticket_member_full_context_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe10__fare_per_ticket_member_full_context_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="fe10",
+    feature_group="fare_per_ticket_member_full_context",
+    domain="fare",
+    notes=("Features Engineering 10."
+            "Replacing Fare with Fare/TicketMember."),
+    pre_cv_scope="full_prediction_context",
+)
+
+ALL_EXPERIMENTS['fe10__fare_per_ticket_member_batch'] = fe10__fare_per_ticket_member_batch_config
+
+ALL_EXPERIMENTS['fe10__fare_per_ticket_member_fitted'] = fe10__fare_per_ticket_member_fitted_config
+
+ALL_EXPERIMENTS['fe10__fare_per_ticket_member_full_context'] = fe10__fare_per_ticket_member_full_context_config
