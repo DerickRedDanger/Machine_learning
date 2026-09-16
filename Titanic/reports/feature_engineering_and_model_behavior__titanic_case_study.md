@@ -1240,7 +1240,7 @@ The experiment further demonstrates that feature transformations should not be e
 
 </details>
 
-### cb03__age_imputed_title_pclass_and_bins
+#### cb03__age_imputed_title_pclass_and_bins
 
 This experiment combines Title-and-Pclass-based Age imputation from FE07 with the continuous-and-binned Age representation explored in the previous combination experiments.
 
@@ -1252,7 +1252,7 @@ This tests whether combining a more context-specific Age estimate with multiple 
 <summary>Conclusion</summary>
 
 
-#### Interpretation
+##### Interpretation
 
 - Verdict: mixed
 - Recommended for specific models:
@@ -1268,7 +1268,7 @@ This tests whether combining a more context-specific Age estimate with multiple 
       - test_f1_mean: 0.026
 
 
-#### Conclusion
+##### Conclusion
 
 Title-and-Pclass-imputed Age combined with Age_bin is a strong model-specific Age representation, particularly for Logistic Regression, where it produces the best Age-related result observed so far.
 
@@ -1281,7 +1281,7 @@ The experiment further demonstrates that increasing preprocessing complexity is 
 <details>
 <summary>Experiment details</summary>
 
-#### Comparison vs baseline__raw
+##### Comparison vs baseline__raw
 
 | reference_group   | compare_group                           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:----------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
@@ -1293,7 +1293,7 @@ The experiment further demonstrates that increasing preprocessing complexity is 
 | baseline__raw     | cb03__age_imputed_title_pclass_and_bins | extra_trees   |                          0.804 |                        0.82  |                      0.016 |                    0.721 |                  0.747 |                0.026 |
 | baseline__raw     | cb03__age_imputed_title_pclass_and_bins | xgb           |                          0.826 |                        0.824 |                     -0.002 |                    0.758 |                  0.756 |               -0.002 |
 
-#### Summary
+##### Summary
 
 | compare_group                           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:----------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
@@ -1683,6 +1683,9 @@ travelling together. Their observed model effects, however, differ substantially
 
 </details>
 
+
+
+
 Although the two representations overlap conceptually, the contrasting model
 responses indicate that they are not interchangeable proxies. Family features
 describe the passenger's recorded family structure (`SibSp` and `Parch`),
@@ -1783,7 +1786,167 @@ were retained.
 
 </details>
 
-#### Interpretation
+
+<details>
+<summary>Individual experiment results</summary>
+
+#### fe08__fare_per_family_member
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.003
+  - decision_tree: test_accuracy_mean: 0.004
+
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe08__fare_per_family_member | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.717 |                0.004 |
+| baseline__raw     | fe08__fare_per_family_member | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.735 |               -0.007 |
+| baseline__raw     | fe08__fare_per_family_member | svc           |                          0.827 |                        0.826 |                     -0.001 |                    0.76  |                  0.759 |               -0.001 |
+| baseline__raw     | fe08__fare_per_family_member | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.711 |                0.009 |
+| baseline__raw     | fe08__fare_per_family_member | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.732 |               -0.012 |
+| baseline__raw     | fe08__fare_per_family_member | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe08__fare_per_family_member | xgb           |                          0.826 |                        0.823 |                     -0.003 |                    0.758 |                  0.752 |               -0.006 |
+
+##### Summary
+
+| compare_group                |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe08__fare_per_family_member |                    -0.000857143 |                         -0.006 |                          0.004 |               -0.00171429 |                   -0.012 |                    0.009 |
+
+</details>
+
+
+#### fe10__fare_per_ticket_member_batch
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: model_specific_negative
+- Recommended for specific models:
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                      | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-----------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe10__fare_per_ticket_member_batch | logreg        |                          0.786 |                        0.787 |                      0.001 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | fe10__fare_per_ticket_member_batch | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.734 |               -0.008 |
+| baseline__raw     | fe10__fare_per_ticket_member_batch | svc           |                          0.827 |                        0.822 |                     -0.005 |                    0.76  |                  0.752 |               -0.008 |
+| baseline__raw     | fe10__fare_per_ticket_member_batch | decision_tree |                          0.803 |                        0.792 |                     -0.011 |                    0.702 |                  0.706 |                0.004 |
+| baseline__raw     | fe10__fare_per_ticket_member_batch | random_forest |                          0.822 |                        0.809 |                     -0.013 |                    0.744 |                  0.732 |               -0.012 |
+| baseline__raw     | fe10__fare_per_ticket_member_batch | extra_trees   |                          0.804 |                        0.799 |                     -0.005 |                    0.721 |                  0.717 |               -0.004 |
+| baseline__raw     | fe10__fare_per_ticket_member_batch | xgb           |                          0.826 |                        0.811 |                     -0.015 |                    0.758 |                  0.738 |               -0.02  |
+
+##### Summary
+
+| compare_group                      |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-----------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe10__fare_per_ticket_member_batch |                     -0.00742857 |                         -0.015 |                          0.001 |               -0.00657143 |                    -0.02 |                    0.004 |
+
+</details>
+
+#### fe10__fare_per_ticket_member_fitted
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: model_specific_negative
+- Recommended for specific models:
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                       | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.716 |                0.003 |
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.734 |               -0.008 |
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | svc           |                          0.827 |                        0.826 |                     -0.001 |                    0.76  |                  0.76  |                0     |
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | decision_tree |                          0.803 |                        0.796 |                     -0.007 |                    0.702 |                  0.707 |                0.005 |
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | random_forest |                          0.822 |                        0.818 |                     -0.004 |                    0.744 |                  0.741 |               -0.003 |
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | fe10__fare_per_ticket_member_fitted | xgb           |                          0.826 |                        0.82  |                     -0.006 |                    0.758 |                  0.749 |               -0.009 |
+
+##### Summary
+
+| compare_group                       |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe10__fare_per_ticket_member_fitted |                     -0.00285714 |                         -0.007 |                          0.002 |               -0.00157143 |                   -0.009 |                    0.005 |
+
+</details>
+
+#### fe10__fare_per_ticket_member_full_context
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: model_specific_positive
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.003
+  - knn: test_accuracy_mean: 0.011
+    - Secondary gains:
+      - test_f1_mean: 0.013
+- Notable secondary improvements in non-recommended models:
+  - decision_tree: test_f1_mean: 0.012
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                             | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.717 |                0.004 |
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | knn           |                          0.809 |                        0.82  |                      0.011 |                    0.742 |                  0.755 |                0.013 |
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | svc           |                          0.827 |                        0.827 |                      0     |                    0.76  |                  0.761 |                0.001 |
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | decision_tree |                          0.803 |                        0.802 |                     -0.001 |                    0.702 |                  0.714 |                0.012 |
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | random_forest |                          0.822 |                        0.823 |                      0.001 |                    0.744 |                  0.742 |               -0.002 |
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.72  |               -0.001 |
+| baseline__raw     | fe10__fare_per_ticket_member_full_context | xgb           |                          0.826 |                        0.827 |                      0.001 |                    0.758 |                  0.76  |                0.002 |
+
+##### Summary
+
+| compare_group                             |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| fe10__fare_per_ticket_member_full_context |                      0.00228571 |                         -0.001 |                          0.011 |                0.00414286 |                   -0.002 |                    0.013 |
+
+</details>
+
+</details>
+
+##### Interpretation
 
 Fare normalization is highly dependent on both the definition of passenger
 grouping and the model consuming the resulting feature.
@@ -1819,7 +1982,7 @@ for models such as KNN and Decision Tree, supporting the earlier finding that
 family structure and ticket-group structure capture partially distinct
 relationships.
 
-#### Interim conclusion
+##### Interim conclusion
 
 Replacing raw Fare with a normalized representation is not universally
 beneficial. Family normalization provides useful model-specific information,
@@ -1835,11 +1998,36 @@ representation but provides little evidence of improvement in isolation.
 The next question is whether these normalized representations are better used
 as replacements for raw Fare or as complementary representations alongside it.
 
-#### Fare representation combinations
+#### Raw and normalized Fare
+
+The previous experiments tested whether a group-normalized Fare could replace
+raw `Fare`. However, normalization may preserve different information rather
+than provide a complete replacement for the original feature.
+
+To test whether the two representations are complementary, raw `Fare` was
+retained alongside each normalized representation.
+
+<details>
+<summary>Comparison of raw + normalized Fare representations</summary>
+
+| Model | Fare + Family ΔAcc | ΔF1 | Fare + Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | -0.001 | -0.002 | +0.002 | +0.002 | +0.002 | +0.002 | +0.003 | +0.005 |
+| KNN | -0.007 | -0.008 | -0.005 | -0.009 | -0.007 | -0.007 | +0.004 | +0.010 |
+| SVC | -0.004 | -0.006 | -0.012 | -0.017 | -0.005 | -0.006 | -0.002 | -0.002 |
+| Decision Tree | +0.008 | +0.028 | -0.012 | +0.004 | -0.006 | +0.009 | +0.008 | +0.032 |
+| Random Forest | -0.005 | -0.008 | -0.013 | -0.013 | -0.005 | -0.004 | -0.002 | -0.003 |
+| Extra Trees | +0.001 | -0.002 | -0.005 | -0.008 | +0.002 | 0.000 | +0.002 | +0.001 |
+| XGBoost | -0.009 | -0.009 | -0.007 | -0.005 | -0.002 | -0.001 | +0.008 | +0.014 |
+
+</details>
+
+<details>
+<summary>Individual experiment results</summary>
 
 #### cb04__fare_and_fare_per_family
 
-Combination exploring the effects of using both Fare and Fare/family. To find whether they bring additional information together, a new representation, or are redundant.
+_Description pending._
 
 <details>
 <summary>Conclusion</summary>
@@ -1856,11 +2044,7 @@ Combination exploring the effects of using both Fare and Fare/family. To find wh
 
 ##### Conclusion
 
-Keeping both Fare and Fare_per_family did not improve performance for most models. Since both features describe closely related information, the additional representation appears to introduce more redundancy than useful information for most learning algorithms.
-
-Decision Tree was a notable exception, achieving the largest improvement among all models (+0.008 accuracy and +0.028 F1). Decision Tree appears able to exploit complementary information from raw Fare and a stable normalized Fare representation. The much larger improvement from using both features than from Fare_per_family alone suggests that the two representations expose different useful thresholds rather than merely duplicating the same information.
-
-Overall, Fare_per_family does not appear to be broadly useful when added alongside Fare, but it may still provide meaningful complementary information for specific tree-based models.
+_Conclusion pending._
 
 </details>
 
@@ -1875,21 +2059,20 @@ Overall, Fare_per_family does not appear to be broadly useful when added alongsi
 | baseline__raw     | cb04__fare_and_fare_per_family | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.734 |               -0.008 |
 | baseline__raw     | cb04__fare_and_fare_per_family | svc           |                          0.827 |                        0.823 |                     -0.004 |                    0.76  |                  0.754 |               -0.006 |
 | baseline__raw     | cb04__fare_and_fare_per_family | decision_tree |                          0.803 |                        0.811 |                      0.008 |                    0.702 |                  0.73  |                0.028 |
-| baseline__raw     | cb04__fare_and_fare_per_family | random_forest |                          0.822 |                        0.82  |                     -0.002 |                    0.744 |                  0.739 |               -0.005 |
-| baseline__raw     | cb04__fare_and_fare_per_family | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.724 |                0.003 |
-| baseline__raw     | cb04__fare_and_fare_per_family | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.756 |               -0.002 |
+| baseline__raw     | cb04__fare_and_fare_per_family | random_forest |                          0.822 |                        0.817 |                     -0.005 |                    0.744 |                  0.736 |               -0.008 |
+| baseline__raw     | cb04__fare_and_fare_per_family | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.719 |               -0.002 |
+| baseline__raw     | cb04__fare_and_fare_per_family | xgb           |                          0.826 |                        0.817 |                     -0.009 |                    0.758 |                  0.749 |               -0.009 |
 
 ##### Summary
 
 | compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb04__fare_and_fare_per_family |                     -0.00114286 |                         -0.007 |                          0.008 |                0.00114286 |                   -0.008 |                    0.028 |
+| cb04__fare_and_fare_per_family |                     -0.00242857 |                         -0.009 |                          0.008 |                    -0.001 |                   -0.009 |                    0.028 |
 
 </details>
 
-#### cb05__fare_and_fare_per_ticket
+#### cb05__fare_and_fare_per_ticket_batch
 
-Combination exploring the use of Fare with Fare/Ticket, following the same idea as CB04. I'd expect results akin to Cb04, but am curious about its effect on Decision tree.
 
 <details>
 <summary>Conclusion</summary>
@@ -1899,15 +2082,6 @@ Combination exploring the use of Fare with Fare/Ticket, following the same idea 
 
 - Verdict: model_specific_negative
 - Recommended for specific models:
-- Notable secondary improvements in non-recommended models:
-  - decision_tree: test_f1_mean: 0.012
-
-
-##### Conclusion
-
-Most models experienced either negligible changes or small performance losses. Decision Tree was the main exception: its accuracy increased by only 0.002, but its F1 score increased by 0.012, suggesting that the added representation affected its balance of survivor predictions more than its total number of correct predictions.
-
-This is the second experiment suggesting that Decision Tree benefits from having multiple representations of the same underlying information. Although the evidence is still limited, the consistency across experiments makes this hypothesis increasingly plausible.
 
 </details>
 
@@ -1916,23 +2090,166 @@ This is the second experiment suggesting that Decision Tree benefits from having
 
 ##### Comparison vs baseline__raw
 
-| reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
-|:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | cb05__fare_and_fare_per_ticket | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
-| baseline__raw     | cb05__fare_and_fare_per_ticket | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.739 |               -0.003 |
-| baseline__raw     | cb05__fare_and_fare_per_ticket | svc           |                          0.827 |                        0.822 |                     -0.005 |                    0.76  |                  0.754 |               -0.006 |
-| baseline__raw     | cb05__fare_and_fare_per_ticket | decision_tree |                          0.803 |                        0.805 |                      0.002 |                    0.702 |                  0.714 |                0.012 |
-| baseline__raw     | cb05__fare_and_fare_per_ticket | random_forest |                          0.822 |                        0.815 |                     -0.007 |                    0.744 |                  0.73  |               -0.014 |
-| baseline__raw     | cb05__fare_and_fare_per_ticket | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.721 |                0     |
-| baseline__raw     | cb05__fare_and_fare_per_ticket | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.759 |                0.001 |
+| reference_group   | compare_group                        | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | knn           |                          0.809 |                        0.804 |                     -0.005 |                    0.742 |                  0.733 |               -0.009 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | svc           |                          0.827 |                        0.815 |                     -0.012 |                    0.76  |                  0.743 |               -0.017 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | decision_tree |                          0.803 |                        0.791 |                     -0.012 |                    0.702 |                  0.706 |                0.004 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | random_forest |                          0.822 |                        0.809 |                     -0.013 |                    0.744 |                  0.731 |               -0.013 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | extra_trees   |                          0.804 |                        0.799 |                     -0.005 |                    0.721 |                  0.713 |               -0.008 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_batch | xgb           |                          0.826 |                        0.819 |                     -0.007 |                    0.758 |                  0.753 |               -0.005 |
 
 ##### Summary
 
-| compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
-|:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb05__fare_and_fare_per_ticket |                     -0.00185714 |                         -0.007 |                          0.002 |               -0.00114286 |                   -0.014 |                    0.012 |
+| compare_group                        |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb05__fare_and_fare_per_ticket_batch |                     -0.00742857 |                         -0.013 |                          0.002 |               -0.00657143 |                   -0.017 |                    0.004 |
 
 </details>
+
+#### cb05__fare_and_fare_per_ticket_fitted
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: model_specific_negative
+- Recommended for specific models:
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                         | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:--------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | knn           |                          0.809 |                        0.802 |                     -0.007 |                    0.742 |                  0.735 |               -0.007 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | svc           |                          0.827 |                        0.822 |                     -0.005 |                    0.76  |                  0.754 |               -0.006 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | decision_tree |                          0.803 |                        0.797 |                     -0.006 |                    0.702 |                  0.711 |                0.009 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | random_forest |                          0.822 |                        0.817 |                     -0.005 |                    0.744 |                  0.74  |               -0.004 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.721 |                0     |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_fitted | xgb           |                          0.826 |                        0.824 |                     -0.002 |                    0.758 |                  0.757 |               -0.001 |
+
+##### Summary
+
+| compare_group                         |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:--------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb05__fare_and_fare_per_ticket_fitted |                          -0.003 |                         -0.007 |                          0.002 |                    -0.001 |                   -0.007 |                    0.009 |
+
+</details>
+
+#### cb05__fare_and_fare_per_ticket_full_context
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: model_specific_positive
+- Recommended for specific models:
+  - logreg: test_accuracy_mean: 0.003
+  - knn: test_accuracy_mean: 0.004
+    - Secondary gains:
+      - test_f1_mean: 0.01
+  - decision_tree: test_accuracy_mean: 0.008
+    - Secondary gains:
+      - test_f1_mean: 0.032
+  - xgb: test_accuracy_mean: 0.008
+    - Secondary gains:
+      - test_f1_mean: 0.014
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                               | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:--------------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | logreg        |                          0.786 |                        0.789 |                      0.003 |                    0.713 |                  0.718 |                0.005 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | knn           |                          0.809 |                        0.813 |                      0.004 |                    0.742 |                  0.752 |                0.01  |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | svc           |                          0.827 |                        0.825 |                     -0.002 |                    0.76  |                  0.758 |               -0.002 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | decision_tree |                          0.803 |                        0.811 |                      0.008 |                    0.702 |                  0.734 |                0.032 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | random_forest |                          0.822 |                        0.82  |                     -0.002 |                    0.744 |                  0.741 |               -0.003 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.722 |                0.001 |
+| baseline__raw     | cb05__fare_and_fare_per_ticket_full_context | xgb           |                          0.826 |                        0.834 |                      0.008 |                    0.758 |                  0.772 |                0.014 |
+
+##### Summary
+
+| compare_group                               |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:--------------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb05__fare_and_fare_per_ticket_full_context |                           0.003 |                         -0.002 |                          0.008 |                0.00814286 |                   -0.003 |                    0.032 |
+
+</details>
+
+</details>
+
+##### Interpretation
+
+Retaining raw `Fare` does not generally rescue weak normalized Fare
+representations. Both batch-local and fitted `Fare/TicketGroupSize` remain
+negative overall when raw Fare is restored, suggesting that their earlier
+weakness cannot be explained primarily by information discarded when Fare was
+replaced.
+
+The batch-context representation remains particularly detrimental. This
+supports the earlier interpretation that fragmentation of the ticket group
+produces a problematic denominator rather than merely an incomplete substitute
+for raw Fare.
+
+Full-context Ticket normalization behaves differently. When raw Fare and
+`Fare/TicketGroupSize` are available together, several models show evidence
+that the two representations contain complementary information.
+
+Decision Tree provides the clearest example. Full-context normalized Fare alone
+changes accuracy by -0.001 and F1 by +0.012, while retaining raw Fare increases
+these changes to +0.008 and +0.032. A similar pattern occurs with
+`Fare/FamilySize`, where the combination improves by +0.008 accuracy and +0.028
+F1. This suggests that Decision Tree benefits from having both the original
+Fare and a meaningful per-group representation available.
+
+XGBoost also shows strong complementarity specifically for the full-context
+Ticket representation, changing from +0.001 accuracy / +0.002 F1 with
+normalized Fare alone to +0.008 / +0.014 when raw Fare is retained.
+
+KNN behaves differently. Full-context normalized Fare alone produces its
+largest improvement (+0.011 accuracy, +0.013 F1), while adding raw Fare reduces
+the gain to +0.004 accuracy and +0.010 F1. For KNN, the normalized
+representation therefore appears more useful as a replacement for raw Fare
+than as an additional representation.
+
+Family- and Ticket-normalized Fare continue to produce substantially different
+model behavior, particularly for KNN and XGBoost. This further supports the
+interpretation that family structure and shared-ticket structure provide
+different contextual meanings for Fare rather than interchangeable estimates
+of the same group size.
+
+##### Interim conclusion
+
+Raw and normalized Fare are complementary only for specific combinations of
+model and group definition.
+
+Decision Tree benefits strongly from retaining raw Fare alongside either
+meaningful normalized representation, while XGBoost shows similar
+complementarity specifically with full-context Ticket normalization. KNN
+instead prefers full-context normalized Fare without the additional raw
+representation.
+
+Restoring raw Fare does not repair the poor behavior of batch-local or fitted
+Ticket normalization. The quality and semantics of the denominator therefore
+remain more important than simply preserving the original Fare feature.
+
+The remaining question is whether the two distinct normalized representations
+can themselves provide complementary information when Family- and
+Ticket-based Fare are supplied together with raw Fare.
 
 #### cb06__all_fare_features
 

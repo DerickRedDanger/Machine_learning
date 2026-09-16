@@ -1418,7 +1418,7 @@ fe10__fare_per_ticket_member_batch_config = create_config_group(
     feature_group="fare_per_ticket_member_batch",
     domain="fare",
     notes=("Features Engineering 10."
-            "Replacing Fare with Fare/TicketMember."),
+            "Replacing Fare with Fare/TicketMember, batch version."),
 )
 
 fe10__fare_per_ticket_member_fitted_config = create_config_group(
@@ -1431,7 +1431,7 @@ fe10__fare_per_ticket_member_fitted_config = create_config_group(
     feature_group="fare_per_ticket_member_fitted",
     domain="fare",
     notes=("Features Engineering 10."
-            "Replacing Fare with Fare/TicketMember."),
+            "Replacing Fare with Fare/TicketMember, fitted version."),
 )
 
 fe10__fare_per_ticket_member_full_context_config = create_config_group(
@@ -1444,7 +1444,7 @@ fe10__fare_per_ticket_member_full_context_config = create_config_group(
     feature_group="fare_per_ticket_member_full_context",
     domain="fare",
     notes=("Features Engineering 10."
-            "Replacing Fare with Fare/TicketMember."),
+            "Replacing Fare with Fare/TicketMember, full context version."),
     pre_cv_scope="full_prediction_context",
 )
 
@@ -1453,3 +1453,101 @@ ALL_EXPERIMENTS['fe10__fare_per_ticket_member_batch'] = fe10__fare_per_ticket_me
 ALL_EXPERIMENTS['fe10__fare_per_ticket_member_fitted'] = fe10__fare_per_ticket_member_fitted_config
 
 ALL_EXPERIMENTS['fe10__fare_per_ticket_member_full_context'] = fe10__fare_per_ticket_member_full_context_config
+
+# CB05
+
+cb05__fare_and_fare_per_ticket_batch_patch = {
+    "transformations": [
+        FE.ticket_group_size_batch,
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb05__fare_and_fare_per_ticket_fitted_patch = {
+    "transformations": [
+        FE.ticket_group_size_fitted,
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb05__fare_and_fare_per_ticket_full_context_patch = {
+    "pre_cv_transformations": [
+            PRE_CV_FE.ticket_group_size_full_context,
+        ],
+
+    "transformations": [
+        FE.fare_ticket,
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb05__fare_and_fare_per_ticket_batch_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb05__fare_and_fare_per_ticket_batch_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb05",
+    feature_group="fare_and_fare_per_ticket_batch",
+    domain="fare",
+    notes=("Combo Experiment 05."
+            "Adding Fare per Ticket member, batch version."),
+)
+
+
+cb05__fare_and_fare_per_ticket_fitted_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb05__fare_and_fare_per_ticket_fitted_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb05",
+    feature_group="fare_and_fare_per_ticket_fitted",
+    domain="fare",
+    notes=("Combo Experiment 05."
+            "Adding Fare per Ticket member, fitted version."),
+)
+
+
+cb05__fare_and_fare_per_ticket_full_context_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb05__fare_and_fare_per_ticket_full_context_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb05",
+    feature_group="fare_and_fare_per_ticket_full_context",
+    domain="fare",
+    notes=("Combo Experiment 05."
+            "Adding Fare per Ticket member, full context version."),
+    pre_cv_scope="full_prediction_context",
+)
+
+ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_batch'] = cb05__fare_and_fare_per_ticket_batch_config
+
+ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_fitted'] = cb05__fare_and_fare_per_ticket_fitted_config
+
+ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_full_context'] = cb05__fare_and_fare_per_ticket_full_context_config

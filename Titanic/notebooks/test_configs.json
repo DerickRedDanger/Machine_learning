@@ -9616,7 +9616,7 @@
       "max_iter": 1000,
       "random_state": 42
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__logreg",
     "features": [
       "Age",
@@ -9697,7 +9697,7 @@
     "model_params": {
       "n_neighbors": 5
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__knn",
     "features": [
       "Age",
@@ -9782,7 +9782,7 @@
       "probability": false,
       "random_state": 42
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__svc",
     "features": [
       "Age",
@@ -9865,7 +9865,7 @@
       "min_samples_leaf": 5,
       "random_state": 42
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__decision_tree",
     "features": [
       "Age",
@@ -9950,7 +9950,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__random_forest",
     "features": [
       "Age",
@@ -10035,7 +10035,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__extra_trees",
     "features": [
       "Age",
@@ -10122,7 +10122,7 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member.",
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
     "name": "cb05__fare_and_fare_per_ticket__xgb",
     "features": [
       "Age",
@@ -17399,7 +17399,7 @@
       "max_iter": 1000,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__logreg",
     "features": [
       "Age",
@@ -17478,7 +17478,7 @@
     "model_params": {
       "n_neighbors": 5
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__knn",
     "features": [
       "Age",
@@ -17561,7 +17561,7 @@
       "probability": false,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__svc",
     "features": [
       "Age",
@@ -17642,7 +17642,7 @@
       "min_samples_leaf": 5,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__decision_tree",
     "features": [
       "Age",
@@ -17725,7 +17725,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__random_forest",
     "features": [
       "Age",
@@ -17808,7 +17808,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__extra_trees",
     "features": [
       "Age",
@@ -17893,7 +17893,7 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, batch version.",
     "name": "fe10__fare_per_ticket_member_batch__xgb",
     "features": [
       "Age",
@@ -17974,7 +17974,7 @@
       "max_iter": 1000,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__logreg",
     "features": [
       "Age",
@@ -18054,7 +18054,7 @@
     "model_params": {
       "n_neighbors": 5
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__knn",
     "features": [
       "Age",
@@ -18138,7 +18138,7 @@
       "probability": false,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__svc",
     "features": [
       "Age",
@@ -18220,7 +18220,7 @@
       "min_samples_leaf": 5,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__decision_tree",
     "features": [
       "Age",
@@ -18304,7 +18304,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__random_forest",
     "features": [
       "Age",
@@ -18388,7 +18388,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__extra_trees",
     "features": [
       "Age",
@@ -18474,7 +18474,7 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, fitted version.",
     "name": "fe10__fare_per_ticket_member_fitted__xgb",
     "features": [
       "Age",
@@ -18558,7 +18558,7 @@
       "max_iter": 1000,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__logreg",
     "features": [
       "Age",
@@ -18641,7 +18641,7 @@
     "model_params": {
       "n_neighbors": 5
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__knn",
     "features": [
       "Age",
@@ -18728,7 +18728,7 @@
       "probability": false,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__svc",
     "features": [
       "Age",
@@ -18813,7 +18813,7 @@
       "min_samples_leaf": 5,
       "random_state": 42
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__decision_tree",
     "features": [
       "Age",
@@ -18900,7 +18900,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__random_forest",
     "features": [
       "Age",
@@ -18987,7 +18987,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__extra_trees",
     "features": [
       "Age",
@@ -19076,12 +19076,1811 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
+    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember, full context version.",
     "name": "fe10__fare_per_ticket_member_full_context__xgb",
     "features": [
       "Age",
       "SibSp",
       "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_batch__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_batch",
+    "group": "cb05__fare_and_fare_per_ticket_batch",
+    "domain": "fare",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
+    "name": "cb05__fare_and_fare_per_ticket_batch__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__decision_tree": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_fitted",
+    "group": "cb05__fare_and_fare_per_ticket_fitted",
+    "domain": "fare",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, fitted version.",
+    "name": "cb05__fare_and_fare_per_ticket_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__logreg": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__decision_tree": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "decision_tree",
+    "model_params": {
+      "max_depth": 4,
+      "min_samples_leaf": 5,
+      "random_state": 42
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__decision_tree",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__random_forest": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass"
+    ]
+  },
+  "cb05__fare_and_fare_per_ticket_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "cb05",
+    "feature_group": "fare_and_fare_per_ticket_full_context",
+    "group": "cb05__fare_and_fare_per_ticket_full_context",
+    "domain": "fare",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Combo Experiment 05.Adding Fare per Ticket member, full context version.",
+    "name": "cb05__fare_and_fare_per_ticket_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
       "Fare/TicketMember",
       "Sex",
       "Embarked",
