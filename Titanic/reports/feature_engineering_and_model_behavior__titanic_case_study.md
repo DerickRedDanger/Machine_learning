@@ -2251,102 +2251,267 @@ The remaining question is whether the two distinct normalized representations
 can themselves provide complementary information when Family- and
 Ticket-based Fare are supplied together with raw Fare.
 
-#### cb06__all_fare_features
+## Fare representation
 
-Combo experiment testing the effect of having all fare features together. The expected results is a configuration akin to CB04, roughly the same results or slightly worse, as too many representations of the same feature likely become redundant, diminishing its return. 
+`Fare` may not represent an individual passenger's effective fare. Multiple
+passengers travelling together may share a booking or ticket, making the raw
+value partly dependent on group structure.
+
+Two previously engineered group representations provide different ways to
+estimate this structure:
+
+- `FamilySize` represents the passenger's recorded family group.
+- `TicketGroupSize` represents passengers sharing the same ticket.
+
+The Ticket investigation showed that these representations are not
+interchangeable and that `TicketGroupSize` additionally depends on the
+population context used to construct it.
+
+The Fare investigation therefore evaluates three related questions:
+
+1. Can group-normalized Fare provide a useful alternative to raw `Fare`?
+2. Are raw and normalized Fare complementary?
+3. Can Family- and Ticket-normalized Fare provide complementary representations
+   when used together?
+
+For Ticket-based normalization, the batch, fitted, and full-prediction-context
+strategies are evaluated separately.
+
+---
+
+### Normalized Fare
+
+Raw `Fare` was replaced by a normalized Fare calculated using either
+`FamilySize` or `TicketGroupSize`.
+
+Because an incomplete TicketGroupSize changes the denominator rather than
+merely the value of an independent feature, differences between Ticket context
+strategies may propagate into the meaning and scale of the resulting Fare
+representation.
 
 <details>
-<summary>Conclusion</summary>
+<summary>Comparison of normalized Fare representations</summary>
 
-
-##### Interpretation
-
-- Verdict: mixed
-- Recommended for specific models:
-  - decision_tree: test_accuracy_mean: 0.004
-    - Secondary gains:
-      - test_f1_mean: 0.025
-
-
-##### Conclusion
-
-Using all three Fare representations confirmed the pattern observed in the previous combination experiments. Most models either showed negligible changes or slight performance degradation, suggesting that the additional representations provide little information beyond what is already available through Fare itself.
-
-Decision Tree remained the exception, achieving a meaningful improvement in F1 (+0.025) despite a modest accuracy gain (+0.004). This is the third consecutive experiment in which Decision Tree benefited from multiple representations of Fare, strengthening the hypothesis that Decision Tree configuration can exploit correlated representations more effectively than the other evaluated models.
-
-However, the improvement was smaller than the one obtained with Fare + Fare_per_Family alone. This suggests that additional representations exhibit diminishing returns: once the most useful complementary information has been introduced, further correlated features become increasingly redundant.
+| Model | Fare/Family ΔAcc | ΔF1 | Fare/Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | +0.003 | +0.004 | +0.001 | +0.002 | +0.002 | +0.003 | +0.003 | +0.004 |
+| KNN | -0.005 | -0.007 | -0.004 | -0.008 | -0.004 | -0.008 | +0.011 | +0.013 |
+| SVC | -0.001 | -0.001 | -0.005 | -0.008 | -0.001 | 0.000 | 0.000 | +0.001 |
+| Decision Tree | +0.004 | +0.009 | -0.011 | +0.004 | -0.007 | +0.005 | -0.001 | +0.012 |
+| Random Forest | -0.006 | -0.012 | -0.013 | -0.012 | -0.004 | -0.003 | +0.001 | -0.002 |
+| Extra Trees | +0.002 | +0.001 | -0.005 | -0.004 | 0.000 | +0.001 | +0.001 | -0.001 |
+| XGBoost | -0.003 | -0.006 | -0.015 | -0.020 | -0.006 | -0.009 | +0.001 | +0.002 |
 
 </details>
 
+#### Interpretation
+
+Fare normalization is highly dependent on both the definition of passenger
+grouping and the model consuming the resulting feature.
+
+`Fare/FamilySize` is model-specific rather than generally beneficial. Logistic
+Regression improves modestly, while Decision Tree receives the clearest
+benefit (+0.004 accuracy, +0.009 F1). Several other models instead lose
+performance.
+
+Ticket-based normalization shows a stronger dependency on population context.
+Batch-local normalization performs worst overall, while fitted counts reduce
+much of its negative effect. Full prediction context reverses this pattern and
+is the only tested normalization with positive mean changes in both accuracy
+and F1.
+
+KNN provides the clearest example. `Fare/TicketGroupSize` is detrimental under
+both batch and fitted construction (-0.004 accuracy, -0.008 F1), but improves
+by +0.011 accuracy and +0.013 F1 under full prediction context.
+
+The separation between Ticket strategies is larger for normalized Fare than
+for `TicketGroupSize` alone. An incomplete group count does not merely alter a
+relational feature: when used as a denominator, it changes the scale of the
+resulting Fare representation. Population semantics can therefore propagate
+into downstream engineered features.
+
+Family- and Ticket-normalized Fare also continue to produce different model
+responses, supporting the earlier finding that family and ticket groups are
+not interchangeable definitions of passenger grouping.
+
+#### Interim conclusion
+
+Replacing raw Fare with a normalized representation is not universally
+beneficial. Family normalization provides useful model-specific information,
+particularly for Decision Tree, while Ticket normalization depends strongly on
+the completeness of the ticket-group representation.
+
+Full-context `Fare/TicketGroupSize` is the strongest standalone Fare
+normalization tested, producing a substantial improvement for KNN and no large
+detriment for the remaining models.
+
+---
+
+### Raw and normalized Fare
+
+Normalization may preserve different information rather than provide a
+complete replacement for raw `Fare`. Raw Fare was therefore retained alongside
+each normalized representation to test whether the two forms are
+complementary.
+
 <details>
-<summary>Experiment details</summary>
+<summary>Comparison of raw + normalized Fare representations</summary>
 
-##### Comparison vs baseline__raw
-
-| reference_group   | compare_group           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
-|:------------------|:------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | cb06__all_fare_features | logreg        |                          0.786 |                        0.786 |                      0     |                    0.713 |                  0.712 |               -0.001 |
-| baseline__raw     | cb06__all_fare_features | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.742 |                0     |
-| baseline__raw     | cb06__all_fare_features | svc           |                          0.827 |                        0.82  |                     -0.007 |                    0.76  |                  0.752 |               -0.008 |
-| baseline__raw     | cb06__all_fare_features | decision_tree |                          0.803 |                        0.807 |                      0.004 |                    0.702 |                  0.727 |                0.025 |
-| baseline__raw     | cb06__all_fare_features | random_forest |                          0.822 |                        0.818 |                     -0.004 |                    0.744 |                  0.741 |               -0.003 |
-| baseline__raw     | cb06__all_fare_features | extra_trees   |                          0.804 |                        0.804 |                      0     |                    0.721 |                  0.72  |               -0.001 |
-| baseline__raw     | cb06__all_fare_features | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.751 |               -0.007 |
-
-##### Summary
-
-| compare_group           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
-|:------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb06__all_fare_features |                          -0.002 |                         -0.007 |                          0.004 |               0.000714286 |                   -0.008 |                    0.025 |
+| Model | Fare + Family ΔAcc | ΔF1 | Fare + Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | -0.001 | -0.002 | +0.002 | +0.002 | +0.002 | +0.002 | +0.003 | +0.005 |
+| KNN | -0.007 | -0.008 | -0.005 | -0.009 | -0.007 | -0.007 | +0.004 | +0.010 |
+| SVC | -0.004 | -0.006 | -0.012 | -0.017 | -0.005 | -0.006 | -0.002 | -0.002 |
+| Decision Tree | +0.008 | +0.028 | -0.012 | +0.004 | -0.006 | +0.009 | +0.008 | +0.032 |
+| Random Forest | -0.005 | -0.008 | -0.013 | -0.013 | -0.005 | -0.004 | -0.002 | -0.003 |
+| Extra Trees | +0.001 | -0.002 | -0.005 | -0.008 | +0.002 | 0.000 | +0.002 | +0.001 |
+| XGBoost | -0.009 | -0.009 | -0.007 | -0.005 | -0.002 | -0.001 | +0.008 | +0.014 |
 
 </details>
 
-#### Overall conclusion
+#### Interpretation
 
-Neither Fare_per_family_member nor Fare_per_ticket_member consistently outperformed raw Fare across all models. Fare_per_ticket_member produced somewhat stronger individual results, suggesting that ticket groups may approximate shared fares better than family relationships, but its usefulness remained model-dependent.
+Retaining raw `Fare` does not generally rescue weak normalized Fare
+representations. Batch-local and fitted `Fare/TicketGroupSize` remain negative
+overall, suggesting that their earlier weakness cannot primarily be explained
+by information lost when raw Fare was replaced.
 
-For most models, combining raw Fare with one or more derived representations introduced redundancy without adding enough new information to improve performance. Raw Fare therefore remains the strongest general-purpose representation.
+Full-context Ticket normalization behaves differently. Decision Tree improves
+from -0.001 accuracy / +0.012 F1 with normalized Fare alone to +0.008 / +0.032
+when raw Fare is retained. XGBoost similarly changes from +0.001 / +0.002 to
++0.008 / +0.014.
 
-Decision Tree was the clear exception. It benefited in all three combination experiments, particularly when Fare was paired with Fare_per_family_member. However, adding Fare_per_ticket_member as a third representation did not improve on that result, indicating diminishing returns as the representations became increasingly redundant.
+KNN shows the opposite interaction. Full-context normalized Fare alone produces
++0.011 accuracy / +0.013 F1, while adding raw Fare reduces the gain to
++0.004 / +0.010. The normalized representation therefore appears more useful
+as a replacement for raw Fare for KNN.
 
-Overall, the Fare investigation shows that alternative representations can expose useful model-specific relationships, but more representations are not automatically better. Their usefulness depends both on the quality of the transformation and on the learning algorithm receiving it.
+Decision Tree also benefits strongly from `Fare + Fare/FamilySize`
+(+0.008 accuracy, +0.028 F1), suggesting that raw and meaningful normalized
+Fare representations can provide complementary information to this model.
 
-#### Findings
+#### Interim conclusion
 
-- Neither FamilySize nor TicketGroupSize provides a perfect estimate of the number of passengers covered by a fare.
+Raw and normalized Fare are complementary only for specific combinations of
+model and group definition. Restoring raw Fare does not repair the poor
+behavior of batch-local or fitted Ticket normalization, while Decision Tree
+and XGBoost show substantial complementarity with specific normalized
+representations.
 
-- Fare_per_ticket_member was generally more useful than Fare_per_family_member, but neither derived feature consistently outperformed raw Fare.
+---
 
-- Raw Fare remains the most reliable general-purpose representation, while normalized Fare features are better treated as model-specific alternatives.
+### Multiple Fare representations
 
-- Multiple representations of the same underlying information should not be assumed to outperform their individual components. They may provide useful split opportunities for some models while creating redundancy for others.
+Because FamilySize and TicketGroupSize appear to represent different passenger
+relationships, both normalized Fare representations were supplied together to
+test whether their information could be complementary.
 
-- Decision Tree consistently benefited from combining raw Fare with a normalized representation, but the same pattern did not extend to Random Forest, Extra Trees, or XGBoost.
+Two configurations were examined:
 
-- Adding a third Fare representation produced diminishing returns, suggesting that complementary information eventually gives way to redundancy.
+- `Fare + Fare/FamilySize + Fare/TicketGroupSize`
+- `Fare/FamilySize + Fare/TicketGroupSize`, excluding raw Fare
 
-#### hypotheses
+The second configuration was introduced as a follow-up after the first
+produced an unexpected Decision Tree interaction.
 
-- Decision Tree may benefit from receiving multiple representations of the same underlying feature because each representation provides different candidate split thresholds.
+<details>
+<summary>Comparison of all Fare representations</summary>
 
-- The benefit appears to show diminishing returns once additional representations become strongly redundant. Future experiments in other feature domains are needed to determine whether this is a general Decision Tree pattern or specific to Fare.
+| Model | All Fare Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | -0.001 | -0.003 | -0.003 | -0.004 | +0.001 | +0.002 |
+| KNN | -0.008 | -0.008 | -0.004 | -0.002 | +0.002 | +0.007 |
+| SVC | -0.010 | -0.013 | -0.011 | -0.014 | -0.009 | -0.012 |
+| Decision Tree | +0.011 | +0.039 | +0.011 | +0.040 | +0.005 | +0.028 |
+| Random Forest | -0.007 | -0.007 | +0.001 | +0.003 | -0.012 | -0.015 |
+| Extra Trees | -0.004 | -0.004 | +0.002 | +0.002 | -0.004 | -0.005 |
+| XGBoost | -0.004 | -0.004 | -0.001 | 0.000 | -0.007 | -0.008 |
 
-#### Current recommendation
+</details>
 
-- Default for all models
-  - Raw Fare
+Batch and fitted Ticket representations produce an unexpected result for
+Decision Tree. Despite performing poorly in simpler Fare configurations, both
+produce the strongest Decision Tree result once raw Fare and Family-normalized
+Fare are simultaneously available:
 
-- Logistic Regression
-  - Fare_per_family_member or Fare_per_ticket_member may be tested as alternatives, although gains were small.
+- batch: +0.011 accuracy / +0.039 F1
+- fitted: +0.011 accuracy / +0.040 F1
+- full context: +0.005 accuracy / +0.028 F1
 
-- KNN
-  - Fare_per_ticket_member
+The fitted result reproducing the batch result makes it less likely that the
+batch result is merely an isolated configuration anomaly. It instead suggests
+that Decision Tree is exploiting an interaction between the available Fare
+representations.
 
-- Decision Tree
-  - Fare + Fare_per_family_member
+Importantly, the full-context representation no longer performs best. A
+representation that is more useful in isolation is therefore not necessarily
+the representation that contributes the most additional information when
+other related features are already available.
 
-- SVC, Random Forest, Extra Trees, and XGBoost
-  - Keep raw Fare; no derived or combined representation produced a meaningful improvement.
+#### Follow-up: removing raw Fare
+
+To determine whether the Decision Tree improvement came from combining the two
+normalized representations or depended on raw Fare, both normalized Fare
+features were tested without raw `Fare`.
+
+<details>
+<summary>Normalized Fare combinations without raw Fare</summary>
+
+| Model | Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | +0.002 | +0.003 | +0.002 | +0.003 | 0.000 | +0.001 |
+| KNN | -0.003 | -0.002 | -0.002 | +0.001 | +0.001 | +0.005 |
+| SVC | -0.007 | -0.008 | -0.007 | -0.008 | -0.003 | -0.004 |
+| Decision Tree | +0.003 | +0.012 | +0.003 | +0.013 | +0.001 | +0.004 |
+| Random Forest | -0.014 | -0.019 | -0.005 | -0.008 | -0.003 | -0.006 |
+| Extra Trees | -0.002 | -0.003 | +0.003 | +0.003 | +0.004 | 0.000 |
+| XGBoost | -0.011 | -0.014 | -0.004 | -0.005 | -0.003 | -0.003 |
+
+</details>
+
+Removing raw Fare substantially reduces the Decision Tree gains. The two
+normalized representations alone therefore do not reproduce the effect seen
+when all three representations are available.
+
+For Decision Tree, `Fare + Fare/FamilySize` appears to form an important base
+combination. Adding batch or fitted Ticket-normalized Fare provides a further
++0.003 accuracy and approximately +0.011–0.012 F1 relative to that
+configuration, while adding the full-context representation provides no F1
+improvement and reduces accuracy by 0.003.
+
+This suggests that the value of a Fare representation is conditional on the
+other representations available to the model. A feature that performs poorly
+alone may still provide complementary partitioning information when combined
+with related features.
+
+#### Similarity hypothesis — investigation pending
+
+One possible explanation for the weaker marginal contribution of full-context
+Ticket normalization is that `Fare/TicketGroupSize` becomes more similar to
+`Fare/FamilySize` as the ticket group becomes more completely represented.
+Batch and fitted Ticket normalization may therefore provide less individually
+accurate but more distinct representations for the constrained Decision Tree.
+
+This explanation has not yet been established.
+
+A feature-similarity diagnostic will compare the three Ticket strategies using:
+
+- equality rate between `FamilySize` and `TicketGroupSize`
+- mean absolute difference between their group sizes
+- Pearson correlation between `Fare/FamilySize` and `Fare/TicketGroupSize`
+- Spearman correlation between the normalized Fare representations
+- exact equality rate between the normalized Fare values
+- number of unique Ticket-normalized Fare values
+
+Where applicable, batch and fitted representations will be reconstructed using
+their out-of-fold semantics rather than full-dataset counts.
+
+The diagnostic will determine whether similarity actually increases under full
+prediction context. If it does not, the redundancy hypothesis will be rejected
+and the Decision Tree interaction will require a different explanation.
+
+> **WIP:** Final Fare findings, hypotheses, and model-specific recommendations
+> are intentionally deferred until this diagnostic is complete.
 
 
 ---

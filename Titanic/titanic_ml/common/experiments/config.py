@@ -1551,3 +1551,293 @@ ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_batch'] = cb05__fare_and_fare_pe
 ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_fitted'] = cb05__fare_and_fare_per_ticket_fitted_config
 
 ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_full_context'] = cb05__fare_and_fare_per_ticket_full_context_config
+
+# Cb06
+
+cb06__all_fare_features_batch_patch = {
+    "transformations": [
+        FE.family,
+        FE.ticket_group_size_batch,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb06__all_fare_features_fitted_patch = {
+    "transformations": [
+        FE.family,
+        FE.ticket_group_size_fitted,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb06__all_fare_features_full_context_patch = {
+    "pre_cv_transformations": [
+        PRE_CV_FE.ticket_group_size_full_context,
+    ],
+
+    "transformations": [
+        FE.family,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+}
+
+cb06__all_fare_features_batch_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb06__all_fare_features_batch_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb06",
+    feature_group="all_fare_features_batch",
+    domain="fare",
+    pre_cv_scope= None,
+    notes=("Combo Experiment 06."
+            "Adding Fare/FamilySize and Fare/TicketMember."),
+)
+
+
+cb06__all_fare_features_fitted_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb06__all_fare_features_fitted_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb06",
+    feature_group="all_fare_features_fitted",
+    domain="fare",
+    pre_cv_scope= None,
+    notes=("Combo Experiment 06."
+            "Adding Fare/FamilySize and Fare/TicketMember."),
+)
+
+
+cb06__all_fare_features_full_context_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb06__all_fare_features_full_context_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb06",
+    feature_group="all_fare_features_full_context",
+    domain="fare",
+    pre_cv_scope="full_prediction_context",
+    notes=("Combo Experiment 06."
+            "Adding Fare/FamilySize and Fare/TicketMember."),
+    
+)
+
+ALL_EXPERIMENTS['cb06__all_fare_features_batch'] = cb06__all_fare_features_batch_config
+
+ALL_EXPERIMENTS['cb06__all_fare_features_fitted'] = cb06__all_fare_features_fitted_config
+
+ALL_EXPERIMENTS['cb06__all_fare_features_full_context'] = cb06__all_fare_features_full_context_config
+
+# Cb09
+
+cb09__fare_per_family_and_ticket_batch_patch = {
+    "transformations": [
+        FE.family,
+        FE.ticket_group_size_batch,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+    
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+cb09__fare_per_family_and_ticket_fitted_patch = {
+    "transformations": [
+        FE.family,
+        FE.ticket_group_size_fitted,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+cb09__fare_per_family_and_ticket_full_context_patch = {
+    "pre_cv_transformations": [
+        PRE_CV_FE.ticket_group_size_full_context,
+    ],
+
+    "transformations": [
+        FE.family,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember",
+            ],
+        },
+    },
+
+    "remove": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare",
+            ],
+        },
+    },
+}
+
+cb09__fare_per_family_and_ticket_batch_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb09__fare_per_family_and_ticket_batch_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb09",
+    feature_group="fare_per_family_and_ticket_batch",
+    domain="fare",
+    pre_cv_scope= None,
+    notes=("Combo Experiment 09."
+            "Adding Fare/FamilySize and Fare/TicketMember, without raw fare."),
+)
+
+
+cb09__fare_per_family_and_ticket_fitted_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb09__fare_per_family_and_ticket_fitted_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb09",
+    feature_group="fare_per_family_and_ticket_fitted",
+    domain="fare",
+    pre_cv_scope= None,
+    notes=("Combo Experiment 09."
+            "Adding Fare/FamilySize and Fare/TicketMember, without raw fare."),
+)
+
+
+cb09__fare_per_family_and_ticket_full_context_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        cb09__fare_per_family_and_ticket_full_context_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage="cb09",
+    feature_group="fare_per_family_and_ticket_full_context",
+    domain="fare",
+    pre_cv_scope="full_prediction_context",
+    notes=("Combo Experiment 09."
+            "Adding Fare/FamilySize and Fare/TicketMember, without raw fare."),
+    
+)
+
+ALL_EXPERIMENTS['cb09__fare_per_family_and_ticket_batch'] = cb09__fare_per_family_and_ticket_batch_config
+
+ALL_EXPERIMENTS['cb09__fare_per_family_and_ticket_fitted'] = cb09__fare_per_family_and_ticket_fitted_config
+
+ALL_EXPERIMENTS['cb09__fare_per_family_and_ticket_full_context'] = cb09__fare_per_family_and_ticket_full_context_config
+
+
+# test configuration
+
+test_family_ticket_batch_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe01__family_patch, fe09__ticket_group_size_batch_patch
+    ],
+    raw_features=RAW_FEATURES,
+    stage="test",
+    feature_group="family_ticket_batch",
+    domain="test",
+    pre_cv_scope= None,
+    notes=("test to compare values between family and ticket batch."
+            ),
+)
+
+
+test_family_ticket_fitted_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe01__family_patch, fe09__ticket_group_size_fitted_patch
+    ],
+    raw_features=RAW_FEATURES,
+    stage="test",
+    feature_group="family_ticket_fitted",
+    domain="test",
+    pre_cv_scope= None,
+    notes=("test to compare values between family and ticket fitted."),
+)
+
+
+test_family_ticket_full_context_config = create_config_group(
+    base_configs=baseline_config,
+    patches=[
+        fe01__family_patch, fe09__ticket_group_size_full_context_patch
+    ],
+    raw_features=RAW_FEATURES,
+    stage="test",
+    feature_group="family_ticket_full_context",
+    domain="test",
+    pre_cv_scope="full_prediction_context",
+    notes=("test to compare values between family and ticket full context."),
+    
+)
+
+ALL_EXPERIMENTS['test_family_ticket_batch_config'] = test_family_ticket_batch_config
+
+ALL_EXPERIMENTS['test_family_ticket_fitted_config'] = test_family_ticket_fitted_config
+
+ALL_EXPERIMENTS['test_family_ticket_full_context_config'] = test_family_ticket_full_context_config
