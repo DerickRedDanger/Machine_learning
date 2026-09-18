@@ -2136,5 +2136,113 @@
     },
     "notable_secondary_improvements": {},
     "discard": false
+  },
+  "test__family_ticket_fitted": {
+    "compare_group": "test__family_ticket_fitted",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.001,
+    "max_delta": 0.015,
+    "min_delta": -0.008,
+    "positive_models": [
+      "logreg",
+      "decision_tree",
+      "extra_trees"
+    ],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [
+      "knn",
+      "random_forest",
+      "xgb"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "logreg": 0.015,
+      "decision_tree": 0.003,
+      "extra_trees": 0.006
+    },
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.015,
+        "secondary_pros": {
+          "test_f1_mean": 0.015
+        },
+        "secondary_cons": {}
+      },
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
+      },
+      "extra_trees": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.006,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "test__family_ticket_full_context": {
+    "compare_group": "test__family_ticket_full_context",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.002,
+    "max_delta": 0.006,
+    "min_delta": -0.004,
+    "positive_models": [
+      "knn",
+      "decision_tree",
+      "extra_trees"
+    ],
+    "neutral_models": [
+      "logreg",
+      "svc",
+      "xgb"
+    ],
+    "negative_models": [
+      "random_forest"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {
+      "knn": 0.004,
+      "decision_tree": 0.006,
+      "extra_trees": 0.005
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.004,
+        "secondary_pros": {
+          "test_f1_mean": 0.013
+        },
+        "secondary_cons": {}
+      },
+      "decision_tree": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.006,
+        "secondary_pros": {
+          "test_f1_mean": 0.033
+        },
+        "secondary_cons": {}
+      },
+      "extra_trees": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
   }
 }

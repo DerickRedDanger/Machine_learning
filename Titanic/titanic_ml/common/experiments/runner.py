@@ -163,6 +163,50 @@ def apply_pre_cv_feature_pipeline(
         f"Unsupported pre-CV scope: '{scope}'."
     )
 
+def build_model_pipeline(exp):
+    # -------------------------------------------------
+    # 1. Build preprocessor
+    # -------------------------------------------------
+
+    preprocessor = build_preprocessor(
+        exp["preprocessing"]
+    )
+
+    # -------------------------------------------------
+    # 2. Build model
+    # -------------------------------------------------
+
+    model_class = MODEL_REGISTRY.get(
+        exp["model_name"]
+    )
+
+    if model_class is None:
+        raise ValueError(
+            f"Model '{exp['model_name']}' "
+            "not found in registry."
+        )
+
+    model = model_class(
+        **exp.get("model_params", {})
+    )
+
+    # -------------------------------------------------
+    # 3. Build complete CV-safe pipeline
+    # -------------------------------------------------
+
+    feature_pipeline = exp.get(
+        "feature_pipeline",
+        []
+    )
+
+    pipeline_steps = [
+        *feature_pipeline,
+        ("preprocessor", preprocessor),
+        ("model", model),
+    ]
+
+    return Pipeline(pipeline_steps)
+
 def run_experiments(
     df,
     experiments,
@@ -238,59 +282,18 @@ def run_experiments(
             # -------------------------------------------------
             # 4. Build preprocessor
             # -------------------------------------------------
-
-            preprocessor = build_preprocessor(
-                exp["preprocessing"]
-            )
-
-            # -------------------------------------------------
-            # 5. Build model
-            # -------------------------------------------------
-
-            model_class = MODEL_REGISTRY.get(
-                exp["model_name"]
-            )
-
-            if model_class is None:
-                raise ValueError(
-                    f"Model '{exp['model_name']}' "
-                    "not found in registry."
-                )
-
-            model = model_class(
-                **exp.get("model_params", {})
-            )
-
-            # -------------------------------------------------
-            # 6. Build complete CV-safe pipeline
-            # -------------------------------------------------
-
-            feature_pipeline = exp.get(
-                "feature_pipeline",
-                []
-            )
-
-            pipeline_steps = [
-                *feature_pipeline,
-                ("preprocessor", preprocessor),
-                ("model", model),
-            ]
-
-            model_pipeline = Pipeline(
-                pipeline_steps
-            )
+            model_pipeline = build_model_pipeline(exp)
 
             if debug:
                 print("Pipeline steps:")
 
-                for step_name, step in pipeline_steps:
+                for step_name, step in model_pipeline.steps:
                     print(
                         f"  {step_name}: "
                         f"{type(step).__name__}"
                     )
-
             # -------------------------------------------------
-            # 7. Evaluate
+            # 5. Evaluate
             # -------------------------------------------------
 
             model_result = evaluate_model(

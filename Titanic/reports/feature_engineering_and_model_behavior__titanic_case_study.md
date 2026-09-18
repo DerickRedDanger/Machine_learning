@@ -2484,34 +2484,49 @@ other representations available to the model. A feature that performs poorly
 alone may still provide complementary partitioning information when combined
 with related features.
 
-#### Similarity hypothesis — investigation pending
+#### Similarity diagnostic
 
-One possible explanation for the weaker marginal contribution of full-context
-Ticket normalization is that `Fare/TicketGroupSize` becomes more similar to
-`Fare/FamilySize` as the ticket group becomes more completely represented.
-Batch and fitted Ticket normalization may therefore provide less individually
-accurate but more distinct representations for the constrained Decision Tree.
+A preliminary feature-similarity diagnostic supports the hypothesis that
+full-context Ticket normalization overlaps more strongly with Family
+normalization.
 
-This explanation has not yet been established.
+| Ticket strategy | Group-size equality | Group-size MAE | Fare Pearson | Fare Spearman | Exact Fare equality |
+|---|---:|---:|---:|---:|---:|
+| Batch | 0.587 | 0.922 | 0.777 | 0.586 | 0.587 |
+| Fitted | 0.542 | 0.844 | 0.845 | 0.672 | 0.542 |
+| Full context | 0.827 | 0.307 | 0.840 | 0.866 | 0.827 |
 
-A feature-similarity diagnostic will compare the three Ticket strategies using:
+Under full prediction context, `FamilySize` and `TicketGroupSize` are exactly
+equal for approximately 82.7% of validation passengers, compared with 58.7%
+under batch-local construction and 54.2% under fitted construction. The mean
+absolute difference between the group-size representations also falls to
+0.307 under full context.
 
-- equality rate between `FamilySize` and `TicketGroupSize`
-- mean absolute difference between their group sizes
-- Pearson correlation between `Fare/FamilySize` and `Fare/TicketGroupSize`
-- Spearman correlation between the normalized Fare representations
-- exact equality rate between the normalized Fare values
-- number of unique Ticket-normalized Fare values
+Because both normalized features use the same Fare numerator, this results in
+`Fare/FamilySize` and `Fare/TicketGroupSize` being exactly equal for the same
+82.7% of passengers under full context. Their rank similarity also increases
+substantially, with Spearman correlation rising from 0.586 for batch and 0.672
+for fitted to 0.866 under full context.
 
-Where applicable, batch and fitted representations will be reconstructed using
-their out-of-fold semantics rather than full-dataset counts.
+Pearson correlation does not increase monotonically: fitted (0.845) is
+slightly higher than full context (0.840). The evidence therefore does not
+support a general claim that full-context normalization is more correlated
+under every measure. Instead, it supports a more specific form of structural
+overlap: full-context Ticket normalization produces substantially more exact
+agreement with Family normalization and a more similar ordering of passenger
+Fare values.
 
-The diagnostic will determine whether similarity actually increases under full
-prediction context. If it does not, the redundancy hypothesis will be rejected
-and the Decision Tree interaction will require a different explanation.
+This provides a plausible explanation for the Decision Tree interaction seen
+in CB06. Once `Fare/FamilySize` is available, full-context
+`Fare/TicketGroupSize` may provide fewer distinct candidate partitions than
+the batch or fitted representations. The latter are less complete estimates
+of the passenger's full ticket group, but may consequently provide more
+complementary threshold structure to the constrained tree.
 
-> **WIP:** Final Fare findings, hypotheses, and model-specific recommendations
-> are intentionally deferred until this diagnostic is complete.
+This diagnostic supports the redundancy/complementarity hypothesis but does
+not establish that it caused the observed performance difference. Confirming
+the mechanism would require examining feature usage and split behavior across
+the fitted trees.
 
 
 ---

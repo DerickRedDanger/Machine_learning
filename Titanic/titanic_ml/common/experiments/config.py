@@ -1796,7 +1796,7 @@ ALL_EXPERIMENTS['cb09__fare_per_family_and_ticket_full_context'] = cb09__fare_pe
 test_family_ticket_batch_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        fe01__family_patch, fe09__ticket_group_size_batch_patch
+        fe01__family_patch, fe09__ticket_group_size_batch_patch, cb09__fare_per_family_and_ticket_batch_patch
     ],
     raw_features=RAW_FEATURES,
     stage="test",
@@ -1811,7 +1811,7 @@ test_family_ticket_batch_config = create_config_group(
 test_family_ticket_fitted_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        fe01__family_patch, fe09__ticket_group_size_fitted_patch
+        fe01__family_patch, fe09__ticket_group_size_fitted_patch, cb09__fare_per_family_and_ticket_fitted_patch
     ],
     raw_features=RAW_FEATURES,
     stage="test",
@@ -1822,10 +1822,32 @@ test_family_ticket_fitted_config = create_config_group(
 )
 
 
+test_family_ticket_full_context_patch = {
+    "pre_cv_transformations": [
+        PRE_CV_FE.ticket_group_size_full_context,
+    ],
+
+    "transformations": [
+        FE.family,
+        FE.fare_family,
+        FE.fare_ticket
+    ],
+
+    "add": {
+        "preprocessing": {
+            "numeric_features": [
+                "Fare/FamilySize", "Fare/TicketMember", "FamilySize", "TicketGroupSize"
+            ],
+        },
+    },
+}
+
+
+
 test_family_ticket_full_context_config = create_config_group(
     base_configs=baseline_config,
     patches=[
-        fe01__family_patch, fe09__ticket_group_size_full_context_patch
+        test_family_ticket_full_context_patch
     ],
     raw_features=RAW_FEATURES,
     stage="test",
