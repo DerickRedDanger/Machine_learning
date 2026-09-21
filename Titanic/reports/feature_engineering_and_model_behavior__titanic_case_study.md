@@ -1755,21 +1755,57 @@ independent future observations.
 
 ### Fare
 
+`Fare` may not represent an individual passenger's effective fare. Multiple
+passengers travelling together may share a booking or ticket, making the raw
+value partly dependent on group structure.
+
+Two previously engineered group representations provide different ways to
+estimate this structure:
+
+- `FamilySize` represents the passenger's recorded family group.
+- `TicketGroupSize` represents passengers sharing the same ticket.
+
+The Ticket investigation showed that these representations are not
+interchangeable and that `TicketGroupSize` additionally depends on the
+population context used to construct it.
+
+The Fare investigation therefore evaluates three related questions:
+
+1. Can group-normalized Fare provide a useful alternative to raw `Fare`?
+2. Are raw and normalized Fare complementary?
+3. Can Family- and Ticket-normalized Fare provide complementary representations
+   when used together?
+
+For Ticket-based normalization, the batch, fitted, and full-prediction-context
+strategies are evaluated separately.
+
+---
+
 #### Normalized Fare
 
-`Fare` may represent the price associated with more than one passenger rather
-than an individual passenger's effective fare. The earlier family and ticket
-investigations provided two different estimates of passenger grouping:
-`FamilySize`, representing recorded family structure, and `TicketGroupSize`,
-representing passengers sharing a ticket.
+Raw `Fare` was replaced by a normalized Fare calculated using either
+`FamilySize` or `TicketGroupSize`.
 
-To investigate whether group size could provide a more meaningful
-passenger-level representation of Fare, raw `Fare` was replaced by a normalized
-Fare calculated using each group definition.
+Because an incomplete TicketGroupSize changes the denominator rather than
+merely the value of an independent feature, differences between Ticket context
+strategies may propagate into the meaning and scale of the resulting Fare
+representation.
 
-Because `TicketGroupSize` was previously found to depend on the population
-available during feature construction, all three Ticket context strategies
-were retained.
+<details>
+<summary>Comparison of normalized Fare representations</summary>
+
+| Model | Fare/Family ΔAcc | ΔF1 | Fare/Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | +0.003 | +0.004 | +0.001 | +0.002 | +0.002 | +0.003 | +0.003 | +0.004 |
+| KNN | -0.005 | -0.007 | -0.004 | -0.008 | -0.004 | -0.008 | +0.011 | +0.013 |
+| SVC | -0.001 | -0.001 | -0.005 | -0.008 | -0.001 | 0.000 | 0.000 | +0.001 |
+| Decision Tree | +0.004 | +0.009 | -0.011 | +0.004 | -0.007 | +0.005 | -0.001 | +0.012 |
+| Random Forest | -0.006 | -0.012 | -0.013 | -0.012 | -0.004 | -0.003 | +0.001 | -0.002 |
+| Extra Trees | +0.002 | +0.001 | -0.005 | -0.004 | 0.000 | +0.001 | +0.001 | -0.001 |
+| XGBoost | -0.003 | -0.006 | -0.015 | -0.020 | -0.006 | -0.009 | +0.001 | +0.002 |
+
+</details>
+
 
 <details>
 <summary>Comparison of normalized Fare representations</summary>
@@ -1946,66 +1982,72 @@ were retained.
 
 </details>
 
-##### Interpretation
+
+#### Interpretation
 
 Fare normalization is highly dependent on both the definition of passenger
 grouping and the model consuming the resulting feature.
 
-`Fare/FamilySize` is model-specific rather than generally beneficial.
-Logistic Regression improves modestly, while Decision Tree receives the
-clearest benefit (+0.004 accuracy, +0.009 F1). Several other models instead
-lose performance, indicating that replacing raw Fare with a family-normalized
-representation does not universally improve the feature.
+`Fare/FamilySize` is model-specific rather than generally beneficial. Logistic
+Regression improves modestly, while Decision Tree receives the clearest
+benefit (+0.004 accuracy, +0.009 F1). Several other models instead lose
+performance.
 
-The Ticket-based representations show a stronger dependency on population
-context. Batch-local normalization performs worst overall, while fitted counts
-substantially reduce its negative effects. Full prediction context reverses
-this pattern and is the only tested normalization with positive mean changes
-in both accuracy and F1.
+Ticket-based normalization shows a stronger dependency on population context.
+Batch-local normalization performs worst overall, while fitted counts reduce
+much of its negative effect. Full prediction context reverses this pattern and
+is the only tested normalization with positive mean changes in both accuracy
+and F1.
 
 KNN provides the clearest example. `Fare/TicketGroupSize` is detrimental under
 both batch and fitted construction (-0.004 accuracy, -0.008 F1), but improves
-by +0.011 accuracy and +0.013 F1 when complete prediction context is available.
-This indicates that the usefulness of the normalized Fare representation can
-depend directly on the completeness of the group information used as its
-denominator.
+by +0.011 accuracy and +0.013 F1 under full prediction context.
 
-The differences between the three Ticket strategies are larger here than for
-TicketGroupSize alone. An incomplete group count does not merely alter a
-relational feature: when used as a denominator, it also changes the scale of
-the resulting Fare representation. Context semantics can therefore propagate
-and become more consequential in downstream engineered features.
+The separation between Ticket strategies is larger for normalized Fare than
+for `TicketGroupSize` alone. An incomplete group count does not merely alter a
+relational feature: when used as a denominator, it changes the scale of the
+resulting Fare representation. Population semantics can therefore propagate
+into downstream engineered features.
 
-Finally, FamilySize and full-context TicketGroupSize remain non-interchangeable
-group definitions when used to normalize Fare. Their effects differ strongly
-for models such as KNN and Decision Tree, supporting the earlier finding that
-family structure and ticket-group structure capture partially distinct
-relationships.
+Family- and Ticket-normalized Fare also continue to produce different model
+responses, supporting the earlier finding that family and ticket groups are
+not interchangeable definitions of passenger grouping.
 
-##### Interim conclusion
+#### Interim conclusion
 
 Replacing raw Fare with a normalized representation is not universally
 beneficial. Family normalization provides useful model-specific information,
 particularly for Decision Tree, while Ticket normalization depends strongly on
-how completely the ticket group is represented.
+the completeness of the ticket-group representation.
 
 Full-context `Fare/TicketGroupSize` is the strongest standalone Fare
-normalization tested so far, producing the only broadly non-detrimental result
-and a substantial improvement for KNN. Batch-local Ticket normalization should
-not be preferred, while fitted normalization remains a viable inductive
-representation but provides little evidence of improvement in isolation.
+normalization tested, producing a substantial improvement for KNN and no large
+detriment for the remaining models.
 
-The next question is whether these normalized representations are better used
-as replacements for raw Fare or as complementary representations alongside it.
+---
 
 #### Raw and normalized Fare
 
-The previous experiments tested whether a group-normalized Fare could replace
-raw `Fare`. However, normalization may preserve different information rather
-than provide a complete replacement for the original feature.
+Normalization may preserve different information rather than provide a
+complete replacement for raw `Fare`. Raw Fare was therefore retained alongside
+each normalized representation to test whether the two forms are
+complementary.
 
-To test whether the two representations are complementary, raw `Fare` was
-retained alongside each normalized representation.
+<details>
+<summary>Comparison of raw + normalized Fare representations</summary>
+
+| Model | Fare + Family ΔAcc | ΔF1 | Fare + Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Logistic Regression | -0.001 | -0.002 | +0.002 | +0.002 | +0.002 | +0.002 | +0.003 | +0.005 |
+| KNN | -0.007 | -0.008 | -0.005 | -0.009 | -0.007 | -0.007 | +0.004 | +0.010 |
+| SVC | -0.004 | -0.006 | -0.012 | -0.017 | -0.005 | -0.006 | -0.002 | -0.002 |
+| Decision Tree | +0.008 | +0.028 | -0.012 | +0.004 | -0.006 | +0.009 | +0.008 | +0.032 |
+| Random Forest | -0.005 | -0.008 | -0.013 | -0.013 | -0.005 | -0.004 | -0.002 | -0.003 |
+| Extra Trees | +0.001 | -0.002 | -0.005 | -0.008 | +0.002 | 0.000 | +0.002 | +0.001 |
+| XGBoost | -0.009 | -0.009 | -0.007 | -0.005 | -0.002 | -0.001 | +0.008 | +0.014 |
+
+</details>
+
 
 <details>
 <summary>Comparison of raw + normalized Fare representations</summary>
@@ -2192,182 +2234,6 @@ _Conclusion pending._
 
 </details>
 
-##### Interpretation
-
-Retaining raw `Fare` does not generally rescue weak normalized Fare
-representations. Both batch-local and fitted `Fare/TicketGroupSize` remain
-negative overall when raw Fare is restored, suggesting that their earlier
-weakness cannot be explained primarily by information discarded when Fare was
-replaced.
-
-The batch-context representation remains particularly detrimental. This
-supports the earlier interpretation that fragmentation of the ticket group
-produces a problematic denominator rather than merely an incomplete substitute
-for raw Fare.
-
-Full-context Ticket normalization behaves differently. When raw Fare and
-`Fare/TicketGroupSize` are available together, several models show evidence
-that the two representations contain complementary information.
-
-Decision Tree provides the clearest example. Full-context normalized Fare alone
-changes accuracy by -0.001 and F1 by +0.012, while retaining raw Fare increases
-these changes to +0.008 and +0.032. A similar pattern occurs with
-`Fare/FamilySize`, where the combination improves by +0.008 accuracy and +0.028
-F1. This suggests that Decision Tree benefits from having both the original
-Fare and a meaningful per-group representation available.
-
-XGBoost also shows strong complementarity specifically for the full-context
-Ticket representation, changing from +0.001 accuracy / +0.002 F1 with
-normalized Fare alone to +0.008 / +0.014 when raw Fare is retained.
-
-KNN behaves differently. Full-context normalized Fare alone produces its
-largest improvement (+0.011 accuracy, +0.013 F1), while adding raw Fare reduces
-the gain to +0.004 accuracy and +0.010 F1. For KNN, the normalized
-representation therefore appears more useful as a replacement for raw Fare
-than as an additional representation.
-
-Family- and Ticket-normalized Fare continue to produce substantially different
-model behavior, particularly for KNN and XGBoost. This further supports the
-interpretation that family structure and shared-ticket structure provide
-different contextual meanings for Fare rather than interchangeable estimates
-of the same group size.
-
-##### Interim conclusion
-
-Raw and normalized Fare are complementary only for specific combinations of
-model and group definition.
-
-Decision Tree benefits strongly from retaining raw Fare alongside either
-meaningful normalized representation, while XGBoost shows similar
-complementarity specifically with full-context Ticket normalization. KNN
-instead prefers full-context normalized Fare without the additional raw
-representation.
-
-Restoring raw Fare does not repair the poor behavior of batch-local or fitted
-Ticket normalization. The quality and semantics of the denominator therefore
-remain more important than simply preserving the original Fare feature.
-
-The remaining question is whether the two distinct normalized representations
-can themselves provide complementary information when Family- and
-Ticket-based Fare are supplied together with raw Fare.
-
-## Fare representation
-
-`Fare` may not represent an individual passenger's effective fare. Multiple
-passengers travelling together may share a booking or ticket, making the raw
-value partly dependent on group structure.
-
-Two previously engineered group representations provide different ways to
-estimate this structure:
-
-- `FamilySize` represents the passenger's recorded family group.
-- `TicketGroupSize` represents passengers sharing the same ticket.
-
-The Ticket investigation showed that these representations are not
-interchangeable and that `TicketGroupSize` additionally depends on the
-population context used to construct it.
-
-The Fare investigation therefore evaluates three related questions:
-
-1. Can group-normalized Fare provide a useful alternative to raw `Fare`?
-2. Are raw and normalized Fare complementary?
-3. Can Family- and Ticket-normalized Fare provide complementary representations
-   when used together?
-
-For Ticket-based normalization, the batch, fitted, and full-prediction-context
-strategies are evaluated separately.
-
----
-
-### Normalized Fare
-
-Raw `Fare` was replaced by a normalized Fare calculated using either
-`FamilySize` or `TicketGroupSize`.
-
-Because an incomplete TicketGroupSize changes the denominator rather than
-merely the value of an independent feature, differences between Ticket context
-strategies may propagate into the meaning and scale of the resulting Fare
-representation.
-
-<details>
-<summary>Comparison of normalized Fare representations</summary>
-
-| Model | Fare/Family ΔAcc | ΔF1 | Fare/Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Logistic Regression | +0.003 | +0.004 | +0.001 | +0.002 | +0.002 | +0.003 | +0.003 | +0.004 |
-| KNN | -0.005 | -0.007 | -0.004 | -0.008 | -0.004 | -0.008 | +0.011 | +0.013 |
-| SVC | -0.001 | -0.001 | -0.005 | -0.008 | -0.001 | 0.000 | 0.000 | +0.001 |
-| Decision Tree | +0.004 | +0.009 | -0.011 | +0.004 | -0.007 | +0.005 | -0.001 | +0.012 |
-| Random Forest | -0.006 | -0.012 | -0.013 | -0.012 | -0.004 | -0.003 | +0.001 | -0.002 |
-| Extra Trees | +0.002 | +0.001 | -0.005 | -0.004 | 0.000 | +0.001 | +0.001 | -0.001 |
-| XGBoost | -0.003 | -0.006 | -0.015 | -0.020 | -0.006 | -0.009 | +0.001 | +0.002 |
-
-</details>
-
-#### Interpretation
-
-Fare normalization is highly dependent on both the definition of passenger
-grouping and the model consuming the resulting feature.
-
-`Fare/FamilySize` is model-specific rather than generally beneficial. Logistic
-Regression improves modestly, while Decision Tree receives the clearest
-benefit (+0.004 accuracy, +0.009 F1). Several other models instead lose
-performance.
-
-Ticket-based normalization shows a stronger dependency on population context.
-Batch-local normalization performs worst overall, while fitted counts reduce
-much of its negative effect. Full prediction context reverses this pattern and
-is the only tested normalization with positive mean changes in both accuracy
-and F1.
-
-KNN provides the clearest example. `Fare/TicketGroupSize` is detrimental under
-both batch and fitted construction (-0.004 accuracy, -0.008 F1), but improves
-by +0.011 accuracy and +0.013 F1 under full prediction context.
-
-The separation between Ticket strategies is larger for normalized Fare than
-for `TicketGroupSize` alone. An incomplete group count does not merely alter a
-relational feature: when used as a denominator, it changes the scale of the
-resulting Fare representation. Population semantics can therefore propagate
-into downstream engineered features.
-
-Family- and Ticket-normalized Fare also continue to produce different model
-responses, supporting the earlier finding that family and ticket groups are
-not interchangeable definitions of passenger grouping.
-
-#### Interim conclusion
-
-Replacing raw Fare with a normalized representation is not universally
-beneficial. Family normalization provides useful model-specific information,
-particularly for Decision Tree, while Ticket normalization depends strongly on
-the completeness of the ticket-group representation.
-
-Full-context `Fare/TicketGroupSize` is the strongest standalone Fare
-normalization tested, producing a substantial improvement for KNN and no large
-detriment for the remaining models.
-
----
-
-### Raw and normalized Fare
-
-Normalization may preserve different information rather than provide a
-complete replacement for raw `Fare`. Raw Fare was therefore retained alongside
-each normalized representation to test whether the two forms are
-complementary.
-
-<details>
-<summary>Comparison of raw + normalized Fare representations</summary>
-
-| Model | Fare + Family ΔAcc | ΔF1 | Fare + Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Logistic Regression | -0.001 | -0.002 | +0.002 | +0.002 | +0.002 | +0.002 | +0.003 | +0.005 |
-| KNN | -0.007 | -0.008 | -0.005 | -0.009 | -0.007 | -0.007 | +0.004 | +0.010 |
-| SVC | -0.004 | -0.006 | -0.012 | -0.017 | -0.005 | -0.006 | -0.002 | -0.002 |
-| Decision Tree | +0.008 | +0.028 | -0.012 | +0.004 | -0.006 | +0.009 | +0.008 | +0.032 |
-| Random Forest | -0.005 | -0.008 | -0.013 | -0.013 | -0.005 | -0.004 | -0.002 | -0.003 |
-| Extra Trees | +0.001 | -0.002 | -0.005 | -0.008 | +0.002 | 0.000 | +0.002 | +0.001 |
-| XGBoost | -0.009 | -0.009 | -0.007 | -0.005 | -0.002 | -0.001 | +0.008 | +0.014 |
-
-</details>
 
 #### Interpretation
 
@@ -2400,7 +2266,7 @@ representations.
 
 ---
 
-### Multiple Fare representations
+#### Multiple Fare representations
 
 Because FamilySize and TicketGroupSize appear to represent different passenger
 relationships, both normalized Fare representations were supplied together to
@@ -2426,6 +2292,128 @@ produced an unexpected Decision Tree interaction.
 | Random Forest | -0.007 | -0.007 | +0.001 | +0.003 | -0.012 | -0.015 |
 | Extra Trees | -0.004 | -0.004 | +0.002 | +0.002 | -0.004 | -0.005 |
 | XGBoost | -0.004 | -0.004 | -0.001 | 0.000 | -0.007 | -0.008 |
+
+</details>
+
+<details>
+<summary>Comparison of raw + normalized Fare representations</summary>
+
+#### cb06__all_fare_features_batch
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.011
+    - Secondary gains:
+      - test_f1_mean: 0.039
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                 | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb06__all_fare_features_batch | logreg        |                          0.786 |                        0.785 |                     -0.001 |                    0.713 |                  0.71  |               -0.003 |
+| baseline__raw     | cb06__all_fare_features_batch | knn           |                          0.809 |                        0.801 |                     -0.008 |                    0.742 |                  0.734 |               -0.008 |
+| baseline__raw     | cb06__all_fare_features_batch | svc           |                          0.827 |                        0.817 |                     -0.01  |                    0.76  |                  0.747 |               -0.013 |
+| baseline__raw     | cb06__all_fare_features_batch | decision_tree |                          0.803 |                        0.814 |                      0.011 |                    0.702 |                  0.741 |                0.039 |
+| baseline__raw     | cb06__all_fare_features_batch | random_forest |                          0.822 |                        0.815 |                     -0.007 |                    0.744 |                  0.737 |               -0.007 |
+| baseline__raw     | cb06__all_fare_features_batch | extra_trees   |                          0.804 |                        0.8   |                     -0.004 |                    0.721 |                  0.717 |               -0.004 |
+| baseline__raw     | cb06__all_fare_features_batch | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.754 |               -0.004 |
+
+##### Summary
+
+| compare_group                 |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb06__all_fare_features_batch |                     -0.00328571 |                          -0.01 |                          0.011 |                         0 |                   -0.013 |                    0.039 |
+
+</details>
+
+#### cb06__all_fare_features_fitted
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.011
+    - Secondary gains:
+      - test_f1_mean: 0.04
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                  | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb06__all_fare_features_fitted | logreg        |                          0.786 |                        0.783 |                     -0.003 |                    0.713 |                  0.709 |               -0.004 |
+| baseline__raw     | cb06__all_fare_features_fitted | knn           |                          0.809 |                        0.805 |                     -0.004 |                    0.742 |                  0.74  |               -0.002 |
+| baseline__raw     | cb06__all_fare_features_fitted | svc           |                          0.827 |                        0.816 |                     -0.011 |                    0.76  |                  0.746 |               -0.014 |
+| baseline__raw     | cb06__all_fare_features_fitted | decision_tree |                          0.803 |                        0.814 |                      0.011 |                    0.702 |                  0.742 |                0.04  |
+| baseline__raw     | cb06__all_fare_features_fitted | random_forest |                          0.822 |                        0.823 |                      0.001 |                    0.744 |                  0.747 |                0.003 |
+| baseline__raw     | cb06__all_fare_features_fitted | extra_trees   |                          0.804 |                        0.806 |                      0.002 |                    0.721 |                  0.723 |                0.002 |
+| baseline__raw     | cb06__all_fare_features_fitted | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.758 |                0     |
+
+##### Summary
+
+| compare_group                  |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb06__all_fare_features_fitted |                    -0.000714286 |                         -0.011 |                          0.011 |                0.00357143 |                   -0.014 |                     0.04 |
+
+</details>
+
+#### cb06__all_fare_features_full_context
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.005
+    - Secondary gains:
+      - test_f1_mean: 0.028
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                        | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:-------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb06__all_fare_features_full_context | logreg        |                          0.786 |                        0.787 |                      0.001 |                    0.713 |                  0.715 |                0.002 |
+| baseline__raw     | cb06__all_fare_features_full_context | knn           |                          0.809 |                        0.811 |                      0.002 |                    0.742 |                  0.749 |                0.007 |
+| baseline__raw     | cb06__all_fare_features_full_context | svc           |                          0.827 |                        0.818 |                     -0.009 |                    0.76  |                  0.748 |               -0.012 |
+| baseline__raw     | cb06__all_fare_features_full_context | decision_tree |                          0.803 |                        0.808 |                      0.005 |                    0.702 |                  0.73  |                0.028 |
+| baseline__raw     | cb06__all_fare_features_full_context | random_forest |                          0.822 |                        0.81  |                     -0.012 |                    0.744 |                  0.729 |               -0.015 |
+| baseline__raw     | cb06__all_fare_features_full_context | extra_trees   |                          0.804 |                        0.8   |                     -0.004 |                    0.721 |                  0.716 |               -0.005 |
+| baseline__raw     | cb06__all_fare_features_full_context | xgb           |                          0.826 |                        0.819 |                     -0.007 |                    0.758 |                  0.75  |               -0.008 |
+
+##### Summary
+
+| compare_group                        |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:-------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb06__all_fare_features_full_context |                     -0.00342857 |                         -0.012 |                          0.005 |              -0.000428571 |                   -0.015 |                    0.028 |
+
+</details>
 
 </details>
 
@@ -2466,6 +2454,128 @@ features were tested without raw `Fare`.
 | Random Forest | -0.014 | -0.019 | -0.005 | -0.008 | -0.003 | -0.006 |
 | Extra Trees | -0.002 | -0.003 | +0.003 | +0.003 | +0.004 | 0.000 |
 | XGBoost | -0.011 | -0.014 | -0.004 | -0.005 | -0.003 | -0.003 |
+
+</details>
+
+<details>
+<summary>Comparison of raw + normalized Fare representations</summary>
+
+#### cb09__fare_per_family_and_ticket_batch
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.003
+    - Secondary gains:
+      - test_f1_mean: 0.012
+
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                          | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:---------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.716 |                0.003 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.74  |               -0.002 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | svc           |                          0.827 |                        0.82  |                     -0.007 |                    0.76  |                  0.752 |               -0.008 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | decision_tree |                          0.803 |                        0.806 |                      0.003 |                    0.702 |                  0.714 |                0.012 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | random_forest |                          0.822 |                        0.808 |                     -0.014 |                    0.744 |                  0.725 |               -0.019 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | extra_trees   |                          0.804 |                        0.802 |                     -0.002 |                    0.721 |                  0.718 |               -0.003 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_batch | xgb           |                          0.826 |                        0.815 |                     -0.011 |                    0.758 |                  0.744 |               -0.014 |
+
+##### Summary
+
+| compare_group                          |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:---------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb09__fare_per_family_and_ticket_batch |                     -0.00457143 |                         -0.014 |                          0.003 |               -0.00442857 |                   -0.019 |                    0.012 |
+
+</details>
+
+#### cb09__fare_per_family_and_ticket_fitted
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - decision_tree: test_accuracy_mean: 0.003
+    - Secondary gains:
+      - test_f1_mean: 0.013
+  - extra_trees: test_accuracy_mean: 0.003
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                           | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | logreg        |                          0.786 |                        0.788 |                      0.002 |                    0.713 |                  0.716 |                0.003 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | knn           |                          0.809 |                        0.807 |                     -0.002 |                    0.742 |                  0.743 |                0.001 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | svc           |                          0.827 |                        0.82  |                     -0.007 |                    0.76  |                  0.752 |               -0.008 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | decision_tree |                          0.803 |                        0.806 |                      0.003 |                    0.702 |                  0.715 |                0.013 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | random_forest |                          0.822 |                        0.817 |                     -0.005 |                    0.744 |                  0.736 |               -0.008 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | extra_trees   |                          0.804 |                        0.807 |                      0.003 |                    0.721 |                  0.724 |                0.003 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_fitted | xgb           |                          0.826 |                        0.822 |                     -0.004 |                    0.758 |                  0.753 |               -0.005 |
+
+##### Summary
+
+| compare_group                           |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb09__fare_per_family_and_ticket_fitted |                     -0.00142857 |                         -0.007 |                          0.003 |              -0.000142857 |                   -0.008 |                    0.013 |
+
+</details>
+
+#### cb09__fare_per_family_and_ticket_full_context
+
+<details>
+<summary>Conclusion</summary>
+
+
+##### Interpretation
+
+- Verdict: mixed
+- Recommended for specific models:
+  - extra_trees: test_accuracy_mean: 0.004
+
+</details>
+
+<details>
+<summary>Experiment details</summary>
+
+##### Comparison vs baseline__raw
+
+| reference_group   | compare_group                                 | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
+|:------------------|:----------------------------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | logreg        |                          0.786 |                        0.786 |                      0     |                    0.713 |                  0.714 |                0.001 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | knn           |                          0.809 |                        0.81  |                      0.001 |                    0.742 |                  0.747 |                0.005 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | svc           |                          0.827 |                        0.824 |                     -0.003 |                    0.76  |                  0.756 |               -0.004 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | decision_tree |                          0.803 |                        0.804 |                      0.001 |                    0.702 |                  0.706 |                0.004 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | random_forest |                          0.822 |                        0.819 |                     -0.003 |                    0.744 |                  0.738 |               -0.006 |
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | extra_trees   |                          0.804 |                        0.808 |                      0.004 |                    0.721 |                  0.721 |                0     |
+| baseline__raw     | cb09__fare_per_family_and_ticket_full_context | xgb           |                          0.826 |                        0.823 |                     -0.003 |                    0.758 |                  0.755 |               -0.003 |
+
+##### Summary
+
+| compare_group                                 |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
+|:----------------------------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
+| cb09__fare_per_family_and_ticket_full_context |                    -0.000428571 |                         -0.003 |                          0.004 |              -0.000428571 |                   -0.006 |                    0.005 |
+
+</details>
 
 </details>
 
@@ -2528,49 +2638,218 @@ not establish that it caused the observed performance difference. Confirming
 the mechanism would require examining feature usage and split behavior across
 the fitted trees.
 
+#### Findings
+
+- Fare normalization is strongly dependent on both the definition of passenger
+  grouping and the model using the resulting representation. Neither
+  `Fare/FamilySize` nor `Fare/TicketGroupSize` is a generally superior
+  replacement for raw `Fare`.
+
+- The population semantics of `TicketGroupSize` become more consequential when
+  the feature is used as the denominator of another feature. Batch-local
+  `Fare/TicketGroupSize` was broadly detrimental, fitted normalization reduced
+  much of this negative effect, and full-context normalization was the only
+  Ticket-normalized Fare representation with positive mean changes in both
+  accuracy and F1 when used as a replacement for raw Fare.
+
+- KNN showed the clearest standalone benefit from full-context Ticket
+  normalization. Replacing raw Fare with full-context `Fare/TicketGroupSize`
+  improved accuracy by +0.011 and F1 by +0.013, while the batch and fitted
+  versions were detrimental. This indicates that the usefulness of a derived
+  feature can depend not only on its formula, but also on the population used
+  to construct one of its inputs.
+
+- Restoring raw `Fare` did not generally rescue the weak batch or fitted
+  Ticket-normalized representations. Their poor standalone behavior therefore
+  cannot be explained simply by information lost when raw Fare was replaced.
+
+- Raw and normalized Fare can nevertheless be complementary for specific
+  models. Decision Tree benefited from `Fare + Fare/FamilySize`
+  (+0.008 accuracy, +0.028 F1), while full-context
+  `Fare/TicketGroupSize` became substantially more useful to Decision Tree and
+  XGBoost when raw Fare was retained.
+
+- Combining all three Fare representations exposed a different interaction for
+  Decision Tree. `Fare + Fare/FamilySize + Fare/TicketGroupSize` produced
+  +0.011 accuracy / +0.039 F1 with batch Ticket counts and
+  +0.011 / +0.040 with fitted counts, compared with +0.005 / +0.028 under
+  full prediction context.
+
+- CB09 showed that this Decision Tree effect does not come simply from combining
+  the two normalized Fare representations. Removing raw Fare reduced the
+  corresponding gains to +0.003 / +0.012 for batch, +0.003 / +0.013 for
+  fitted, and +0.001 / +0.004 for full context. Raw Fare is therefore an
+  important part of the interaction observed in CB06.
+
+- The feature-similarity diagnostic found substantial structural overlap between
+  Family and full-context Ticket representations. `FamilySize` and
+  full-context `TicketGroupSize` were exactly equal for 82.7% of validation
+  passengers, compared with 58.7% for batch and 54.2% for fitted Ticket counts.
+  Their mean absolute group-size difference also fell from 0.922 (batch) and
+  0.844 (fitted) to 0.307 under full context.
+
+- Because both normalized Fare features share the same Fare numerator, this
+  denominator agreement resulted in `Fare/FamilySize` and
+  `Fare/TicketGroupSize` being exactly equal for the same 82.7% of passengers
+  under full context. Their Spearman correlation also increased substantially:
+  0.586 for batch, 0.672 for fitted, and 0.866 for full context.
+
+- The similarity increase is not universal across every measure. Pearson
+  correlation was 0.777 for batch, 0.845 for fitted, and 0.840 for full
+  context. The diagnostic therefore supports increased exact and rank-based
+  overlap under full context rather than a general claim that full-context
+  normalization is more correlated according to every similarity measure.
+
+- FamilySize and TicketGroupSize are therefore neither interchangeable nor
+  completely independent representations. With incomplete Ticket information
+  they frequently describe different group structures, while complete Ticket
+  context causes the two representations to coincide for a large majority of
+  passengers.
+
+- More complete feature semantics do not necessarily imply greater marginal
+  predictive value. Full-context Ticket normalization was generally the
+  strongest standalone Ticket-based Fare representation, yet it contributed
+  less than batch or fitted normalization to Decision Tree once raw Fare and
+  Family-normalized Fare were already available.
+
+#### Hypotheses
+
+- The poor behavior of batch-local `Fare/TicketGroupSize` when used alone is
+  likely related to instability in its denominator. A passenger's normalized
+  Fare can change according to which same-ticket passengers happen to be
+  present in the prediction batch, altering both the scale and meaning of the
+  feature.
+
+- Full prediction context produces a more complete estimate of the passenger's
+  ticket group and therefore a more stable per-ticket Fare representation.
+  This may explain why full-context normalization performs substantially better
+  than batch or fitted normalization when the Ticket-normalized feature is used
+  alone, particularly for KNN.
+
+- KNN may benefit from full-context Fare normalization because replacing raw
+  Fare with a group-relative value changes the geometry of the feature space.
+  The improvement disappearing or shrinking when raw Fare is restored is
+  consistent with this possibility, but the current experiments do not
+  directly establish the mechanism.
+
+- Decision Tree appears to benefit from having access to both absolute and
+  relative Fare information. Raw `Fare` preserves absolute price, while
+  `Fare/FamilySize` and `Fare/TicketGroupSize` provide alternative
+  group-relative representations. The strong reduction observed in CB09
+  suggests that raw Fare acts as an important component of this combination
+  rather than the two normalized representations being sufficient by
+  themselves.
+
+- The similarity diagnostic provides a plausible explanation for why batch and
+  fitted Ticket normalization add more value than full-context normalization in
+  the three-representation Decision Tree configuration. Under full context,
+  `Fare/TicketGroupSize` is identical to `Fare/FamilySize` for 82.7% of
+  validation passengers and has substantially greater rank similarity.
+  Consequently, it may offer the constrained tree fewer distinct useful
+  thresholds once `Fare/FamilySize` is already available.
+
+- Batch and fitted Ticket normalization are less complete representations of
+  the passenger's full ticket group, but their greater difference from
+  `Fare/FamilySize` may create additional candidate partitions for the
+  Decision Tree. In this specific feature combination, this additional
+  complementarity may be more useful than the greater semantic completeness of
+  the full-context representation.
+
+- This explanation is supported by the measured feature overlap and the
+  controlled CB09 comparison, but it is not a demonstrated causal mechanism.
+  Confirming it would require examining feature usage, thresholds, and
+  fold-level tree structures. Such analysis is not currently necessary for
+  feature selection unless this interaction becomes important to the final
+  model configuration.
+
+- More broadly, these experiments suggest that feature quality should not be
+  treated as an intrinsic property of a representation. Its usefulness depends
+  on the model's inductive structure, the other representations already
+  available, and—in the case of population-dependent features—the information
+  context available at prediction time.
+
+#### Current recommendation
+
+Fare representation should remain model-specific rather than adopting a single
+engineered form across all models.
+
+- **Logistic Regression:** retain raw Fare as the default. Normalized
+  representations produced only small improvements that do not currently
+  justify additional complexity or context requirements.
+
+- **KNN:** carry full-context `Fare/TicketGroupSize` forward as a
+  context-dependent candidate, preferably replacing rather than supplementing
+  raw Fare. If full prediction context is unavailable, retain raw Fare.
+
+- **SVC:** retain raw Fare. Fare normalization and representation stacking did
+  not provide a compelling improvement.
+
+- **Decision Tree:** carry
+  `Fare + Fare/FamilySize + fitted Fare/TicketGroupSize` forward as the primary
+  candidate. It produced the strongest Fare-domain result
+  (+0.011 accuracy, +0.040 F1) while retaining inductive prediction semantics.
+  `Fare + Fare/FamilySize` remains a useful simpler alternative if the extra
+  representation does not survive final feature combination.
+
+- **Random Forest:** retain raw Fare for now. Engineered Fare representations
+  provided little consistent benefit. Whether Fare itself should ultimately be
+  retained remains dependent on the final Age configuration.
+
+- **Extra Trees:** retain raw Fare for now. Small gains from some normalized
+  combinations are not yet compelling enough to justify their added complexity
+  or context assumptions.
+
+- **XGBoost:** carry
+  `Fare + full-context Fare/TicketGroupSize` forward as a context-dependent
+  candidate (+0.008 accuracy, +0.014 F1). Retain raw Fare when full prediction
+  context is unavailable.
+
+These are candidates for final feature-combination testing rather than final
+model configurations. In particular, full-context representations should only
+be retained when the intended prediction setting makes the required population
+context available.
 
 ---
 
-### Feature combination
+### Feature Combination
 
-#### Hypothesis
+Two individually informative features can sometimes be combined into a new
+categorical representation, allowing their joint values to be treated as a
+single feature.
 
-This investigation evaluates two complementary feature-engineering strategies.
+This investigation was designed as a small proof of concept: if two important
+features are available, can combining them into a single representation improve
+model performance, even when there is no specific domain reason requiring the
+combination?
 
-The first is replacing multiple informative features with a single engineered representation. The second is augmenting the original feature set by keeping both the engineered feature and its source variables.
+`Sex` and `Pclass` were selected because they showed the strongest relationships
+with the target among the raw features. This made them useful candidates for
+producing a clear result rather than choosing weaker features whose effect might
+be too small to interpret.
 
-The objective is to determine whether engineered interactions replace existing information, complement it, or simply introduce redundancy.
+Two representations were tested:
 
-#### Experiments performed:
+- **FE12:** replace `Sex` and `Pclass` with `Sex_Pclass`.
+- **CB08:** retain `Sex` and `Pclass` and add `Sex_Pclass`.
+
+CB08 was originally introduced as a follow-up after the earlier FE12 results
+suggested that replacing the source features caused substantial F1 losses. It
+tests whether the combined representation becomes more useful when the models
+retain access to its original components.
+
+#### Experiments:
 
 #### fe12__sex_pclass
 
-Proof of concept: Evaluate whether combining two informative features into a single feature can improve predictive performance or whether the models already learn this interaction naturally.
-
-Sex and Pclass were chosen because they are among the strongest predictors in the dataset, increasing the likelihood that the experiment would produce a clear outcome rather than an ambiguous one.
-
 <details>
-<summary>Conclusion</summary>
+<summary>Interpretation</summary>
 
-##### Interpretation
-
-- Verdict: model_specific_mixed
+- Verdict: mixed
 - Recommended for specific models:
-  - logreg: test_accuracy_mean: 0.009
-    - Secondary losses:
-      - test_f1_mean: -0.02
-  - extra_trees: test_accuracy_mean: 0.005
+  - logreg: test_accuracy_mean: 0.016
+  - extra_trees: test_accuracy_mean: 0.006
     - Secondary losses:
       - test_f1_mean: -0.019
-
-
-##### Conclusion
-
-Only Logistic Regression and Extra Trees showed a small improvement in accuracy after replacing Sex and Pclass with the combined Sex_Pclass feature. Most other models experienced a small decrease in accuracy.
-
-More importantly, every model suffered a noticeable reduction in F1 score (roughly -0.02 or more, with KNN being the only minor exception). This suggests that, although the combined feature may slightly improve overall accuracy for some models, it also leads to poorer balance between precision and recall. Even though the Titanic competition is evaluated solely on accuracy, this trade-off makes the usefulness of this feature questionable.
-
-A likely explanation is that most of these models are already capable of learning the interaction between Sex and Pclass. Replacing the original variables with a single combined feature removes flexibility from the model, preventing it from exploiting each variable independently and potentially reducing its ability to generalize.
 
 </details>
 
@@ -2581,46 +2860,34 @@ A likely explanation is that most of these models are already capable of learnin
 
 | reference_group   | compare_group    | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:-----------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | fe12__sex_pclass | logreg        |                          0.786 |                        0.795 |                      0.009 |                    0.713 |                  0.693 |               -0.02  |
-| baseline__raw     | fe12__sex_pclass | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.741 |               -0.001 |
-| baseline__raw     | fe12__sex_pclass | svc           |                          0.827 |                        0.824 |                     -0.003 |                    0.76  |                  0.732 |               -0.028 |
-| baseline__raw     | fe12__sex_pclass | decision_tree |                          0.803 |                        0.794 |                     -0.009 |                    0.702 |                  0.68  |               -0.022 |
-| baseline__raw     | fe12__sex_pclass | random_forest |                          0.822 |                        0.816 |                     -0.006 |                    0.744 |                  0.717 |               -0.027 |
-| baseline__raw     | fe12__sex_pclass | extra_trees   |                          0.804 |                        0.809 |                      0.005 |                    0.721 |                  0.702 |               -0.019 |
-| baseline__raw     | fe12__sex_pclass | xgb           |                          0.826 |                        0.82  |                     -0.006 |                    0.758 |                  0.743 |               -0.015 |
+| baseline__raw     | fe12__sex_pclass | logreg        |                          0.786 |                        0.802 |                      0.016 |                    0.713 |                  0.713 |                0     |
+| baseline__raw     | fe12__sex_pclass | knn           |                          0.809 |                        0.806 |                     -0.003 |                    0.742 |                  0.735 |               -0.007 |
+| baseline__raw     | fe12__sex_pclass | svc           |                          0.827 |                        0.828 |                      0.001 |                    0.76  |                  0.747 |               -0.013 |
+| baseline__raw     | fe12__sex_pclass | decision_tree |                          0.803 |                        0.798 |                     -0.005 |                    0.702 |                  0.692 |               -0.01  |
+| baseline__raw     | fe12__sex_pclass | random_forest |                          0.822 |                        0.814 |                     -0.008 |                    0.744 |                  0.71  |               -0.034 |
+| baseline__raw     | fe12__sex_pclass | extra_trees   |                          0.804 |                        0.81  |                      0.006 |                    0.721 |                  0.702 |               -0.019 |
+| baseline__raw     | fe12__sex_pclass | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.751 |               -0.007 |
 
 ##### Summary
 
 | compare_group    |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:-----------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| fe12__sex_pclass |                     -0.00185714 |                         -0.009 |                          0.009 |                -0.0188571 |                   -0.028 |                   -0.001 |
+| fe12__sex_pclass |                     0.000857143 |                         -0.008 |                          0.016 |                -0.0128571 |                   -0.034 |                        0 |
 
 </details>
 
 #### cb08__sex_pclass_features
 
-Experiment exploring whether using combined features with their original ones leads to gains, or just adds noise.
-
 <details>
-<summary>Conclusion</summary>
-
-
-##### Interpretation
+<summary>Interpretation</summary>
 
 - Verdict: mixed
 - Recommended for specific models:
   - logreg: test_accuracy_mean: 0.016
+  - extra_trees: test_accuracy_mean: 0.003
+    - Secondary losses:
+      - test_f1_mean: -0.021
 
-
-##### Conclusion
-
-Unlike fe12, this experiment preserves both the original variables and the engineered interaction.
-
-The results suggest that Sex_Pclass contains useful predictive information, but not enough to replace Sex and Pclass. Instead, keeping all three representations preserves the flexibility of the original variables while allowing some models to exploit the explicit interaction.
-
-Logistic Regression showed the largest improvement (+0.016 accuracy) without the substantial F1 loss observed in fe12, indicating that simpler models benefit from receiving the engineered interaction explicitly. Most other models experienced only minor changes, suggesting they already learn this relationship internally.
-
-Overall, Sex_Pclass is better viewed as a complementary feature than as a replacement for its source variables.
 
 </details>
 
@@ -2631,61 +2898,107 @@ Overall, Sex_Pclass is better viewed as a complementary feature than as a replac
 
 | reference_group   | compare_group             | model_name    |   test_accuracy_mean_reference |   test_accuracy_mean_compare |   test_accuracy_mean_delta |   test_f1_mean_reference |   test_f1_mean_compare |   test_f1_mean_delta |
 |:------------------|:--------------------------|:--------------|-------------------------------:|-----------------------------:|---------------------------:|-------------------------:|-----------------------:|---------------------:|
-| baseline__raw     | cb08__pclass_sex_features | logreg        |                          0.786 |                        0.802 |                      0.016 |                    0.713 |                  0.713 |                0     |
-| baseline__raw     | cb08__pclass_sex_features | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.738 |               -0.004 |
-| baseline__raw     | cb08__pclass_sex_features | svc           |                          0.827 |                        0.827 |                      0     |                    0.76  |                  0.75  |               -0.01  |
-| baseline__raw     | cb08__pclass_sex_features | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.702 |                0     |
-| baseline__raw     | cb08__pclass_sex_features | random_forest |                          0.822 |                        0.817 |                     -0.005 |                    0.744 |                  0.73  |               -0.014 |
-| baseline__raw     | cb08__pclass_sex_features | extra_trees   |                          0.804 |                        0.805 |                      0.001 |                    0.721 |                  0.698 |               -0.023 |
-| baseline__raw     | cb08__pclass_sex_features | xgb           |                          0.826 |                        0.825 |                     -0.001 |                    0.758 |                  0.753 |               -0.005 |
+| baseline__raw     | cb08__sex_pclass_features | logreg        |                          0.786 |                        0.802 |                      0.016 |                    0.713 |                  0.713 |                0     |
+| baseline__raw     | cb08__sex_pclass_features | knn           |                          0.809 |                        0.809 |                      0     |                    0.742 |                  0.738 |               -0.004 |
+| baseline__raw     | cb08__sex_pclass_features | svc           |                          0.827 |                        0.827 |                      0     |                    0.76  |                  0.75  |               -0.01  |
+| baseline__raw     | cb08__sex_pclass_features | decision_tree |                          0.803 |                        0.803 |                      0     |                    0.702 |                  0.702 |                0     |
+| baseline__raw     | cb08__sex_pclass_features | random_forest |                          0.822 |                        0.815 |                     -0.007 |                    0.744 |                  0.729 |               -0.015 |
+| baseline__raw     | cb08__sex_pclass_features | extra_trees   |                          0.804 |                        0.807 |                      0.003 |                    0.721 |                  0.7   |               -0.021 |
+| baseline__raw     | cb08__sex_pclass_features | xgb           |                          0.826 |                        0.819 |                     -0.007 |                    0.758 |                  0.746 |               -0.012 |
 
 ##### Summary
 
 | compare_group             |   test_accuracy_mean_delta_mean |   test_accuracy_mean_delta_min |   test_accuracy_mean_delta_max |   test_f1_mean_delta_mean |   test_f1_mean_delta_min |   test_f1_mean_delta_max |
 |:--------------------------|--------------------------------:|-------------------------------:|-------------------------------:|--------------------------:|-------------------------:|-------------------------:|
-| cb08__pclass_sex_features |                      0.00157143 |                         -0.005 |                          0.016 |                    -0.008 |                   -0.023 |                        0 |
+| cb08__sex_pclass_features |                     0.000714286 |                         -0.007 |                          0.016 |               -0.00885714 |                   -0.021 |                        0 |
 
 </details>
 
-#### Overall conclusion
-
-Three feature interaction studies (Family, Age, and Sex/Pclass) revealed that the usefulness of engineered feature interactions depends not only on the interaction itself, but also on how it is incorporated into the feature set.
-
-Replacing informative variables with engineered interactions frequently reduced model flexibility and degraded performance. In contrast, augmenting the original representation sometimes produced modest but consistent improvements, particularly for simpler models such as Logistic Regression.
-
-These experiments suggest that feature engineering should be viewed as a strategy for enriching the feature space rather than necessarily replacing existing variables.
+</details>
 
 #### Findings
 
-- Replacing informative features with engineered interactions often reduces model flexibility and degrades performance.
+- Combining two informative features can improve predictive performance, but
+  the effect is strongly model-dependent.
 
-- Engineered interaction features are generally more useful as complementary representations than as direct replacements.
+- Logistic Regression provides the clearest positive result. Replacing `Sex`
+  and `Pclass` with `Sex_Pclass` improved accuracy by +0.016 without changing
+  F1. Keeping all three representations produced the same reported
+  +0.016 accuracy and unchanged F1.
 
-- Logistic Regression consistently benefited from explicit engineered representations.
+- The Logistic Regression result demonstrates that a combined representation
+  can expose useful predictive structure even when it is constructed entirely
+  from information already available to the model. In this case, retaining the
+  source features provided no additional measurable benefit at the reported
+  precision.
 
-- Most tree-based models already learn many feature interactions internally and therefore gained less from explicit interaction features.
+- Decision Tree showed the opposite behavior. Replacing `Sex` and `Pclass`
+  reduced accuracy by 0.005 and F1 by 0.010, while adding `Sex_Pclass`
+  alongside them produced no measurable change from baseline. For this model,
+  preserving the original representations was more useful than replacing them
+  with the combined feature.
 
-- Whether an engineered feature should replace or augment its source variables depends on both the feature and the learning algorithm.
+- KNN and SVC showed no meaningful accuracy improvement and experienced small
+  F1 losses. Random Forest was negatively affected under both configurations.
 
-#### Open hypotheses
+- Extra Trees gained some accuracy from the combined representation, but the
+  gain was accompanied by an approximately 0.02 F1 loss and therefore does not
+  provide a compelling trade-off.
 
-- Does the benefit of explicit interaction features decrease as model complexity increases?
+- XGBoost also showed no useful improvement from either representation.
 
-- Would automatically learned interaction features outperform manually designed ones?
+- The experiment therefore answers the original proof-of-concept question
+  positively, but conditionally: combining important features is a potentially
+  useful feature-engineering technique, not a transformation that should be
+  expected to improve every model.
 
-- Which feature interactions genuinely introduce new information, and which merely duplicate information already available to the model?
+#### Hypotheses
 
-- Can feature importance or SHAP analysis explain why Logistic Regression consistently benefits more from engineered representations than tree-based models?
+- A combined categorical feature changes how the relationship between its
+  source variables is presented to the model. Rather than requiring the model
+  to derive useful combinations from separate inputs, relevant combinations
+  become directly represented as feature values.
+
+- Models differ in how much they benefit from this explicit representation.
+  Logistic Regression may benefit because a combined categorical feature makes
+  joint structure directly available to a linear model that would otherwise
+  represent the source features primarily through separate effects.
+
+- Models capable of naturally learning conditional relationships, particularly
+  tree-based models, may gain less from an explicit combination because similar
+  relationships can already be constructed through their own decision
+  structure.
+
+- Replacing the source variables can also remove useful flexibility. The
+  Decision Tree result illustrates this distinction: adding the combined
+  representation caused no measurable change, while forcing the combined
+  representation to replace its source features reduced performance.
+
+- The usefulness of feature combination should therefore be treated as an
+  empirical question. Strong individual features can make reasonable
+  candidates for combination, but their importance alone does not guarantee
+  that their combined representation will be useful.
 
 #### Current recommendation
 
-- Logistic Regression
-    - Use the combined and original representations together (Sex, Pclass, and Sex_Pclass).
-    - The combined representation consistently improved performance without the large F1 degradation observed when replacing the original variables.
+Feature combination is worth retaining as a feature-engineering technique to
+consider when important predictors are identified, particularly when an
+explicit joint representation may expose structure that is difficult for the
+chosen model to learn directly.
 
-- All other models
-    - Prefer the original Sex and Pclass features.
-    - The explicit interaction provides little additional benefit and may unnecessarily increase feature redundancy.
+It should be tested rather than applied automatically, and replacement of the
+source features should be evaluated separately from adding the combined
+representation.
+
+For the current Titanic models, carry `Sex_Pclass` forward only for Logistic
+Regression. FE12 and CB08 produce the same reported performance, so the simpler
+replacement representation is the current candidate. Retain the original
+`Sex` and `Pclass` representation for the remaining models.
+
+No further Sex/Pclass combination experiments are currently warranted. The
+purpose of this investigation was to determine whether feature combination can
+be useful; the experiments provide sufficient evidence that it can be, while
+also demonstrating its model dependence and potential costs.
 
 ---
 
