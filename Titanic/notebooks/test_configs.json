@@ -4710,1091 +4710,6 @@
       "Pclass"
     ]
   },
-  "fe09__ticket_group_size__logreg": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__logreg",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe09__ticket_group_size__knn": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__knn",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe09__ticket_group_size__svc": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__svc",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe09__ticket_group_size__decision_tree": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__decision_tree",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe09__ticket_group_size__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe09__ticket_group_size__extra_trees": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "extra_trees",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__extra_trees",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe09__ticket_group_size__xgb": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe09",
-    "feature_group": "ticket_group_size",
-    "group": "fe09__ticket_group_size",
-    "domain": "ticket",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "xgb",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 3,
-      "learning_rate": 0.05,
-      "subsample": 0.8,
-      "colsample_bytree": 0.8,
-      "random_state": 42,
-      "eval_metric": "logloss"
-    },
-    "notes": "Feature engineering 09.Adding Ticket group size.",
-    "name": "fe09__ticket_group_size__xgb",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__logreg": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__logreg",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__knn": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__knn",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__svc": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__svc",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__decision_tree": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__decision_tree",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__extra_trees": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "extra_trees",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__extra_trees",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "fe10__fare_per_ticket_member__xgb": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fe10",
-    "feature_group": "fare_per_ticket_member",
-    "group": "fe10__fare_per_ticket_member",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "xgb",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 3,
-      "learning_rate": 0.05,
-      "subsample": 0.8,
-      "colsample_bytree": 0.8,
-      "random_state": 42,
-      "eval_metric": "logloss"
-    },
-    "notes": "Features Engineering 10.Replacing Fare with Fare/TicketMember.",
-    "name": "fe10__fare_per_ticket_member__xgb",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
   "fe11__age_bin__logreg": {
     "pre_cv_feature_pipeline": [],
     "pre_cv_scope": null,
@@ -9542,1371 +8457,6 @@
       "Parch",
       "Fare",
       "Fare/FamilySize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__logreg": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__logreg",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__knn": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__knn",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__svc": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__svc",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__decision_tree": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__decision_tree",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__extra_trees": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "extra_trees",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__extra_trees",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb05__fare_and_fare_per_ticket__xgb": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb05",
-    "feature_group": "fare_and_fare_per_ticket",
-    "group": "cb05__fare_and_fare_per_ticket",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "xgb",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 3,
-      "learning_rate": 0.05,
-      "subsample": 0.8,
-      "colsample_bytree": 0.8,
-      "random_state": 42,
-      "eval_metric": "logloss"
-    },
-    "notes": "Combo Experiment 05.Adding Fare per Ticket member, batch version.",
-    "name": "cb05__fare_and_fare_per_ticket__xgb",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__logreg": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__logreg",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__knn": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__knn",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__svc": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__svc",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__decision_tree": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__decision_tree",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__extra_trees": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "extra_trees",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__extra_trees",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "cb06__all_fare_features__xgb": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "Fare/FamilySize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ],
-      [
-        "fare_per_familysize",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "FamilySize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/FamilySize"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "cb06",
-    "feature_group": "all_fare_features",
-    "group": "cb06__all_fare_features",
-    "domain": "fare",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "xgb",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 3,
-      "learning_rate": 0.05,
-      "subsample": 0.8,
-      "colsample_bytree": 0.8,
-      "random_state": 42,
-      "eval_metric": "logloss"
-    },
-    "notes": "Combo Experiment 06.Adding Fare/FamilySize and Fare/TicketMember.",
-    "name": "cb06__all_fare_features__xgb",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Fare/FamilySize",
-      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -25577,1374 +23127,17 @@
       "Pclass"
     ]
   },
-  "test__test_features_batch__logreg": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__logreg",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_features_batch__knn": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__knn",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_features_batch__svc": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__svc",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_features_batch__decision_tree": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__decision_tree",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_features_batch__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__random_forest",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_features_batch__extra_trees": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "extra_trees",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__extra_trees",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_features_batch__xgb": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_features_batch",
-    "group": "test__test_features_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "xgb",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 3,
-      "learning_rate": 0.05,
-      "subsample": 0.8,
-      "colsample_bytree": 0.8,
-      "random_state": 42,
-      "eval_metric": "logloss"
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_features_batch__xgb",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__logreg": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "logreg",
-    "model_params": {
-      "max_iter": 1000,
-      "random_state": 42
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__logreg",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__knn": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__knn",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__svc": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__svc",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__decision_tree": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "decision_tree",
-    "model_params": {
-      "max_depth": 4,
-      "min_samples_leaf": 5,
-      "random_state": 42
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__decision_tree",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__random_forest",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__extra_trees": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "extra_trees",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__extra_trees",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
-  "test__test_family_ticket_batch__xgb": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "Fare",
-        "FamilySize",
-        "IsAlone",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "family_size",
-        {
-          "class": "SumColumnsTransformer",
-          "params": {
-            "constant": 1,
-            "output_col": "FamilySize",
-            "source_cols": [
-              "SibSp",
-              "Parch"
-            ]
-          }
-        }
-      ],
-      [
-        "is_alone",
-        {
-          "class": "IsOneTransformer",
-          "params": {
-            "output_col": "IsAlone",
-            "source_col": "FamilySize"
-          }
-        }
-      ],
-      [
-        "ticket_group_size_batch",
-        {
-          "class": "BatchValueCountTransformer",
-          "params": {
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "test",
-    "feature_group": "test_family_ticket_batch",
-    "group": "test__test_family_ticket_batch",
-    "domain": "test",
-    "tags": [
-      "batch_context"
-    ],
-    "model_name": "xgb",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 3,
-      "learning_rate": 0.05,
-      "subsample": 0.8,
-      "colsample_bytree": 0.8,
-      "random_state": 42,
-      "eval_metric": "logloss"
-    },
-    "notes": "test to compare values between family and ticket batch.",
-    "name": "test__test_family_ticket_batch__xgb",
-    "features": [
-      "Age",
-      "Fare",
-      "FamilySize",
-      "IsAlone",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Pclass"
-    ]
-  },
   "test__family_ticket_batch__logreg": {
     "pre_cv_feature_pipeline": [],
     "pre_cv_scope": null,
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -26989,6 +23182,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27021,10 +23236,11 @@
     "name": "test__family_ticket_batch__logreg",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27036,10 +23252,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27084,6 +23301,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27115,10 +23354,11 @@
     "name": "test__family_ticket_batch__knn",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27130,10 +23370,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27178,6 +23419,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27213,10 +23476,11 @@
     "name": "test__family_ticket_batch__svc",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27228,10 +23492,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27276,6 +23541,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27309,10 +23596,11 @@
     "name": "test__family_ticket_batch__decision_tree",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27324,10 +23612,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27372,6 +23661,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27407,10 +23718,11 @@
     "name": "test__family_ticket_batch__random_forest",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27422,10 +23734,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27470,6 +23783,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27505,10 +23840,11 @@
     "name": "test__family_ticket_batch__extra_trees",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27520,10 +23856,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27568,6 +23905,28 @@
           "params": {
             "output_col": "TicketGroupSize",
             "source_col": "Ticket"
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27605,10 +23964,11 @@
     "name": "test__family_ticket_batch__xgb",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27620,10 +23980,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27671,6 +24032,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27701,10 +24084,11 @@
     "name": "test__family_ticket_fitted__logreg",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27716,10 +24100,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27767,6 +24152,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27796,10 +24203,11 @@
     "name": "test__family_ticket_fitted__knn",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27811,10 +24219,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27862,6 +24271,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27895,10 +24326,11 @@
     "name": "test__family_ticket_fitted__svc",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -27910,10 +24342,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -27961,6 +24394,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -27992,10 +24447,11 @@
     "name": "test__family_ticket_fitted__decision_tree",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -28007,10 +24463,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -28058,6 +24515,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -28091,10 +24570,11 @@
     "name": "test__family_ticket_fitted__random_forest",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -28106,10 +24586,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -28157,6 +24638,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -28190,10 +24693,11 @@
     "name": "test__family_ticket_fitted__extra_trees",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"
@@ -28205,10 +24709,11 @@
     "preprocessing": {
       "numeric_features": [
         "Age",
-        "Fare",
         "FamilySize",
         "IsAlone",
-        "TicketGroupSize"
+        "TicketGroupSize",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
       ],
       "onehot_features": [
         "Sex",
@@ -28256,6 +24761,28 @@
             "output_col": "TicketGroupSize",
             "source_col": "Ticket",
             "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
           }
         }
       ]
@@ -28291,10 +24818,11 @@
     "name": "test__family_ticket_fitted__xgb",
     "features": [
       "Age",
-      "Fare",
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
       "Sex",
       "Embarked",
       "Pclass"

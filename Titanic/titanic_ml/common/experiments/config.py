@@ -569,74 +569,10 @@ ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member_c
 
 # Fe 09 - Ticket group size
 
-fe09__ticket_group_size_patch = {
-    "transformations": [
-        FE.ticket_group_size_batch,
-    ],
-
-    "add": {
-        "preprocessing": {
-            "numeric_features": [
-                "TicketGroupSize",
-            ],
-        },
-    },
-}
-
-fe09__ticket_group_size_config = create_config_group(
-    base_configs=baseline_config,
-    patches=[
-        fe09__ticket_group_size_patch,
-    ],
-    raw_features=RAW_FEATURES,
-    stage="fe09",
-    feature_group="ticket_group_size",
-    domain="ticket",
-    notes=("Feature engineering 09."
-            "Adding Ticket group size."),
-)
-
-ALL_EXPERIMENTS['fe09__ticket_group_size'] = fe09__ticket_group_size_config
-
 # Fe 10 - Fare per Ticket Member
 
-fe10__fare_per_ticket_member_patch = {
-    "transformations": [
-        FE.ticket_group_size_batch, 
-        FE.fare_ticket,
-    ],
+# Moved to the bottom of the file to avoid circular dependency issues with the new ticket group size experiments.
 
-    "add": {
-        "preprocessing": {
-            "numeric_features": [
-                "Fare/TicketMember",
-            ],
-        },
-    },
-
-    "remove": {
-        "preprocessing": {
-            "numeric_features": [
-                "Fare",
-            ],
-        },
-    },
-}
-
-fe10__fare_per_ticket_member_config = create_config_group(
-    base_configs=baseline_config,
-    patches=[
-        fe10__fare_per_ticket_member_patch,
-    ],
-    raw_features=RAW_FEATURES,
-    stage="fe10",
-    feature_group="fare_per_ticket_member",
-    domain="fare",
-    notes=("Features Engineering 10."
-            "Replacing Fare with Fare/TicketMember."),
-)
-
-ALL_EXPERIMENTS['fe10__fare_per_ticket_member'] = fe10__fare_per_ticket_member_config
 
 # Fe 11 - Age Bin
 
@@ -854,70 +790,9 @@ ALL_EXPERIMENTS['cb04__fare_and_fare_per_family'] = cb04__fare_and_fare_per_fami
 
 # Cb 05 - Fare and Fare per Ticket member
 
-cb05__fare_and_fare_per_ticket_patch = {
-    "transformations": [
-        FE.ticket_group_size_batch,
-        FE.fare_ticket,
-    ],
-
-    "add": {
-        "preprocessing": {
-            "numeric_features": [
-                "Fare/TicketMember",
-            ],
-        },
-    },
-}
-
-cb05__fare_and_fare_per_ticket_config = create_config_group(
-    base_configs=baseline_config,
-    patches=[
-        cb05__fare_and_fare_per_ticket_patch,
-    ],
-    raw_features=RAW_FEATURES,
-    stage="cb05",
-    feature_group="fare_and_fare_per_ticket",
-    domain="fare",
-    notes=("Combo Experiment 05."
-            "Adding Fare per Ticket member."),
-)
-
-ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket'] = cb05__fare_and_fare_per_ticket_config
-
 # Cb 06 - All Fare features
 
-cb06__all_fare_features_patch = {
-    "transformations": [
-        FE.family,
-        FE.ticket_group_size_batch,
-        FE.fare_family,
-        FE.fare_ticket
-    ],
-
-    "add": {
-        "preprocessing": {
-            "numeric_features": [
-                "Fare/FamilySize", "Fare/TicketMember",
-            ],
-        },
-    },
-}
-
-cb06__all_fare_features_config = create_config_group(
-    base_configs=baseline_config,
-    patches=[
-        cb06__all_fare_features_patch,
-    ],
-    raw_features=RAW_FEATURES,
-    stage="cb06",
-    feature_group="all_fare_features",
-    domain="fare",
-    pre_cv_scope= None,
-    notes=("Combo Experiment 06."
-            "Adding Fare/FamilySize and Fare/TicketMember."),
-)
-
-ALL_EXPERIMENTS['cb06__all_fare_features'] = cb06__all_fare_features_config
+# Moved to the bottom of the file to avoid circular dependency issues with the new ticket group size experiments.
 
 # Cb 07 - Family features
 
@@ -1858,8 +1733,8 @@ test_family_ticket_full_context_config = create_config_group(
     
 )
 
-ALL_EXPERIMENTS['test_family_ticket_batch_config'] = test_family_ticket_batch_config
+ALL_EXPERIMENTS['test__family_ticket_batch'] = test_family_ticket_batch_config
 
-ALL_EXPERIMENTS['test_family_ticket_fitted_config'] = test_family_ticket_fitted_config
+ALL_EXPERIMENTS['test__family_ticket_fitted'] = test_family_ticket_fitted_config
 
-ALL_EXPERIMENTS['test_family_ticket_full_context_config'] = test_family_ticket_full_context_config
+ALL_EXPERIMENTS['test__family_ticket_full_context'] = test_family_ticket_full_context_config
