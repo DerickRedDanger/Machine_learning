@@ -4,6 +4,7 @@ from titanic_ml.feature_engineering.updated import fe as FE
 from titanic_ml.pre_cv_feature_engineering import pre_cv_fe as PRE_CV_FE
 # Dictionary to hold all experiment configurations
 ALL_EXPERIMENTS = {}
+ALL_PATCHES={}
 
 RAW_FEATURES = {
     "PassengerId",
@@ -349,6 +350,7 @@ fe01_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe01__family'] = fe01_config
+ALL_PATCHES['fe01__family_patch'] = fe01__family_patch
 
 #Fe 02 - Has Cabin
 
@@ -380,6 +382,7 @@ fe02__has_cabin_config = create_config_group(
 )
 
 ALL_EXPERIMENTS["fe02__has_cabin"] = fe02__has_cabin_config
+ALL_PATCHES["fe02__has_cabin_patch"] = fe02__has_cabin_patch
 
 # Fe 03 - Deck
 
@@ -411,6 +414,7 @@ fe03__deck_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe03__deck'] = fe03__deck_config
+ALL_PATCHES['fe03__deck_patch'] = fe03__deck_patch
 
 #Fe 04
 
@@ -445,6 +449,7 @@ fe04__cabin_features_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe04__cabin_features'] = fe04__cabin_features_config
+ALL_PATCHES['fe04__cabin_features_patch'] = fe04__cabin_features_patch
 
 #Fe 05
 
@@ -477,6 +482,7 @@ fe05__title_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe05__title'] = fe05__title_config
+ALL_PATCHES['fe05__title_patch'] = fe05__title_patch
 
 # Fe 06 - Age imputation by title
 
@@ -501,6 +507,7 @@ fe06__age_imputation_title_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe06__age_imputation_title'] = fe06__age_imputation_title_config
+ALL_PATCHES['fe06__age_imputation_title_patch'] = fe06__age_imputation_title_patch
 
 # Fe 07 - Age imputation by Title and Pclass
 
@@ -525,7 +532,7 @@ fe07__age_imputation_title_pclass_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe07__age_imputation_title_pclass'] = fe07__age_imputation_title_pclass_config
-
+ALL_PATCHES['fe07__age_imputation_title_pclass_patch'] = fe07__age_imputation_title_pclass_patch
 #Fe 08 - Fare per family member
 
 fe08__fare_per_family_member_patch = {
@@ -566,6 +573,8 @@ fe08__fare_per_family_member_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['fe08__fare_per_family_member'] = fe08__fare_per_family_member_config
+
+ALL_PATCHES['fe08__fare_per_family_member_patch'] = fe08__fare_per_family_member_patch
 
 # Fe 09 - Ticket group size
 
@@ -613,6 +622,8 @@ fe11__age_bin_config = create_config_group(
 
 ALL_EXPERIMENTS['fe11__age_bin'] = fe11__age_bin_config
 
+ALL_PATCHES['fe11__age_bin_patch'] = fe11__age_bin_patch
+
 # FE 12 - Sex Pclass
 
 fe12__sex_pclass_patch = {
@@ -655,6 +666,7 @@ fe12__sex_pclass_config = create_config_group(
 
 ALL_EXPERIMENTS['fe12__sex_pclass'] = fe12__sex_pclass_config
 
+ALL_PATCHES['fe12__sex_pclass_patch'] = fe12__sex_pclass_patch
 
 # Combo experiments
 
@@ -689,6 +701,8 @@ cb01__age_and_bins_config = create_config_group(
 
 ALL_EXPERIMENTS['cb01__age_and_bins'] = cb01__age_and_bins_config
 
+ALL_PATCHES['cb01__age_and_bins_patch'] = cb01__age_and_bins_patch
+
 # Cb 02 - Age imputed by Title and Bins
 
 cb02__age_imputed_title_and_bins_patch = {
@@ -721,6 +735,8 @@ cb02__age_imputed_title_and_bins_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['cb02__age_imputed_title_and_bins'] = cb02__age_imputed_title_and_bins_config
+
+ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'] = cb02__age_imputed_title_and_bins_patch
 
 # Cb 03 - Age imputed by Title and Pclass and adding Bins
 
@@ -755,6 +771,7 @@ cb03__age_imputed_title_pclass_and_bins_config = create_config_group(
 
 ALL_EXPERIMENTS['cb03__age_imputed_title_pclass_and_bins'] = cb03__age_imputed_title_pclass_and_bins_config
 
+ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'] = cb03__age_imputed_title_pclass_and_bins_patch
 
 # Cb 04 - Fare and Fare per Family Member
 
@@ -787,6 +804,8 @@ cb04__fare_and_fare_per_family_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['cb04__fare_and_fare_per_family'] = cb04__fare_and_fare_per_family_config
+
+ALL_PATCHES['cb04__fare_and_fare_per_family_patch'] = cb04__fare_and_fare_per_family_patch
 
 # Cb 05 - Fare and Fare per Ticket member
 
@@ -827,6 +846,8 @@ cb07__family_features_config = create_config_group(
 
 ALL_EXPERIMENTS['cb07__family_features'] = cb07__family_features_config
 
+ALL_PATCHES['cb07__family_features_patch'] = cb07__family_features_patch
+
 # Cb 08 - Sex Pclass features
 
 cb08__sex_pclass_features_patch = {
@@ -857,6 +878,8 @@ cb08__sex_pclass_features_config = create_config_group(
 )
 
 ALL_EXPERIMENTS['cb08__sex_pclass_features'] = cb08__sex_pclass_features_config
+
+ALL_PATCHES['cb08__sex_pclass_features_patch'] = cb08__sex_pclass_features_patch
 
 # Ablations
 
@@ -1196,18 +1219,17 @@ fe09__ticket_group_size_full_context_configs = create_config_group(
     pre_cv_scope="full_prediction_context",
 )
 
-ALL_EXPERIMENTS[
-    "fe09__ticket_group_size_batch"
-] = fe09__ticket_group_size_batch_configs
+ALL_EXPERIMENTS["fe09__ticket_group_size_batch"] = fe09__ticket_group_size_batch_configs
 
-ALL_EXPERIMENTS[
-    "fe09__ticket_group_size_fitted"
-] = fe09__ticket_group_size_fitted_configs
+ALL_EXPERIMENTS["fe09__ticket_group_size_fitted"] = fe09__ticket_group_size_fitted_configs
 
-ALL_EXPERIMENTS[
-    "fe09__ticket_group_size_full_context"
-] = fe09__ticket_group_size_full_context_configs
+ALL_EXPERIMENTS["fe09__ticket_group_size_full_context"] = fe09__ticket_group_size_full_context_configs
 
+ALL_PATCHES["fe09__ticket_group_size_batch_patch"] = fe09__ticket_group_size_batch_patch
+
+ALL_PATCHES["fe09__ticket_group_size_fitted_patch"] = fe09__ticket_group_size_fitted_patch
+
+ALL_PATCHES["fe09__ticket_group_size_full_context_patch"] = fe09__ticket_group_size_full_context_patch
 # fe10
 
 fe10__fare_per_ticket_member_batch_patch = {
@@ -1329,6 +1351,12 @@ ALL_EXPERIMENTS['fe10__fare_per_ticket_member_fitted'] = fe10__fare_per_ticket_m
 
 ALL_EXPERIMENTS['fe10__fare_per_ticket_member_full_context'] = fe10__fare_per_ticket_member_full_context_config
 
+ALL_PATCHES['fe10__fare_per_ticket_member_batch_patch'] = fe10__fare_per_ticket_member_batch_patch
+
+ALL_PATCHES['fe10__fare_per_ticket_member_fitted_patch'] = fe10__fare_per_ticket_member_fitted_patch
+
+ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'] = fe10__fare_per_ticket_member_full_context_patch
+
 # CB05
 
 cb05__fare_and_fare_per_ticket_batch_patch = {
@@ -1426,6 +1454,12 @@ ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_batch'] = cb05__fare_and_fare_pe
 ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_fitted'] = cb05__fare_and_fare_per_ticket_fitted_config
 
 ALL_EXPERIMENTS['cb05__fare_and_fare_per_ticket_full_context'] = cb05__fare_and_fare_per_ticket_full_context_config
+
+ALL_PATCHES['cb05__fare_and_fare_per_ticket_batch_patch'] = cb05__fare_and_fare_per_ticket_batch_patch
+
+ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch'] = cb05__fare_and_fare_per_ticket_fitted_patch
+
+ALL_PATCHES['cb05__fare_and_fare_per_ticket_full_context_patch'] = cb05__fare_and_fare_per_ticket_full_context_patch
 
 # Cb06
 
@@ -1534,6 +1568,11 @@ ALL_EXPERIMENTS['cb06__all_fare_features_fitted'] = cb06__all_fare_features_fitt
 
 ALL_EXPERIMENTS['cb06__all_fare_features_full_context'] = cb06__all_fare_features_full_context_config
 
+ALL_PATCHES['cb06__all_fare_features_batch_patch'] = cb06__all_fare_features_batch_patch
+
+ALL_PATCHES['cb06__all_fare_features_fitted_patch'] = cb06__all_fare_features_fitted_patch
+
+ALL_PATCHES['cb06__all_fare_features_full_context_patch'] = cb06__all_fare_features_full_context_patch
 # Cb09
 
 cb09__fare_per_family_and_ticket_batch_patch = {
@@ -1665,6 +1704,11 @@ ALL_EXPERIMENTS['cb09__fare_per_family_and_ticket_fitted'] = cb09__fare_per_fami
 
 ALL_EXPERIMENTS['cb09__fare_per_family_and_ticket_full_context'] = cb09__fare_per_family_and_ticket_full_context_config
 
+ALL_PATCHES['cb09__fare_per_family_and_ticket_batch_patch'] = cb09__fare_per_family_and_ticket_batch_patch
+
+ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'] = cb09__fare_per_family_and_ticket_fitted_patch
+
+ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'] = cb09__fare_per_family_and_ticket_full_context_patch
 
 # test configuration
 
@@ -1738,3 +1782,4 @@ ALL_EXPERIMENTS['test__family_ticket_batch'] = test_family_ticket_batch_config
 ALL_EXPERIMENTS['test__family_ticket_fitted'] = test_family_ticket_fitted_config
 
 ALL_EXPERIMENTS['test__family_ticket_full_context'] = test_family_ticket_full_context_config
+
