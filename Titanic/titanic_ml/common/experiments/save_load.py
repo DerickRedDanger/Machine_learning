@@ -5,11 +5,6 @@ from sklearn.base import BaseEstimator
 import numpy as np
 from pathlib import Path
 
-# temporary test overwrite
-EXPERIMENT_RESULTS_FILE = "test_results.csv"
-EXPERIMENT_CONFIGS_FILE = "test_configs.json"
-EXPERIMENT_FEATURE_EFFECT = "test_feature_effects.json"
-
 def save_results(results_df, path=EXPERIMENT_RESULTS_FILE, append=True):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)

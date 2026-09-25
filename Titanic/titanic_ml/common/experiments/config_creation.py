@@ -656,3 +656,8 @@ def validate_config_group(configs):
             )
 
     return True
+
+def config_to_group(config):
+    return {
+        config["name"]: config
+    }

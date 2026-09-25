@@ -11,6 +11,7 @@ from titanic_ml.common.experiments.save_load import save_results, load_results, 
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, analyze_feature_effect
 # from titanic_ml.common.experiments.runner import build_preprocessor, evaluate_model
 from titanic_ml.common.experiments.utils import get_experiment_configs, get_config_group
+from titanic_ml.paths import EXPERIMENT_CONFIGS_FILE, EXPERIMENT_FEATURE_EFFECT, EXPERIMENT_RESULTS_FILE
 
 def build_preprocessor(preprocessing_config):
     numeric_features = preprocessing_config.get("numeric_features", [])
@@ -405,6 +406,9 @@ def run_experiment_group_workflow(
     verbose=False,
     debug=False,
     context_df=None,
+    results_path=EXPERIMENT_RESULTS_FILE,
+    configs_path=EXPERIMENT_CONFIGS_FILE,
+    feature_effect_path=EXPERIMENT_FEATURE_EFFECT,
 ):
     if metrics is None:
         metrics = [
@@ -435,11 +439,13 @@ def run_experiment_group_workflow(
 
     if save:
         all_results = save_results(
-            group_results
+            group_results,
+            path=results_path
         )
 
         save_configs(
-            experiment_configs
+            experiment_configs,
+            path=configs_path
         )
 
     else:
@@ -497,7 +503,8 @@ def run_experiment_group_workflow(
 
         if save:
             save_feature_effects(
-                feature_effect
+                feature_effect,
+                path=feature_effect_path
             )
 
     return {

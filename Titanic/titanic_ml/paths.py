@@ -5,10 +5,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 # print(f"Project root: {PROJECT_ROOT}")
 
 RESULTS_DIR = PROJECT_ROOT / "results"
-EXPERIMENT_RESULTS_FILE = RESULTS_DIR / "experiment_results.csv"
-EXPERIMENT_CONFIGS_FILE = RESULTS_DIR / "experiments_used_config.json"
-EXPERIMENT_FEATURE_EFFECT = RESULTS_DIR / "experiments_feature_effect.json"
+EXPERIMENT_RESULTS_FILE = RESULTS_DIR /"feature_experiments" / "experiment_results.csv"
+EXPERIMENT_CONFIGS_FILE = RESULTS_DIR /"feature_experiments" / "experiments_used_config.json"
+EXPERIMENT_FEATURE_EFFECT = RESULTS_DIR /"feature_experiments" / "experiments_feature_effect.json"
 
+SELECTION_RESULTS_FILE = RESULTS_DIR /"feature_selection" / "selection_results.csv"
+SELECTION_CONFIGS_FILE = RESULTS_DIR /"feature_selection" / "selection_used_config.json"
+SELECTION_FEATURE_EFFECT = RESULTS_DIR /"feature_selection" / "selection_feature_effect.json"
 # print(f"Results directory: {RESULTS_DIR}")
 # print(f"Experiment results file: {EXPERIMENT_RESULTS_FILE}")
 # print(f"Experiment configs file: {EXPERIMENT_CONFIGS_FILE}")
