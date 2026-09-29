@@ -659,5 +659,5 @@ def validate_config_group(configs):
 
 def config_to_group(config):
     return {
-        config["name"]: config
+        config["group"]: config
     }

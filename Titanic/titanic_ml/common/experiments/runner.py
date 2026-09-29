@@ -457,7 +457,8 @@ def run_experiment_group_workflow(
 
     comparison = None
     summary = None
-
+    # debugging
+    print(f"compare_group: {compare_group}")
     if compare_group != reference_group:
         comparison = (
             compare_experiment_groups(

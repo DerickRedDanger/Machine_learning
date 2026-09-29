@@ -52,7 +52,7 @@
       "max_iter": 1000,
       "random_state": 42
     },
-    "notes": "Baseline configuration for LogReg feature selection.Including only title features.",
+    "notes": "Baseline configuration for LogReg feature selection.Starts from the raw model configuration with Title added.",
     "name": "fs__baseline__logreg",
     "features": [
       "Age",
@@ -63,6 +63,1140 @@
       "Embarked",
       "Title",
       "Pclass"
+    ]
+  },
+  "fs01__age_cb03__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs01",
+    "feature_group": "age_cb03",
+    "group": "fs01__age_cb03",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 01 for LogReg feature selection.Title + Cb03 (age imputed by title and pclass + age bins).",
+    "name": "fs01__age_cb03__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs01__age_cb02__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs01",
+    "feature_group": "age_cb02",
+    "group": "fs01__age_cb02",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 01 for LogReg feature selection, second attempt.Title + Cb02 (age imputed by title + age bins).",
+    "name": "fs01__age_cb02__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs02__family_cb07__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "family_cb07",
+    "group": "fs02__family_cb07",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 02 for LogReg feature selection.addition of cb07 all family features.",
+    "name": "fs02__family_cb07__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs02__family_fe01__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "family_fe01",
+    "group": "fs02__family_fe01",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 02 for LogReg feature selection.addition of fe01 - Family in place of SibSp and Parch.",
+    "name": "fs02__family_fe01__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs03__cabin_fe04__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs03",
+    "feature_group": "cabin_fe04",
+    "group": "fs03__cabin_fe04",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 03 for LogReg feature selection.addition of fe04 - cabin features.",
+    "name": "fs03__cabin_fe04__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs04__ticket_fe09_batch__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_batch",
+        {
+          "class": "BatchValueCountTransformer",
+          "params": {
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "ticket_fe09_batch",
+    "group": "fs04__ticket_fe09_batch",
+    "domain": "logreg",
+    "tags": [
+      "batch_context"
+    ],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 04 for LogReg feature selection.addition of fe09 - ticket group size, batch approach.",
+    "name": "fs04__ticket_fe09_batch__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs04__ticket_fe09_fitted__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "ticket_fe09_fitted",
+    "group": "fs04__ticket_fe09_fitted",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 04 for LogReg feature selection.addition of fe09 - ticket group size, fitted approach.",
+    "name": "fs04__ticket_fe09_fitted__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs04__ticket_fe09_full_context__logreg": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "ticket_fe09_full_context",
+    "group": "fs04__ticket_fe09_full_context",
+    "domain": "logreg",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 04 for LogReg feature selection.addition of fe09 - ticket group size, full_context approach.",
+    "name": "fs04__ticket_fe09_full_context__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
     ]
   }
 }
