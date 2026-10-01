@@ -204,4 +204,312 @@ fs04__ticket_fe09_full_context__logreg = create_config(
 ALL_FS_CONFIGS['fs04__ticket_fe09_full_context__logreg'] = config_to_group(fs04__ticket_fe09_full_context__logreg)
 LOGREG_FS_CONFIGS['fs04__ticket_fe09_full_context__logreg'] = config_to_group(fs04__ticket_fe09_full_context__logreg)
 
-# Minimal gains, one of the prunning candidates for the backward prunning
+# Fitted and batched achieved best results, choosing fitted as main option, due to being easier to reason about and implement
+# but still achieved minimal gains, one of the prunning candidates for the backward prunning
+
+# fs05 - fare - LogReg
+fs05__fare_fe08__logreg = create_config(
+    base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['fe08__fare_per_family_member_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_fe08',
+    domain='logreg',
+    notes=('experiment 05 for LogReg feature selection.'
+           'addition of fe08 - fare per family member.')
+)
+
+ALL_FS_CONFIGS['fs05__fare_fe08__logreg'] = config_to_group(fs05__fare_fe08__logreg)
+LOGREG_FS_CONFIGS['fs05__fare_fe08__logreg'] = config_to_group(fs05__fare_fe08__logreg)
+
+fs05__fare_cb05_fitted__logreg = create_config(
+    base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_cb05_fitted',
+    domain='logreg',
+    notes=('experiment 05 for LogReg feature selection.'
+           'addition of cb05 - fare and fare per ticket, fitted approach.')
+)
+
+ALL_FS_CONFIGS['fs05__fare_cb05_fitted__logreg'] = config_to_group(fs05__fare_cb05_fitted__logreg)
+LOGREG_FS_CONFIGS['fs05__fare_cb05_fitted__logreg'] = config_to_group(fs05__fare_cb05_fitted__logreg)
+
+fs05__fare_cb05_full_context__logreg = create_config(
+    base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_cb05_full_context',
+    domain='logreg',
+    notes=('experiment 05 for LogReg feature selection.'
+           'addition of cb05 - fare and fare per ticket, full_context approach.'),
+    pre_cv_scope="full_prediction_context"
+
+)
+
+ALL_FS_CONFIGS['fs05__fare_cb05_full_context__logreg'] = config_to_group(fs05__fare_cb05_full_context__logreg)
+LOGREG_FS_CONFIGS['fs05__fare_cb05_full_context__logreg'] = config_to_group(fs05__fare_cb05_full_context__logreg)
+
+# carrying cb05 fitted, it's results were completely neutral, meaning it didn't add anything to our model
+# But it still passes the original idea of carrying the best non negative foward and prune them at the end. and this is now the main prunning option.
+
+# fs06 - Sex/Pclass combination - logReg
+
+fs06__sex_pclass_fe12__logreg = create_config(
+    base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch'],
+        ALL_PATCHES['fe12__sex_pclass_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='sex_pclass_fe12',
+    domain='logreg',
+    notes=('experiment 06 for LogReg feature selection.'
+           'addition of fe12 - sex_pclass, replacing sex and pclass.')
+)
+
+ALL_FS_CONFIGS['fs06__sex_pclass_fe12__logreg'] = config_to_group(fs06__sex_pclass_fe12__logreg)
+LOGREG_FS_CONFIGS['fs06__sex_pclass_fe12__logreg'] = config_to_group(fs06__sex_pclass_fe12__logreg)
+
+
+
+fs06__sex_pclass_cb08__logreg = create_config(
+    base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch'],
+        ALL_PATCHES['cb08__sex_pclass_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='sex_pclass_cb08',
+    domain='logreg',
+    notes=('experiment 06 for LogReg feature selection.'
+           'addition of cb08 - sex_pclass features, adding sex_pclass to raw features.')
+)
+
+ALL_FS_CONFIGS['fs06__sex_pclass_cb08__logreg'] = config_to_group(fs06__sex_pclass_cb08__logreg)
+LOGREG_FS_CONFIGS['fs06__sex_pclass_cb08__logreg'] = config_to_group(fs06__sex_pclass_cb08__logreg)
+
+# Both options led negative results, so no sex_pclass feature was carried over
+# final fs configuration: fs05__fare_cb05_fitted__logreg
+# final patch configuration after fs:
+# [
+#         ALL_PATCHES['fe05__title_patch'],
+#         ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+#         ALL_PATCHES['fe01__family_patch'],
+#         ALL_PATCHES['fe04__cabin_features_patch'],
+#         ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+#         ALL_PATCHES['cb05__fare_and_fare_per_ticket_full_context_patch'],
+#     ],
+
+# Prunning 01 - fare - LogReg
+
+removing_fare_patch={
+        "remove": {
+                "preprocessing": {
+                    "numeric_features": [
+                        "Fare",
+                    ],
+                },
+            },
+}
+
+pr01__removing_family__logreg=create_config(
+    base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_family',
+    domain='logreg',
+    notes=('pruning 01 for LogReg feature selection.'
+            'removal of family feature.')
+    )
+
+ALL_FS_CONFIGS['pr01__removing_family__logreg'] = config_to_group(pr01__removing_family__logreg)
+LOGREG_FS_CONFIGS['pr01__removing_family__logreg'] = config_to_group(pr01__removing_family__logreg)
+
+# 0.000/+0.001, minimal gains
+
+pr02__removing_ticket__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_ticket',
+    domain='logreg',
+    notes=('pruning 02 for LogReg feature selection.'
+            'removal of ticket feature.')
+    )
+
+ALL_FS_CONFIGS['pr02__removing_ticket__logreg'] = config_to_group(pr02__removing_ticket__logreg)
+LOGREG_FS_CONFIGS['pr02__removing_ticket__logreg'] = config_to_group(pr02__removing_ticket__logreg)
+
+# +0.002/+0.003
+
+pr03__removing_non_raw_fare__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_non_raw_fare',
+    domain='logreg',
+    notes=('pruning 03 for LogReg feature selection.'
+            'removal of non-raw fare feature.')
+    )
+
+ALL_FS_CONFIGS['pr03__removing_non_raw_fare__logreg'] = config_to_group(pr03__removing_non_raw_fare__logreg)
+LOGREG_FS_CONFIGS['pr03__removing_non_raw_fare__logreg'] = config_to_group(pr03__removing_non_raw_fare__logreg)
+
+# -0.005/-0.007
+
+pr03__removing_fare__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_fare',
+    domain='logreg',
+    notes=('pruning 03 for LogReg feature selection.'
+            'removal of fare feature.')
+    )
+
+ALL_FS_CONFIGS['pr03__removing_fare__logreg'] = config_to_group(pr03__removing_fare__logreg)
+LOGREG_FS_CONFIGS['pr03__removing_fare__logreg'] = config_to_group(pr03__removing_fare__logreg)
+
+# +0.004/+0.005
+
+pr03__removing_raw_fare__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_raw_fare',
+    domain='logreg',
+    notes=('pruning 03 for LogReg feature selection.'
+            'removal of raw fare feature.')
+    )
+
+ALL_FS_CONFIGS['pr03__removing_raw_fare__logreg'] = config_to_group(pr03__removing_raw_fare__logreg)
+LOGREG_FS_CONFIGS['pr03__removing_raw_fare__logreg'] = config_to_group(pr03__removing_raw_fare__logreg)
+
+# -0.001/+0.001
+
+# carried on with pr03__removing_fare__logreg
+
+
+pr04__removing_age__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr04',
+    feature_group='removing_age',
+    domain='logreg',
+    notes=('pruning 04 for LogReg feature selection.'
+            'removal of age feature.')
+    )
+
+ALL_FS_CONFIGS['pr04__removing_age__logreg'] = config_to_group(pr04__removing_age__logreg)
+LOGREG_FS_CONFIGS['pr04__removing_age__logreg'] = config_to_group(pr04__removing_age__logreg)
+# - 0.017/ -0.019
+# Not removing age
+
+pr05__removing_cabin__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr05',
+    feature_group='removing_cabin',
+    domain='logreg',
+    notes=('pruning 05 for LogReg feature selection.'
+            'removal of cabin feature.')
+    )
+
+ALL_FS_CONFIGS['pr05__removing_cabin__logreg'] = config_to_group(pr05__removing_cabin__logreg)
+LOGREG_FS_CONFIGS['pr05__removing_cabin__logreg'] = config_to_group(pr05__removing_cabin__logreg)
+# -0.009/-0.015
+
+pr06__removing_title__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr06',
+    feature_group='removing_title',
+    domain='logreg',
+    notes=('pruning 06 for LogReg feature selection.'
+            'removal of title feature.')
+    )
+
+ALL_FS_CONFIGS['pr06__removing_title__logreg'] = config_to_group(pr06__removing_title__logreg)
+LOGREG_FS_CONFIGS['pr06__removing_title__logreg'] = config_to_group(pr06__removing_title__logreg)
+#-0.037/-0.053

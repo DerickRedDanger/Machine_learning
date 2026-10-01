@@ -2033,21 +2033,6 @@ complete replacement for raw `Fare`. Raw Fare was therefore retained alongside
 each normalized representation to test whether the two forms are
 complementary.
 
-<details>
-<summary>Comparison of raw + normalized Fare representations</summary>
-
-| Model | Fare + Family ΔAcc | ΔF1 | Fare + Ticket Batch ΔAcc | ΔF1 | Fitted ΔAcc | ΔF1 | Full Context ΔAcc | ΔF1 |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Logistic Regression | -0.001 | -0.002 | +0.002 | +0.002 | +0.002 | +0.002 | +0.003 | +0.005 |
-| KNN | -0.007 | -0.008 | -0.005 | -0.009 | -0.007 | -0.007 | +0.004 | +0.010 |
-| SVC | -0.004 | -0.006 | -0.012 | -0.017 | -0.005 | -0.006 | -0.002 | -0.002 |
-| Decision Tree | +0.008 | +0.028 | -0.012 | +0.004 | -0.006 | +0.009 | +0.008 | +0.032 |
-| Random Forest | -0.005 | -0.008 | -0.013 | -0.013 | -0.005 | -0.004 | -0.002 | -0.003 |
-| Extra Trees | +0.001 | -0.002 | -0.005 | -0.008 | +0.002 | 0.000 | +0.002 | +0.001 |
-| XGBoost | -0.009 | -0.009 | -0.007 | -0.005 | -0.002 | -0.001 | +0.008 | +0.014 |
-
-</details>
-
 
 <details>
 <summary>Comparison of raw + normalized Fare representations</summary>
@@ -3069,6 +3054,7 @@ Diagnostic ablations are excluded from automatic candidate selection because the
 | Random Forest       | `fe11__age_bin`, `fe05__title`                                                                                                                                |
 | Extra Trees         | `fe05__title`, `cb03__age_imputed_title_Pclass_and_bins`, `fe02__has_cabin`, `cb07__family_features`, `fe09__ticket_group_size`                               |
 | XGBoost             | `fe05__title`, `fe04__cabin_features`, `cb07__family_features`                                                                                                |
+
 These experiments identify candidate modifications rather than complete configurations. Their feature-engineering and preprocessing requirements are manually reconciled before the final experiments are executed.
 
 | Domain                     | LogReg                                                 | KNN                                                              | SVC                                                                  | Decision Tree                                                        | Random Forest                                       | Extra Trees                                  | XGBoost                                               |
@@ -3081,6 +3067,93 @@ These experiments identify candidate modifications rather than complete configur
 | **Fare**                   | **Raw:** Fare                                          | **Context:** replace Fare with full-context Fare/TicketGroupSize | **Raw:** Fare                                                        | **Carry:** Fare + Fare/FamilySize + fitted Fare/TicketGroupSize      | **Raw:** Fare, with **Fare removal to test**        | **Raw:** Fare                                | **Context:** Fare + full-context Fare/TicketGroupSize |
 | **Sex/Pclass combination** | **Carry:** FE12 — Sex_Pclass replacing Sex + Pclass    | **Raw:** Sex + Pclass                                            | **Raw:** Sex + Pclass                                                | **Raw:** Sex + Pclass                                                | **Raw:** Sex + Pclass                               | **Raw:** Sex + Pclass                        | **Raw:** Sex + Pclass                                 |
 
+
+## Feature Selection
+
+### Strategy
+
+Feature selection was performed independently for each model using the
+feature-engineering experiments as the starting point.
+
+Rather than exhaustively testing every possible feature combination, the
+best-supported representations from the feature-engineering stage were
+introduced incrementally.
+
+For each step:
+
+1. A previously promising feature representation was added to the current
+   configuration.
+2. Its marginal effect was measured against the previous configuration.
+3. Alternative representations were tested when previous evidence or the
+   current result provided a reason to do so.
+4. Positive or neutral candidates could be carried forward provisionally
+   to preserve possible interactions with later features.
+5. Clearly detrimental candidates were rejected.
+
+After forward selection, weak and neutral additions are reconsidered through
+backward pruning. This allows features with small individual contributions
+to participate in later interactions without requiring an exhaustive search
+over feature combinations.
+
+### Logistic Regression
+
+#### Forward selection
+
+The Logistic Regression feature-selection baseline uses the raw feature set
+with Title engineering already applied. Title was selected as the starting
+point because it produced one of the strongest and most consistent gains
+during feature-engineering experiments.
+
+| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| Baseline | Title | 0.825 | 0.765 | — | — | Baseline |
+| FS01 | + Age CB03 | 0.828 | 0.767 | +0.003 | +0.002 | Carry |
+| FS02 | + Family FE01 | 0.829 | 0.769 | +0.001 | +0.002 | Carry provisionally |
+| FS03 | + Cabin FE04 | 0.834 | 0.777 | +0.005 | +0.008 | Carry |
+| FS04 | + Ticket FE09 fitted | 0.835 | 0.778 | +0.001 | +0.001 | Carry provisionally |
+| FS05 | + Fare CB05 fitted | 0.835 | 0.778 | 0.000 | 0.000 | Carry for pruning |
+| FS06 | Sex×Pclass FE12 | 0.833 | 0.770 | -0.002 | -0.008 | Reject |
+
+
+#### Reason for these choices:
+
+- Age: CB03 gave +.003/+ .002, much smaller than its earlier isolated improvement. Because Title was already present and CB03 uses Title and Pclass for Age imputation, we suspected some redundancy and tested CB02. CB02 produced +.002/+ .004; neither clearly dominated, so CB03 was retained because accuracy is our primary metric, while CB02 remains a plausible alternative for later interaction checks.
+
+
+- Family: CB07 initially gave .000/+ .002. Due to it's small results, I checked furrent Fe result for an alternative to try, leading to FE01. FE01 produced +.001/+ .002 and was carried provisionally.
+
+- Cabin: FE04 produced +.005/+ .008, the strongest marginal improvement after the baseline, so there was little reason to reopen the Cabin domain.
+
+- Ticket: I tested all three semantics. Batch and fitted both gave +.001/+ .001; full-context gave .000/+ .001. Since fitted matched the best performance while retaining straightforward inductive semantics, it was selected provisionally.
+
+- Fare: Both FE08 (-.003/-.004) and CB05 full-context hurt the model (-.002/-.002), while CB05 fitted was exactly neutral. The fitted version was carried not because it demonstrated value, but because our procedure deliberately permits non-negative candidates to survive until pruning.
+
+- Sex×Pclass: FE12 produced -.002/-.008, and the only meaningful alternative, CB08, produced -.003/-.010. Neither was carried.
+
+#### Forward-selection candidate
+
+The forward-selection phase therefore produced the following provisional
+Logistic Regression configuration:
+
+- Title
+- Age: CB03
+- Family: FE01
+- Cabin: FE04
+- TicketGroupSize: fitted
+- Fare/TicketGroupSize: fitted
+- Raw features retained by the selected representations
+
+Sex×Pclass engineering was rejected.
+
+The final forward configuration reached 0.835 accuracy and 0.778 F1,
+compared with 0.825 accuracy and 0.765 F1 for the Title-based feature-selection
+baseline.
+
+Several retained features contributed only marginally or not at all when
+introduced. Their inclusion at this stage is provisional rather than evidence
+that they belong in the final feature set. The next phase therefore performs
+backward pruning, beginning with the weakest additions, to determine whether
+they remain useful in the completed configuration.
 
 ## Lessons learned
 

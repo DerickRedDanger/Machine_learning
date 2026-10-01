@@ -1198,5 +1198,2494 @@
       "Age_bin",
       "Has_Cabin"
     ]
+  },
+  "fs05__fare_fe08__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_fe08",
+    "group": "fs05__fare_fe08",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 05 for LogReg feature selection.addition of fe08 - fare per family member.",
+    "name": "fs05__fare_fe08__logreg",
+    "features": [
+      "Age",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Fare/FamilySize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs05__fare_fe08_full_context__logreg": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_fe08_full_context",
+    "group": "fs05__fare_fe08_full_context",
+    "domain": "logreg",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 05 for LogReg feature selection.addition of fe08 - fare per family member, full_context approach.",
+    "name": "fs05__fare_fe08_full_context__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs05__fare_cb05_fitted__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_cb05_fitted",
+    "group": "fs05__fare_cb05_fitted",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 05 for LogReg feature selection.addition of cb05 - fare and fare per ticket, fitted approach.",
+    "name": "fs05__fare_cb05_fitted__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs05__fare_cb05_full_context__logreg": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_cb05_full_context",
+    "group": "fs05__fare_cb05_full_context",
+    "domain": "logreg",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 05 for LogReg feature selection.addition of cb05 - fare and fare per ticket, full_context approach.",
+    "name": "fs05__fare_cb05_full_context__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs06__sex_pclass_fe12__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Title",
+        "Deck",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "sex_pclass_fe12",
+    "group": "fs06__sex_pclass_fe12",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 06 for LogReg feature selection.addition of fe12 - sex_pclass, replacing sex and pclass.",
+    "name": "fs06__sex_pclass_fe12__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Sex_Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs06__sex_pclass_cb08__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "sex_pclass_cb08",
+    "group": "fs06__sex_pclass_cb08",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "experiment 06 for LogReg feature selection.addition of cb08 - sex_pclass features, adding sex_pclass to raw features.",
+    "name": "fs06__sex_pclass_cb08__logreg",
+    "features": [
+      "Age",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Sex_Pclass",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr01__removing_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_fare",
+    "group": "pr01__removing_fare",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 01 for LogReg feature selection.removal of fare feature.",
+    "name": "pr01__removing_fare__logreg",
+    "features": [
+      "Age",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Sex_Pclass",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr01__removing_family__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_family",
+    "group": "pr01__removing_family",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 01 for LogReg feature selection.removal of family feature.",
+    "name": "pr01__removing_family__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr01__removing_ticket__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_ticket",
+    "group": "pr01__removing_ticket",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 01 for LogReg feature selection.removal of ticket feature.",
+    "name": "pr01__removing_ticket__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Sex_Pclass",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr02__removing_ticket__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "removing_ticket",
+    "group": "pr02__removing_ticket",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 02 for LogReg feature selection.removal of ticket feature.",
+    "name": "pr02__removing_ticket__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr03__removing_non_raw_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "removing_non_raw_fare",
+    "group": "pr03__removing_non_raw_fare",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 03 for LogReg feature selection.removal of non-raw fare feature.",
+    "name": "pr03__removing_non_raw_fare__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr03__removing_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "removing_fare",
+    "group": "pr03__removing_fare",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 03 for LogReg feature selection.removal of fare feature.",
+    "name": "pr03__removing_fare__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr03__removing_raw_fare__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "removing_raw_fare",
+    "group": "pr03__removing_raw_fare",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 03 for LogReg feature selection.removal of raw fare feature.",
+    "name": "pr03__removing_raw_fare__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "pr04__removing_age__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr04",
+    "feature_group": "removing_age",
+    "group": "pr04__removing_age",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 04 for LogReg feature selection.removal of age feature.",
+    "name": "pr04__removing_age__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
+    ]
+  },
+  "pr05__removing_cabin__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr05",
+    "feature_group": "removing_cabin",
+    "group": "pr05__removing_cabin",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 05 for LogReg feature selection.removal of cabin feature.",
+    "name": "pr05__removing_cabin__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr06__removing_title__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr06",
+    "feature_group": "removing_title",
+    "group": "pr06__removing_title",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 06 for LogReg feature selection.removal of title feature.",
+    "name": "pr06__removing_title__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
   }
 }

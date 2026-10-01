@@ -2,7 +2,7 @@
   "fe01__family": {
     "compare_group": "fe01__family",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.0,
+    "mean_delta": 0.001,
     "max_delta": 0.009,
     "min_delta": -0.006,
     "positive_models": [
