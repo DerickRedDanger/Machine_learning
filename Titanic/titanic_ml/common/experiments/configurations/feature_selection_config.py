@@ -429,7 +429,6 @@ base_config=baseline_config['logreg__raw'],
 
 ALL_FS_CONFIGS['pr03__removing_fare__logreg'] = config_to_group(pr03__removing_fare__logreg)
 LOGREG_FS_CONFIGS['pr03__removing_fare__logreg'] = config_to_group(pr03__removing_fare__logreg)
-
 # +0.004/+0.005
 
 pr03__removing_raw_fare__logreg=create_config(
@@ -450,9 +449,7 @@ base_config=baseline_config['logreg__raw'],
 
 ALL_FS_CONFIGS['pr03__removing_raw_fare__logreg'] = config_to_group(pr03__removing_raw_fare__logreg)
 LOGREG_FS_CONFIGS['pr03__removing_raw_fare__logreg'] = config_to_group(pr03__removing_raw_fare__logreg)
-
 # -0.001/+0.001
-
 # carried on with pr03__removing_fare__logreg
 
 
@@ -513,3 +510,127 @@ base_config=baseline_config['logreg__raw'],
 ALL_FS_CONFIGS['pr06__removing_title__logreg'] = config_to_group(pr06__removing_title__logreg)
 LOGREG_FS_CONFIGS['pr06__removing_title__logreg'] = config_to_group(pr06__removing_title__logreg)
 #-0.037/-0.053
+
+
+prsc__age_cb02__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='prsc',
+    feature_group='age_cb02',
+    domain='logreg',
+    notes=('pruning sanity check for LogReg feature selection.'
+            'Cb02 and Cb03 had nearly identical performance.'
+            'This experiment is meant to see if they result remains the same.')
+    )
+
+ALL_FS_CONFIGS['prsc__age_cb02__logreg'] = config_to_group(prsc__age_cb02__logreg)
+LOGREG_FS_CONFIGS['prsc__age_cb02__logreg'] = config_to_group(prsc__age_cb02__logreg)
+#-0.009/-0.01, cb03 is going to remain as the main option.
+
+removing_sibSp_parch={
+        "remove": {
+                "preprocessing": {
+                    "numeric_features": [
+                        "SibSp",
+                        "Parch"
+                    ],
+                },
+            },
+}
+pr07__removing_sibSp_parch__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+        removing_sibSp_parch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr07',
+    feature_group='removing_sibSp_parch',
+    domain='logreg',
+    notes=('pruning 07 for LogReg feature selection.'
+            'removal of sibSp and parch features.')
+    )
+
+ALL_FS_CONFIGS['pr07__removing_sibSp_parch__logreg'] = config_to_group(pr07__removing_sibSp_parch__logreg)
+LOGREG_FS_CONFIGS['pr07__removing_sibSp_parch__logreg'] = config_to_group(pr07__removing_sibSp_parch__logreg)
+# -0.041/-0.05
+
+removing_raw_age={
+        "remove": {
+                "preprocessing": {
+                    "numeric_features": [
+                        "Age",
+                    ],
+                },
+            },
+}
+
+pr08__removing_all_age_related__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+        removing_raw_age,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr08',
+    feature_group='removing_all_age_related',
+    domain='logreg',
+    notes=('pruning 08 for LogReg feature selection.'
+            'removal of all age-related features.')
+    )
+
+ALL_FS_CONFIGS['pr08__removing_all_age_related__logreg'] = config_to_group(pr08__removing_all_age_related__logreg)
+LOGREG_FS_CONFIGS['pr08__removing_all_age_related__logreg'] = config_to_group(pr08__removing_all_age_related__logreg)
+#-0.021/ -0.025
+
+pr08__removing_raw_age__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+        removing_raw_age,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr08',
+    feature_group='removing_raw_age',
+    domain='logreg',
+    notes=('pruning 08 for LogReg feature selection.'
+            'removal of raw age feature.')
+    )
+
+ALL_FS_CONFIGS['pr08__removing_raw_age__logreg'] = config_to_group(pr08__removing_raw_age__logreg)
+LOGREG_FS_CONFIGS['pr08__removing_raw_age__logreg'] = config_to_group(pr08__removing_raw_age__logreg)
+# -0.023/ -0.032
+
+pr08__removing_raw_age__logreg=create_config(
+base_config=baseline_config['logreg__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+        removing_fare_patch,
+        removing_raw_age,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr08',
+    feature_group='removing_raw_age',
+    domain='logreg',
+    notes=('pruning 08 for LogReg feature selection.'
+            'removal of raw age feature.')
+    )
+
+ALL_FS_CONFIGS['pr08__removing_raw_age__logreg'] = config_to_group(pr08__removing_raw_age__logreg)
+LOGREG_FS_CONFIGS['pr08__removing_raw_age__logreg'] = config_to_group(pr08__removing_raw_age__logreg)
