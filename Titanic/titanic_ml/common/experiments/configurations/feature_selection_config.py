@@ -634,3 +634,110 @@ base_config=baseline_config['logreg__raw'],
 
 ALL_FS_CONFIGS['pr08__removing_raw_age__logreg'] = config_to_group(pr08__removing_raw_age__logreg)
 LOGREG_FS_CONFIGS['pr08__removing_raw_age__logreg'] = config_to_group(pr08__removing_raw_age__logreg)
+
+# SVC feature selection
+
+SVC_FS_CONFIGS = {}
+
+# SVC Baseline
+
+fs__baseline__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs',
+    feature_group='baseline',
+    domain='svc',
+    notes=('Baseline configuration for SVC feature selection.'
+           'Starts from the raw model configuration with Title added.')
+)
+
+ALL_FS_CONFIGS['fs__baseline__svc'] = config_to_group(fs__baseline__svc)
+SVC_FS_CONFIGS['fs__baseline__svc'] = config_to_group(fs__baseline__svc)
+
+# fs 01 - age - SVC
+
+fs01__age_cb02__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='age_cb02',
+    domain='svc',
+    notes=('Experiment 01 for SVC feature selection.'
+           'Addition of cb02, Age feature.')
+)
+
+ALL_FS_CONFIGS['fs01__age_cb02__svc'] = config_to_group(fs01__age_cb02__svc)
+SVC_FS_CONFIGS['fs01__age_cb02__svc'] = config_to_group(fs01__age_cb02__svc)
+
+# +0.001/+0.002
+
+fs01__age_cb03__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='age_cb03',
+    domain='svc',
+    notes=('Experiment 01 for SVC feature selection.'
+           'Addition of cb03, Age feature.')
+)
+
+ALL_FS_CONFIGS['fs01__age_cb03__svc'] = config_to_group(fs01__age_cb03__svc)
+SVC_FS_CONFIGS['fs01__age_cb03__svc'] = config_to_group(fs01__age_cb03__svc)
+# +0.001/+0.002
+
+# Subce cb02 uses a simpler approach, it will be the one carried forward, while cb03 will remain as a reserve option.
+
+# fs 02 - ticket - SVC
+
+fs02__ticket_fe09__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='ticket_fe09_full_context',
+    domain='svc',
+    notes=('Experiment 02 for SVC feature selection.'
+           'Addition of fe09 - ticket full context, Ticket feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__ticket_fe09_full_context__svc'] = config_to_group(fs02__ticket_fe09__svc)
+SVC_FS_CONFIGS['fs02__ticket_fe09_full_context__svc'] = config_to_group(fs02__ticket_fe09__svc)
+# -0.001/0
+
+
+fs02__ticket_fe09_fitted__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='ticket_fe09_fitted',
+    domain='svc',
+    notes=('Experiment 02 for SVC feature selection.'
+           'Addition of fe09 - ticket fitted, Ticket feature.'),
+)
+
+ALL_FS_CONFIGS['fs02__ticket_fe09_fitted__svc'] = config_to_group(fs02__ticket_fe09_fitted__svc)
+SVC_FS_CONFIGS['fs02__ticket_fe09_fitted__svc'] = config_to_group(fs02__ticket_fe09_fitted__svc)
+# -0.006/-0.005
+
+# Both results were negative, none of the options will be carried over.
