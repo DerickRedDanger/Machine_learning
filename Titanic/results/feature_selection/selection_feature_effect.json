@@ -324,56 +324,38 @@
   "fs06__sex_pclass_fe12": {
     "compare_group": "fs06__sex_pclass_fe12",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.008,
-    "max_delta": 0.008,
-    "min_delta": 0.008,
-    "positive_models": [
-      "logreg"
-    ],
+    "mean_delta": -0.005,
+    "max_delta": -0.005,
+    "min_delta": -0.005,
+    "positive_models": [],
     "neutral_models": [],
-    "negative_models": [],
-    "verdict": "general_positive",
-    "recommended_for_all": true,
-    "recommended_model_deltas": {
-      "logreg": 0.008
-    },
-    "recommended_model_tradeoffs": {
-      "logreg": {
-        "primary_metric": "test_accuracy_mean",
-        "primary_delta": 0.008,
-        "secondary_pros": {},
-        "secondary_cons": {}
-      }
-    },
+    "negative_models": [
+      "svc"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
     "notable_secondary_improvements": {},
-    "discard": false
+    "discard": true
   },
   "fs06__sex_pclass_cb08": {
     "compare_group": "fs06__sex_pclass_cb08",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.007,
-    "max_delta": 0.007,
-    "min_delta": 0.007,
-    "positive_models": [
-      "logreg"
-    ],
+    "mean_delta": -0.004,
+    "max_delta": -0.004,
+    "min_delta": -0.004,
+    "positive_models": [],
     "neutral_models": [],
-    "negative_models": [],
-    "verdict": "general_positive",
-    "recommended_for_all": true,
-    "recommended_model_deltas": {
-      "logreg": 0.007
-    },
-    "recommended_model_tradeoffs": {
-      "logreg": {
-        "primary_metric": "test_accuracy_mean",
-        "primary_delta": 0.007,
-        "secondary_pros": {},
-        "secondary_cons": {}
-      }
-    },
+    "negative_models": [
+      "svc"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
     "notable_secondary_improvements": {},
-    "discard": false
+    "discard": true
   },
   "pr01__removing_family": {
     "compare_group": "pr01__removing_family",
@@ -719,5 +701,185 @@
     "recommended_model_tradeoffs": {},
     "notable_secondary_improvements": {},
     "discard": false
+  },
+  "fs03__family_cb07": {
+    "compare_group": "fs03__family_cb07",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": -0.002,
+    "min_delta": -0.002,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs04__fare_fe10_full_context": {
+    "compare_group": "fs04__fare_fe10_full_context",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.001,
+    "max_delta": 0.001,
+    "min_delta": 0.001,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs04__fare_fe10_fitted": {
+    "compare_group": "fs04__fare_fe10_fitted",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.003,
+    "max_delta": -0.003,
+    "min_delta": -0.003,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "svc"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
+  },
+  "fs04__fare_fe08": {
+    "compare_group": "fs04__fare_fe08",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.001,
+    "max_delta": -0.001,
+    "min_delta": -0.001,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs05__cabin_fe04": {
+    "compare_group": "fs05__cabin_fe04",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": -0.002,
+    "min_delta": -0.002,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fssc__ticket_fe09_full_context": {
+    "compare_group": "fssc__ticket_fe09_full_context",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": -0.002,
+    "min_delta": -0.002,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr01__removing_all_fare": {
+    "compare_group": "pr01__removing_all_fare",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": -0.002,
+    "min_delta": -0.002,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr02__removing_age_imputed": {
+    "compare_group": "pr02__removing_age_imputed",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.003,
+    "max_delta": -0.003,
+    "min_delta": -0.003,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "svc"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
+  },
+  "pr02__removing_all_age": {
+    "compare_group": "pr02__removing_all_age",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.002,
+    "max_delta": -0.002,
+    "min_delta": -0.002,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr03__removing_title": {
+    "compare_group": "pr03__removing_title",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.005,
+    "max_delta": -0.005,
+    "min_delta": -0.005,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "svc"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
   }
 }

@@ -4276,5 +4276,1569 @@
       "Pclass",
       "Age_bin"
     ]
+  },
+  "fs03__family_cb07__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs03",
+    "feature_group": "family_cb07",
+    "group": "fs03__family_cb07",
+    "domain": "svc",
+    "tags": [],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 03 for SVC feature selection.Addition of cb07 - family features.",
+    "name": "fs03__family_cb07__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs04__fare_fe10_full_context__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "fare_fe10_full_context",
+    "group": "fs04__fare_fe10_full_context",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 04 for SVC feature selection.Addition of fe10, Fare/ticket feature.",
+    "name": "fs04__fare_fe10_full_context__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs04__fare_fe10_fitted__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "fare_fe10_fitted",
+    "group": "fs04__fare_fe10_fitted",
+    "domain": "svc",
+    "tags": [],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 04 for SVC feature selection.Addition of fe10, Fare/ticket feature.",
+    "name": "fs04__fare_fe10_fitted__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs04__fare_fe08__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "fare_fe08",
+    "group": "fs04__fare_fe08",
+    "domain": "svc",
+    "tags": [],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 04 for SVC feature selection.Addition of fe08, Fare per family member feature.",
+    "name": "fs04__fare_fe08__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/FamilySize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs05__cabin_fe04__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "cabin_fe04",
+    "group": "fs05__cabin_fe04",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 05 for SVC feature selection.Addition of fe04, Cabin features.",
+    "name": "fs05__cabin_fe04__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ]
+  },
+  "fs06__sex_pclass_cb08__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "sex_pclass_cb08",
+    "group": "fs06__sex_pclass_cb08",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 06 for SVC feature selection.Addition of cb08, Sex/Pclass features.",
+    "name": "fs06__sex_pclass_cb08__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Sex_Pclass",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs06__sex_pclass_fe12__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Embarked",
+        "Title",
+        "Sex_Pclass"
+      ],
+      "ordinal_features": [
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "sex_pclass",
+        {
+          "class": "JuxtapositionTransformer",
+          "params": {
+            "output_col": "Sex_Pclass",
+            "source_cols": [
+              "Sex",
+              "Pclass"
+            ]
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "sex_pclass_fe12",
+    "group": "fs06__sex_pclass_fe12",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 06 for SVC feature selection.Addition of fe12, Sex/Pclass features.",
+    "name": "fs06__sex_pclass_fe12__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Embarked",
+      "Title",
+      "Sex_Pclass",
+      "Age_bin"
+    ]
+  },
+  "fssc__ticket_fe09_full_context__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fssc",
+    "feature_group": "ticket_fe09_full_context",
+    "group": "fssc__ticket_fe09_full_context",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Experiment 04 for SVC feature selection.Addition of fe09, Ticket group size feature.",
+    "name": "fssc__ticket_fe09_full_context__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr01__removing_all_fare__svc": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_all_fare",
+    "group": "pr01__removing_all_fare",
+    "domain": "svc",
+    "tags": [],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Pruning Experiment 01 for SVC feature selection.Removal of all fare features.",
+    "name": "pr01__removing_all_fare__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr02__removing_age_imputed__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "removing_age_imputed",
+    "group": "pr02__removing_age_imputed",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Pruning Experiment 02 for SVC feature selection.Removal of age imputed features.",
+    "name": "pr02__removing_age_imputed__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "pr02__removing_all_age__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "removing_all_age",
+    "group": "pr02__removing_all_age",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Pruning Experiment 02 for SVC feature selection.Removal of all age features.",
+    "name": "pr02__removing_all_age__svc",
+    "features": [
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "pr03__removing_title__svc": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "removing_title",
+    "group": "pr03__removing_title",
+    "domain": "svc",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "svc",
+    "model_params": {
+      "C": 1.0,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "probability": false,
+      "random_state": 42
+    },
+    "notes": "Pruning Experiment 03 for SVC feature selection.Removal of title features.",
+    "name": "pr03__removing_title__svc",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
   }
 }

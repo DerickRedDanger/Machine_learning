@@ -7,6 +7,37 @@ from titanic_ml.common.experiments.configurations.exp_config import RAW_FEATURES
 ALL_FS_CONFIGS = {}
 LOGREG_FS_CONFIGS = {}
 
+removing_fare_patch={
+        "remove": {
+                "preprocessing": {
+                    "numeric_features": [
+                        "Fare",
+                    ],
+                },
+            },
+}
+
+removing_sibSp_parch={
+        "remove": {
+                "preprocessing": {
+                    "numeric_features": [
+                        "SibSp",
+                        "Parch"
+                    ],
+                },
+            },
+}
+
+removing_raw_age_patch={
+        "remove": {
+                "preprocessing": {
+                    "numeric_features": [
+                        "Age",
+                    ],
+                },
+            },
+}
+
 # LogReg feature selection
 
 fs__baseline__logreg = create_config(
@@ -338,16 +369,6 @@ LOGREG_FS_CONFIGS['fs06__sex_pclass_cb08__logreg'] = config_to_group(fs06__sex_p
 
 # Prunning 01 - fare - LogReg
 
-removing_fare_patch={
-        "remove": {
-                "preprocessing": {
-                    "numeric_features": [
-                        "Fare",
-                    ],
-                },
-            },
-}
-
 pr01__removing_family__logreg=create_config(
     base_config=baseline_config['logreg__raw'],
     patches = [
@@ -533,16 +554,7 @@ ALL_FS_CONFIGS['prsc__age_cb02__logreg'] = config_to_group(prsc__age_cb02__logre
 LOGREG_FS_CONFIGS['prsc__age_cb02__logreg'] = config_to_group(prsc__age_cb02__logreg)
 #-0.009/-0.01, cb03 is going to remain as the main option.
 
-removing_sibSp_parch={
-        "remove": {
-                "preprocessing": {
-                    "numeric_features": [
-                        "SibSp",
-                        "Parch"
-                    ],
-                },
-            },
-}
+
 pr07__removing_sibSp_parch__logreg=create_config(
 base_config=baseline_config['logreg__raw'],
     patches = [
@@ -564,15 +576,7 @@ ALL_FS_CONFIGS['pr07__removing_sibSp_parch__logreg'] = config_to_group(pr07__rem
 LOGREG_FS_CONFIGS['pr07__removing_sibSp_parch__logreg'] = config_to_group(pr07__removing_sibSp_parch__logreg)
 # -0.041/-0.05
 
-removing_raw_age={
-        "remove": {
-                "preprocessing": {
-                    "numeric_features": [
-                        "Age",
-                    ],
-                },
-            },
-}
+
 
 pr08__removing_all_age_related__logreg=create_config(
 base_config=baseline_config['logreg__raw'],
@@ -580,7 +584,7 @@ base_config=baseline_config['logreg__raw'],
         ALL_PATCHES['fe05__title_patch'],
         ALL_PATCHES['fe04__cabin_features_patch'],
         removing_fare_patch,
-        removing_raw_age,
+        removing_raw_age_patch,
     ],
     raw_features=RAW_FEATURES,
     stage='pr08',
@@ -601,7 +605,7 @@ base_config=baseline_config['logreg__raw'],
         ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
         ALL_PATCHES['fe04__cabin_features_patch'],
         removing_fare_patch,
-        removing_raw_age,
+        removing_raw_age_patch,
     ],
     raw_features=RAW_FEATURES,
     stage='pr08',
@@ -622,7 +626,7 @@ base_config=baseline_config['logreg__raw'],
         ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
         ALL_PATCHES['fe04__cabin_features_patch'],
         removing_fare_patch,
-        removing_raw_age,
+        removing_raw_age_patch,
     ],
     raw_features=RAW_FEATURES,
     stage='pr08',
@@ -741,3 +745,248 @@ SVC_FS_CONFIGS['fs02__ticket_fe09_fitted__svc'] = config_to_group(fs02__ticket_f
 # -0.006/-0.005
 
 # Both results were negative, none of the options will be carried over.
+
+# This was the last of the recommended feature engineering, but due to it's still low results
+# I decided to check other features that still lead to positive, even if minimal results to see how it
+# would affect the model.
+
+# fs 03 - family - SVC
+
+fs03__family_cb07__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb07__family_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='family_cb07',
+    domain='svc',
+    notes=('Experiment 03 for SVC feature selection.'
+           'Addition of cb07 - family features.'),
+)
+
+ALL_FS_CONFIGS['fs03__family_cb07__svc'] = config_to_group(fs03__family_cb07__svc)
+SVC_FS_CONFIGS['fs03__family_cb07__svc'] = config_to_group(fs03__family_cb07__svc)
+# -0.002/-0.003
+# Negative results, not carried over
+
+# fs04 - fare - SVC
+
+fs04__fare_fe10_full_context__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='fare_fe10_full_context',
+    domain='svc',
+    notes=('Experiment 04 for SVC feature selection.'
+           'Addition of fe10, Fare/ticket feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs04__fare_fe10_full_context__svc'] = config_to_group(fs04__fare_fe10_full_context__svc)
+SVC_FS_CONFIGS['fs04__fare_fe10_full_context__svc'] = config_to_group(fs04__fare_fe10_full_context__svc)
+# +0.001/+0.001
+
+fs04__fare_fe10_fitted__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_fitted_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='fare_fe10_fitted',
+    domain='svc',
+    notes=('Experiment 04 for SVC feature selection.'
+           'Addition of fe10, Fare/ticket feature.')
+)
+
+ALL_FS_CONFIGS['fs04__fare_fe10_fitted__svc'] = config_to_group(fs04__fare_fe10_fitted__svc)
+SVC_FS_CONFIGS['fs04__fare_fe10_fitted__svc'] = config_to_group(fs04__fare_fe10_fitted__svc)
+#-0.003/-0.003
+
+fs04__fare_fe08__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe08__fare_per_family_member_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='fare_fe08',
+    domain='svc',
+    notes=('Experiment 04 for SVC feature selection.'
+           'Addition of fe08, Fare per family member feature.')
+)
+
+ALL_FS_CONFIGS['fs04__fare_fe08__svc'] = config_to_group(fs04__fare_fe08__svc)
+SVC_FS_CONFIGS['fs04__fare_fe08__svc'] = config_to_group(fs04__fare_fe08__svc)
+# -0.001/-0.002
+
+# fe10 full context was chosen as main option, as it was the only positive, if minimal, gain.
+# fe10 fitted and fe08 were negative, so they will not be carried over.
+
+# fs 05 - cabin - SVC
+fs05__cabin_fe04__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='cabin_fe04',
+    domain='svc',
+    notes=('Experiment 05 for SVC feature selection.'
+           'Addition of fe04, Cabin features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__cabin_fe04__svc'] = config_to_group(fs05__cabin_fe04__svc)
+SVC_FS_CONFIGS['fs05__cabin_fe04__svc'] = config_to_group(fs05__cabin_fe04__svc)
+# -0.002/-0.002
+# Cabin features were negative, so they will not be carried over.
+# Since cabin features were pretty similar and achieved similar results in fe, I decided not to test the others.
+
+# fs 06 - sex_pclass - SVC
+
+fs06__sex_pclass_cb08__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['cb08__sex_pclass_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='sex_pclass_cb08',
+    domain='svc',
+    notes=('Experiment 06 for SVC feature selection.'
+           'Addition of cb08, Sex/Pclass features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs06__sex_pclass_cb08__svc'] = config_to_group(fs06__sex_pclass_cb08__svc)
+SVC_FS_CONFIGS['fs06__sex_pclass_cb08__svc'] = config_to_group(fs06__sex_pclass_cb08__svc)
+# -0.004/-0.009
+
+fs06__sex_pclass_fe12__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe12__sex_pclass_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='sex_pclass_fe12',
+    domain='svc',
+    notes=('Experiment 06 for SVC feature selection.'
+           'Addition of fe12, Sex/Pclass features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs06__sex_pclass_fe12__svc'] = config_to_group(fs06__sex_pclass_fe12__svc)
+SVC_FS_CONFIGS['fs06__sex_pclass_fe12__svc'] = config_to_group(fs06__sex_pclass_fe12__svc)
+# -0.005/-0.014
+
+# Both returned negative results, so none were carried over
+
+# Prunning phase for SVC
+
+# pr01 - removing fare - SVC
+
+pr01__removing_all_fare__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_all_fare',
+    domain='svc',
+    notes=('Pruning Experiment 01 for SVC feature selection.'
+           'Removal of all fare features.'),
+)
+
+ALL_FS_CONFIGS['pr01__removing_all_fare__svc'] = config_to_group(pr01__removing_all_fare__svc)
+SVC_FS_CONFIGS['pr01__removing_all_fare__svc'] = config_to_group(pr01__removing_all_fare__svc)
+
+# -0.002/-0.004
+# Due to the negative results, fare was not removed.
+
+# Pr02 - removing age - SVC
+pr02__removing_age_imputed__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_age_imputed',
+    domain='svc',
+    notes=('Pruning Experiment 02 for SVC feature selection.'
+           'Removal of age imputed features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_age_imputed__svc'] = config_to_group(pr02__removing_age_imputed__svc)
+SVC_FS_CONFIGS['pr02__removing_age_imputed__svc'] = config_to_group(pr02__removing_age_imputed__svc)
+#-0.003/-0.005
+
+pr02__removing_all_age__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        removing_raw_age_patch
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_all_age',
+    domain='svc',
+    notes=('Pruning Experiment 02 for SVC feature selection.'
+           'Removal of all age features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_all_age__svc'] = config_to_group(pr02__removing_all_age__svc)
+SVC_FS_CONFIGS['pr02__removing_all_age__svc'] = config_to_group(pr02__removing_all_age__svc)
+#-0.002/-0.003
+
+# pr03 - removing title - SVC
+
+pr03__removing_title__svc = create_config(
+    base_config=baseline_config['svc__raw'],
+    patches = [
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_title',
+    domain='svc',
+    notes=('Pruning Experiment 03 for SVC feature selection.'
+           'Removal of title features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr03__removing_title__svc'] = config_to_group(pr03__removing_title__svc)
+SVC_FS_CONFIGS['pr03__removing_title__svc'] = config_to_group(pr03__removing_title__svc)
+ 
