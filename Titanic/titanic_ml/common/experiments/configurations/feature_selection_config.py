@@ -989,4 +989,180 @@ pr03__removing_title__svc = create_config(
 
 ALL_FS_CONFIGS['pr03__removing_title__svc'] = config_to_group(pr03__removing_title__svc)
 SVC_FS_CONFIGS['pr03__removing_title__svc'] = config_to_group(pr03__removing_title__svc)
- 
+
+ # Random forest Feature selection
+RANDOMFOREST_FS_CONFIGS={}
+ # Baseline configuration for Random Forest feature selection
+
+fs__baseline__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs',
+    feature_group='baseline',
+    domain='randomforest',
+    notes=('Baseline configuration for Random Forest feature selection.'
+           'Starts from the raw model configuration with Title added.')
+)
+
+ALL_FS_CONFIGS['fs__baseline__random_forest'] = config_to_group(fs__baseline__random_forest)
+RANDOMFOREST_FS_CONFIGS['fs__baseline__random_forest'] = config_to_group(fs__baseline__random_forest)
+
+# Age - cb03 > cb02
+
+# family - raw
+
+# cabin - raw
+
+# ticket - raw
+
+# fare - cb06, fe10 / fare ablation
+
+# sex/pclass - raw
+
+
+# fs 01 - age - Random Forest
+
+fs01__age_cb03__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='age_cb03',
+    domain='randomforest',
+    notes=('Experiment 01 for Random Forest feature selection.'
+           'addition of cb03, age imputed by title/pclass and bins.')
+)
+
+ALL_FS_CONFIGS['fs01__age_cb03__random_forest'] = config_to_group(fs01__age_cb03__random_forest)
+RANDOMFOREST_FS_CONFIGS['fs01__age_cb03__random_forest'] = config_to_group(fs01__age_cb03__random_forest)
+#-0.001/-0.004
+
+fs01__age_cb02__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='age_cb02',
+    domain='randomforest',
+    notes=('Experiment 01 for Random Forest feature selection.'
+           'addition of cb02, age imputed by title and bins.')
+)
+
+ALL_FS_CONFIGS['fs01__age_cb02__random_forest'] = config_to_group(fs01__age_cb02__random_forest)
+RANDOMFOREST_FS_CONFIGS['fs01__age_cb02__random_forest'] = config_to_group(fs01__age_cb02__random_forest)
+# -0.004/-0.008
+
+# Both were negative, so no age was carried over
+
+# fs02 - fare - Random Forest
+
+fs02__fare_fe10_full_context__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='fare_fe10_full_context',
+    domain='randomforest',
+    notes=('Experiment 02 for Random Forest feature selection.'
+           'addition of fe10, fare per ticket member and full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__fare_fe10_full_context__random_forest'] = config_to_group(fs02__fare_fe10_full_context__random_forest)
+RANDOMFOREST_FS_CONFIGS['fs02__fare_fe10_full_context__random_forest'] = config_to_group(fs02__fare_fe10_full_context__random_forest)
+#-0.004/-0.009
+
+fs02__fare_cb06_fitted__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='fare_cb06_fitted',
+    domain='randomforest',
+    notes=('Experiment 02 for Random Forest feature selection.'
+           'addition of cb06, all fare features.')
+)
+
+ALL_FS_CONFIGS['fs02__fare_cb06_fitted__random_forest'] = config_to_group(fs02__fare_cb06_fitted__random_forest)
+RANDOMFOREST_FS_CONFIGS['fs02__fare_cb06_fitted__random_forest'] = config_to_group(fs02__fare_cb06_fitted__random_forest)
+# 0/-00.002
+
+# none of the results were positive, so no fare features were carried over.
+
+# Due to the absence of other recommended features, as to the other feature engineering not returning positive results during fe
+# I decided to stop the feature selection here and start feature pruning
+
+# pruning phase for Random Forest
+
+pr01__removing_raw_fare__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_raw_fare',
+    domain='randomforest',
+    notes=('pruning experiment 01 for Random Forest.'
+           'removing raw fare.')
+)
+
+ALL_FS_CONFIGS['pr01__removing_raw_fare__random_forest'] = config_to_group(pr01__removing_raw_fare__random_forest)
+RANDOMFOREST_FS_CONFIGS['pr01__removing_raw_fare__random_forest'] = config_to_group(pr01__removing_raw_fare__random_forest)
+# 0/-0.001
+# the result wasn't positive, so this isn't a configuration to carry over.
+# with that said, results from Fe with ablation showed that removing fare while using cb03 resulting in positive gains.
+# will make one last experiment to see if that result is still true while having title
+
+pr02__age_without_fare_cb03__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='age_without_fare_cb03',
+    domain='randomforest',
+    notes=('pruning experiment 02 for Random Forest.'
+           'removing fare while adding cb03, age imputed by title/pclass and bins.')
+)
+
+ALL_FS_CONFIGS['pr02__age_without_fare_cb03__random_forest'] = config_to_group(pr02__age_without_fare_cb03__random_forest)
+RANDOMFOREST_FS_CONFIGS['pr02__age_without_fare_cb03__random_forest'] = config_to_group(pr02__age_without_fare_cb03__random_forest)
+# -0.003/-0.002
+
+pr03__age_without_fare_no_title_cb03__random_forest = create_config(
+    base_config=baseline_config['random_forest__raw'],
+    patches = [
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+        removing_fare_patch,
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='age_without_fare_no_title_cb03',
+    domain='randomforest',
+    notes=('pruning experiment 03 for Random Forest.'
+           'removing fare while adding cb03, age imputed by title/pclass and bins.')
+)
+
+ALL_FS_CONFIGS['pr03__age_without_fare_no_title_cb03__random_forest'] = config_to_group(pr03__age_without_fare_no_title_cb03__random_forest)
+RANDOMFOREST_FS_CONFIGS['pr03__age_without_fare_no_title_cb03__random_forest'] = config_to_group(pr03__age_without_fare_no_title_cb03__random_forest)
+# +0.002/-0.006

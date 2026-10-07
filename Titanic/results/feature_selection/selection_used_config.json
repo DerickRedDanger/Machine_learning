@@ -3898,7 +3898,7 @@
       "Age_bin"
     ]
   },
-  "fs02__ticket_fe09__svc": {
+  "fs02__ticket_fe09_full_context__svc": {
     "pre_cv_feature_pipeline": [
       [
         "ticket_group_size_full_context",
@@ -3945,15 +3945,14 @@
         }
       ],
       [
-        "age_imputer_title_pclass",
+        "age_imputer_title",
         {
           "class": "GroupedImputer",
           "params": {
             "agg_func": "median",
             "fallback_to_global": true,
             "group_cols": [
-              "Title",
-              "Pclass"
+              "Title"
             ],
             "target_col": "Age"
           }
@@ -3997,8 +3996,8 @@
       "n_jobs": -1
     },
     "stage": "fs02",
-    "feature_group": "ticket_fe09",
-    "group": "fs02__ticket_fe09",
+    "feature_group": "ticket_fe09_full_context",
+    "group": "fs02__ticket_fe09_full_context",
     "domain": "svc",
     "tags": [
       "full_context"
@@ -4012,7 +4011,7 @@
       "random_state": 42
     },
     "notes": "Experiment 02 for SVC feature selection.Addition of fe09 - ticket full context, Ticket feature.",
-    "name": "fs02__ticket_fe09__svc",
+    "name": "fs02__ticket_fe09_full_context__svc",
     "features": [
       "Age",
       "SibSp",
@@ -4137,133 +4136,6 @@
     },
     "notes": "Experiment 02 for SVC feature selection.Addition of fe09 - ticket fitted, Ticket feature.",
     "name": "fs02__ticket_fe09_fitted__svc",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Pclass",
-      "Age_bin"
-    ]
-  },
-  "fs02__ticket_fe09_full_context__svc": {
-    "pre_cv_feature_pipeline": [
-      [
-        "ticket_group_size_full_context",
-        {
-          "class": "FittedValueCountTransformer",
-          "params": {
-            "count_missing": false,
-            "missing_value": NaN,
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket",
-            "unseen_value": NaN
-          }
-        }
-      ]
-    ],
-    "pre_cv_scope": "full_prediction_context",
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "age_imputer_title",
-        {
-          "class": "GroupedImputer",
-          "params": {
-            "agg_func": "median",
-            "fallback_to_global": true,
-            "group_cols": [
-              "Title"
-            ],
-            "target_col": "Age"
-          }
-        }
-      ],
-      [
-        "age_bin",
-        {
-          "class": "BinTransformer",
-          "params": {
-            "bins": [
-              0,
-              14,
-              35,
-              60,
-              100
-            ],
-            "labels": [
-              "0",
-              "2",
-              "3",
-              "1"
-            ],
-            "output_col": "Age_bin",
-            "right": false,
-            "source_col": "Age"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fs02",
-    "feature_group": "ticket_fe09_full_context",
-    "group": "fs02__ticket_fe09_full_context",
-    "domain": "svc",
-    "tags": [
-      "full_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "Experiment 02 for SVC feature selection.Addition of fe09 - ticket full context, Ticket feature.",
-    "name": "fs02__ticket_fe09_full_context__svc",
     "features": [
       "Age",
       "SibSp",
@@ -5272,144 +5144,6 @@
       "Age_bin"
     ]
   },
-  "fssc__ticket_fe09_full_context__svc": {
-    "pre_cv_feature_pipeline": [
-      [
-        "ticket_group_size_full_context",
-        {
-          "class": "FittedValueCountTransformer",
-          "params": {
-            "count_missing": false,
-            "missing_value": NaN,
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket",
-            "unseen_value": NaN
-          }
-        }
-      ]
-    ],
-    "pre_cv_scope": "full_prediction_context",
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "TicketGroupSize",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "age_imputer_title",
-        {
-          "class": "GroupedImputer",
-          "params": {
-            "agg_func": "median",
-            "fallback_to_global": true,
-            "group_cols": [
-              "Title"
-            ],
-            "target_col": "Age"
-          }
-        }
-      ],
-      [
-        "age_bin",
-        {
-          "class": "BinTransformer",
-          "params": {
-            "bins": [
-              0,
-              14,
-              35,
-              60,
-              100
-            ],
-            "labels": [
-              "0",
-              "2",
-              "3",
-              "1"
-            ],
-            "output_col": "Age_bin",
-            "right": false,
-            "source_col": "Age"
-          }
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fssc",
-    "feature_group": "ticket_fe09_full_context",
-    "group": "fssc__ticket_fe09_full_context",
-    "domain": "svc",
-    "tags": [
-      "full_context"
-    ],
-    "model_name": "svc",
-    "model_params": {
-      "C": 1.0,
-      "kernel": "rbf",
-      "gamma": "scale",
-      "probability": false,
-      "random_state": 42
-    },
-    "notes": "Experiment 04 for SVC feature selection.Addition of fe09, Ticket group size feature.",
-    "name": "fssc__ticket_fe09_full_context__svc",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "TicketGroupSize",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Pclass",
-      "Age_bin"
-    ]
-  },
   "pr01__removing_all_fare__svc": {
     "pre_cv_feature_pipeline": [],
     "pre_cv_scope": null,
@@ -5835,6 +5569,1204 @@
       "SibSp",
       "Parch",
       "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs__baseline__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "baseline",
+    "group": "fs__baseline",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Baseline configuration for Random Forest feature selection.Starts from the raw model configuration with Title added.",
+    "name": "fs__baseline__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs__age_cb03__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "age_cb03",
+    "group": "fs__age_cb03",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of cb03, age imputed by title/pclass and bins.",
+    "name": "fs__age_cb03__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs__age_cb02__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "age_cb02",
+    "group": "fs__age_cb02",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of cb02, age imputed by title and bins.",
+    "name": "fs__age_cb02__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs__fare_fe10__random_forest": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "fare_fe10",
+    "group": "fs__fare_fe10",
+    "domain": "randomforest",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
+    "name": "fs__fare_fe10__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs__fare_fe10_full_context__random_forest": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "fare_fe10_full_context",
+    "group": "fs__fare_fe10_full_context",
+    "domain": "randomforest",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
+    "name": "fs__fare_fe10_full_context__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs01__age_cb03__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs01",
+    "feature_group": "age_cb03",
+    "group": "fs01__age_cb03",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of cb03, age imputed by title/pclass and bins.",
+    "name": "fs01__age_cb03__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs01__age_cb02__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs01",
+    "feature_group": "age_cb02",
+    "group": "fs01__age_cb02",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of cb02, age imputed by title and bins.",
+    "name": "fs01__age_cb02__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs02__fare_fe10_full_context__random_forest": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "fare_fe10_full_context",
+    "group": "fs02__fare_fe10_full_context",
+    "domain": "randomforest",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
+    "name": "fs02__fare_fe10_full_context__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs02__fare_cb06_fitted__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "fare_cb06_fitted",
+    "group": "fs02__fare_cb06_fitted",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Random Forest feature selection.addition of cb06, all fare features.",
+    "name": "fs02__fare_cb06_fitted__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "pr01__removing_raw_fare__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_raw_fare",
+    "group": "pr01__removing_raw_fare",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "pruning experiment 01 for Random Forest.removing raw fare.",
+    "name": "pr01__removing_raw_fare__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "pr02__age_without_fare_cb03__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "age_without_fare_cb03",
+    "group": "pr02__age_without_fare_cb03",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "pruning experiment 02 for Random Forest.removing fare while adding cb03, age imputed by title/pclass and bins.",
+    "name": "pr02__age_without_fare_cb03__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr03__age_without_fare_no_title_cb03__random_forest": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "age_without_fare_no_title_cb03",
+    "group": "pr03__age_without_fare_no_title_cb03",
+    "domain": "randomforest",
+    "tags": [],
+    "model_name": "random_forest",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "pruning experiment 03 for Random Forest.removing fare while adding cb03, age imputed by title/pclass and bins.",
+    "name": "pr03__age_without_fare_no_title_cb03__random_forest",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
       "Sex",
       "Embarked",
       "Pclass",

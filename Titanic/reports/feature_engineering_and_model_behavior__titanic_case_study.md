@@ -3623,6 +3623,217 @@ A simpler configuration without the full-context Fare/TicketGroupSize
 representation reached 0.835 accuracy and 0.773 F1, making it a competitive
 alternative when straightforward inductive inference is preferred.
 
+### Random Forest
+
+#### Forward selection
+
+Feature selection for Random Forest started from the raw feature configuration
+plus Title engineering. Title was selected as the baseline because it had
+produced the strongest general-purpose Random Forest result during the
+feature-engineering stage, reaching 0.832 accuracy and 0.768 F1.
+
+Random Forest had shown relatively little benefit from most of the engineered
+representations explored previously. Age and Fare were therefore investigated
+first because earlier experiments had revealed potentially useful interactions
+between the two domains.
+
+| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| Baseline | Title | **0.832** | **0.768** | — | — | Baseline |
+| FS01 | + Age CB03 | 0.831 | 0.764 | -0.001 | -0.004 | Reject |
+| FS01 | + Age CB02 | 0.828 | 0.760 | -0.004 | -0.008 | Reject |
+| FS02 | + Fare FE10 full-context | 0.828 | 0.759 | -0.004 | -0.009 | Reject |
+| FS02 | + Fare CB06 fitted | 0.832 | 0.766 | 0.000 | -0.002 | Reject |
+
+No tested engineered representation improved upon the Title baseline during
+forward selection.
+
+Unlike Logistic Regression and SVC, Random Forest therefore did not produce
+a larger forward-selection candidate. The Title baseline remained the
+strongest configuration after feature addition.
+
+##### Age
+
+CB03 and CB02 were tested because they had been the most promising Age
+representations for Random Forest during earlier feature-engineering
+experiments.
+
+Neither improved the Title baseline.
+
+CB03 reduced accuracy by 0.001 and F1 by 0.004, while CB02 reduced accuracy
+by 0.004 and F1 by 0.008.
+
+CB03 was the stronger of the two, but its negative result provided no reason
+to carry either Age representation forward under the existing Title + Fare
+context.
+
+##### Fare
+
+Previous experiments had generally favored retaining raw Fare for Random
+Forest, but several engineered Fare representations had produced small or
+non-zero results and were reconsidered during feature selection.
+
+FE10 using full-context TicketGroupSize reduced accuracy by 0.004 and F1 by
+0.009.
+
+CB06 using fitted TicketGroupSize preserved accuracy but reduced F1 by
+0.002. Because it increased representation complexity without improving the
+primary metric and slightly worsened the secondary metric, it was also
+rejected.
+
+The Title baseline therefore remained the selected configuration after
+forward selection.
+
+---
+
+#### Ablation and representation interaction
+
+Although forward selection found no beneficial additions, earlier Age × Fare
+ablation experiments had shown a repeated pattern in which removing Fare
+improved several Random Forest Age configurations.
+
+This provided a specific reason to investigate feature removal rather than
+continue adding engineered representations that had previously shown weak
+or negative evidence.
+
+##### Removing Fare
+
+Removing raw Fare from the Title baseline produced:
+
+| Configuration | Accuracy | F1 | Δ Accuracy | Δ F1 |
+|---|---:|---:|---:|---:|
+| Title + raw Fare | 0.832 | 0.768 | — | — |
+| Title − raw Fare | 0.832 | 0.767 | 0.000 | -0.001 |
+
+Removing Fare alone therefore provided no benefit.
+
+This result refined the earlier ablation finding. Fare was not generally
+harmful to Random Forest; its previous negative behavior appeared to depend
+on the representation context in which it was used.
+
+##### Reintroducing CB03 without Fare
+
+Because earlier experiments had suggested an interaction between the Age
+representation and Fare, CB03 was tested again after removing Fare.
+
+The resulting configuration reached 0.829 accuracy and 0.766 F1, compared
+with 0.832 accuracy and 0.768 F1 for the Title baseline.
+
+CB03 therefore remained detrimental while Title was present even after Fare
+had been removed.
+
+This showed that the earlier Age × Fare interaction did not fully explain
+CB03's behavior in the current feature-selection configuration.
+
+##### Reproducing the previous Age/Fare ablation
+
+A final targeted experiment reproduced the previously successful ablation
+configuration by using CB03 while removing both raw Fare and Title.
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Title baseline | 0.832 | **0.768** |
+| Title + CB03 + Fare | 0.831 | 0.764 |
+| Title + CB03 − Fare | 0.829 | 0.766 |
+| **CB03 − Fare − Title** | **0.834** | 0.762 |
+
+The final experiment reproduced the earlier result of 0.834 accuracy and
+0.762 F1, confirming that the previous ablation behavior remained consistent
+with the current experimental setup.
+
+More importantly, the result revealed that the useful Age configuration was
+conditional on removing both Fare and Title.
+
+CB03 was detrimental when added to the Title baseline, and removing Fare
+alone did not make it beneficial. However, CB03 combined with the removal of
+both Title and Fare produced the highest Random Forest accuracy observed in
+this feature-selection phase.
+
+---
+
+#### Final selection
+
+Random Forest produced two competitive final representations with different
+metric trade-offs:
+
+| Configuration | Accuracy | F1 | Characteristic |
+|---|---:|---:|---|
+| Title + otherwise raw representation | 0.832 | **0.768** | Higher F1 |
+| **CB03 Age − Title − Fare** | **0.834** | 0.762 | Higher accuracy |
+
+Because accuracy was established as the primary selection metric, the
+CB03 Age configuration without Title or Fare was selected as the final
+Random Forest candidate.
+
+Relative to the Title baseline, this configuration improves accuracy by
+0.002 while reducing F1 by 0.006.
+
+The Title configuration remains a meaningful alternative when the balance
+between accuracy and F1 is preferred over maximizing accuracy.
+
+The selected accuracy-oriented configuration therefore uses:
+
+- CB03 Age representation
+  - Title + Pclass-based Age imputation
+  - continuous Age
+  - Age bins
+- no Title as a direct predictor
+- no Fare
+- the remaining raw predictors not explicitly removed during selection
+
+Title remains involved indirectly through CB03's Age-imputation procedure,
+but is not retained as a direct model input.
+
+---
+
+#### Interpretation
+
+Random Forest showed little benefit from simply adding engineered
+representations to an already strong feature set.
+
+Neither of the preferred Age representations improved the Title baseline,
+and the additional Fare representations were either detrimental or failed
+to improve accuracy. Unlike Logistic Regression, there was therefore no
+useful collection of engineered features to assemble and subsequently prune.
+
+Instead, the most important Random Forest result came from changing the
+representation context.
+
+Title alone produced a strong model, while CB03 Age produced another
+competitive representation only after Title and Fare were removed as direct
+predictors. Attempts to combine these apparently useful components performed
+worse than either of the competing representations.
+
+This demonstrates that feature effects were strongly conditional:
+
+- Title was useful in the mostly raw representation.
+- CB03 was detrimental when added to the Title representation.
+- Removing Fare alone provided no benefit.
+- Removing Fare did not make CB03 useful while Title remained present.
+- CB03 became the highest-accuracy representation when both Fare and direct
+  Title were removed.
+
+The earlier observation that removing Fare could benefit Random Forest
+should therefore not be generalized as evidence that Random Forest does not
+benefit from Fare. The current experiments instead indicate an interaction
+between Fare, Title, and the engineered Age representation.
+
+Similarly, CB03 should not be described as generally superior to the raw Age
+representation. Its advantage appeared only under the particular
+representation in which direct Title and Fare were absent.
+
+The selected model also illustrates an important distinction between a
+feature being used as a direct predictor and being used during feature
+construction. Although Title was removed from the model inputs, CB03 still
+uses Title together with Pclass to impute Age. Title information therefore
+remains involved indirectly in the final representation.
+
+Overall, Random Forest benefited more from selecting between competing
+feature representations than from accumulating additional engineered
+features. The final accuracy improvement was small, but the experiments
+revealed substantial interaction between representations that would have
+been hidden by considering each engineered feature independently.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).

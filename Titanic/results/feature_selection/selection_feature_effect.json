@@ -8,7 +8,8 @@
     "positive_models": [],
     "neutral_models": [
       "logreg",
-      "svc"
+      "svc",
+      "random_forest"
     ],
     "negative_models": [],
     "verdict": "neutral",
@@ -21,14 +22,15 @@
   "fs01__age_cb03": {
     "compare_group": "fs01__age_cb03",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.002,
+    "mean_delta": 0.001,
     "max_delta": 0.003,
-    "min_delta": 0.001,
+    "min_delta": -0.001,
     "positive_models": [
       "logreg"
     ],
     "neutral_models": [
-      "svc"
+      "svc",
+      "random_forest"
     ],
     "negative_models": [],
     "verdict": "model_specific_positive",
@@ -50,16 +52,18 @@
   "fs01__age_cb02": {
     "compare_group": "fs01__age_cb02",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.002,
+    "mean_delta": -0.0,
     "max_delta": 0.002,
-    "min_delta": 0.001,
+    "min_delta": -0.004,
     "positive_models": [],
     "neutral_models": [
       "logreg",
       "svc"
     ],
-    "negative_models": [],
-    "verdict": "neutral",
+    "negative_models": [
+      "random_forest"
+    ],
+    "verdict": "model_specific_negative",
     "recommended_for_all": false,
     "recommended_model_deltas": {},
     "recommended_model_tradeoffs": {},
@@ -324,38 +328,60 @@
   "fs06__sex_pclass_fe12": {
     "compare_group": "fs06__sex_pclass_fe12",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.005,
-    "max_delta": -0.005,
-    "min_delta": -0.005,
-    "positive_models": [],
+    "mean_delta": 0.003,
+    "max_delta": 0.008,
+    "min_delta": -0.003,
+    "positive_models": [
+      "logreg"
+    ],
     "neutral_models": [],
     "negative_models": [
       "svc"
     ],
-    "verdict": "general_negative",
+    "verdict": "mixed",
     "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "recommended_model_deltas": {
+      "logreg": 0.008
+    },
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.008,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
-    "discard": true
+    "discard": false
   },
   "fs06__sex_pclass_cb08": {
     "compare_group": "fs06__sex_pclass_cb08",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.004,
-    "max_delta": -0.004,
-    "min_delta": -0.004,
-    "positive_models": [],
-    "neutral_models": [],
-    "negative_models": [
+    "mean_delta": 0.003,
+    "max_delta": 0.007,
+    "min_delta": -0.002,
+    "positive_models": [
+      "logreg"
+    ],
+    "neutral_models": [
       "svc"
     ],
-    "verdict": "general_negative",
+    "negative_models": [],
+    "verdict": "model_specific_positive",
     "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "recommended_model_deltas": {
+      "logreg": 0.007
+    },
+    "recommended_model_tradeoffs": {
+      "logreg": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.007,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
-    "discard": true
+    "discard": false
   },
   "pr01__removing_family": {
     "compare_group": "pr01__removing_family",
@@ -648,8 +674,8 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "fs02__ticket_fe09": {
-    "compare_group": "fs02__ticket_fe09",
+  "fs02__ticket_fe09_full_context": {
+    "compare_group": "fs02__ticket_fe09_full_context",
     "metric": "test_accuracy_mean",
     "mean_delta": 0.0,
     "max_delta": 0.0,
@@ -669,9 +695,9 @@
   "fs02__ticket_fe09_fitted": {
     "compare_group": "fs02__ticket_fe09_fitted",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.006,
-    "max_delta": -0.006,
-    "min_delta": -0.006,
+    "mean_delta": -0.005,
+    "max_delta": -0.005,
+    "min_delta": -0.005,
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
@@ -684,30 +710,12 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "fs02__ticket_fe09_full_context": {
-    "compare_group": "fs02__ticket_fe09_full_context",
+  "fs03__family_cb07": {
+    "compare_group": "fs03__family_cb07",
     "metric": "test_accuracy_mean",
     "mean_delta": -0.001,
     "max_delta": -0.001,
     "min_delta": -0.001,
-    "positive_models": [],
-    "neutral_models": [
-      "svc"
-    ],
-    "negative_models": [],
-    "verdict": "neutral",
-    "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
-    "notable_secondary_improvements": {},
-    "discard": false
-  },
-  "fs03__family_cb07": {
-    "compare_group": "fs03__family_cb07",
-    "metric": "test_accuracy_mean",
-    "mean_delta": -0.002,
-    "max_delta": -0.002,
-    "min_delta": -0.002,
     "positive_models": [],
     "neutral_models": [
       "svc"
@@ -723,9 +731,9 @@
   "fs04__fare_fe10_full_context": {
     "compare_group": "fs04__fare_fe10_full_context",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.001,
-    "max_delta": 0.001,
-    "min_delta": 0.001,
+    "mean_delta": 0.002,
+    "max_delta": 0.002,
+    "min_delta": 0.002,
     "positive_models": [],
     "neutral_models": [
       "svc"
@@ -741,23 +749,77 @@
   "fs04__fare_fe10_fitted": {
     "compare_group": "fs04__fare_fe10_fitted",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.003,
-    "max_delta": -0.003,
-    "min_delta": -0.003,
+    "mean_delta": -0.002,
+    "max_delta": -0.002,
+    "min_delta": -0.002,
     "positive_models": [],
-    "neutral_models": [],
-    "negative_models": [
+    "neutral_models": [
       "svc"
     ],
-    "verdict": "general_negative",
+    "negative_models": [],
+    "verdict": "neutral",
     "recommended_for_all": false,
     "recommended_model_deltas": {},
     "recommended_model_tradeoffs": {},
     "notable_secondary_improvements": {},
-    "discard": true
+    "discard": false
   },
   "fs04__fare_fe08": {
     "compare_group": "fs04__fare_fe08",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs05__cabin_fe04": {
+    "compare_group": "fs05__cabin_fe04",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr01__removing_all_fare": {
+    "compare_group": "pr01__removing_all_fare",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "svc"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr02__removing_age_imputed": {
+    "compare_group": "pr02__removing_age_imputed",
     "metric": "test_accuracy_mean",
     "mean_delta": -0.001,
     "max_delta": -0.001,
@@ -774,12 +836,12 @@
     "notable_secondary_improvements": {},
     "discard": false
   },
-  "fs05__cabin_fe04": {
-    "compare_group": "fs05__cabin_fe04",
+  "pr02__removing_all_age": {
+    "compare_group": "pr02__removing_all_age",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.002,
-    "max_delta": -0.002,
-    "min_delta": -0.002,
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
     "positive_models": [],
     "neutral_models": [
       "svc"
@@ -792,44 +854,8 @@
     "notable_secondary_improvements": {},
     "discard": false
   },
-  "fssc__ticket_fe09_full_context": {
-    "compare_group": "fssc__ticket_fe09_full_context",
-    "metric": "test_accuracy_mean",
-    "mean_delta": -0.002,
-    "max_delta": -0.002,
-    "min_delta": -0.002,
-    "positive_models": [],
-    "neutral_models": [
-      "svc"
-    ],
-    "negative_models": [],
-    "verdict": "neutral",
-    "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
-    "notable_secondary_improvements": {},
-    "discard": false
-  },
-  "pr01__removing_all_fare": {
-    "compare_group": "pr01__removing_all_fare",
-    "metric": "test_accuracy_mean",
-    "mean_delta": -0.002,
-    "max_delta": -0.002,
-    "min_delta": -0.002,
-    "positive_models": [],
-    "neutral_models": [
-      "svc"
-    ],
-    "negative_models": [],
-    "verdict": "neutral",
-    "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
-    "notable_secondary_improvements": {},
-    "discard": false
-  },
-  "pr02__removing_age_imputed": {
-    "compare_group": "pr02__removing_age_imputed",
+  "pr03__removing_title": {
+    "compare_group": "pr03__removing_title",
     "metric": "test_accuracy_mean",
     "mean_delta": -0.003,
     "max_delta": -0.003,
@@ -846,15 +872,33 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "pr02__removing_all_age": {
-    "compare_group": "pr02__removing_all_age",
+  "fs02__fare_fe10_full_context": {
+    "compare_group": "fs02__fare_fe10_full_context",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.002,
-    "max_delta": -0.002,
-    "min_delta": -0.002,
+    "mean_delta": -0.004,
+    "max_delta": -0.004,
+    "min_delta": -0.004,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "random_forest"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
+  },
+  "fs02__fare_cb06_fitted": {
+    "compare_group": "fs02__fare_cb06_fitted",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
     "positive_models": [],
     "neutral_models": [
-      "svc"
+      "random_forest"
     ],
     "negative_models": [],
     "verdict": "neutral",
@@ -864,16 +908,34 @@
     "notable_secondary_improvements": {},
     "discard": false
   },
-  "pr03__removing_title": {
-    "compare_group": "pr03__removing_title",
+  "pr01__removing_raw_fare": {
+    "compare_group": "pr01__removing_raw_fare",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.005,
-    "max_delta": -0.005,
-    "min_delta": -0.005,
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "random_forest"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr02__age_without_fare_cb03": {
+    "compare_group": "pr02__age_without_fare_cb03",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.003,
+    "max_delta": -0.003,
+    "min_delta": -0.003,
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
-      "svc"
+      "random_forest"
     ],
     "verdict": "general_negative",
     "recommended_for_all": false,
@@ -881,5 +943,23 @@
     "recommended_model_tradeoffs": {},
     "notable_secondary_improvements": {},
     "discard": true
+  },
+  "pr03__age_without_fare_no_title_cb03": {
+    "compare_group": "pr03__age_without_fare_no_title_cb03",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.002,
+    "max_delta": 0.002,
+    "min_delta": 0.002,
+    "positive_models": [],
+    "neutral_models": [
+      "random_forest"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
   }
 }
