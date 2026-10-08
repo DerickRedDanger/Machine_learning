@@ -6772,5 +6772,1227 @@
       "Pclass",
       "Age_bin"
     ]
+  },
+  "fs__baseline__knn": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "baseline",
+    "group": "fs__baseline",
+    "domain": "knn",
+    "tags": [],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "Baseline configuration for KNN feature selection.Starts from the raw model configuration with Title added.",
+    "name": "fs__baseline__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs01__fare_fe10_full_context__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs01",
+    "feature_group": "fare_fe10_full_context",
+    "group": "fs01__fare_fe10_full_context",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 01 for KNN feature selection.adding fare per ticket member full context feature.",
+    "name": "fs01__fare_fe10_full_context__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs02__cabin_fe03__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "cabin_fe03",
+    "group": "fs02__cabin_fe03",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 02 for KNN feature selection.adding deck feature.",
+    "name": "fs02__cabin_fe03__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass"
+    ]
+  },
+  "fs02__cabin_fe04__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "cabin_fe04",
+    "group": "fs02__cabin_fe04",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 02 for KNN feature selection.adding all cabin features.",
+    "name": "fs02__cabin_fe04__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
+    ]
+  },
+  "fs03__ticket_fe09_full_context__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs03",
+    "feature_group": "ticket_fe09_full_context",
+    "group": "fs03__ticket_fe09_full_context",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 03 for KNN feature selection.adding ticket group size feature.",
+    "name": "fs03__ticket_fe09_full_context__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass"
+    ]
+  },
+  "fs04__family_fe01__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare/TicketMember",
+        "TicketGroupSize",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "family_fe01",
+    "group": "fs04__family_fe01",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 04 for KNN feature selection.adding family features.",
+    "name": "fs04__family_fe01__knn",
+    "features": [
+      "Age",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass"
+    ]
+  },
+  "fs04__family_cb07__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember",
+        "TicketGroupSize",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "family_cb07",
+    "group": "fs04__family_cb07",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 04 for KNN feature selection.adding family features.",
+    "name": "fs04__family_cb07__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass"
+    ]
+  },
+  "pr01__removing_deck__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_deck",
+    "group": "pr01__removing_deck",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 01 for KNN backward pruning.removing deck.",
+    "name": "pr01__removing_deck__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "prsc__reading_family__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "Fare/TicketMember",
+        "TicketGroupSize",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "prsc",
+    "feature_group": "reading_family",
+    "group": "prsc__reading_family",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "sanity check experiment for KNN backward pruning.removing deck while readding family features.",
+    "name": "prsc__reading_family__knn",
+    "features": [
+      "Age",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "re02__removing_fare_fe10__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "re02",
+    "feature_group": "removing_fare_fe10",
+    "group": "re02__removing_fare_fe10",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 02 for KNN backward pruning.removing fe10.",
+    "name": "re02__removing_fare_fe10__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass"
+    ]
+  },
+  "pr02__removing_fare_fe10__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "removing_fare_fe10",
+    "group": "pr02__removing_fare_fe10",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 02 for KNN backward pruning.removing fe10.",
+    "name": "pr02__removing_fare_fe10__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass"
+    ]
+  },
+  "pr03__removing_title__knn": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/TicketMember",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "removing_title",
+    "group": "pr03__removing_title",
+    "domain": "knn",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "knn",
+    "model_params": {
+      "n_neighbors": 5
+    },
+    "notes": "experiment 03 for KNN backward pruning.removing title.",
+    "name": "pr03__removing_title__knn",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Deck",
+      "Pclass"
+    ]
   }
 }

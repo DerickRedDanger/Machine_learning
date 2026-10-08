@@ -3834,6 +3834,236 @@ features. The final accuracy improvement was small, but the experiments
 revealed substantial interaction between representations that would have
 been hidden by considering each engineered feature independently.
 
+### K-Nearest Neighbors (KNN)
+
+#### Forward selection
+
+Feature selection for KNN started from the raw feature configuration plus Title engineering. Title was selected as the baseline because it had produced one of the strongest KNN results during feature engineering, increasing accuracy from 0.809 to 0.822 and F1 from 0.742 to 0.760.
+
+Unlike SVC and Random Forest, KNN had shown meaningful improvements from several engineered representations. Fare/TicketGroupSize and Deck were particularly promising, while TicketGroupSize had shown a smaller, context-dependent benefit.
+
+The forward-selection process therefore prioritized these representations before exploring Family engineering as a possible additional source of information.
+
+| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| Baseline | Title | 0.822 | 0.760 | — | — | Baseline |
+| FS01 | + FE10 Fare/Ticket full-context | 0.831 | 0.771 | +0.009 | +0.011 | Carry |
+| FS02 | + FE03 Deck | 0.832 | 0.768 | +0.001 | -0.003 | Carry provisionally |
+| FS02 | + FE04 Cabin | 0.827 | 0.764 | -0.004 | -0.007 | Reject |
+| FS03 | + FE09 Ticket full-context | **0.834** | **0.776** | +0.002 | +0.008 | Carry |
+| FS04 | + FE01 Family | 0.829 | 0.771 | -0.005 | -0.005 | Reject |
+| FS04 | + CB07 Family | 0.828 | 0.770 | -0.006 | -0.006 | Reject |
+
+Each experiment was compared against the latest accepted forward configuration, rather than against the original baseline.
+
+The resulting forward candidate reached **0.834 accuracy and 0.776 F1**, improving upon the Title baseline by 0.012 accuracy and 0.016 F1.
+
+##### Fare
+
+FE10 using full-context TicketGroupSize was tested first because it had previously produced one of the strongest improvements for KNN.
+
+Adding the normalized Fare representation increased accuracy by 0.009 and F1 by 0.011.
+
+Both improvements were substantial relative to the other feature-engineering gains observed for KNN, making FE10 a clear candidate for retention.
+
+The result also reinforced the earlier observation that KNN benefited from Fare normalization using ticket-sharing information under full-context semantics.
+
+##### Cabin
+
+FE03 Deck was tested because it had previously improved KNN performance during isolated feature engineering.
+
+Adding Deck increased accuracy by 0.001 but reduced F1 by 0.003.
+
+Although mixed, this result remained within the established tolerance for provisional retention. Deck was therefore carried forward to preserve the possibility of useful interactions with subsequent features.
+
+FE04, containing a broader Cabin representation, was also tested. It reduced accuracy by 0.004 and F1 by 0.007 relative to the selected Fare configuration.
+
+The broader representation was rejected in favor of FE03.
+
+At this stage, Deck's contribution appeared weak and uncertain, making it an important candidate for later pruning.
+
+##### Ticket
+
+FE09 using full-context TicketGroupSize was added after Deck.
+
+This increased accuracy from 0.832 to 0.834 and F1 from 0.768 to 0.776, corresponding to improvements of 0.002 accuracy and 0.008 F1.
+
+The F1 improvement was particularly notable because it more than compensated for the F1 reduction introduced by Deck.
+
+FE09 was therefore retained.
+
+This result was also interesting because FE10 already used TicketGroupSize to normalize Fare. Adding TicketGroupSize directly nevertheless improved the assembled model.
+
+The normalized Fare representation and direct TicketGroupSize appeared to provide complementary predictive information in the tested configuration.
+
+##### Family
+
+Family engineering had generally performed poorly for KNN during isolated feature-engineering experiments. However, earlier Family × Ticket tests had shown a positive result for the full-context combination, making Family worth reconsidering after the Fare and Ticket representations were selected.
+
+Both FE01 and CB07 were tested.
+
+FE01 reduced accuracy and F1 by 0.005, while CB07 reduced both metrics by 0.006.
+
+Neither representation improved the assembled model.
+
+Family engineering was therefore rejected, although its relationship with Deck was investigated further during pruning.
+
+---
+
+#### Backward pruning
+
+The forward candidate retained Title, FE10 Fare/Ticket, FE03 Deck, and FE09 TicketGroupSize.
+
+Backward pruning evaluated whether each representation remained useful after the complete forward assembly, rather than relying only on its contribution when initially introduced.
+
+| Experiment | Change | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| Forward candidate | — | **0.834** | **0.776** | — | — | Reference |
+| PR01 | Remove FE03 Deck | 0.827 | 0.771 | -0.007 | -0.005 | Keep Deck |
+| PR02 | Remove FE10 Fare/Ticket | 0.828 | 0.766 | -0.006 | -0.010 | Keep FE10 |
+| PR03 | Remove Title | 0.825 | 0.766 | -0.009 | -0.010 | Keep Title |
+| Existing FS02 | Remove FE09 TicketGroupSize | 0.832 | 0.768 | -0.002 | -0.008 | Keep FE09 |
+
+Every retained representation survived pruning. No removal improved the completed forward candidate.
+
+##### Deck and TicketGroupSize interaction
+
+Removing Deck produced one of the most informative results of KNN's feature selection.
+
+During forward selection, Deck had contributed only +0.001 accuracy while reducing F1 by 0.003.
+
+However, removing Deck after FE09 TicketGroupSize had been added reduced accuracy by 0.007 and F1 by 0.005.
+
+This indicated that Deck's marginal contribution had changed substantially after TicketGroupSize was introduced.
+
+The experiments also provided all four combinations needed to examine the interaction directly.
+
+| Deck | Direct TicketGroupSize | Accuracy | F1 |
+|---|---|---:|---:|
+| No | No | 0.831 | 0.771 |
+| Yes | No | 0.832 | 0.768 |
+| No | Yes | 0.827 | 0.771 |
+| Yes | Yes | **0.834** | **0.776** |
+
+All four configurations retained Title and FE10 full-context Fare/Ticket.
+
+Without Deck, adding direct TicketGroupSize reduced accuracy by 0.004 and left F1 unchanged.
+
+With Deck, adding TicketGroupSize increased accuracy by 0.002 and F1 by 0.008.
+
+The resulting interaction contrasts were +0.006 accuracy and +0.008 F1.
+
+These results provide direct evidence that the predictive contribution of Deck and TicketGroupSize was conditional on their joint presence.
+
+The experiments do not establish the underlying mechanism. One plausible explanation is that the two representations jointly improve the neighborhood structure used by KNN, but confirming this would require additional investigation of distances or nearest-neighbor composition.
+
+This was also a clear validation of the feature-selection methodology: retaining Deck provisionally despite its initially mixed result allowed a useful interaction to emerge during subsequent assembly.
+
+##### Family without Deck
+
+A targeted sanity check investigated whether Deck was responsible for Family engineering's poor result.
+
+FE01 was added to the configuration containing Title, FE10 and FE09, while Deck was removed.
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Complete forward candidate | **0.834** | **0.776** |
+| Without Deck | 0.827 | 0.771 |
+| Without Deck, with FE01 | 0.829 | 0.774 |
+| With Deck and FE01 | 0.829 | 0.771 |
+
+Without Deck, adding FE01 improved accuracy by 0.002 and F1 by 0.003 relative to the corresponding no-Deck configuration.
+
+This contrasted with FE01's negative contribution when Deck was present, suggesting another context-dependent relationship between engineered representations.
+
+However, replacing Deck with FE01 remained inferior to the complete forward candidate, reducing accuracy by 0.005 and F1 by 0.002.
+
+The result was useful for understanding model behavior but did not justify retaining Family engineering.
+
+No further Family combinations were pursued.
+
+##### Fare
+
+Removing FE10 from the complete forward candidate reduced accuracy by 0.006 and F1 by 0.010.
+
+This confirmed that the normalized Fare representation remained valuable after Deck and direct TicketGroupSize had been added.
+
+Although FE09 already supplied TicketGroupSize directly, it did not replace the predictive contribution of the Fare/TicketGroupSize representation.
+
+Both representations were therefore retained.
+
+##### Title
+
+Removing Title reduced accuracy by 0.009 and F1 by 0.010, the largest accuracy loss among the pruning experiments.
+
+Title had originally improved raw KNN by 0.013 accuracy and 0.018 F1.
+
+Its marginal contribution was smaller in the completed configuration, consistent with some predictive overlap between Title and the other retained representations.
+
+Nevertheless, Title remained one of the most valuable components of the final KNN feature set.
+
+##### Direct TicketGroupSize
+
+A separate pruning experiment was unnecessary because FE09 had been the final accepted addition during forward selection.
+
+The existing FS02 configuration already represented the completed model without direct TicketGroupSize.
+
+Removing FE09 would reduce accuracy by 0.002 and F1 by 0.008.
+
+FE09 therefore remained in the final configuration.
+
+---
+
+#### Final selection
+
+The final KNN configuration retained every representation carried through forward selection:
+
+- Title (FE05)
+- FE10 Fare/TicketGroupSize using full-context semantics
+- FE03 Deck
+- FE09 TicketGroupSize using full-context semantics
+- Remaining raw predictors not explicitly replaced or removed by the selected transformations
+
+Family engineering and the broader Cabin representation were rejected.
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw KNN baseline | 0.809 | 0.742 |
+| Feature-selection baseline (Title) | 0.822 | 0.760 |
+| **Final selected candidate** | **0.834** | **0.776** |
+
+Relative to raw KNN, the final configuration improved accuracy by **0.025** and F1 by **0.034**.
+
+Relative to the Title baseline, the additional selected representations improved accuracy by 0.012 and F1 by 0.016.
+
+No backward-pruning experiment improved the completed candidate.
+
+---
+
+#### Interpretation
+
+KNN benefited from combining multiple engineered representations, contrasting with the limited gains observed for SVC and Random Forest.
+
+Fare/TicketGroupSize produced a substantial improvement during forward selection, while Deck and direct TicketGroupSize demonstrated a positive predictive interaction.
+
+The Deck result was particularly informative. Its initial contribution was mixed, but its value increased substantially after TicketGroupSize was introduced. Removing it from the completed model reduced both accuracy and F1.
+
+This supports the methodological decision to retain promising or tolerably mixed features provisionally during forward assembly, rather than immediately rejecting every feature with a small secondary-metric loss.
+
+Family engineering provided another example of context-dependent behavior. FE01 was detrimental when Deck was present but marginally beneficial when Deck was absent. However, the alternative Family representation remained inferior to the complete candidate, demonstrating that a positive conditional contribution does not necessarily justify selecting a feature.
+
+KNN's sensitivity to these combinations is consistent with its distance-based prediction mechanism. Engineered representations change how observations are positioned relative to one another, potentially improving or degrading the relevance of nearest neighbors.
+
+However, the experiments measure predictive performance rather than directly examining the resulting distance geometry. The observed interactions should therefore be treated as empirical findings, while explanations involving neighborhood structure remain hypotheses.
+
+Unlike Logistic Regression, KNN did not benefit from removing provisionally retained representations during backward pruning. Instead, pruning confirmed that all four selected engineered representations contributed to the completed model.
+
+The final configuration reached 0.834 accuracy and 0.776 F1, making it a meaningful improvement over raw KNN without hyperparameter tuning.
+
+Both Fare/TicketGroupSize and direct TicketGroupSize use full-context semantics. Their benefits therefore depend on the availability and validity of the relevant prediction-population context. The selected configuration should be understood as a context-aware predictive candidate rather than an automatically interchangeable inductive deployment configuration.
+
+Overall, KNN demonstrated that useful feature engineering can arise not only from individual representations but also from their conditional contributions when combined. The Deck × TicketGroupSize interaction was the clearest example, showing why forward assembly and backward pruning can reveal behavior that isolated feature-engineering experiments would miss.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).

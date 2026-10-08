@@ -1100,7 +1100,7 @@ fs02__fare_cb06_fitted__random_forest = create_config(
 
 ALL_FS_CONFIGS['fs02__fare_cb06_fitted__random_forest'] = config_to_group(fs02__fare_cb06_fitted__random_forest)
 RANDOMFOREST_FS_CONFIGS['fs02__fare_cb06_fitted__random_forest'] = config_to_group(fs02__fare_cb06_fitted__random_forest)
-# 0/-00.002
+# 0/-0.002
 
 # none of the results were positive, so no fare features were carried over.
 
@@ -1166,3 +1166,251 @@ pr03__age_without_fare_no_title_cb03__random_forest = create_config(
 ALL_FS_CONFIGS['pr03__age_without_fare_no_title_cb03__random_forest'] = config_to_group(pr03__age_without_fare_no_title_cb03__random_forest)
 RANDOMFOREST_FS_CONFIGS['pr03__age_without_fare_no_title_cb03__random_forest'] = config_to_group(pr03__age_without_fare_no_title_cb03__random_forest)
 # +0.002/-0.006
+
+
+# K - Nearest Neighbor Feature selection
+
+KNN_FS_CONFIGS={}
+# Baseline configuration for KNN feature selection
+
+fs__baseline__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs',
+    feature_group='baseline',
+    domain='knn',
+    notes=('Baseline configuration for KNN feature selection.'
+           'Starts from the raw model configuration with Title added.')
+)
+
+ALL_FS_CONFIGS['fs__baseline__knn'] = config_to_group(fs__baseline__knn)
+KNN_FS_CONFIGS['fs__baseline__knn'] = config_to_group(fs__baseline__knn)
+
+# fs01 - fare - KNN
+
+fs01__fare_fe10_full_context__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='fare_fe10_full_context',
+    domain='knn',
+    notes=('experiment 01 for KNN feature selection.'
+           'adding fare per ticket member full context feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs01__fare_fe10_full_context__knn'] = config_to_group(fs01__fare_fe10_full_context__knn)
+KNN_FS_CONFIGS['fs01__fare_fe10_full_context__knn'] = config_to_group(fs01__fare_fe10_full_context__knn)
+# + 0.009/0.011
+
+# fs02 - cabin - KNN
+
+fs02__cabin_fe03__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe03__deck_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='cabin_fe03',
+    domain='knn',
+    notes=('experiment 02 for KNN feature selection.'
+           'adding deck feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__cabin_fe03__knn'] = config_to_group(fs02__cabin_fe03__knn)
+KNN_FS_CONFIGS['fs02__cabin_fe03__knn'] = config_to_group(fs02__cabin_fe03__knn)
+# +0.001/-0.003
+
+fs02__cabin_fe04__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='cabin_fe04',
+    domain='knn',
+    notes=('experiment 02 for KNN feature selection.'
+           'adding all cabin features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__cabin_fe04__knn'] = config_to_group(fs02__cabin_fe04__knn)
+KNN_FS_CONFIGS['fs02__cabin_fe04__knn'] = config_to_group(fs02__cabin_fe04__knn)
+# -0.004/-0.007
+
+# fe03 achieve slightly positive result, despite lower f1, so it was carried over as a main pruning target
+
+# fs03 - Ticket - KNN
+
+fs03__ticket_fe09_full_context__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe03__deck_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='ticket_fe09_full_context',
+    domain='knn',
+    notes=('experiment 03 for KNN feature selection.'
+           'adding ticket group size feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs03__ticket_fe09_full_context__knn'] = config_to_group(fs03__ticket_fe09_full_context__knn)
+KNN_FS_CONFIGS['fs03__ticket_fe09_full_context__knn'] = config_to_group(fs03__ticket_fe09_full_context__knn)
+# +0.002/+0.008
+
+# considerably positive result, so fe09 was carried over.
+
+# fs04 - family - KNN
+
+fs04__family_fe01__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe03__deck_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe01__family_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='family_fe01',
+    domain='knn',
+    notes=('experiment 04 for KNN feature selection.'
+           'adding family features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs04__family_fe01__knn'] = config_to_group(fs04__family_fe01__knn)
+KNN_FS_CONFIGS['fs04__family_fe01__knn'] = config_to_group(fs04__family_fe01__knn)
+#-0.005/-0.005
+
+fs04__family_cb07__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe03__deck_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='family_cb07',
+    domain='knn',
+    notes=('experiment 04 for KNN feature selection.'
+           'adding family features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs04__family_cb07__knn'] = config_to_group(fs04__family_cb07__knn)
+KNN_FS_CONFIGS['fs04__family_cb07__knn'] = config_to_group(fs04__family_cb07__knn)
+#-0.006/-0.006
+
+# Due to their negative results, family features were not carried over.
+# With that said, during one of the test while updating the feature engineering,
+# I noticed that family together with tickets had positive result.
+# It might be worth double checking this during the pruning phase
+
+# pruning phase for KNN
+
+pr01__removing_deck__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_deck',
+    domain='knn',
+    notes=('experiment 01 for KNN backward pruning.'
+           'removing deck.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr01__removing_deck__knn'] = config_to_group(pr01__removing_deck__knn)
+KNN_FS_CONFIGS['pr01__removing_deck__knn'] = config_to_group(pr01__removing_deck__knn)
+# -0.007/-0.005
+
+prsc__reading_family__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe01__family_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='prsc',
+    feature_group='reading_family',
+    domain='knn',
+    notes=('sanity check experiment for KNN backward pruning.'
+           'removing deck while readding family features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['prsc__reading_family__knn'] = config_to_group(prsc__reading_family__knn)
+KNN_FS_CONFIGS['prsc__reading_family__knn'] = config_to_group(prsc__reading_family__knn)
+#-0.005/-0.002
+
+pr02__removing_fare_fe10__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe03__deck_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_fare_fe10',
+    domain='knn',
+    notes=('experiment 02 for KNN backward pruning.'
+           'removing fe10.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_fare_fe10__knn'] = config_to_group(pr02__removing_fare_fe10__knn)
+KNN_FS_CONFIGS['pr02__removing_fare_fe10__knn'] = config_to_group(pr02__removing_fare_fe10__knn)
+#-0.006/-0.01
+
+
+
+pr03__removing_title__knn = create_config(
+    base_config=baseline_config['knn__raw'],
+    patches = [
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch'],
+        ALL_PATCHES['fe03__deck_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_title',
+    domain='knn',
+    notes=('experiment 03 for KNN backward pruning.'
+           'removing title.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr03__removing_title__knn'] = config_to_group(pr03__removing_title__knn)
+KNN_FS_CONFIGS['pr03__removing_title__knn'] = config_to_group(pr03__removing_title__knn)
+#-0.009/-0.01
