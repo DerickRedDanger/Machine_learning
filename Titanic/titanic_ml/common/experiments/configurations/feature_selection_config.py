@@ -1414,3 +1414,468 @@ pr03__removing_title__knn = create_config(
 ALL_FS_CONFIGS['pr03__removing_title__knn'] = config_to_group(pr03__removing_title__knn)
 KNN_FS_CONFIGS['pr03__removing_title__knn'] = config_to_group(pr03__removing_title__knn)
 #-0.009/-0.01
+
+
+XGB_FS_CONFIGS = {}
+
+# XGB Baseline
+
+fs__baseline__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs',
+    feature_group='baseline',
+    domain='xgb',
+    notes=('Baseline configuration for XGB feature selection.'
+           'Starts from the raw model configuration with Title added.')
+)
+
+ALL_FS_CONFIGS['fs__baseline__xgb'] = config_to_group(fs__baseline__xgb)
+XGB_FS_CONFIGS['fs__baseline__xgb'] = config_to_group(fs__baseline__xgb)
+
+# fs01 - cabin - XGB
+
+fs01__cabin_fe04__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='cabin_fe04',
+    domain='xgb',
+    notes=('Experiment 01 for XGB feature selection.'
+           'adding fe04, cabin features.')
+)
+
+ALL_FS_CONFIGS['fs01__cabin_fe04__xgb'] = config_to_group(fs01__cabin_fe04__xgb)
+XGB_FS_CONFIGS['fs01__cabin_fe04__xgb'] = config_to_group(fs01__cabin_fe04__xgb)
+# -0.005/-0.006
+
+# Negative result, will not carry over fe04
+# fe04 was the only feature selection for cabin with positive results for XGB
+# So no attempt to use another cabin feature was made
+
+# fs02 - family - XGB
+
+fs02__family_cb07__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb07__family_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='family_cb07',
+    domain='xgb',
+    notes=('Experiment 02 for XGB feature selection.'
+           'adding cb07, family features.')
+)
+
+ALL_FS_CONFIGS['fs02__family_cb07__xgb'] = config_to_group(fs02__family_cb07__xgb)
+XGB_FS_CONFIGS['fs02__family_cb07__xgb'] = config_to_group(fs02__family_cb07__xgb)
+# -0.005/ -0.005
+# Negative, not carried over
+# Solo experiment for the same reason as cabin
+
+fs03__ticket_fe09_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='ticket_fe09_fitted',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding fe09, ticket fitted features.')
+)
+
+ALL_FS_CONFIGS['fs03__ticket_fe09_fitted__xgb'] = config_to_group(fs03__ticket_fe09_fitted__xgb)
+XGB_FS_CONFIGS['fs03__ticket_fe09_fitted__xgb'] = config_to_group(fs03__ticket_fe09_fitted__xgb)
+# +0.001/+0.002
+
+fs03__ticket_fe09_full_context__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='ticket_fe09_full_context',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding fe09, ticket full context features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs03__ticket_fe09_full_context__xgb'] = config_to_group(fs03__ticket_fe09_full_context__xgb)
+XGB_FS_CONFIGS['fs03__ticket_fe09_full_context__xgb'] = config_to_group(fs03__ticket_fe09_full_context__xgb)
+# 0/+0.005
+
+# Both had positive results.
+# Our priority's Accuracy, so fitted should be the best pick.
+# but the rise in f1 from full context is more interesting, leading to a stalemate.
+
+# will use ticket + family as tie breaker for next base.
+
+# fs04 - ticket and family features - XGB
+
+fs04__ticket_family_features_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='ticket_family_features_fitted',
+    domain='xgb',
+    notes=('Experiment 04 for XGB feature selection.'
+           'Adding Ticket group size fitted and family features')
+)
+
+
+ALL_FS_CONFIGS['fs04__ticket_family_features_fitted__xgb'] = config_to_group(fs04__ticket_family_features_fitted__xgb)
+XGB_FS_CONFIGS['fs04__ticket_family_features_fitted__xgb'] = config_to_group(fs04__ticket_family_features_fitted__xgb)
+#0/+0.002
+
+fs04__ticket_family_features_full_contest__xgb=create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='ticket_family_features_full_contest',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'Adding Ticket group size full context and family features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs04__ticket_family_features_full_contest__xgb'] = config_to_group(fs04__ticket_family_features_full_contest__xgb)
+XGB_FS_CONFIGS['fs04__ticket_family_features_full_contest__xgb'] = config_to_group(fs04__ticket_family_features_full_contest__xgb)
+# -0.007/-0.004
+
+# Neither were positive, so they weren't carried over
+
+#-------------------- old test and unused experiments -----------------
+
+# fs04__ticket_family_fitted__xgb = create_config(
+#     base_config=baseline_config['xgb__raw'],
+#     patches = [
+#         ALL_PATCHES['fe05__title_patch'],
+#         ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+#         ALL_PATCHES['fe01__family_patch'],
+#     ],
+#     raw_features=RAW_FEATURES,
+#     stage='fs04',
+#     feature_group='ticket_family_features_fitted',
+#     domain='xgb',
+#     notes=('Experiment 04 for XGB feature selection.'
+#            'Adding Ticket group size fitted and family ')
+# )
+
+
+# ALL_FS_CONFIGS['fs04__ticket_family_fitted__xgb'] = config_to_group(fs04__ticket_family_fitted__xgb)
+# XGB_FS_CONFIGS['fs04__ticket_family_fitted__xgb'] = config_to_group(fs04__ticket_family_fitted__xgb)
+# # -0.001/+0.001
+
+# fs04__ticket_family_full_contest__xgb=create_config(
+#     base_config=baseline_config['xgb__raw'],
+#     patches = [
+#         ALL_PATCHES['fe05__title_patch'],
+#         ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+#         ALL_PATCHES['fe01__family_patch'],
+#     ],
+#     raw_features=RAW_FEATURES,
+#     stage='fs04',
+#     feature_group='ticket_family_features_full_contest',
+#     domain='xgb',
+#     notes=('Experiment 03 for XGB feature selection.'
+#            'Adding Ticket group size full context and family.'),
+#     pre_cv_scope="full_prediction_context"
+# )
+
+# ALL_FS_CONFIGS['fs04__ticket_family_full_contest__xgb'] = config_to_group(fs04__ticket_family_full_contest__xgb)
+# XGB_FS_CONFIGS['fs04__ticket_family_full_contest__xgb'] = config_to_group(fs04__ticket_family_full_contest__xgb)
+# # -0.003/-0.001
+
+
+
+# fs04__ticket_family_fare_fitted__xgb = create_config(
+#     base_config=baseline_config['xgb__raw'],
+#     patches = [
+#         ALL_PATCHES['fe05__title_patch'],
+#         ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+#         ALL_PATCHES['fe01__family_patch'],
+#         ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch']
+#     ],
+#     raw_features=RAW_FEATURES,
+#     stage='fs04',
+#     feature_group='ticket_family_fare_fitted',
+#     domain='xgb',
+#     notes=('Experiment 04 for XGB feature selection.'
+#            'Adding Ticket group size fitted, family and fare ')
+# )
+
+
+# ALL_FS_CONFIGS['fs04__ticket_family_fare_fitted__xgb'] = config_to_group(fs04__ticket_family_fare_fitted__xgb)
+# XGB_FS_CONFIGS['fs04__ticket_family_fare_fitted__xgb'] = config_to_group(fs04__ticket_family_fare_fitted__xgb)
+
+# fs04__ticket_family_fare_full_contest__xgb=create_config(
+#     base_config=baseline_config['xgb__raw'],
+#     patches = [
+#         ALL_PATCHES['fe05__title_patch'],
+#         ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+#         ALL_PATCHES['fe01__family_patch'],
+#         ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch']
+#     ],
+#     raw_features=RAW_FEATURES,
+#     stage='fs04',
+#     feature_group='ticket_family_fare_full',
+#     domain='xgb',
+#     notes=('Experiment 04 for XGB feature selection.'
+#            'Adding Ticket group size full context, family and fare.'),
+#     pre_cv_scope="full_prediction_context"
+# )
+
+# ALL_FS_CONFIGS['fs04__ticket_family_fare_full_contest__xgb'] = config_to_group(fs04__ticket_family_fare_full_contest__xgb)
+# XGB_FS_CONFIGS['fs04__ticket_family_fare_full_contest__xgb'] = config_to_group(fs04__ticket_family_fare_full_contest__xgb)
+
+
+# fs05 - fare - XGB
+
+fs05__fare_cb05_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_fitted_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_cb05_fitted',
+    domain='xgb',
+    notes=('Experiment 05 for XGB feature selection.'
+           'adding cb05, fare and fare per ticket fitted.')
+)
+
+ALL_FS_CONFIGS['fs05__fare_cb05_fitted__xgb'] = config_to_group(fs05__fare_cb05_fitted__xgb)
+XGB_FS_CONFIGS['fs05__fare_cb05_fitted__xgb'] = config_to_group(fs05__fare_cb05_fitted__xgb)
+# -0.013/-0.013
+
+fs05__fare_cb05_full_context__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['cb05__fare_and_fare_per_ticket_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_cb05_full_context',
+    domain='xgb',
+    notes=('Experiment 05 for XGB feature selection.'
+           'adding cb05, fare and fare per ticket full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__fare_cb05_full_context__xgb'] = config_to_group(fs05__fare_cb05_full_context__xgb)
+XGB_FS_CONFIGS['fs05__fare_cb05_full_context__xgb'] = config_to_group(fs05__fare_cb05_full_context__xgb)
+# -0.002/+0.003
+
+fs05__fare_fe08_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['fe08__fare_per_family_member_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_fe08_fitted',
+    domain='xgb',
+    notes=('Experiment 05 for XGB feature selection.'
+           'adding fe08, fare per family, fitted.')
+)
+
+
+ALL_FS_CONFIGS['fs05__fare_fe08_fitted__xgb'] = config_to_group(fs05__fare_fe08_fitted__xgb)
+XGB_FS_CONFIGS['fs05__fare_fe08_fitted__xgb'] = config_to_group(fs05__fare_fe08_fitted__xgb)
+# +0.001/+0.003
+
+fs05__fare_fe08_full_context__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe08__fare_per_family_member_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_fe08_full_context',
+    domain='xgb',
+    notes=('Experiment 05 for XGB feature selection.'
+           'adding fe08, fare per family, full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__fare_fe08_full_context__xgb'] = config_to_group(fs05__fare_fe08_full_context__xgb)
+XGB_FS_CONFIGS['fs05__fare_fe08_full_context__xgb'] = config_to_group(fs05__fare_fe08_full_context__xgb)
+# -0.002/+0.001
+
+fs05__fare_fe10_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_fitted_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_fe10_fitted',
+    domain='xgb',
+    notes=('Experiment 05 for XGB feature selection.'
+           'adding fe10, fare per ticket, fitted.')
+)
+
+
+ALL_FS_CONFIGS['fs05__fare_fe10_fitted__xgb'] = config_to_group(fs05__fare_fe10_fitted__xgb)
+XGB_FS_CONFIGS['fs05__fare_fe10_fitted__xgb'] = config_to_group(fs05__fare_fe10_fitted__xgb)
+# 0/+0.002
+
+fs05__fare_fe10_full_context__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe10__fare_per_ticket_member_full_context_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='fare_fe10_full_context',
+    domain='xgb',
+    notes=('Experiment 05 for XGB feature selection.'
+           'adding fe10, fare per ticket, full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__fare_fe10_full_context__xgb'] = config_to_group(fs05__fare_fe10_full_context__xgb)
+XGB_FS_CONFIGS['fs05__fare_fe10_full_context__xgb'] = config_to_group(fs05__fare_fe10_full_context__xgb)
+# -0.005/ -0.003
+
+# None of the results were compeling when compared to fe03 with it's +0.001/0.002 and 0/+0.005
+# fare fe08 fitted did achieve a 0/+0.001 on top of fe03 fitted, but that gain didnt felt worth carring foward
+
+# For now fs03 fitted will be carried over provisionally while full context is kept as alternative
+
+# fs06 - age - XGB
+
+fs06__age_fe06_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['fe06__age_imputation_title_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='age_fe06_fitted',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding fe06, age imputation features.')
+)
+
+ALL_FS_CONFIGS['fs06__age_fe06_fitted__xgb'] = config_to_group(fs06__age_fe06_fitted__xgb)
+XGB_FS_CONFIGS['fs06__age_fe06_fitted__xgb'] = config_to_group(fs06__age_fe06_fitted__xgb)
+# -0.005/-0.007
+
+fs06__age_cb01_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb01__age_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='age_cb01_fitted',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding fe06, age imputation features.')
+)
+
+ALL_FS_CONFIGS['fs06__age_cb01_fitted__xgb'] = config_to_group(fs06__age_cb01_fitted__xgb)
+XGB_FS_CONFIGS['fs06__age_cb01_fitted__xgb'] = config_to_group(fs06__age_cb01_fitted__xgb)
+# +0.001/+0.002
+
+# cb01 was the one chosen to be carried over
+
+# Pruning phase for XGB
+
+pr01__removing_ticket__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb01__age_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_ticket',
+    domain='xgb',
+    notes=('Experiment 01 for XGB backward pruning.'
+           'removing ticket.')
+)
+
+ALL_FS_CONFIGS['pr01__removing_ticket__xgb'] = config_to_group(pr01__removing_ticket__xgb)
+XGB_FS_CONFIGS['pr01__removing_ticket__xgb'] = config_to_group(pr01__removing_ticket__xgb)
+#-0.005/-0.008
+
+pr02__removing_title__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['cb01__age_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_title',
+    domain='xgb',
+    notes=('Experiment 02 for XGB backward pruning.'
+           'removing title.')
+)
+
+ALL_FS_CONFIGS['pr02__removing_title__xgb'] = config_to_group(pr02__removing_title__xgb)
+XGB_FS_CONFIGS['pr02__removing_title__xgb'] = config_to_group(pr02__removing_title__xgb)
+# -0.012/-0.018
+
+prsc__age_cb01_full_context__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['cb01__age_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='age_cb01_full_context',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding fe06, age imputation features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['prsc__age_cb01_full_context__xgb'] = config_to_group(prsc__age_cb01_full_context__xgb)
+XGB_FS_CONFIGS['prsc__age_cb01_full_context__xgb'] = config_to_group(prsc__age_cb01_full_context__xgb)
+# -0.004/-0.002

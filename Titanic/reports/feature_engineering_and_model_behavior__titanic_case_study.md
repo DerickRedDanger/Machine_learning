@@ -4064,6 +4064,256 @@ Both Fare/TicketGroupSize and direct TicketGroupSize use full-context semantics.
 
 Overall, KNN demonstrated that useful feature engineering can arise not only from individual representations but also from their conditional contributions when combined. The Deck × TicketGroupSize interaction was the clearest example, showing why forward assembly and backward pruning can reveal behavior that isolated feature-engineering experiments would miss.
 
+### XGBoost (XGB)
+
+#### Forward selection
+
+Feature selection for XGB started from the raw configuration plus Title engineering (FE05).
+
+Title had produced one of the strongest improvements during the original feature-engineering experiments, increasing accuracy from 0.826 to 0.836 and F1 from 0.758 to 0.772.
+
+Although XGB had already performed well with raw features, several engineered representations had shown promising isolated results, particularly Cabin, Fare, and the combination of Family and TicketGroupSize.
+
+The objective was to determine whether these improvements would remain useful after Title was introduced, and whether additional representations could complement one another.
+
+##### Cabin
+
+FE04 Cabin was tested first because it had previously improved XGB during feature engineering.
+
+However, adding FE04 to Title reduced accuracy by 0.005 and F1 by 0.006.
+
+This indicated that Cabin's earlier benefit did not transfer to the stronger Title-based configuration.
+
+FE04 was rejected.
+
+##### Family and Ticket
+
+Family engineering (CB07) was initially tested independently.
+
+It reduced accuracy and F1 by 0.005, providing no justification for retaining it alone.
+
+TicketGroupSize (FE09) was then tested using both fitted and full-context semantics.
+
+| Configuration | Accuracy | F1 | Δ Accuracy | Δ F1 |
+|---|---:|---:|---:|---:|
+| Title baseline | 0.836 | 0.772 | — | — |
+| + FE09 fitted | **0.837** | 0.774 | +0.001 | +0.002 |
+| + FE09 full-context | 0.836 | **0.777** | 0.000 | +0.005 |
+
+Both variants produced small improvements, although they favored different metrics.
+
+Fitted TicketGroupSize achieved slightly higher accuracy, while full-context TicketGroupSize achieved higher F1.
+
+Because the differences were small and later feature additions could change their relative performance, neither variant was immediately declared superior.
+
+Previous FE experiments had also identified a promising Family × Ticket interaction, justifying a targeted test of Family engineering alongside both TicketGroupSize variants.
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Title + Ticket fitted | **0.837** | 0.774 |
+| Title + Ticket fitted + Family | 0.836 | 0.774 |
+| Title + Ticket full-context | **0.836** | **0.777** |
+| Title + Ticket full-context + Family | 0.829 | 0.768 |
+
+Family did not improve either Ticket-only configuration.
+
+Its addition reduced accuracy by 0.001 under fitted semantics and reduced accuracy by 0.007 and F1 by 0.009 under full-context semantics.
+
+Additional exploratory checks of the earlier Family × Ticket combinations also failed to outperform the Title baseline.
+
+The previously observed positive interaction therefore did not provide a useful improvement in the tested Title-based configurations.
+
+Family engineering was rejected, while both TicketGroupSize alternatives remained under consideration.
+
+##### Fare
+
+Fare engineering was investigated using CB05 and FE10, with fitted and full-context TicketGroupSize semantics.
+
+FE08 was also tested during exploration, although it had not been among XGB's most promising Fare representations during the original FE investigation.
+
+| Fare representation | Accuracy | F1 | Δ Accuracy | Δ F1 |
+|---|---:|---:|---:|---:|
+| Title baseline | 0.836 | 0.772 | — | — |
+| CB05 fitted | 0.823 | 0.759 | -0.013 | -0.013 |
+| CB05 full-context | 0.834 | 0.775 | -0.002 | +0.003 |
+| FE10 fitted | 0.836 | 0.774 | 0.000 | +0.002 |
+| FE10 full-context | 0.831 | 0.769 | -0.005 | -0.003 |
+| FE08 fitted (exploratory) | 0.837 | 0.775 | +0.001 | +0.003 |
+| FE08 full-context (exploratory) | 0.834 | 0.773 | -0.002 | +0.001 |
+
+CB05 fitted was particularly detrimental, reducing both accuracy and F1 by 0.013.
+
+CB05 full-context preserved a small F1 improvement but reduced accuracy.
+
+FE10 fitted was nearly neutral, while FE10 full-context reduced both metrics.
+
+The exploratory FE08 fitted configuration produced the strongest Fare result, but its improvement was very small and did not provide compelling evidence for replacing the selected Ticket representation.
+
+Overall, the Fare experiments failed to reproduce the stronger improvements previously observed during isolated feature engineering.
+
+The tested Fare representations were not carried into the forward candidate.
+
+FE09 fitted TicketGroupSize was selected as the provisional reference because it provided a small improvement in both metrics while retaining simpler, inductive inference semantics.
+
+##### Age
+
+Age engineering was tested after selecting FE09 fitted TicketGroupSize.
+
+Two representations were evaluated:
+
+- FE06: Title-based Age imputation.
+- CB01: Continuous Age alongside Age bins.
+
+| Configuration | Accuracy | F1 | Δ Accuracy | Δ F1 |
+|---|---:|---:|---:|---:|
+| Title + Ticket fitted | 0.837 | 0.774 | — | — |
+| + FE06 Age imputation | 0.832 | 0.767 | -0.005 | -0.007 |
+| + CB01 Age + bins | **0.838** | **0.776** | +0.001 | +0.002 |
+
+FE06 reduced both accuracy and F1 and was rejected.
+
+CB01 produced a small improvement in both metrics and was retained provisionally.
+
+This result suggested that providing an additional binned Age representation could be useful even for a boosted-tree model capable of learning numerical thresholds directly.
+
+However, the improvement was too small to establish a robust generalization advantage or explain the underlying mechanism.
+
+The completed forward candidate consisted of Title, fitted TicketGroupSize, and CB01 Age engineering, reaching **0.838 accuracy and 0.776 F1**.
+
+---
+
+#### Backward pruning
+
+Backward pruning evaluated whether the selected representations remained useful after forward assembly.
+
+| Configuration | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---:|---:|---:|---:|---|
+| Forward candidate | **0.838** | **0.776** | — | — | Reference |
+| Remove TicketGroupSize | 0.833 | 0.768 | -0.005 | -0.008 | Keep Ticket |
+| Remove Title | 0.826 | 0.758 | -0.012 | -0.018 | Keep Title |
+| Remove CB01 Age engineering | 0.837 | 0.774 | -0.001 | -0.002 | Keep CB01 |
+
+The CB01 removal result was already available from the earlier Ticket-only configuration, so an additional experiment was unnecessary.
+
+All three engineered representations survived pruning.
+
+##### Title
+
+Removing Title produced the largest deterioration, reducing accuracy by 0.012 and F1 by 0.018.
+
+The resulting scores, 0.826 accuracy and 0.758 F1, matched the original raw XGB baseline.
+
+This does not establish that the resulting models made identical predictions, but it shows that the remaining Ticket and Age representations did not improve the aggregate CV metrics beyond the raw baseline when Title was absent.
+
+Title remained the most influential engineered representation in the selected XGB configuration.
+
+##### TicketGroupSize and Age interaction
+
+Removing TicketGroupSize from the completed candidate reduced accuracy by 0.005 and F1 by 0.008.
+
+This was considerably larger than TicketGroupSize's original contribution during forward selection, when it had improved accuracy by only 0.001 and F1 by 0.002.
+
+The available experiments allowed a complete comparison of TicketGroupSize and CB01 Age engineering.
+
+| CB01 Age | TicketGroupSize | Accuracy | F1 |
+|---|---|---:|---:|
+| No | No | 0.836 | 0.772 |
+| No | Yes | 0.837 | 0.774 |
+| Yes | No | 0.833 | 0.768 |
+| Yes | Yes | **0.838** | **0.776** |
+
+All four configurations retained Title and used fitted TicketGroupSize when Ticket engineering was present.
+
+Without CB01, adding TicketGroupSize improved accuracy by 0.001 and F1 by 0.002.
+
+With CB01, adding TicketGroupSize improved accuracy by 0.005 and F1 by 0.008.
+
+The resulting interaction contrasts were +0.004 accuracy and +0.006 F1.
+
+This demonstrates that TicketGroupSize's measured marginal contribution depended on whether the additional Age representation was present.
+
+CB01 was also context-dependent: adding it without TicketGroupSize reduced accuracy and F1, while adding it with TicketGroupSize produced small improvements in both.
+
+These findings provide evidence of a predictive interaction between the representations in the tested configuration.
+
+They do not establish the underlying mechanism or guarantee that the interaction will generalize beyond the current validation setup.
+
+##### Fitted versus full-context TicketGroupSize
+
+A final experiment replaced fitted TicketGroupSize with full-context TicketGroupSize while retaining Title and CB01.
+
+| Ticket semantics | Accuracy | F1 |
+|---|---:|---:|
+| Fitted | **0.838** | **0.776** |
+| Full-context | 0.834 | 0.774 |
+
+The full-context alternative reduced accuracy by 0.004 and F1 by 0.002.
+
+This reversed the earlier F1 advantage observed for full-context TicketGroupSize when paired with Title alone.
+
+Fitted TicketGroupSize was therefore selected for the final configuration.
+
+Besides achieving higher measured performance, it also avoided the additional inference-context requirements associated with the full-context approach.
+
+---
+
+#### Final selection
+
+The final XGB configuration retained:
+
+- Title (FE05).
+- TicketGroupSize using fitted semantics (FE09).
+- Continuous Age and Age bins (CB01).
+- Remaining raw predictors, except where explicitly replaced or modified by the selected transformations.
+
+Cabin, Family, Fare, and alternative Age engineering were rejected from the final configuration.
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw XGB baseline | 0.826 | 0.758 |
+| Title baseline | 0.836 | 0.772 |
+| **Final selected candidate** | **0.838** | **0.776** |
+
+Relative to the raw baseline, feature selection improved accuracy by **0.012** and F1 by **0.018**.
+
+Most of this improvement came from Title, while TicketGroupSize and CB01 contributed smaller additional gains.
+
+No backward-pruning experiment improved the final candidate.
+
+---
+
+#### Interpretation
+
+XGB demonstrated a relatively selective response to feature engineering.
+
+Although several engineered representations had produced positive results during isolated FE experiments, many failed to improve the model once Title was included.
+
+Cabin and Family became detrimental, while Fare engineering generally produced neutral or negative results.
+
+Title remained the dominant engineered feature throughout the selection process. Removing it from the completed candidate reduced accuracy and F1 to the original raw baseline values.
+
+This is consistent with XGB's ability to learn nonlinear relationships and interactions directly from the original predictors. A powerful boosted-tree model may already capture much of the information that explicit feature engineering attempts to represent.
+
+However, this remains a plausible explanation rather than a mechanism directly established by the experiments.
+
+TicketGroupSize and CB01 Age engineering provided a more interesting result.
+
+Both produced only small improvements when introduced during forward selection, but their combined presence changed their respective marginal contributions. In particular, removing TicketGroupSize after adding Age bins caused a substantially larger performance loss than its original forward-selection gain.
+
+This supports the importance of evaluating engineered features within the complete candidate, rather than judging their usefulness exclusively from isolated experiments.
+
+The final fitted TicketGroupSize configuration also outperformed the full-context alternative when combined with Age engineering. This provided both a predictive and practical justification for choosing the simpler inductive representation.
+
+Despite beginning as one of the strongest baseline models, XGB achieved only modest additional improvements from feature selection compared with some other algorithms, particularly Logistic Regression.
+
+This illustrates an important distinction: **strong baseline performance does not imply greater potential gains from feature engineering**.
+
+It also does not imply that XGB has reached its performance limit. Hyperparameter optimization and other modeling decisions were outside the scope of this feature-selection stage.
+
+Overall, XGB's main findings were the strong and persistent contribution of Title, the limited transferability of isolated FE improvements, and the conditional interaction between fitted TicketGroupSize and Age bins.
+
+The final configuration reached **0.838 accuracy and 0.776 F1**, improving upon the raw baseline while retaining a relatively small set of engineered representations.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).

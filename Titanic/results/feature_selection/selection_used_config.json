@@ -5644,417 +5644,6 @@
       "Pclass"
     ]
   },
-  "fs__age_cb03__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "age_imputer_title_pclass",
-        {
-          "class": "GroupedImputer",
-          "params": {
-            "agg_func": "median",
-            "fallback_to_global": true,
-            "group_cols": [
-              "Title",
-              "Pclass"
-            ],
-            "target_col": "Age"
-          }
-        }
-      ],
-      [
-        "age_bin",
-        {
-          "class": "BinTransformer",
-          "params": {
-            "bins": [
-              0,
-              14,
-              35,
-              60,
-              100
-            ],
-            "labels": [
-              "0",
-              "2",
-              "3",
-              "1"
-            ],
-            "output_col": "Age_bin",
-            "right": false,
-            "source_col": "Age"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fs",
-    "feature_group": "age_cb03",
-    "group": "fs__age_cb03",
-    "domain": "randomforest",
-    "tags": [],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Experiment 01 for Random Forest feature selection.addition of cb03, age imputed by title/pclass and bins.",
-    "name": "fs__age_cb03__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Pclass",
-      "Age_bin"
-    ]
-  },
-  "fs__age_cb02__random_forest": {
-    "pre_cv_feature_pipeline": [],
-    "pre_cv_scope": null,
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title"
-      ],
-      "ordinal_features": [
-        "Pclass",
-        "Age_bin"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "age_imputer_title",
-        {
-          "class": "GroupedImputer",
-          "params": {
-            "agg_func": "median",
-            "fallback_to_global": true,
-            "group_cols": [
-              "Title"
-            ],
-            "target_col": "Age"
-          }
-        }
-      ],
-      [
-        "age_bin",
-        {
-          "class": "BinTransformer",
-          "params": {
-            "bins": [
-              0,
-              14,
-              35,
-              60,
-              100
-            ],
-            "labels": [
-              "0",
-              "2",
-              "3",
-              "1"
-            ],
-            "output_col": "Age_bin",
-            "right": false,
-            "source_col": "Age"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fs",
-    "feature_group": "age_cb02",
-    "group": "fs__age_cb02",
-    "domain": "randomforest",
-    "tags": [],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Experiment 01 for Random Forest feature selection.addition of cb02, age imputed by title and bins.",
-    "name": "fs__age_cb02__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Pclass",
-      "Age_bin"
-    ]
-  },
-  "fs__fare_fe10__random_forest": {
-    "pre_cv_feature_pipeline": [
-      [
-        "ticket_group_size_full_context",
-        {
-          "class": "FittedValueCountTransformer",
-          "params": {
-            "count_missing": false,
-            "missing_value": NaN,
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket",
-            "unseen_value": NaN
-          }
-        }
-      ]
-    ],
-    "pre_cv_scope": "full_prediction_context",
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fs",
-    "feature_group": "fare_fe10",
-    "group": "fs__fare_fe10",
-    "domain": "randomforest",
-    "tags": [
-      "full_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Experiment 01 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
-    "name": "fs__fare_fe10__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Pclass"
-    ]
-  },
-  "fs__fare_fe10_full_context__random_forest": {
-    "pre_cv_feature_pipeline": [
-      [
-        "ticket_group_size_full_context",
-        {
-          "class": "FittedValueCountTransformer",
-          "params": {
-            "count_missing": false,
-            "missing_value": NaN,
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket",
-            "unseen_value": NaN
-          }
-        }
-      ]
-    ],
-    "pre_cv_scope": "full_prediction_context",
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare/TicketMember"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "fare_per_ticket",
-        {
-          "class": "FeatureDividedByFeatureTransformer",
-          "params": {
-            "denominator_col": "TicketGroupSize",
-            "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
-          }
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "fs",
-    "feature_group": "fare_fe10_full_context",
-    "group": "fs__fare_fe10_full_context",
-    "domain": "randomforest",
-    "tags": [
-      "full_context"
-    ],
-    "model_name": "random_forest",
-    "model_params": {
-      "n_estimators": 200,
-      "max_depth": 5,
-      "min_samples_leaf": 3,
-      "random_state": 42,
-      "n_jobs": -1
-    },
-    "notes": "Experiment 01 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
-    "name": "fs__fare_fe10_full_context__random_forest",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare/TicketMember",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Pclass"
-    ]
-  },
   "fs01__age_cb03__random_forest": {
     "pre_cv_feature_pipeline": [],
     "pre_cv_scope": null,
@@ -6357,7 +5946,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Experiment 01 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
+    "notes": "Experiment 02 for Random Forest feature selection.addition of fe10, fare per ticket member and full context.",
     "name": "fs02__fare_fe10_full_context__random_forest",
     "features": [
       "Age",
@@ -6477,7 +6066,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Experiment 01 for Random Forest feature selection.addition of cb06, all fare features.",
+    "notes": "Experiment 02 for Random Forest feature selection.addition of cb06, all fare features.",
     "name": "fs02__fare_cb06_fitted__random_forest",
     "features": [
       "Age",
@@ -7717,98 +7306,6 @@
       "Pclass"
     ]
   },
-  "re02__removing_fare_fe10__knn": {
-    "pre_cv_feature_pipeline": [
-      [
-        "ticket_group_size_full_context",
-        {
-          "class": "FittedValueCountTransformer",
-          "params": {
-            "count_missing": false,
-            "missing_value": NaN,
-            "output_col": "TicketGroupSize",
-            "source_col": "Ticket",
-            "unseen_value": NaN
-          }
-        }
-      ]
-    ],
-    "pre_cv_scope": "full_prediction_context",
-    "preprocessing": {
-      "numeric_features": [
-        "Age",
-        "SibSp",
-        "Parch",
-        "Fare",
-        "TicketGroupSize"
-      ],
-      "onehot_features": [
-        "Sex",
-        "Embarked",
-        "Title",
-        "Deck"
-      ],
-      "ordinal_features": [
-        "Pclass"
-      ],
-      "numeric_imputer": "median",
-      "categorical_imputer": "most_frequent",
-      "scaler": "standard"
-    },
-    "feature_pipeline": [
-      [
-        "title",
-        {
-          "class": "TitleTransformer",
-          "params": {}
-        }
-      ],
-      [
-        "add_deck",
-        {
-          "class": "AddDeckTransformer",
-          "params": {}
-        }
-      ]
-    ],
-    "evaluation": {
-      "method": "cross_validation",
-      "cv": 5,
-      "scoring": [
-        "accuracy",
-        "precision",
-        "recall",
-        "f1"
-      ],
-      "return_train_score": true,
-      "n_jobs": -1
-    },
-    "stage": "re02",
-    "feature_group": "removing_fare_fe10",
-    "group": "re02__removing_fare_fe10",
-    "domain": "knn",
-    "tags": [
-      "full_context"
-    ],
-    "model_name": "knn",
-    "model_params": {
-      "n_neighbors": 5
-    },
-    "notes": "experiment 02 for KNN backward pruning.removing fe10.",
-    "name": "re02__removing_fare_fe10__knn",
-    "features": [
-      "Age",
-      "SibSp",
-      "Parch",
-      "Fare",
-      "TicketGroupSize",
-      "Sex",
-      "Embarked",
-      "Title",
-      "Deck",
-      "Pclass"
-    ]
-  },
   "pr02__removing_fare_fe10__knn": {
     "pre_cv_feature_pipeline": [
       [
@@ -7993,6 +7490,1810 @@
       "Embarked",
       "Deck",
       "Pclass"
+    ]
+  },
+  "fs__baseline__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs",
+    "feature_group": "baseline",
+    "group": "fs__baseline",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Baseline configuration for XGB feature selection.Starts from the raw model configuration with Title added.",
+    "name": "fs__baseline__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs01__cabin_fe04__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs01",
+    "feature_group": "cabin_fe04",
+    "group": "fs01__cabin_fe04",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 01 for XGB feature selection.adding fe04, cabin features.",
+    "name": "fs01__cabin_fe04__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Has_Cabin"
+    ]
+  },
+  "fs02__family_cb07__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs02",
+    "feature_group": "family_cb07",
+    "group": "fs02__family_cb07",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 02 for XGB feature selection.adding cb07, family features.",
+    "name": "fs02__family_cb07__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs03__ticket_fe09_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs03",
+    "feature_group": "ticket_fe09_fitted",
+    "group": "fs03__ticket_fe09_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe09, ticket fitted features.",
+    "name": "fs03__ticket_fe09_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs03__ticket_fe09_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs03",
+    "feature_group": "ticket_fe09_full_context",
+    "group": "fs03__ticket_fe09_full_context",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe09, ticket full context features.",
+    "name": "fs03__ticket_fe09_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs04__ticket_family_features_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "ticket_family_features_fitted",
+    "group": "fs04__ticket_family_features_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 04 for XGB feature selection.Adding Ticket group size fitted and family features",
+    "name": "fs04__ticket_family_features_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs04__ticket_family_features_full_contest__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs04",
+    "feature_group": "ticket_family_features_full_contest",
+    "group": "fs04__ticket_family_features_full_contest",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.Adding Ticket group size full context and family features.",
+    "name": "fs04__ticket_family_features_full_contest__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs05__fare_cb05_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_cb05_fitted",
+    "group": "fs05__fare_cb05_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 05 for XGB feature selection.adding cb05, fare and fare per ticket fitted.",
+    "name": "fs05__fare_cb05_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs05__fare_cb05_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_cb05_full_context",
+    "group": "fs05__fare_cb05_full_context",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 05 for XGB feature selection.adding cb05, fare and fare per ticket full context.",
+    "name": "fs05__fare_cb05_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs05__fare_fe08_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_fe08_fitted",
+    "group": "fs05__fare_fe08_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 05 for XGB feature selection.adding fe08, fare per family, fitted.",
+    "name": "fs05__fare_fe08_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/FamilySize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs05__fare_fe08_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_fe08_full_context",
+    "group": "fs05__fare_fe08_full_context",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 05 for XGB feature selection.adding fe10, fare per ticket, full context.",
+    "name": "fs05__fare_fe08_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs05__fare_fe10_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_fe10_fitted",
+    "group": "fs05__fare_fe10_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 05 for XGB feature selection.adding fe10, fare per ticket, fitted.",
+    "name": "fs05__fare_fe10_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs05__fare_fe10_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs05",
+    "feature_group": "fare_fe10_full_context",
+    "group": "fs05__fare_fe10_full_context",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 05 for XGB feature selection.adding fe10, fare per ticket, full context.",
+    "name": "fs05__fare_fe10_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs06__age_fe06_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "age_fe06_fitted",
+    "group": "fs06__age_fe06_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe06, age imputation features.",
+    "name": "fs06__age_fe06_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs06__age_cb01_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "age_cb01_fitted",
+    "group": "fs06__age_cb01_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe06, age imputation features.",
+    "name": "fs06__age_cb01_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr01__removing_ticket__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_ticket",
+    "group": "pr01__removing_ticket",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 01 for XGB backward pruning.removing ticket.",
+    "name": "pr01__removing_ticket__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr02__removing_title__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "removing_title",
+    "group": "pr02__removing_title",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 02 for XGB backward pruning.removing title.",
+    "name": "pr02__removing_title__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "fs06__age_cb01_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "age_cb01_full_context",
+    "group": "fs06__age_cb01_full_context",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe06, age imputation features.",
+    "name": "fs06__age_cb01_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
     ]
   }
 }

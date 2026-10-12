@@ -9,7 +9,9 @@
     "neutral_models": [
       "logreg",
       "svc",
-      "random_forest"
+      "random_forest",
+      "knn",
+      "xgb"
     ],
     "negative_models": [],
     "verdict": "neutral",
@@ -73,16 +75,18 @@
   "fs02__family_cb07": {
     "compare_group": "fs02__family_cb07",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.003,
+    "mean_delta": -0.001,
     "max_delta": 0.003,
-    "min_delta": 0.003,
+    "min_delta": -0.005,
     "positive_models": [
       "logreg"
     ],
     "neutral_models": [],
-    "negative_models": [],
-    "verdict": "general_positive",
-    "recommended_for_all": true,
+    "negative_models": [
+      "xgb"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.003
     },
@@ -270,16 +274,18 @@
   "fs05__fare_cb05_fitted": {
     "compare_group": "fs05__fare_cb05_fitted",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.01,
+    "mean_delta": -0.002,
     "max_delta": 0.01,
-    "min_delta": 0.01,
+    "min_delta": -0.013,
     "positive_models": [
       "logreg"
     ],
     "neutral_models": [],
-    "negative_models": [],
-    "verdict": "strong_general",
-    "recommended_for_all": true,
+    "negative_models": [
+      "xgb"
+    ],
+    "verdict": "mixed",
+    "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.01
     },
@@ -299,16 +305,18 @@
   "fs05__fare_cb05_full_context": {
     "compare_group": "fs05__fare_cb05_full_context",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.008,
+    "mean_delta": 0.003,
     "max_delta": 0.008,
-    "min_delta": 0.008,
+    "min_delta": -0.002,
     "positive_models": [
       "logreg"
     ],
-    "neutral_models": [],
+    "neutral_models": [
+      "xgb"
+    ],
     "negative_models": [],
-    "verdict": "general_positive",
-    "recommended_for_all": true,
+    "verdict": "model_specific_positive",
+    "recommended_for_all": false,
     "recommended_model_deltas": {
       "logreg": 0.008
     },
@@ -857,20 +865,31 @@
   "pr03__removing_title": {
     "compare_group": "pr03__removing_title",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.009,
-    "max_delta": -0.009,
-    "min_delta": -0.009,
-    "positive_models": [],
-    "neutral_models": [],
-    "negative_models": [
+    "mean_delta": 0.0,
+    "max_delta": 0.003,
+    "min_delta": -0.003,
+    "positive_models": [
       "knn"
     ],
-    "verdict": "general_negative",
+    "neutral_models": [],
+    "negative_models": [
+      "svc"
+    ],
+    "verdict": "mixed",
     "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "recommended_model_deltas": {
+      "knn": 0.003
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.003,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
-    "discard": true
+    "discard": false
   },
   "fs02__fare_fe10_full_context": {
     "compare_group": "fs02__fare_fe10_full_context",
@@ -994,59 +1013,233 @@
   "fs02__cabin_fe03": {
     "compare_group": "fs02__cabin_fe03",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.001,
-    "max_delta": 0.001,
-    "min_delta": 0.001,
-    "positive_models": [],
-    "neutral_models": [
+    "mean_delta": 0.01,
+    "max_delta": 0.01,
+    "min_delta": 0.01,
+    "positive_models": [
       "knn"
     ],
+    "neutral_models": [],
     "negative_models": [],
-    "verdict": "neutral",
-    "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "verdict": "strong_general",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.01
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.01,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
     "discard": false
   },
   "fs02__cabin_fe04": {
     "compare_group": "fs02__cabin_fe04",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.004,
-    "max_delta": -0.004,
-    "min_delta": -0.004,
-    "positive_models": [],
-    "neutral_models": [],
-    "negative_models": [
+    "mean_delta": 0.005,
+    "max_delta": 0.005,
+    "min_delta": 0.005,
+    "positive_models": [
       "knn"
     ],
-    "verdict": "general_negative",
-    "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "general_positive",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.005
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
-    "discard": true
+    "discard": false
   },
   "fs03__ticket_fe09_full_context": {
     "compare_group": "fs03__ticket_fe09_full_context",
     "metric": "test_accuracy_mean",
-    "mean_delta": 0.002,
-    "max_delta": 0.002,
-    "min_delta": 0.002,
-    "positive_models": [],
-    "neutral_models": [
+    "mean_delta": 0.006,
+    "max_delta": 0.012,
+    "min_delta": 0.0,
+    "positive_models": [
       "knn"
     ],
+    "neutral_models": [
+      "xgb"
+    ],
     "negative_models": [],
-    "verdict": "neutral",
+    "verdict": "model_specific_positive",
     "recommended_for_all": false,
-    "recommended_model_deltas": {},
-    "recommended_model_tradeoffs": {},
+    "recommended_model_deltas": {
+      "knn": 0.012
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.012,
+        "secondary_pros": {
+          "test_f1_mean": 0.016
+        },
+        "secondary_cons": {}
+      }
+    },
     "notable_secondary_improvements": {},
     "discard": false
   },
   "fs04__family_fe01": {
     "compare_group": "fs04__family_fe01",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.007,
+    "max_delta": 0.007,
+    "min_delta": 0.007,
+    "positive_models": [
+      "knn"
+    ],
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "general_positive",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.007
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.007,
+        "secondary_pros": {
+          "test_f1_mean": 0.011
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs04__family_cb07": {
+    "compare_group": "fs04__family_cb07",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.006,
+    "max_delta": 0.006,
+    "min_delta": 0.006,
+    "positive_models": [
+      "knn"
+    ],
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "general_positive",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.006
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.006,
+        "secondary_pros": {
+          "test_f1_mean": 0.01
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr01__removing_deck": {
+    "compare_group": "pr01__removing_deck",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.005,
+    "max_delta": 0.005,
+    "min_delta": 0.005,
+    "positive_models": [
+      "knn"
+    ],
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "general_positive",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.005
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.005,
+        "secondary_pros": {
+          "test_f1_mean": 0.011
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "prsc__reading_family": {
+    "compare_group": "prsc__reading_family",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.007,
+    "max_delta": 0.007,
+    "min_delta": 0.007,
+    "positive_models": [
+      "knn"
+    ],
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "general_positive",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.007
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.007,
+        "secondary_pros": {
+          "test_f1_mean": 0.014
+        },
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr02__removing_fare_fe10": {
+    "compare_group": "pr02__removing_fare_fe10",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.006,
+    "max_delta": 0.006,
+    "min_delta": 0.006,
+    "positive_models": [
+      "knn"
+    ],
+    "neutral_models": [],
+    "negative_models": [],
+    "verdict": "general_positive",
+    "recommended_for_all": true,
+    "recommended_model_deltas": {
+      "knn": 0.006
+    },
+    "recommended_model_tradeoffs": {
+      "knn": {
+        "primary_metric": "test_accuracy_mean",
+        "primary_delta": 0.006,
+        "secondary_pros": {},
+        "secondary_cons": {}
+      }
+    },
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs01__cabin_fe04": {
+    "compare_group": "fs01__cabin_fe04",
     "metric": "test_accuracy_mean",
     "mean_delta": -0.005,
     "max_delta": -0.005,
@@ -1054,7 +1247,7 @@
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
-      "knn"
+      "xgb"
     ],
     "verdict": "general_negative",
     "recommended_for_all": false,
@@ -1063,26 +1256,44 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "fs04__family_cb07": {
-    "compare_group": "fs04__family_cb07",
+  "fs03__ticket_fe09_fitted": {
+    "compare_group": "fs03__ticket_fe09_fitted",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.006,
-    "max_delta": -0.006,
-    "min_delta": -0.006,
+    "mean_delta": 0.001,
+    "max_delta": 0.001,
+    "min_delta": 0.001,
     "positive_models": [],
-    "neutral_models": [],
-    "negative_models": [
-      "knn"
+    "neutral_models": [
+      "xgb"
     ],
-    "verdict": "general_negative",
+    "negative_models": [],
+    "verdict": "neutral",
     "recommended_for_all": false,
     "recommended_model_deltas": {},
     "recommended_model_tradeoffs": {},
     "notable_secondary_improvements": {},
-    "discard": true
+    "discard": false
   },
-  "pr01__removing_deck": {
-    "compare_group": "pr01__removing_deck",
+  "fs04__ticket_family_features_fitted": {
+    "compare_group": "fs04__ticket_family_features_fitted",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs04__ticket_family_features_full_contest": {
+    "compare_group": "fs04__ticket_family_features_full_contest",
     "metric": "test_accuracy_mean",
     "mean_delta": -0.007,
     "max_delta": -0.007,
@@ -1090,7 +1301,7 @@
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
-      "knn"
+      "xgb"
     ],
     "verdict": "general_negative",
     "recommended_for_all": false,
@@ -1099,8 +1310,26 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "prsc__reading_family": {
-    "compare_group": "prsc__reading_family",
+  "fs05__fare_fe08_fitted": {
+    "compare_group": "fs05__fare_fe08_fitted",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.001,
+    "max_delta": 0.001,
+    "min_delta": 0.001,
+    "positive_models": [],
+    "neutral_models": [
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs05__fare_fe08_full_context": {
+    "compare_group": "fs05__fare_fe08_full_context",
     "metric": "test_accuracy_mean",
     "mean_delta": -0.005,
     "max_delta": -0.005,
@@ -1108,7 +1337,7 @@
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
-      "knn"
+      "xgb"
     ],
     "verdict": "general_negative",
     "recommended_for_all": false,
@@ -1117,16 +1346,34 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "re02__removing_fare_fe10": {
-    "compare_group": "re02__removing_fare_fe10",
+  "fs05__fare_fe10_fitted": {
+    "compare_group": "fs05__fare_fe10_fitted",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.006,
-    "max_delta": -0.006,
-    "min_delta": -0.006,
+    "mean_delta": 0.0,
+    "max_delta": 0.0,
+    "min_delta": 0.0,
+    "positive_models": [],
+    "neutral_models": [
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "fs05__fare_fe10_full_context": {
+    "compare_group": "fs05__fare_fe10_full_context",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.005,
+    "max_delta": -0.005,
+    "min_delta": -0.005,
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
-      "knn"
+      "xgb"
     ],
     "verdict": "general_negative",
     "recommended_for_all": false,
@@ -1135,16 +1382,88 @@
     "notable_secondary_improvements": {},
     "discard": true
   },
-  "pr02__removing_fare_fe10": {
-    "compare_group": "pr02__removing_fare_fe10",
+  "fs06__age_fe06_fitted": {
+    "compare_group": "fs06__age_fe06_fitted",
     "metric": "test_accuracy_mean",
-    "mean_delta": -0.006,
-    "max_delta": -0.006,
-    "min_delta": -0.006,
+    "mean_delta": -0.005,
+    "max_delta": -0.005,
+    "min_delta": -0.005,
     "positive_models": [],
     "neutral_models": [],
     "negative_models": [
-      "knn"
+      "xgb"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
+  },
+  "fs06__age_cb01_fitted": {
+    "compare_group": "fs06__age_cb01_fitted",
+    "metric": "test_accuracy_mean",
+    "mean_delta": 0.001,
+    "max_delta": 0.001,
+    "min_delta": 0.001,
+    "positive_models": [],
+    "neutral_models": [
+      "xgb"
+    ],
+    "negative_models": [],
+    "verdict": "neutral",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": false
+  },
+  "pr01__removing_ticket": {
+    "compare_group": "pr01__removing_ticket",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.005,
+    "max_delta": -0.005,
+    "min_delta": -0.005,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "xgb"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
+  },
+  "pr02__removing_title": {
+    "compare_group": "pr02__removing_title",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.012,
+    "max_delta": -0.012,
+    "min_delta": -0.012,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "xgb"
+    ],
+    "verdict": "general_negative",
+    "recommended_for_all": false,
+    "recommended_model_deltas": {},
+    "recommended_model_tradeoffs": {},
+    "notable_secondary_improvements": {},
+    "discard": true
+  },
+  "fs06__age_cb01_full_context": {
+    "compare_group": "fs06__age_cb01_full_context",
+    "metric": "test_accuracy_mean",
+    "mean_delta": -0.004,
+    "max_delta": -0.004,
+    "min_delta": -0.004,
+    "positive_models": [],
+    "neutral_models": [],
+    "negative_models": [
+      "xgb"
     ],
     "verdict": "general_negative",
     "recommended_for_all": false,
