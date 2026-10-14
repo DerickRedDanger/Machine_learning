@@ -1879,3 +1879,242 @@ prsc__age_cb01_full_context__xgb = create_config(
 ALL_FS_CONFIGS['prsc__age_cb01_full_context__xgb'] = config_to_group(prsc__age_cb01_full_context__xgb)
 XGB_FS_CONFIGS['prsc__age_cb01_full_context__xgb'] = config_to_group(prsc__age_cb01_full_context__xgb)
 # -0.004/-0.002
+
+
+# Feature selection - Extra Tree
+
+EXTRA_TREES_FS_CONFIGS = {}
+
+# Extra trees Baseline
+
+fs__baseline__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs',
+    feature_group='baseline',
+    domain='extra_trees',
+    notes=('Baseline configuration for Extra Trees feature selection.'
+           'Starts from the raw model configuration with Title added.')
+)
+
+ALL_FS_CONFIGS['fs__baseline__extra_trees'] = config_to_group(fs__baseline__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs__baseline__extra_trees'] = config_to_group(fs__baseline__extra_trees)
+
+# Fs01 - age - Extra trees
+
+fs01__age_cb02__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='age_cb02',
+    domain='extra_trees',
+    notes=('Experiment 01 for Extra Trees feature selection.'
+           'adding cb02, age imputed by title and bins.')
+)
+
+ALL_FS_CONFIGS['fs01__age_cb02__extra_trees'] = config_to_group(fs01__age_cb02__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs01__age_cb02__extra_trees'] = config_to_group(fs01__age_cb02__extra_trees)
+# +0.002/+0.002
+
+
+
+fs01__age_cb03__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb03__age_imputed_title_pclass_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='age_cb03',
+    domain='extra_trees',
+    notes=('Experiment 01 for Extra Trees feature selection.'
+           'adding cb03, age imputed by title,pclass and bins.')
+)
+
+ALL_FS_CONFIGS['fs01__age_cb03__extra_trees'] = config_to_group(fs01__age_cb03__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs01__age_cb03__extra_trees'] = config_to_group(fs01__age_cb03__extra_trees)
+# +0.002/+0.002
+
+# Since cb02 was originally the best result, it will be the one carried foward, while cb02 will remain as alternative
+
+# fs02 - fare - Extra Trees
+
+fs02__fare_cb09_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='fare_cb09_full_context',
+    domain='extra_trees',
+    notes=('Experiment 02 for Extra Trees feature selection.'
+           'adding cb09, Fare per family and ticket, full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__fare_cb09_full_context__extra_trees'] = config_to_group(fs02__fare_cb09_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs02__fare_cb09_full_context__extra_trees'] = config_to_group(fs02__fare_cb09_full_context__extra_trees)
+#+0.001/+0.002
+
+fs02__fare_cb09_fitted__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='fare_cb09_fitted',
+    domain='extra_trees',
+    notes=('Experiment 02 for Extra Trees feature selection.'
+           'adding cb09, Fare per family and ticket, fitted.'),
+)
+
+ALL_FS_CONFIGS['fs02__fare_cb09_fitted__extra_trees'] = config_to_group(fs02__fare_cb09_fitted__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs02__fare_cb09_fitted__extra_trees'] = config_to_group(fs02__fare_cb09_fitted__extra_trees)
+#+0.004/+0.007
+
+# Due to it's clear positive results, cb09 was the one carried over
+
+# Fs03 - cabin - Extra Tree
+
+fs03__cabin_fe02__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'],
+        ALL_PATCHES['fe02__has_cabin_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='cabin_fe02',
+    domain='extra_trees',
+    notes=('Experiment 03 for Extra Trees feature selection.'
+           'adding fe02, has cabin feature.'),
+)
+
+ALL_FS_CONFIGS['fs03__cabin_fe02__extra_trees'] = config_to_group(fs03__cabin_fe02__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs03__cabin_fe02__extra_trees'] = config_to_group(fs03__cabin_fe02__extra_trees)
+# -0.007/-0.011
+
+fs03__cabin_fe04__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='cabin_fe04',
+    domain='extra_trees',
+    notes=('Experiment 03 for Extra Trees feature selection.'
+           'adding fe04, all cabin feature.'),
+)
+
+ALL_FS_CONFIGS['fs03__cabin_fe04__extra_trees'] = config_to_group(fs03__cabin_fe04__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs03__cabin_fe04__extra_trees'] = config_to_group(fs03__cabin_fe04__extra_trees)
+#-0.009/-0.013
+
+# fe04 - family - Extra Trees
+
+fs04__family_fe01__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='family_fe01',
+    domain='extra_trees',
+    notes=('Experiment 04 for Extra Trees feature selection.'
+           'adding fe01, family feature.'),
+)
+
+ALL_FS_CONFIGS['fs04__family_fe01__extra_trees'] = config_to_group(fs04__family_fe01__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs04__family_fe01__extra_trees'] = config_to_group(fs04__family_fe01__extra_trees)
+#0/-0.002
+
+fs04__family_cb07__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='family_cb07',
+    domain='extra_trees',
+    notes=('Experiment 04 for Extra Trees feature selection.'
+           'adding cb07, all family feature.'),
+)
+
+ALL_FS_CONFIGS['fs04__family_cb07__extra_trees'] = config_to_group(fs04__family_cb07__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs04__family_cb07__extra_trees'] = config_to_group(fs04__family_cb07__extra_trees)
+#0/0
+
+# Due to fs04 being the only negative, even if neutral, it was the one carried forward
+
+# Fe05 - ticket - Extra trees
+
+fs05__family_fe09_fitted__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='family_fe09_fitted',
+    domain='extra_trees',
+    notes=('Experiment 04 for Extra Trees feature selection.'
+           'adding fe09, ticket group size fitted feature.'),
+)
+
+ALL_FS_CONFIGS['fs05__family_fe09_fitted__extra_trees'] = config_to_group(fs05__family_fe09_fitted__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs05__family_fe09_fitted__extra_trees'] = config_to_group(fs05__family_fe09_fitted__extra_trees)
+#-0.002/-0.003
+
+fs05__family_fe09_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='family_fe09_full_context',
+    domain='extra_trees',
+    notes=('Experiment 04 for Extra Trees feature selection.'
+           'adding fe09, ticket group size full context feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__family_fe09_full_context__extra_trees'] = config_to_group(fs05__family_fe09_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs05__family_fe09_full_context__extra_trees'] = config_to_group(fs05__family_fe09_full_context__extra_trees)
+# +0.003/+0.003
