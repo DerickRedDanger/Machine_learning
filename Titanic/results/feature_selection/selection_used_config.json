@@ -8495,7 +8495,7 @@
         "SibSp",
         "Parch",
         "TicketGroupSize",
-        "Fare/TicketMember"
+        "Fare/FamilySize"
       ],
       "onehot_features": [
         "Sex",
@@ -8518,13 +8518,27 @@
         }
       ],
       [
-        "fare_per_ticket",
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
         {
           "class": "FeatureDividedByFeatureTransformer",
           "params": {
-            "denominator_col": "TicketGroupSize",
+            "denominator_col": "FamilySize",
             "numerator_col": "Fare",
-            "output_col": "Fare/TicketMember"
+            "output_col": "Fare/FamilySize"
           }
         }
       ]
@@ -8558,14 +8572,14 @@
       "random_state": 42,
       "eval_metric": "logloss"
     },
-    "notes": "Experiment 05 for XGB feature selection.adding fe10, fare per ticket, full context.",
+    "notes": "Experiment 05 for XGB feature selection.adding fe08, fare per family, full context.",
     "name": "fs05__fare_fe08_full_context__xgb",
     "features": [
       "Age",
       "SibSp",
       "Parch",
       "TicketGroupSize",
-      "Fare/TicketMember",
+      "Fare/FamilySize",
       "Sex",
       "Embarked",
       "Title",
@@ -9296,6 +9310,121 @@
       "Age_bin"
     ]
   },
+  "prsc__age_cb01_full_context__xgb": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "prsc",
+    "feature_group": "age_cb01_full_context",
+    "group": "prsc__age_cb01_full_context",
+    "domain": "xgb",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe06, age imputation features.",
+    "name": "prsc__age_cb01_full_context__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
   "fs__baseline__extra_trees": {
     "pre_cv_feature_pipeline": [],
     "pre_cv_scope": null,
@@ -9732,7 +9861,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Experiment 01 for Extra Trees feature selection.adding cb09, Fare per family and ticket, full context.",
+    "notes": "Experiment 02 for Extra Trees feature selection.adding cb09, Fare per family and ticket, full context.",
     "name": "fs02__fare_cb09_full_context__extra_trees",
     "features": [
       "Age",
@@ -9892,7 +10021,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Experiment 01 for Extra Trees feature selection.adding cb09, Fare per family and ticket, fitted.",
+    "notes": "Experiment 02 for Extra Trees feature selection.adding cb09, Fare per family and ticket, fitted.",
     "name": "fs02__fare_cb09_fitted__extra_trees",
     "features": [
       "Age",
@@ -10604,7 +10733,7 @@
       "Age_bin"
     ]
   },
-  "fs05__family_fe09_fitted__extra_trees": {
+  "fs05__ticket_fe09_fitted__extra_trees": {
     "pre_cv_feature_pipeline": [],
     "pre_cv_scope": null,
     "preprocessing": {
@@ -10750,8 +10879,8 @@
       "n_jobs": -1
     },
     "stage": "fs05",
-    "feature_group": "family_fe09_fitted",
-    "group": "fs05__family_fe09_fitted",
+    "feature_group": "ticket_fe09_fitted",
+    "group": "fs05__ticket_fe09_fitted",
     "domain": "extra_trees",
     "tags": [],
     "model_name": "extra_trees",
@@ -10763,7 +10892,7 @@
       "n_jobs": -1
     },
     "notes": "Experiment 04 for Extra Trees feature selection.adding fe09, ticket group size fitted feature.",
-    "name": "fs05__family_fe09_fitted__extra_trees",
+    "name": "fs05__ticket_fe09_fitted__extra_trees",
     "features": [
       "Age",
       "SibSp",
@@ -10780,7 +10909,7 @@
       "Age_bin"
     ]
   },
-  "fs05__family_fe09_full_context__extra_trees": {
+  "fs05__ticket_fe09_full_context__extra_trees": {
     "pre_cv_feature_pipeline": [
       [
         "ticket_group_size_full_context",
@@ -10927,8 +11056,8 @@
       "n_jobs": -1
     },
     "stage": "fs05",
-    "feature_group": "family_fe09_full_context",
-    "group": "fs05__family_fe09_full_context",
+    "feature_group": "ticket_fe09_full_context",
+    "group": "fs05__ticket_fe09_full_context",
     "domain": "extra_trees",
     "tags": [
       "full_context"
@@ -10942,7 +11071,7 @@
       "n_jobs": -1
     },
     "notes": "Experiment 04 for Extra Trees feature selection.adding fe09, ticket group size full context feature.",
-    "name": "fs05__family_fe09_full_context__extra_trees",
+    "name": "fs05__ticket_fe09_full_context__extra_trees",
     "features": [
       "Age",
       "SibSp",
@@ -10952,6 +11081,1683 @@
       "FamilySize",
       "IsAlone",
       "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr01__removing_family_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize",
+        "Fare/TicketMember",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr01",
+    "feature_group": "removing_family_full_context",
+    "group": "pr01__removing_family_full_context",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 01 for Extra Trees backward pruning.Removing cb07.",
+    "name": "pr01__removing_family_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr02__removing_title_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize",
+        "Fare/TicketMember",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr02",
+    "feature_group": "removing_title_full_context",
+    "group": "pr02__removing_title_full_context",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 02 for Extra Trees backward pruning.Removing title features.",
+    "name": "pr02__removing_title_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr03__removing_ticket_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize",
+        "Fare/TicketMember",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr03",
+    "feature_group": "removing_ticket_full_context",
+    "group": "pr03__removing_ticket_full_context",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 03 for Extra Trees backward pruning.Removing fe09.",
+    "name": "pr03__removing_ticket_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
+      "FamilySize",
+      "IsAlone",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "prsc__removing_family_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize",
+        "Fare/TicketMember"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "prsc",
+    "feature_group": "removing_family_full_context",
+    "group": "prsc__removing_family_full_context",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "sanity check for Extra Trees backward pruning.Removing cb07 after removing fe09.",
+    "name": "prsc__removing_family_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr04__removing_age_patch_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare/FamilySize",
+        "Fare/TicketMember",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "fare_per_ticket",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "TicketGroupSize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/TicketMember"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr04",
+    "feature_group": "removing_age_patch_full_context",
+    "group": "pr04__removing_age_patch_full_context",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 04 for Extra Trees backward pruning.Removing cb02.",
+    "name": "pr04__removing_age_patch_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare/FamilySize",
+      "Fare/TicketMember",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "pr05__removing_fare_patch_full_context__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr05",
+    "feature_group": "removing_fare_patch_full_context",
+    "group": "pr05__removing_fare_patch_full_context",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 05 for Extra Trees backward pruning.Removing cb09.",
+    "name": "pr05__removing_fare_patch_full_context__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr06__removing_fare_family_patch__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr06",
+    "feature_group": "removing_fare_family_patch",
+    "group": "pr06__removing_fare_family_patch",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 06 for Extra Trees backward pruning.removing both cb09 and cb07.",
+    "name": "pr06__removing_fare_family_patch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr06__removing_fare_reading_family_patch__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr06",
+    "feature_group": "removing_fare_reading_family_patch",
+    "group": "pr06__removing_fare_reading_family_patch",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 06 for Extra Trees backward pruning.removing both cb09 and cb07.",
+    "name": "pr06__removing_fare_reading_family_patch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr06__removing_fare_ading_family_patch__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr06",
+    "feature_group": "removing_fare_ading_family_patch",
+    "group": "pr06__removing_fare_ading_family_patch",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 06 for Extra Trees backward pruning.removing both cb09 and cb07.",
+    "name": "pr06__removing_fare_ading_family_patch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr06__removing_fare_adding_family_patch__extra_trees": {
+    "pre_cv_feature_pipeline": [
+      [
+        "ticket_group_size_full_context",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": NaN,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": NaN
+          }
+        }
+      ]
+    ],
+    "pre_cv_scope": "full_prediction_context",
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone",
+        "TicketGroupSize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr06",
+    "feature_group": "removing_fare_adding_family_patch",
+    "group": "pr06__removing_fare_adding_family_patch",
+    "domain": "extra_trees",
+    "tags": [
+      "full_context"
+    ],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 06 for Extra Trees backward pruning.removing both cb09 and cb07.",
+    "name": "pr06__removing_fare_adding_family_patch__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
+      "TicketGroupSize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
+  },
+  "pr07__removing_ticket__extra_trees": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "Fare",
+        "FamilySize",
+        "IsAlone"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "is_alone",
+        {
+          "class": "IsOneTransformer",
+          "params": {
+            "output_col": "IsAlone",
+            "source_col": "FamilySize"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "pr07",
+    "feature_group": "removing_ticket",
+    "group": "pr07__removing_ticket",
+    "domain": "extra_trees",
+    "tags": [],
+    "model_name": "extra_trees",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 5,
+      "min_samples_leaf": 3,
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "notes": "Experiment 06 for Extra Trees backward pruning.removing fe09.",
+    "name": "pr07__removing_ticket__extra_trees",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Fare",
+      "FamilySize",
+      "IsAlone",
       "Sex",
       "Embarked",
       "Title",

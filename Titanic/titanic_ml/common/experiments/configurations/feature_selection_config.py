@@ -1868,7 +1868,7 @@ prsc__age_cb01_full_context__xgb = create_config(
         ALL_PATCHES['cb01__age_and_bins_patch'],
     ],
     raw_features=RAW_FEATURES,
-    stage='fs06',
+    stage='prsc',
     feature_group='age_cb01_full_context',
     domain='xgb',
     notes=('Experiment 03 for XGB feature selection.'
@@ -2076,7 +2076,7 @@ EXTRA_TREES_FS_CONFIGS['fs04__family_cb07__extra_trees'] = config_to_group(fs04_
 
 # Fe05 - ticket - Extra trees
 
-fs05__family_fe09_fitted__extra_trees = create_config(
+fs05__ticket_fe09_fitted__extra_trees = create_config(
     base_config=baseline_config['extra_trees__raw'],
     patches = [
         ALL_PATCHES['fe05__title_patch'],
@@ -2087,17 +2087,17 @@ fs05__family_fe09_fitted__extra_trees = create_config(
     ],
     raw_features=RAW_FEATURES,
     stage='fs05',
-    feature_group='family_fe09_fitted',
+    feature_group='ticket_fe09_fitted',
     domain='extra_trees',
     notes=('Experiment 04 for Extra Trees feature selection.'
            'adding fe09, ticket group size fitted feature.'),
 )
 
-ALL_FS_CONFIGS['fs05__family_fe09_fitted__extra_trees'] = config_to_group(fs05__family_fe09_fitted__extra_trees)
-EXTRA_TREES_FS_CONFIGS['fs05__family_fe09_fitted__extra_trees'] = config_to_group(fs05__family_fe09_fitted__extra_trees)
+ALL_FS_CONFIGS['fs05__ticket_fe09_fitted__extra_trees'] = config_to_group(fs05__ticket_fe09_fitted__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs05__ticket_fe09_fitted__extra_trees'] = config_to_group(fs05__ticket_fe09_fitted__extra_trees)
 #-0.002/-0.003
 
-fs05__family_fe09_full_context__extra_trees = create_config(
+fs05__ticket_fe09_full_context__extra_trees = create_config(
     base_config=baseline_config['extra_trees__raw'],
     patches = [
         ALL_PATCHES['fe05__title_patch'],
@@ -2108,13 +2108,159 @@ fs05__family_fe09_full_context__extra_trees = create_config(
     ],
     raw_features=RAW_FEATURES,
     stage='fs05',
-    feature_group='family_fe09_full_context',
+    feature_group='ticket_fe09_full_context',
     domain='extra_trees',
     notes=('Experiment 04 for Extra Trees feature selection.'
            'adding fe09, ticket group size full context feature.'),
     pre_cv_scope="full_prediction_context"
 )
 
-ALL_FS_CONFIGS['fs05__family_fe09_full_context__extra_trees'] = config_to_group(fs05__family_fe09_full_context__extra_trees)
-EXTRA_TREES_FS_CONFIGS['fs05__family_fe09_full_context__extra_trees'] = config_to_group(fs05__family_fe09_full_context__extra_trees)
+ALL_FS_CONFIGS['fs05__ticket_fe09_full_context__extra_trees'] = config_to_group(fs05__ticket_fe09_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['fs05__ticket_fe09_full_context__extra_trees'] = config_to_group(fs05__ticket_fe09_full_context__extra_trees)
 # +0.003/+0.003
+
+# The full context version was the one with positive results compared to previous best
+# So it was the version carried forward
+
+# Pruning phase for Extra trees
+
+pr01__removing_family_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_family_full_context',
+    domain='extra_trees',
+    notes=('Experiment 01 for Extra Trees backward pruning.'
+           'Removing cb07.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr01__removing_family_full_context__extra_trees'] = config_to_group(pr01__removing_family_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr01__removing_family_full_context__extra_trees'] = config_to_group(pr01__removing_family_full_context__extra_trees)
+# 0/0
+
+pr02__removing_title_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_title_full_context',
+    domain='extra_trees',
+    notes=('Experiment 02 for Extra Trees backward pruning.'
+           'Removing title features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_title_full_context__extra_trees'] = config_to_group(pr02__removing_title_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr02__removing_title_full_context__extra_trees'] = config_to_group(pr02__removing_title_full_context__extra_trees)
+#-0.011/-0.021
+
+pr03__removing_ticket_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_ticket_full_context',
+    domain='extra_trees',
+    notes=('Experiment 03 for Extra Trees backward pruning.'
+           'Removing fe09.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr03__removing_ticket_full_context__extra_trees'] = config_to_group(pr03__removing_ticket_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr03__removing_ticket_full_context__extra_trees'] = config_to_group(pr03__removing_ticket_full_context__extra_trees)
+# 0/0
+
+pr04__removing_age_patch_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr04',
+    feature_group='removing_age_patch_full_context',
+    domain='extra_trees',
+    notes=('Experiment 04 for Extra Trees backward pruning.'
+           'Removing cb02.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr04__removing_age_patch_full_context__extra_trees'] = config_to_group(pr04__removing_age_patch_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr04__removing_age_patch_full_context__extra_trees'] = config_to_group(pr04__removing_age_patch_full_context__extra_trees)
+#-0.006/-0.009
+
+pr05__removing_fare_patch_full_context__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr05',
+    feature_group='removing_fare_patch_full_context',
+    domain='extra_trees',
+    notes=('Experiment 05 for Extra Trees backward pruning.'
+           'Removing cb09.'),
+    pre_cv_scope="full_prediction_context"
+)
+ALL_FS_CONFIGS['pr05__removing_fare_patch_full_context__extra_trees'] = config_to_group(pr05__removing_fare_patch_full_context__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr05__removing_fare_patch_full_context__extra_trees'] = config_to_group(pr05__removing_fare_patch_full_context__extra_trees)
+# -0.001/-0.001
+
+pr06__removing_fare_adding_family_patch__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr06',
+    feature_group='removing_fare_adding_family_patch',
+    domain='extra_trees',
+    notes=('Experiment 06 for Extra Trees backward pruning.'
+           'removing cb09 and adding cb07.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr06__removing_fare_adding_family_patch__extra_trees'] = config_to_group(pr06__removing_fare_adding_family_patch__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr06__removing_fare_adding_family_patch__extra_trees'] = config_to_group(pr06__removing_fare_adding_family_patch__extra_trees)
+#+0.002/0.001
+
+pr07__removing_ticket__extra_trees = create_config(
+    base_config=baseline_config['extra_trees__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr07',
+    feature_group='removing_ticket',
+    domain='extra_trees',
+    notes=('Experiment 06 for Extra Trees backward pruning.'
+           'removing fe09.'),
+)
+
+ALL_FS_CONFIGS['pr07__removing_ticket__extra_trees'] = config_to_group(pr07__removing_ticket__extra_trees)
+EXTRA_TREES_FS_CONFIGS['pr07__removing_ticket__extra_trees'] = config_to_group(pr07__removing_ticket__extra_trees)
+#-0.001/-0.001

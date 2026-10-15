@@ -4314,6 +4314,159 @@ Overall, XGB's main findings were the strong and persistent contribution of Titl
 
 The final configuration reached **0.838 accuracy and 0.776 F1**, improving upon the raw baseline while retaining a relatively small set of engineered representations.
 
+## Extra Trees — Feature Selection
+
+### Starting point
+
+Feature selection began with **FE05 (Title)**, which was the second-best individual feature-engineering candidate for Extra Trees. Although Age CB02 had performed better in isolated feature-engineering experiments, Title was selected as the starting point to investigate whether combining representations could produce stronger results.
+
+| Configuration | CV Accuracy | CV F1 |
+|---|---:|---:|
+| Raw baseline | 0.804 | 0.721 |
+| FS baseline — Title FE05 | 0.820 | 0.754 |
+| **Final selection — PR06** | **0.831** | **0.767** |
+
+The final configuration improved accuracy by **0.027** and F1 by **0.046** over the raw baseline.
+
+### Forward selection
+
+**FS01 — Age**
+
+Both Age CB02 (Title-imputed Age + bins) and CB03 (Title + Pclass-imputed Age + bins) improved the Title baseline by approximately **+0.002 accuracy / +0.002 F1**, reaching 0.822 / 0.756.
+
+CB02 was retained because it had performed better in the earlier isolated Age experiments and offered a simpler representation.
+
+**FS02 — Fare**
+
+Fare CB09 introduced Fare-per-family and Fare-per-ticket representations, with TicketGroupSize computed using either fitted or full-prediction-context semantics.
+
+- **Fitted:** 0.826 accuracy / 0.763 F1, improving the previous configuration by +0.004 / +0.007.
+- **Full-context:** 0.823 accuracy / 0.758 F1, improving the previous configuration by +0.001 / +0.002.
+
+The fitted variant was selected for subsequent forward experiments because it provided the stronger improvement at this stage.
+
+**FS03 — Cabin**
+
+Adding Cabin features to Title + Age CB02 + Fare CB09 fitted reduced performance:
+
+- FE02 (HasCabin): −0.007 accuracy / −0.011 F1.
+- FE04 (Cabin features): −0.009 accuracy / −0.013 F1.
+
+Both were rejected. Cabin engineering did not provide a useful improvement in the tested assembled configurations.
+
+**FS04 — Family**
+
+Two Family representations were evaluated:
+
+- FE01: unchanged accuracy, −0.002 F1.
+- CB07: unchanged accuracy and F1.
+
+CB07 was provisionally retained despite its neutral result, allowing potential interactions with Ticket features to be investigated. Unlike FE01, CB07 preserved the original SibSp and Parch inputs.
+
+**FS05 — Ticket**
+
+Direct TicketGroupSize (FE09) was added to the configuration containing Title, Age CB02, Fare CB09, and Family CB07. Fare CB09 and FE09 used matching TicketGroupSize semantics in each experiment.
+
+- **Fitted Fare CB09 + fitted FE09:** 0.824 / 0.760.
+- **Full-context Fare CB09 + full-context FE09:** 0.829 / 0.766.
+
+The full-context combination became the best observed configuration at this stage and was carried into backward pruning.
+
+This result does not establish that full-context TicketGroupSize is universally preferable. The comparison changes the TicketGroupSize semantics used by both Fare CB09 and direct FE09, and the earlier Fare-only experiment had favored fitted semantics.
+
+### Backward pruning
+
+Pruning investigated whether the selected representations remained useful once other engineered features were available.
+
+| Experiment | Change | Accuracy | F1 |
+|---|---|---:|---:|
+| FS05 | Full forward-selected configuration | 0.829 | 0.766 |
+| PR01 | Remove Family CB07 | 0.829 | 0.766 |
+| PR02 | Remove direct Title FE05 from PR01 | 0.818 | 0.745 |
+| PR03 | Remove direct Ticket FE09 from FS05 | 0.829 | 0.766 |
+| PR04 | Remove Age CB02 from PR01 | 0.823 | 0.757 |
+| PR05 | Remove Fare CB09 from PR01 | 0.828 | 0.765 |
+| **PR06** | **Add Family CB07 to PR05** | **0.831** | **0.767** |
+| PR07 | Remove Ticket FE09 from PR06 | 0.828 | 0.765 |
+
+#### Title and Age remained important
+
+Removing direct Title in PR02 reduced accuracy by **0.011** and F1 by **0.021** relative to PR01.
+
+This occurred even though Age CB02 continued to use Title internally for Age imputation. Title therefore retained useful predictive information when exposed directly to Extra Trees.
+
+Removing Age CB02 in PR04 reduced accuracy by **0.006** and F1 by **0.009** relative to PR01. This was a larger deterioration than the improvement observed when Age was first introduced, indicating that its measured contribution depended on the surrounding features.
+
+Both representations were retained.
+
+#### Family, Fare, and Ticket showed conditional redundancy
+
+Removing Family from FS05 produced no measurable change. Removing direct TicketGroupSize while retaining Family and Fare also produced no measurable change.
+
+However, removing Fare from the Family-free configuration caused only a small decline, from 0.829 / 0.766 to 0.828 / 0.765. Adding Family back **without Fare** then improved performance to **0.831 / 0.767**.
+
+This provides a useful contrast:
+
+| Context | Effect of Family CB07 on accuracy / F1 |
+|---|---|
+| Fare CB09 full-context + direct Ticket FE09 full-context | 0.000 / 0.000 |
+| No Fare CB09 + direct Ticket FE09 full-context | +0.003 / +0.002 |
+
+Family was neutral when Fare-derived representations were available, but beneficial when Fare was absent.
+
+This is consistent with **conditional redundancy**: Family and Fare-derived features may supply overlapping information, making Family's measured contribution dependent on the remaining feature set. The experiments demonstrate the performance pattern, rather than proving a specific internal mechanism.
+
+Finally, PR07 removed direct TicketGroupSize from PR06. Performance declined by **0.003 accuracy / 0.002 F1**, confirming a small measured benefit from retaining it in the final selected configuration.
+
+### Final configuration
+
+**Selected: PR06 — Title + Age CB02 + Family CB07 + Ticket FE09 full-context**
+
+| Metric | Raw baseline | Title baseline | PR06 |
+|---|---:|---:|---:|
+| Accuracy | 0.804 | 0.820 | **0.831** |
+| F1 | 0.721 | 0.754 | **0.767** |
+
+Retained engineered representations:
+
+- **FE05 — Title:** Direct categorical information extracted from passenger names.
+- **CB02 — Age:** Title-based Age imputation and Age bins.
+- **CB07 — Family:** Engineered family representations while retaining raw SibSp and Parch.
+- **FE09 — TicketGroupSize:** Direct full-context TicketGroupSize.
+
+Fare CB09 and Cabin engineering were excluded.
+
+The selected configuration requires **full prediction context** to construct TicketGroupSize consistently. This inference dependency must be preserved when using the model.
+
+**Practical alternative: PR07 — Title + Age CB02 + Family CB07**
+
+| Metric | PR06 (selected) | PR07 (alternative) |
+|---|---:|---:|
+| Accuracy | **0.831** | 0.828 |
+| F1 | **0.767** | 0.765 |
+| Full prediction context required | Yes | No |
+
+PR07 removes the full-context TicketGroupSize requirement while sacrificing only a small amount of observed cross-validation performance. It is therefore a useful alternative when simpler, inductive inference is preferred.
+
+The differences are small, and the repeated use of cross-validation results for feature selection means the selected scores should not be treated as independent estimates of generalization performance.
+
+### Conclusions and model behavior
+
+**Verdict:** Feature engineering improved Extra Trees over both its raw and Title-only baselines, but additional representations were not consistently beneficial.
+
+Key observations:
+
+1. **Title remained valuable as a direct feature.** Using Title indirectly for Age imputation did not eliminate the benefit of supplying Title directly to the model.
+2. **Age engineering became more important in the assembled configuration.** Its removal caused a larger loss than its initial forward-selection gain.
+3. **Cabin engineering was detrimental in the tested combinations.** Both HasCabin and the broader Cabin feature set reduced performance during forward selection.
+4. **Fare and Family showed conditional redundancy.** Family was neutral alongside Fare but became beneficial once Fare was removed.
+5. **TicketGroupSize offered a small final gain.** Its contribution depended on the other available representations, and its full-context requirement created a practical inference trade-off.
+6. **Backward pruning was essential.** The strongest final configuration was not simply the accumulation of every feature retained during forward selection.
+
+**Overall conclusion:** Extra Trees benefited from a compact combination of Title, Age, Family, and Ticket representations. Its most informative behavior was the context-dependent usefulness of Family and Fare: a feature that appeared unnecessary in one configuration became useful after another representation was removed.
+
+PR06 was selected as the best observed configuration, while PR07 was retained as a simpler alternative. Further combinations were not pursued because the remaining performance differences were small relative to the additional experimentation and complexity.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).
