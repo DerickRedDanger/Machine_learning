@@ -1569,91 +1569,6 @@ XGB_FS_CONFIGS['fs04__ticket_family_features_full_contest__xgb'] = config_to_gro
 
 # Neither were positive, so they weren't carried over
 
-#-------------------- old test and unused experiments -----------------
-
-# fs04__ticket_family_fitted__xgb = create_config(
-#     base_config=baseline_config['xgb__raw'],
-#     patches = [
-#         ALL_PATCHES['fe05__title_patch'],
-#         ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
-#         ALL_PATCHES['fe01__family_patch'],
-#     ],
-#     raw_features=RAW_FEATURES,
-#     stage='fs04',
-#     feature_group='ticket_family_features_fitted',
-#     domain='xgb',
-#     notes=('Experiment 04 for XGB feature selection.'
-#            'Adding Ticket group size fitted and family ')
-# )
-
-
-# ALL_FS_CONFIGS['fs04__ticket_family_fitted__xgb'] = config_to_group(fs04__ticket_family_fitted__xgb)
-# XGB_FS_CONFIGS['fs04__ticket_family_fitted__xgb'] = config_to_group(fs04__ticket_family_fitted__xgb)
-# # -0.001/+0.001
-
-# fs04__ticket_family_full_contest__xgb=create_config(
-#     base_config=baseline_config['xgb__raw'],
-#     patches = [
-#         ALL_PATCHES['fe05__title_patch'],
-#         ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
-#         ALL_PATCHES['fe01__family_patch'],
-#     ],
-#     raw_features=RAW_FEATURES,
-#     stage='fs04',
-#     feature_group='ticket_family_features_full_contest',
-#     domain='xgb',
-#     notes=('Experiment 03 for XGB feature selection.'
-#            'Adding Ticket group size full context and family.'),
-#     pre_cv_scope="full_prediction_context"
-# )
-
-# ALL_FS_CONFIGS['fs04__ticket_family_full_contest__xgb'] = config_to_group(fs04__ticket_family_full_contest__xgb)
-# XGB_FS_CONFIGS['fs04__ticket_family_full_contest__xgb'] = config_to_group(fs04__ticket_family_full_contest__xgb)
-# # -0.003/-0.001
-
-
-
-# fs04__ticket_family_fare_fitted__xgb = create_config(
-#     base_config=baseline_config['xgb__raw'],
-#     patches = [
-#         ALL_PATCHES['fe05__title_patch'],
-#         ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
-#         ALL_PATCHES['fe01__family_patch'],
-#         ALL_PATCHES['cb09__fare_per_family_and_ticket_fitted_patch']
-#     ],
-#     raw_features=RAW_FEATURES,
-#     stage='fs04',
-#     feature_group='ticket_family_fare_fitted',
-#     domain='xgb',
-#     notes=('Experiment 04 for XGB feature selection.'
-#            'Adding Ticket group size fitted, family and fare ')
-# )
-
-
-# ALL_FS_CONFIGS['fs04__ticket_family_fare_fitted__xgb'] = config_to_group(fs04__ticket_family_fare_fitted__xgb)
-# XGB_FS_CONFIGS['fs04__ticket_family_fare_fitted__xgb'] = config_to_group(fs04__ticket_family_fare_fitted__xgb)
-
-# fs04__ticket_family_fare_full_contest__xgb=create_config(
-#     base_config=baseline_config['xgb__raw'],
-#     patches = [
-#         ALL_PATCHES['fe05__title_patch'],
-#         ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
-#         ALL_PATCHES['fe01__family_patch'],
-#         ALL_PATCHES['cb09__fare_per_family_and_ticket_full_context_patch']
-#     ],
-#     raw_features=RAW_FEATURES,
-#     stage='fs04',
-#     feature_group='ticket_family_fare_full',
-#     domain='xgb',
-#     notes=('Experiment 04 for XGB feature selection.'
-#            'Adding Ticket group size full context, family and fare.'),
-#     pre_cv_scope="full_prediction_context"
-# )
-
-# ALL_FS_CONFIGS['fs04__ticket_family_fare_full_contest__xgb'] = config_to_group(fs04__ticket_family_fare_full_contest__xgb)
-# XGB_FS_CONFIGS['fs04__ticket_family_fare_full_contest__xgb'] = config_to_group(fs04__ticket_family_fare_full_contest__xgb)
-
-
 # fs05 - fare - XGB
 
 fs05__fare_cb05_fitted__xgb = create_config(
@@ -2264,3 +2179,527 @@ pr07__removing_ticket__extra_trees = create_config(
 ALL_FS_CONFIGS['pr07__removing_ticket__extra_trees'] = config_to_group(pr07__removing_ticket__extra_trees)
 EXTRA_TREES_FS_CONFIGS['pr07__removing_ticket__extra_trees'] = config_to_group(pr07__removing_ticket__extra_trees)
 #-0.001/-0.001
+
+# Feature selection - Decision Tree
+
+DECISION_TREE_FS_CONFIGS = {}
+
+# Extra trees Baseline
+
+fs__baseline__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs',
+    feature_group='baseline',
+    domain='decision_tree',
+    notes=('Baseline configuration for Decision Tree feature selection.'
+           'Starts from the raw model configuration with Title added.')
+)
+
+ALL_FS_CONFIGS['fs__baseline__decision_tree'] = config_to_group(fs__baseline__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs__baseline__decision_tree'] = config_to_group(fs__baseline__decision_tree)
+
+# FS 01 - Fare - Decision Tree
+
+fs01__fare_cb06_fitted__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='fare_cb06_fitted',
+    domain='decision_tree',
+    notes=('Experiment 01 for Decision Tree feature selection.'
+           'adding cb06, all fare features fitted.')
+)
+
+ALL_FS_CONFIGS['fs01__fare_cb06_fitted__decision_tree'] = config_to_group(fs01__fare_cb06_fitted__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs01__fare_cb06_fitted__decision_tree'] = config_to_group(fs01__fare_cb06_fitted__decision_tree)
+#-0.003/+0.005
+
+fs01__fare_cb06_batch__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_batch_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='fare_cb06_batch',
+    domain='decision_tree',
+    notes=('Experiment 01 for Decision Tree feature selection.'
+           'adding cb06, all fare features batch.')
+)
+
+ALL_FS_CONFIGS['fs01__fare_cb06_batch__decision_tree'] = config_to_group(fs01__fare_cb06_batch__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs01__fare_cb06_batch__decision_tree'] = config_to_group(fs01__fare_cb06_batch__decision_tree)
+#-0.003/+0.004
+
+fs01__fare_cb06_full_context__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs01',
+    feature_group='fare_cb06_full_context',
+    domain='decision_tree',
+    notes=('Experiment 01 for Decision Tree feature selection.'
+           'adding cb06, all fare features full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs01__fare_cb06_full_context__decision_tree'] = config_to_group(fs01__fare_cb06_full_context__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs01__fare_cb06_full_context__decision_tree'] = config_to_group(fs01__fare_cb06_full_context__decision_tree)
+#+0.004/+0.007
+# cb06 was the one chosen to be carried over
+
+# FS 02 - age - Decision Tree
+
+fs02__age_fe11__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['fe11__age_bin_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='age_fe11',
+    domain='decision_tree',
+    notes=('Experiment 02 for Decision Tree feature selection.'
+           'adding fe11, age bin.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__age_fe11__decision_tree'] = config_to_group(fs02__age_fe11__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs02__age_fe11__decision_tree'] = config_to_group(fs02__age_fe11__decision_tree)
+# -0.008/-0.01
+
+fs02__age_fe06__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['fe06__age_imputation_title_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='age_fe06',
+    domain='decision_tree',
+    notes=('Experiment 02 for Decision Tree feature selection.'
+           'adding fe06, age imputated by title.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__age_fe06__decision_tree'] = config_to_group(fs02__age_fe06__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs02__age_fe06__decision_tree'] = config_to_group(fs02__age_fe06__decision_tree)
+#-0.001/-0.006
+
+fs02__age_cb02__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb02__age_imputed_title_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='age_cb02',
+    domain='decision_tree',
+    notes=('Experiment 02 for Decision Tree feature selection.'
+           'adding cb02, age imputated by title and bins.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs02__age_cb02__decision_tree'] = config_to_group(fs02__age_cb02__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs02__age_cb02__decision_tree'] = config_to_group(fs02__age_cb02__decision_tree)
+# -0.001/-0.006
+
+# None were positive, so none were carried over
+
+# Fs 03 - family - Decision Tree
+
+fs03__family_cb07__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='family_cb07',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree feature selection.'
+           'adding cb07, all family features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs03__family_cb07__decision_tree'] = config_to_group(fs03__family_cb07__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs03__family_cb07__decision_tree'] = config_to_group(fs03__family_cb07__decision_tree)
+# 0/0
+
+fs03__family_fe01__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['fe01__family_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs03',
+    feature_group='family_fe01',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree feature selection.'
+           'adding fe01, family feature.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs03__family_fe01__decision_tree'] = config_to_group(fs03__family_fe01__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs03__family_fe01__decision_tree'] = config_to_group(fs03__family_fe01__decision_tree)
+# 0/0
+
+# Both were non negative so both are options for carrying forward.
+# cb07 was choosen was more feature means more chances to interact with future features.
+
+# Fe04 - ticket - Decision Tree
+
+fs04__ticket_fe09_full_context__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='ticket_fe09_full_context',
+    domain='decision_tree',
+    notes=('Experiment 04 for Decision Tree feature selection.'
+           'adding fe09, Ticket full context.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs04__ticket_fe09_full_context__decision_tree'] = config_to_group(fs04__ticket_fe09_full_context__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs04__ticket_fe09_full_context__decision_tree'] = config_to_group(fs04__ticket_fe09_full_context__decision_tree)
+#-0.001/+0.001
+
+fs04__ticket_fe09_fitted__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_fitted_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='ticket_fe09_fitted',
+    domain='decision_tree',
+    notes=('Experiment 04 for Decision Tree feature selection.'
+           'adding fe09, Ticket fitted.'),
+)
+
+ALL_FS_CONFIGS['fs04__ticket_fe09_fitted__decision_tree'] = config_to_group(fs04__ticket_fe09_fitted__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs04__ticket_fe09_fitted__decision_tree'] = config_to_group(fs04__ticket_fe09_fitted__decision_tree)
+# -0.014/-0.009
+
+fs04__ticket_fe09_batch__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_batch_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_batch_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs04',
+    feature_group='ticket_fe09_batch',
+    domain='decision_tree',
+    notes=('Experiment 04 for Decision Tree feature selection.'
+           'adding fe09, Ticket batch.'),
+)
+
+ALL_FS_CONFIGS['fs04__ticket_fe09_batch__decision_tree'] = config_to_group(fs04__ticket_fe09_batch__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs04__ticket_fe09_batch__decision_tree'] = config_to_group(fs04__ticket_fe09_batch__decision_tree)
+#-0.014/-0.01
+
+# All were negative, save full context which was almost neutral. 
+# will keep it for now in an attempt to find interactions of it with others features
+# But it's one of the main targets for prunning currently.
+
+# fe05 - cabin - Decision Tree
+
+fs05__cabin_fe04__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs05',
+    feature_group='cabin_fe04',
+    domain='decision_tree',
+    notes=('Experiment 05 for Decision Tree feature selection.'
+           'adding fe04, cabin features.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__cabin_fe04__decision_tree'] = config_to_group(fs05__cabin_fe04__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs05__cabin_fe04__decision_tree'] = config_to_group(fs05__cabin_fe04__decision_tree)
+# 0/0
+
+fs05__cabin_fe02__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe02__has_cabin_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs02',
+    feature_group='cabin_fe02',
+    domain='decision_tree',
+    notes=('Experiment 05 for Decision Tree feature selection.'
+           'adding fe02, has cabin.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['fs05__cabin_fe02__decision_tree'] = config_to_group(fs05__cabin_fe02__decision_tree)
+DECISION_TREE_FS_CONFIGS['fs05__cabin_fe02__decision_tree'] = config_to_group(fs05__cabin_fe02__decision_tree)
+# 0/0
+# carrying fe04 over provisionally
+
+
+# Pruning phase for Decision Tree
+
+pr01__removing_cb06__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_cb06',
+    domain='decision_tree',
+    notes=('Experiment 01 for Decision Tree backward pruning.'
+           'removing cb06.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr01__removing_cb06__decision_tree'] = config_to_group(pr01__removing_cb06__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr01__removing_cb06__decision_tree'] = config_to_group(pr01__removing_cb06__decision_tree)
+# 0.001/-0.001
+
+pr01__removing_cb06_fe04__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr01',
+    feature_group='removing_cb06_fe04',
+    domain='decision_tree',
+    notes=('Experiment 01 for Decision Tree backward pruning.'
+           'removing cb06 and fe04.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr01__removing_cb06_fe04__decision_tree'] = config_to_group(pr01__removing_cb06_fe04__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr01__removing_cb06_fe04__decision_tree'] = config_to_group(pr01__removing_cb06_fe04__decision_tree)
+# -0.006/-0.007
+
+pr02__removing_title__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_title',
+    domain='decision_tree',
+    notes=('Experiment 02 for Decision Tree Backward pruning.'
+           'removing title.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_title__decision_tree'] = config_to_group(pr02__removing_title__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr02__removing_title__decision_tree'] = config_to_group(pr02__removing_title__decision_tree)
+# - 0.017/ -0.029
+
+pr02__removing_title_fe04__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_title_fe04',
+    domain='decision_tree',
+    notes=('Experiment 02 for Decision Tree Backward pruning.'
+           'removing title and fe04.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_title_fe04__decision_tree'] = config_to_group(pr02__removing_title_fe04__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr02__removing_title_fe04__decision_tree'] = config_to_group(pr02__removing_title_fe04__decision_tree)
+# - 0.017/ -0.029
+
+pr02__removing_title_cb06__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_full_context_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr02',
+    feature_group='removing_title_cb06',
+    domain='decision_tree',
+    notes=('Experiment 02 for Decision Tree Backward pruning.'
+           'removing title and cb06.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr02__removing_title_cb06__decision_tree'] = config_to_group(pr02__removing_title_cb06__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr02__removing_title_cb06__decision_tree'] = config_to_group(pr02__removing_title_cb06__decision_tree)
+#-0.02/-0.049
+
+pr03__removing_fe09__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_fe09',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree backward pruning.'
+           'removing fe09.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr03__removing_fe09__decision_tree'] = config_to_group(pr03__removing_fe09__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr03__removing_fe09__decision_tree'] = config_to_group(pr03__removing_fe09__decision_tree)
+#-0.001/-0.003
+#fe02 0/-0.002
+
+
+pr03__removing_fe09_cb06__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_fe09_cb06',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree backward pruning.'
+           'removing fe09 and cb06.'),
+)
+
+ALL_FS_CONFIGS['pr03__removing_fe09_cb06__decision_tree'] = config_to_group(pr03__removing_fe09_cb06__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr03__removing_fe09_cb06__decision_tree'] = config_to_group(pr03__removing_fe09_cb06__decision_tree)
+# +0.001/-0.001
+#fe02 +0.001/+0.001
+
+pr03__removing_fe09_fe04__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_fe09_fe04',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree backward pruning.'
+           'removing fe09 and fe04.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr03__removing_fe09_fe04__decision_tree'] = config_to_group(pr03__removing_fe09_fe04__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr03__removing_fe09_fe04__decision_tree'] = config_to_group(pr03__removing_fe09_fe04__decision_tree)
+#+0.001/-0.001
+
+pr04__removing_cb07__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe04__cabin_features_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr04',
+    feature_group='removing_cb07',
+    domain='decision_tree',
+    notes=('Experiment 04 for Decision Tree backward pruning.'
+           'removing cb07.'),
+)
+
+ALL_FS_CONFIGS['pr04__removing_cb07__decision_tree'] = config_to_group(pr04__removing_cb07__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr04__removing_cb07__decision_tree'] = config_to_group(pr04__removing_cb07__decision_tree)
+# 0/-0.006
+
+pr04__removing_cb07_using_fe02__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe02__has_cabin_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr04',
+    feature_group='removing_cb07_using_fe02',
+    domain='decision_tree',
+    notes=('Experiment 04 for Decision Tree backward pruning.'
+           'removing cb07 and swapping fe04 for fe02.'),
+)
+
+ALL_FS_CONFIGS['pr04__removing_cb07_using_fe02__decision_tree'] = config_to_group(pr04__removing_cb07_using_fe02__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr04__removing_cb07_using_fe02__decision_tree'] = config_to_group(pr04__removing_cb07_using_fe02__decision_tree)
+# 0/-0.004
+
+pr05__removing_fe02__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr05',
+    feature_group='removing_fe02',
+    domain='decision_tree',
+    notes=('Experiment 05 for Decision Tree backward pruning.'
+           'removing fe02.'),
+)
+ALL_FS_CONFIGS['pr05__removing_fe02__decision_tree'] = config_to_group(pr05__removing_fe02__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr05__removing_fe02__decision_tree'] = config_to_group(pr05__removing_fe02__decision_tree)
