@@ -3072,30 +3072,35 @@ These experiments identify candidate modifications rather than complete configur
 
 ### Strategy
 
-Feature selection was performed independently for each model using the
-feature-engineering experiments as the starting point.
+Feature selection was performed independently for each model, using the feature-engineering experiments to identify promising representations.
 
-Rather than exhaustively testing every possible feature combination, the
-best-supported representations from the feature-engineering stage were
-introduced incrementally.
+Rather than exhaustively testing every feature combination, the process used two complementary stages:
 
-For each step:
+**Forward Selection**
 
-1. A previously promising feature representation was added to the current
-   configuration.
-2. Its marginal effect was measured against the previous configuration.
-3. Alternative representations were tested when previous evidence or the
-   current result provided a reason to do so.
-4. Positive or neutral candidates could be carried forward provisionally
-   to preserve possible interactions with later features.
-5. Clearly detrimental candidates were rejected.
+1. Start from a promising baseline configuration, generally the raw features with Title engineering.
+2. Incrementally test feature representations supported by earlier experiments.
+3. Compare each candidate against the current accepted configuration, prioritizing **cross-validation accuracy**, with **F1 as a secondary metric**.
+4. Carry promising or approximately neutral representations forward when further interactions are worth investigating.
+5. Reject clearly detrimental additions, while testing alternative representations when justified by previous evidence.
 
-After forward selection, weak and neutral additions are reconsidered through
-backward pruning. This allows features with small individual contributions
-to participate in later interactions without requiring an exhaustive search
-over feature combinations.
+**Backward Pruning**
 
-### Logistic Regression
+1. Start from the completed forward-selection candidate.
+2. Remove individual patches or feature groups to measure their contribution within the assembled configuration.
+3. Retain removals that improve or preserve performance; restore features whose removal causes meaningful deterioration.
+4. Investigate specific feature interactions or alternative representations when the results justify additional experiments.
+5. Select a final configuration based on predictive performance, representation complexity, and inference requirements.
+
+**Evaluation and interpretation**
+
+- Reported results are cross-validation means. Differences in accuracy and F1 are expressed as absolute changes, not relative percentages.
+- Small improvements are treated cautiously; they do not necessarily establish a reliable generalization advantage.
+- Feature contributions are **conditional on the surrounding representation**. A feature that performs poorly in isolation may become useful when combined with others, and vice versa.
+- Fitted, batch, and full-context TicketGroupSize approaches are distinguished where relevant. A patch may use TicketGroupSize internally without exposing it as a separate model input.
+- Cross-validation results used to guide feature selection are not independent final performance estimates. Final generalization should be assessed using data not involved in selection.
+
+The objective was to identify **compact, interpretable feature configurations supported by experimental evidence**, rather than simply maximizing the number of engineered features or exhaustively searching all possible combinations.
 
 #### Forward selection
 
@@ -3938,7 +3943,7 @@ This indicated that Deck's marginal contribution had changed substantially after
 
 The experiments also provided all four combinations needed to examine the interaction directly.
 
-| Deck | Direct TicketGroupSize | Accuracy | F1 |
+| Deck | Full - context TicketGroupSize | Accuracy | F1 |
 |---|---|---:|---:|
 | No | No | 0.831 | 0.771 |
 | Yes | No | 0.832 | 0.768 |
