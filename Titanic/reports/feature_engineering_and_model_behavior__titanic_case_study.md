@@ -3102,404 +3102,288 @@ Rather than exhaustively testing every feature combination, the process used two
 
 The objective was to identify **compact, interpretable feature configurations supported by experimental evidence**, rather than simply maximizing the number of engineered features or exhaustively searching all possible combinations.
 
-#### Forward selection
 
-Feature selection for Logistic Regression started from a baseline containing
-the raw feature set plus Title engineering. Title was chosen as the starting
-point because it had produced one of the strongest improvements during the
-feature-engineering stage.
+### Logistic Regression
 
-Previously promising feature representations were then introduced
-incrementally. Small non-negative gains were allowed to remain provisionally
-so that potentially useful interactions would not be discarded prematurely.
-Weak additions would later be reconsidered through backward pruning.
+#### Starting Point
 
-| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+Feature selection started from the raw feature set with **FE05 Title engineering**, which had produced a substantial improvement during the earlier feature-engineering experiments.
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw baseline | 0.786 | 0.713 |
+| **FS baseline — Title FE05** | **0.825** | **0.765** |
+
+The objective was to determine which additional engineered representations complemented Title, then remove redundant or detrimental features through Backward Pruning.
+
+#### Forward Selection
+
+Previously promising feature representations were introduced incrementally. Small or neutral gains could be retained provisionally to investigate potential interactions with later features.
+
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
-| Baseline | Title | 0.825 | 0.765 | — | — | Baseline |
-| FS01 | + Age CB03 | 0.828 | 0.767 | +0.003 | +0.002 | Carry |
+| Baseline | Title FE05 | 0.825 | 0.765 | — | — | Reference |
+| FS01 | + Age CB03 | 0.828 | 0.767 | +0.003 | +0.002 | Carry; CB02 alternative |
 | FS02 | + Family FE01 | 0.829 | 0.769 | +0.001 | +0.002 | Carry provisionally |
 | FS03 | + Cabin FE04 | 0.834 | 0.777 | +0.005 | +0.008 | Carry |
-| FS04 | + Ticket FE09 fitted | 0.835 | 0.778 | +0.001 | +0.001 | Carry provisionally |
+| FS04 | + TicketGroupSize FE09 fitted | 0.835 | 0.778 | +0.001 | +0.001 | Carry provisionally |
 | FS05 | + Fare CB05 fitted | 0.835 | 0.778 | 0.000 | 0.000 | Carry for pruning |
-| FS06 | Sex × Pclass FE12 | 0.833 | 0.770 | -0.002 | -0.008 | Reject |
+| FS06 | + Sex × Pclass FE12 | 0.833 | 0.770 | -0.002 | -0.008 | Reject |
 
-The forward-selection candidate therefore reached an accuracy of 0.835 and
-F1 of 0.778.
+*Deltas compare each test with the preceding accepted configuration. Additional tests within the same stage are discussed below.*
 
-##### Age
+**Notable decisions**
 
-CB03, using Title + Pclass imputation with both continuous and binned Age,
-was initially carried forward after improving accuracy by 0.003 and F1 by
-0.002.
+- **Age:** CB03 (Title + Pclass-imputed continuous Age and Age bins) improved accuracy by 0.003 and F1 by 0.002. CB02 achieved 0.827 / 0.769, producing a small accuracy–F1 trade-off. CB03 was carried forward because accuracy was the primary metric, while CB02 was preserved as an alternative candidate for later investigation.
+- **Family:** CB07 produced no accuracy gain and +0.002 F1. FE01, which had also performed well during feature engineering, improved accuracy by 0.001 and F1 by 0.002. FE01 was provisionally selected for further testing.
+- **Cabin:** FE04 improved accuracy by 0.005 and F1 by 0.008, the largest marginal improvement after the starting baseline. Given this comparatively strong result and FE04's earlier performance, additional Cabin variants were deprioritized in favor of exploring the remaining domains.
+- **Ticket:** FE09 batch and fitted both improved accuracy and F1 by 0.001; full-context preserved accuracy and improved F1 by 0.001. Fitted semantics were preferred because they matched the best observed performance without requiring full prediction context.
+- **Fare:** FE08 reduced accuracy/F1 by 0.003/0.004, while CB05 full-context reduced both by 0.002. CB05 fitted was neutral and was retained only to investigate its contribution during pruning.
+- **Sex × Pclass:** Both FE12 and CB08 reduced performance. FE12 produced 0.833 / 0.770, while CB08 had slightly larger losses. Both were rejected.
 
-Because this gain was much smaller than CB03's earlier feature-engineering
-result, CB02 was also tested. CB02 reached 0.827 accuracy and 0.769 F1,
-compared with 0.828 and 0.767 for CB03. Neither representation clearly
-dominated at this stage, so CB03 was retained because accuracy was the
-primary selection metric.
+**Forward candidate:** Title FE05 + Age CB03 + Family FE01 + Cabin FE04 + Ticket FE09 fitted + Fare CB05 fitted.
 
-##### Family
+**Result:** 0.835 accuracy / 0.778 F1.
 
-CB07 was initially tested but produced no accuracy improvement and only
-+0.002 F1. Reviewing the Family experiments showed that FE01 had produced
-the stronger standalone Logistic Regression result, so FE01 was tested as
-an alternative.
+#### Backward Pruning
 
-FE01 improved accuracy by 0.001 and F1 by 0.002. The gain was weak, but
-non-negative, so it was retained provisionally for later pruning.
+Backward Pruning tested whether the provisionally retained representations remained useful in the completed forward candidate.
 
-##### Cabin
+Accepted removals were carried into subsequent experiments. Rejected removals were evaluated against the retained configuration.
 
-FE04 increased accuracy by 0.005 and F1 by 0.008, producing the strongest
-marginal improvement during the forward-selection sequence after the
-baseline.
-
-Because FE04 was already the preferred Logistic Regression Cabin
-representation and remained beneficial in the combined model, no additional
-Cabin representations were explored.
-
-##### Ticket
-
-Batch, fitted, and full-context TicketGroupSize semantics were compared.
-
-Batch and fitted representations both improved accuracy and F1 by 0.001,
-while full-context preserved accuracy and improved F1 by 0.001.
-
-Because fitted semantics matched the best predictive result while retaining
-straightforward inductive inference semantics, the fitted representation
-was carried forward provisionally.
-
-##### Fare
-
-Several previously promising Fare representations were reconsidered.
-
-FE08 reduced accuracy by 0.003 and F1 by 0.004. CB05 using full-context
-TicketGroupSize reduced both metrics by 0.002. CB05 using fitted
-TicketGroupSize produced no measurable change.
-
-The fitted CB05 representation was therefore carried forward only as a
-neutral candidate for backward pruning rather than because it demonstrated
-additional predictive value.
-
-##### Sex × Pclass
-
-FE12 reduced accuracy by 0.002 and F1 by 0.008. CB08, which retained the
-original Sex and Pclass features alongside their combined representation,
-was also tested and performed slightly worse, reducing accuracy by 0.003
-and F1 by 0.010.
-
-Neither representation was retained.
-
----
-
-#### Backward pruning
-
-The forward-selection candidate contained several features whose marginal
-contributions had been weak or neutral. Backward pruning was therefore used
-to determine whether these features remained useful after the complete
-candidate configuration had been assembled.
-
-Each accepted removal became the reference configuration for the following
-pruning experiment.
-
-| Step | Change | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
 | Forward candidate | — | 0.835 | 0.778 | — | — | Reference |
 | PR01 | Remove engineered Family | 0.835 | 0.779 | 0.000 | +0.001 | Remove |
-| PR02 | Remove direct TicketGroupSize | 0.837 | 0.782 | +0.002 | +0.003 | Remove |
-| PR03 | Remove Fare domain | 0.841 | 0.787 | +0.004 | +0.005 | Remove |
+| PR02 | Remove FE09 TicketGroupSize | 0.837 | 0.782 | +0.002 | +0.003 | Remove |
+| PR03 | Remove Fare domain | **0.841** | **0.787** | +0.004 | +0.005 | Remove |
 | PR04 | Remove CB03 Age engineering | 0.824 | 0.768 | -0.017 | -0.019 | Keep CB03 |
-| PR05 | Remove Cabin engineering | 0.832 | 0.772 | -0.009 | -0.015 | Keep Cabin |
-| PR06 | Remove Title | 0.804 | 0.734 | -0.037 | -0.053 | Keep Title |
-| PR07 | Remove SibSp + Parch | 0.800 | 0.737 | -0.041 | -0.050 | Keep SibSp + Parch |
+| PR05 | Remove Cabin FE04 | 0.832 | 0.772 | -0.009 | -0.015 | Keep Cabin |
+| PR06 | Remove Title FE05 | 0.804 | 0.734 | -0.037 | -0.053 | Keep Title |
+| PR07 | Remove raw SibSp + Parch | 0.800 | 0.737 | -0.041 | -0.050 | Keep raw Family |
 | PR08 | Remove all Age representations | 0.820 | 0.762 | -0.021 | -0.025 | Keep Age |
-| PR08 | Remove continuous Age, retain Age bins | 0.818 | 0.755 | -0.023 | -0.032 | Keep continuous + binned Age |
 
-##### Family
+*Deltas compare each experiment with its reference configuration: the latest accepted candidate, not necessarily the preceding table row. Additional PR08 tests are discussed below.*
 
-Removing the engineered Family representation preserved accuracy and
-slightly improved F1. FamilySize and IsAlone were therefore removed.
+**Key pruning findings**
 
-However, this did not imply that Family information itself was unnecessary.
-When the original SibSp and Parch features were later removed together,
-accuracy fell by 0.041 and F1 by 0.050.
+**Family and TicketGroupSize**
 
-The final model therefore strongly preferred the original SibSp and Parch
-representation over the engineered Family summary.
+Removing FE01's engineered Family representation preserved accuracy and slightly improved F1. Removing FE09 TicketGroupSize afterward improved accuracy by another 0.002 and F1 by 0.003.
 
-One possible explanation is that keeping SibSp and Parch separately allows
-Logistic Regression to assign independent coefficients to the two sources
-of family information, whereas FamilySize compresses them into a single
-quantity. The experiments establish the difference in predictive behavior,
-but do not by themselves establish this mechanism as the cause.
+However, removing raw SibSp and Parch from the later pruned configuration caused substantial losses (−0.041 accuracy / −0.050 F1).
 
-##### Ticket
+Thus, FamilySize and IsAlone were unnecessary in the final representation, while the original family variables remained valuable.
 
-Removing direct TicketGroupSize after Family engineering had been removed
-improved accuracy by 0.002 and F1 by 0.003.
+**Fare — conditional representation effects**
 
-TicketGroupSize was therefore removed as a direct predictor.
-
-##### Fare
-
-Fare produced one of the clearest examples of representation interaction
-during pruning.
+Fare produced one of the most informative pruning results:
 
 | Raw Fare | Fare / TicketGroupSize | Accuracy | F1 |
 |---|---|---:|---:|
 | Yes | Yes | 0.837 | 0.782 |
 | Yes | No | 0.832 | 0.775 |
 | No | Yes | 0.836 | 0.783 |
-| No | No | **0.841** | **0.787** |
+| **No** | **No** | **0.841** | **0.787** |
 
-Removing only Fare/TicketGroupSize was harmful, while removing only raw Fare
-produced a roughly neutral trade-off. However, removing both representations
-produced the best result.
+Removing only Fare/TicketGroupSize reduced performance, while removing raw Fare alone produced a small accuracy–F1 trade-off. Removing both achieved the best result.
 
-This indicates that the engineered Fare representation was not simply
-useless: it improved performance when raw Fare was present. Nevertheless,
-the Fare domain as a whole was detrimental to the final Logistic Regression
-configuration.
+The engineered Fare representation therefore had conditional value, but the complete Fare domain was detrimental to the selected configuration.
 
-Both raw and engineered Fare representations were therefore removed.
+**Age**
 
-##### Age
+CB03 became considerably more important after pruning. Removing it reduced accuracy by 0.017 and F1 by 0.019, compared with its initial forward-selection gains of only +0.003/+0.002.
 
-Age became substantially more important after the weaker and interfering
-features had been pruned.
+Because CB02 had been preserved as a competitive alternative during FS01, it was reconsidered in the reduced configuration. Replacing CB03 with CB02 achieved 0.832 accuracy / 0.777 F1, supporting CB03 as the stronger representation in the final context.
 
-Removing CB03 while retaining the remaining Age representation reduced
-accuracy by 0.017 and F1 by 0.019.
+PR08 then investigated whether the model needed all its remaining Age information:
 
-A targeted sanity check then replaced CB03 with the previously competitive
-CB02 representation. CB02 reached 0.832 accuracy and 0.777 F1, compared
-with 0.841 and 0.787 for CB03. This confirmed that CB03 was clearly
-preferable in the final model context despite the two representations being
-nearly tied during forward selection.
+- **Remove all Age representations:** 0.820 accuracy / 0.762 F1 (−0.021 / −0.025).
+- **Remove continuous Age while retaining Age bins:** 0.818 accuracy / 0.755 F1 (−0.023 / −0.032).
 
-Additional pruning showed that removing all Age-related information reduced
-performance to 0.820 accuracy and 0.762 F1. Retaining only binned Age while
-removing continuous Age performed even worse, at 0.818 accuracy and 0.755
-F1.
+Both configurations performed worse than the retained candidate, supporting CB03's combination of continuous and binned Age.
 
-The final model therefore benefits from CB03's combination of Title +
-Pclass-imputed continuous Age and Age bins rather than from the binned
-representation alone.
+**Cabin and Title**
 
-##### Cabin
+Removing Cabin FE04 reduced accuracy by 0.009 and F1 by 0.015.
 
-Removing FE04 Cabin engineering reduced accuracy by 0.009 and F1 by 0.015.
+Removing Title FE05 caused the largest engineered-feature pruning loss: −0.037 accuracy and −0.053 F1.
 
-Unlike several weaker forward-selection additions, Cabin remained clearly
-useful after pruning and was retained.
+Both representations were retained.
 
-##### Title
-
-Title produced the strongest engineered-feature ablation result. Removing
-it reduced accuracy by 0.037 and F1 by 0.053.
-
-Title was therefore retained as an essential component of the selected
-Logistic Regression representation.
-
----
-
-#### Final selection
-
-Backward pruning improved the forward-selection candidate while also
-reducing its feature representation:
+#### Final Selection
 
 | Configuration | Accuracy | F1 |
 |---|---:|---:|
-| Raw Logistic Regression baseline | 0.786 | 0.713 |
-| Feature-selection baseline (Title) | 0.825 | 0.765 |
-| Forward-selection candidate | 0.835 | 0.778 |
+| Raw baseline | 0.786 | 0.713 |
+| FS baseline — Title FE05 | 0.825 | 0.765 |
+| Forward candidate | 0.835 | 0.778 |
 | **Final pruned candidate** | **0.841** | **0.787** |
 
-Relative to the original raw Logistic Regression baseline, the final
-configuration improved accuracy by approximately 0.055 and F1 by 0.074.
+**Selected representations**
 
-The final selection retained:
+- **FE05 — Title**
+- **CB03 — Age:** Title + Pclass-based imputation, continuous Age, and Age bins
+- **FE04 — Cabin**
+- **Raw SibSp and Parch**, alongside remaining raw predictors not explicitly removed
 
-- Title engineering
-- CB03 Age representation
-  - continuous Age
-  - Age bins
-  - Title + Pclass-based Age imputation
-- FE04 Cabin representation
-- raw SibSp and Parch
-- the remaining raw predictors not explicitly removed during selection
+**Removed or rejected representations:** FE01 FamilySize/IsAlone, FE09 TicketGroupSize, raw Fare, engineered Fare/TicketGroupSize, and Sex × Pclass.
 
-The following engineered or raw representations were rejected:
+**Improvement over raw baseline:** +0.055 accuracy / +0.074 F1.
 
-- FamilySize / IsAlone
-- direct TicketGroupSize
-- raw Fare
-- Fare / TicketGroupSize
-- Sex × Pclass
+The final configuration also improved upon the forward candidate by +0.006 accuracy and +0.009 F1 while using fewer representations.
 
 #### Interpretation
 
-The Logistic Regression experiments demonstrate that feature usefulness was
-strongly conditional on the representation already available to the model.
+Logistic Regression demonstrated that feature contributions can change substantially depending on the surrounding feature set.
 
-Marginal gains during forward selection were not reliable estimates of final
-feature contribution. CB03 Age initially improved accuracy by only 0.003,
-yet removing it after pruning reduced accuracy by 0.017. Similarly, raw
-SibSp and Parch appeared relatively unremarkable during earlier feature
-engineering but their removal from the final candidate caused one of the
-largest performance losses observed during pruning.
+Three findings were particularly informative:
 
-Different feature domains also favored different representation strategies.
-Age benefited from retaining multiple complementary representations.
-Family engineering was redundant while its original variables remained
-important. Fare behaved differently again: individual Fare representations
-could support one another, yet removing the entire Fare domain produced the
-best final result.
+1. **Marginal contributions changed after pruning.** CB03 Age initially provided only a small gain, but became substantially more important in the reduced configuration.
+2. **Original and engineered representations were not interchangeable.** FamilySize/IsAlone could be removed, while retaining SibSp and Parch was important. Keeping the original variables may allow independent linear coefficients that the compressed FamilySize representation cannot express in the same way.
+3. **Redundant or competing representations could reduce performance.** The Fare experiments showed that individually useful representations did not necessarily improve the model when retained together.
 
-The final model was therefore not obtained by simply retaining every feature
-that had previously improved Logistic Regression. Forward selection was used
-to construct a plausible candidate while preserving possible interactions,
-and backward pruning was then used to identify which representations
-remained useful in the completed model.
+These experiments establish the observed predictive differences, but do not prove the underlying mechanisms.
 
-This produced a model that was both simpler and better performing than the
-forward-selection candidate.
+Overall, Logistic Regression benefited from both combining complementary representations and removing unnecessary ones. Backward Pruning was particularly valuable: it improved performance beyond the forward candidate while producing a smaller final feature set.
 
-### Support Vector Classifier
+### Support Vector Classifier (SVC)
 
-#### Forward selection
+#### Starting Point
 
-Feature selection for SVC started from the raw feature configuration plus
-Title engineering. Title was selected as the baseline because it had
-produced the strongest SVC result during the feature-engineering stage,
-increasing accuracy from 0.827 to 0.834 and F1 from 0.760 to 0.771.
+Feature selection started from the raw feature set with **FE05 Title engineering**, which had produced the strongest SVC result during the earlier feature-engineering experiments.
 
-Unlike Logistic Regression, relatively few engineered representations had
-shown clear benefits for SVC during isolated feature-engineering experiments.
-The strongest candidates were therefore tested first, followed by controlled
-exploration of weaker domains to determine whether previously neutral or
-slightly negative representations became useful when combined with the
-selected features.
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw baseline | 0.827 | 0.760 |
+| **FS baseline — Title FE05** | **0.834** | **0.771** |
 
-| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+Unlike Logistic Regression, relatively few engineered representations had shown clear benefits for SVC. The selection process therefore prioritized the most promising candidates while exploring alternative representations when earlier results justified doing so.
+
+#### Forward Selection
+
+Feature representations were tested incrementally against the latest accepted configuration. Small improvements could be carried provisionally, while detrimental additions were rejected.
+
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
-| Baseline | Title | 0.834 | 0.771 | — | — | Baseline |
-| FS01 | + Age CB02 | 0.835 | 0.773 | +0.001 | +0.002 | Carry |
-| FS02 | + Ticket FE09 full-context | 0.834 | 0.773 | -0.001 | 0.000 | Reject |
+| Baseline | Title FE05 | 0.834 | 0.771 | — | — | Reference |
+| FS01 | + Age CB02 | 0.835 | 0.773 | +0.001 | +0.002 | Carry; CB03 alternative |
+| FS02 | + TicketGroupSize FE09 full-context | 0.834 | 0.773 | -0.001 | 0.000 | Reject |
 | FS03 | + Family CB07 | 0.833 | 0.770 | -0.002 | -0.003 | Reject |
-| FS04 | + Fare FE10 full-context | 0.836 | 0.774 | +0.001 | +0.001 | Carry |
+| FS04 | + Fare FE10 full-context | **0.836** | **0.774** | +0.001 | +0.001 | Carry |
 | FS05 | + Cabin FE04 | 0.834 | 0.772 | -0.002 | -0.002 | Reject |
 | FS06 | + Sex × Pclass CB08 | 0.832 | 0.765 | -0.004 | -0.009 | Reject |
 
-The resulting forward-selection candidate reached 0.836 accuracy and
-0.774 F1.
+*Deltas compare each test against the latest accepted configuration. Additional experiments within each stage are discussed below.*
 
-##### Age
+**Notable decisions**
 
-CB02 and CB03 were both tested because they had previously been among the
-stronger Age representations for SVC.
+- **Age:** CB02 and CB03 both achieved 0.835 accuracy / 0.773 F1, improving the Title baseline by +0.001/+0.002. CB02 was carried forward because it offered a simpler representation, while CB03 remained a competitive alternative with equivalent measured performance.
 
-Both produced the same measured result:
+- **Ticket:** FE09 fitted reduced performance to 0.829 / 0.768, while FE09 full-context reached 0.834 / 0.773. Although TicketGroupSize had performed well in earlier isolated experiments, neither approach improved the assembled Title + Age configuration. FE09 was rejected as an additional model input.
 
-| Age representation | Accuracy | F1 |
-|---|---:|---:|
-| Title baseline | 0.834 | 0.771 |
-| CB02 | 0.835 | 0.773 |
-| CB03 | 0.835 | 0.773 |
+- **Family:** CB07 had previously shown a small positive result and was tested to investigate whether Family engineering became useful alongside Title and Age. It reduced accuracy by 0.002 and F1 by 0.003, so it was rejected.
 
-Because the two representations were tied at the reported precision, CB02
-was selected as the simpler representation.
+- **Fare:** FE10 fitted reduced accuracy and F1 by 0.003, while FE08 Fare/FamilySize reduced them by 0.001 and 0.002. FE10 full-context was the only tested Fare representation to improve both metrics (+0.001/+0.001). It was carried forward provisionally, despite the small gain, to determine whether the improvement survived pruning.
 
-Its improvement was small, at +0.001 accuracy and +0.002 F1, so Age was
-carried provisionally rather than treated as strongly established at this
-stage.
+- **Cabin:** Because earlier Cabin representations had produced similarly weak results, FE04 was selected as a representative test of the broader Cabin information. Its addition reduced accuracy and F1 by 0.002, so further Cabin exploration was deprioritized.
 
-##### Ticket
+- **Sex × Pclass:** CB08 reduced accuracy by 0.004 and F1 by 0.009. FE12 performed worse (−0.005/−0.014). Neither representation justified retention.
 
-TicketGroupSize had previously been one of the more promising engineered
-features for SVC. During isolated feature engineering, both fitted and
-full-context semantics had improved performance, with full-context producing
-the stronger result.
+**Forward candidate:** Title FE05 + Age CB02 + Fare FE10 full-context, alongside the remaining raw predictors.
 
-Neither benefit survived combination with Title and CB02 Age.
+**Result:** 0.836 accuracy / 0.774 F1.
 
-Adding fitted TicketGroupSize reduced performance to 0.829 accuracy and
-0.768 F1. Full-context TicketGroupSize reached 0.834 accuracy and 0.773 F1,
-losing 0.001 accuracy and producing no F1 improvement relative to the
-selected Age configuration.
+#### Backward Pruning
 
-TicketGroupSize was therefore rejected as a direct predictor.
+Backward Pruning evaluated whether the retained engineered representations remained useful in the completed forward candidate.
 
-##### Family
+Because most additions had already been rejected during Forward Selection, pruning focused on testing whether the selected Age, Fare, and Title representations could be simplified or removed.
 
-Family had not been strongly recommended for SVC, but CB07 had previously
-produced a small positive result and was tested to determine whether Family
-engineering became useful in the assembled representation.
-
-Adding CB07 reduced accuracy by 0.002 and F1 by 0.003.
-
-Family engineering was therefore rejected.
-
-##### Fare
-
-Because the previously preferred representation was raw Fare, weaker
-engineered Fare candidates were explored to determine whether they gained
-value after Title and Age had been selected.
-
-FE10 using fitted TicketGroupSize reduced accuracy and F1 by 0.003.
-FE08 Fare/FamilySize reduced accuracy by 0.001 and F1 by 0.002.
-
-FE10 using full-context TicketGroupSize was the only representation to
-produce an improvement, increasing both accuracy and F1 by 0.001.
-
-Although the gain was minimal, it was non-negative across both primary
-metrics and was therefore carried into pruning.
-
-##### Cabin
-
-The three Cabin representations had produced similarly weak results during
-feature engineering. FE04, containing the broader Cabin representation, was
-selected as a representative test of whether Cabin information became useful
-in the assembled SVC model.
-
-It reduced both accuracy and F1 by 0.002 and was rejected.
-
-##### Sex × Pclass
-
-Both Sex × Pclass representations were tested despite their weak previous
-results in order to confirm whether the interaction became useful in the
-assembled model.
-
-CB08, which retained Sex and Pclass alongside their combined representation,
-reduced accuracy by 0.004 and F1 by 0.009.
-
-FE12, which replaced the original representation, performed still worse,
-reducing accuracy by 0.005 and F1 by 0.014.
-
-Both were rejected.
-
----
-
-#### Backward pruning
-
-The SVC forward candidate was considerably smaller than the Logistic
-Regression candidate because most weak representations had already been
-rejected during forward selection.
-
-Pruning therefore focused on verifying whether the three engineered domains
-that remained in the selected configuration continued to provide useful
-information when challenged directly.
-
-| Experiment | Change | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
 | Forward candidate | — | **0.836** | **0.774** | — | — | Reference |
 | PR01 | Remove entire Fare domain | 0.834 | 0.770 | -0.002 | -0.004 | Keep Fare |
-| PR02 | Remove continuous/imputed Age | 0.833 | 0.769 | -0.003 | -0.005 | Keep complete CB02 |
-| PR02 | Remove entire Age domain | 0.834 | 0.771 | -0.002 | -0.003 | Keep Age |
-| PR03 | Remove Title | 0.831 | 0.767 | -0.005 | -0.007 | Keep Title |
+| PR02 | Remove continuous/imputed Age, retain bins | 0.833 | 0.769 | -0.003 | -0.005 | Keep complete CB02 |
+| PR03 | Remove Title FE05 | 0.831 | 0.767 | -0.005 | -0.007 | Keep Title |
 
-No pruning experiment improved the forward candidate.
+*Deltas compare each experiment against the complete forward candidate. Additional PR02 experiments are discussed below.*
+
+**Key pruning findings**
+
+**Fare — full-context improvement versus simplicity**
+
+The result without FE10 was already available from Forward Selection. Pruning therefore investigated whether removing Fare entirely could improve performance.
+
+| Fare representation | Accuracy | F1 |
+|---|---:|---:|
+| Raw Fare | 0.835 | 0.773 |
+| **Raw Fare + FE10 full-context** | **0.836** | **0.774** |
+| No Fare | 0.834 | 0.770 |
+
+Removing the entire Fare domain reduced accuracy by 0.002 and F1 by 0.004, supporting the retention of Fare information.
+
+FE10 full-context provided only +0.001 accuracy / +0.001 F1 beyond raw Fare. Although this was the best measured configuration, the simpler raw-Fare alternative remained competitive because it avoided FE10's full-context TicketGroupSize requirement.
+
+**Age — complementary representations**
+
+PR02 investigated whether the complete CB02 representation was necessary:
+
+- **Remove continuous Title-imputed Age, retain bins:** 0.833 accuracy / 0.769 F1 (−0.003/−0.005).
+- **Remove the entire Age domain:** 0.834 accuracy / 0.771 F1 (−0.002/−0.003).
+
+Both performed worse than the forward candidate.
+
+Notably, retaining only Age bins performed slightly worse than removing Age altogether. This suggests that the bins were not independently beneficial in the tested configuration, while the combined continuous and binned representation performed best.
+
+CB02 was therefore retained without modification.
+
+**Title**
+
+Removing Title FE05 reduced accuracy by 0.005 and F1 by 0.007, the largest pruning loss among the selected engineered domains.
+
+This contribution was smaller than Title's original improvement over raw SVC (+0.007/+0.011), suggesting that its marginal predictive value decreased after Age and Fare engineering were introduced.
+
+Because CB02 also uses Title internally for Age imputation, some information overlap is plausible. However, the experiments do not establish the underlying mechanism.
+
+Title remained useful as an explicit model input and was retained.
+
+#### Final Selection
+
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw baseline | 0.827 | 0.760 |
+| FS baseline — Title FE05 | 0.834 | 0.771 |
+| **Final selected candidate** | **0.836** | **0.774** |
+
+**Selected representations**
+
+- **FE05 — Title**
+- **CB02 — Age:** Title-based imputation, continuous Age, and Age bins
+- **Raw Fare + FE10 — Fare/TicketGroupSize:** Full-context semantics
+- Remaining raw predictors not explicitly removed or replaced
+
+**Rejected representations:** FE09 TicketGroupSize as an additional input, Family engineering, Cabin engineering, and Sex × Pclass.
+
+**Improvement over raw baseline:** +0.009 accuracy / +0.014 F1.
+
+**Alternative configuration:** Title FE05 + Age CB02 + raw Fare, without FE10, achieved 0.835 accuracy / 0.773 F1. It remains a competitive inductive alternative when the full prediction context is unavailable or undesirable.
+
+#### Interpretation
+
+SVC showed comparatively limited benefits from the explored feature-engineering representations.
+
+Three findings stood out:
+
+1. **Forward Selection performed most of the filtering.** TicketGroupSize, Family, Cabin, and Sex × Pclass failed to improve the assembled configuration. Every retained representation survived Backward Pruning.
+2. **Age benefited from combining representations.** Continuous Title-imputed Age and Age bins performed better together than either the bins alone or the complete removal of Age.
+3. **Predictive gains had practical trade-offs.** FE10 full-context produced the best measured performance, but its advantage over raw Fare alone was only +0.001 accuracy / +0.001 F1, making the simpler alternative worth preserving.
+
+SVC's limited improvement is consistent with the possibility that its existing feature representation already captured much of the useful predictive structure. However, the experiments do not establish whether this reflects the model's capabilities or the particular engineered features investigated.
+
+Overall, SVC favored a conservative feature configuration. Forward Selection identified a small set of useful representations, and Backward Pruning confirmed their contribution without producing additional improvements.
+
+The final candidate reached **0.836 accuracy / 0.774 F1**, compared with 0.827 / 0.760 for the raw baseline.
 
 ##### Fare
 
