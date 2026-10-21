@@ -3385,573 +3385,300 @@ Overall, SVC favored a conservative feature configuration. Forward Selection ide
 
 The final candidate reached **0.836 accuracy / 0.774 F1**, compared with 0.827 / 0.760 for the raw baseline.
 
-##### Fare
+### Random Forest
 
-Because the result without FE10 was already available from forward
-selection, pruning focused on the remaining unanswered question: whether
-removing the Fare domain entirely could improve the model.
+#### Starting Point
 
-Removing all Fare information reduced accuracy by 0.002 and F1 by 0.004.
-
-Together with the forward-selection results, this produced the following
-pattern:
-
-| Fare representation | Accuracy | F1 |
-|---|---:|---:|
-| Raw Fare | 0.835 | 0.773 |
-| Raw Fare + FE10 full-context | **0.836** | **0.774** |
-| No Fare | 0.834 | 0.770 |
-
-Fare therefore remained useful to the final SVC configuration, while the
-full-context normalized representation provided only a small additional
-gain.
-
-The predictive winner retains FE10. However, raw Fare alone remains a
-competitive simpler alternative because it avoids the prediction-context
-requirement in exchange for only 0.001 accuracy and 0.001 F1.
-
-##### Age
-
-Removing the continuous Title-imputed Age representation while retaining
-the binned representation reduced accuracy by 0.003 and F1 by 0.005.
-
-Removing the entire Age domain produced 0.834 accuracy and 0.771 F1,
-reducing performance by 0.002 and 0.003 respectively.
-
-Notably, retaining the Age bins without continuous Age performed slightly
-worse than removing Age altogether. The evidence therefore does not support
-the binned representation as independently useful.
-
-Instead, the complete CB02 representation performed best, suggesting that
-the continuous and binned representations were most useful when retained
-together in the tested configuration.
-
-##### Title
-
-Removing Title reduced accuracy by 0.005 and F1 by 0.007, the largest
-pruning loss among the retained engineered domains.
-
-This loss was smaller than Title's original feature-engineering improvement
-of +0.007 accuracy and +0.011 F1. Its marginal contribution therefore
-decreased once Age and Fare engineering were present.
-
-This is consistent with partial information overlap between the final
-representations, particularly because Title is also used to construct the
-CB02 Age representation. The experiments establish the reduction in
-marginal contribution but do not isolate its exact cause.
-
----
-
-#### Final selection
-
-The final SVC configuration retained every representation that survived
-forward selection:
-
-- Title
-- CB02 Age representation
-  - Title-imputed continuous Age
-  - Age bins
-- raw Fare
-- FE10 Fare / TicketGroupSize using full-context semantics
-- remaining raw predictors not explicitly removed during selection
-
-The following engineered representations were rejected:
-
-- direct TicketGroupSize
-- Family engineering
-- Cabin engineering
-- Sex × Pclass
+Feature selection started from the raw feature set with **FE05 Title engineering**, which had produced the strongest general-purpose Random Forest result during earlier feature-engineering experiments.
 
 | Configuration | Accuracy | F1 |
 |---|---:|---:|
-| Raw SVC baseline | 0.827 | 0.760 |
-| Feature-selection baseline (Title) | 0.834 | 0.771 |
-| **Final selected candidate** | **0.836** | **0.774** |
+| Raw baseline | 0.822 | 0.744 |
+| **FS baseline — Title FE05** | **0.832** | **0.768** |
 
-Relative to the raw SVC baseline, the final representation improved accuracy
-by 0.009 and F1 by 0.014.
+Random Forest had shown limited benefits from most engineered representations. However, earlier Age and Fare experiments suggested that their contributions might depend on the surrounding features.
 
-However, most of this improvement had already been obtained by Title.
-Feature selection after the Title baseline added only 0.002 accuracy and
-0.003 F1.
+Forward Selection therefore prioritized these domains, while Backward Pruning investigated whether removing or replacing existing representations could produce a better configuration.
 
-#### Interpretation
+#### Forward Selection
 
-SVC showed substantially less benefit from the explored feature engineering
-than Logistic Regression.
+Previously promising Age and Fare representations were tested against the Title baseline.
 
-Most engineered domains that had been neutral or negative in isolation
-remained neutral or negative when combined with the selected features.
-TicketGroupSize, Family, Cabin, and Sex × Pclass did not reveal useful
-conditional interactions during forward selection.
-
-The final model also required little backward pruning. Unlike Logistic
-Regression, where pruning removed several apparently useful representations
-and substantially improved the final result, every representation carried
-into the SVC forward candidate survived its corresponding pruning challenge.
-For SVC, forward selection performed most of the filtering and backward
-pruning primarily confirmed those decisions.
-
-The limited improvement should not be interpreted as evidence that SVC
-generally cannot benefit from feature engineering. Two explanations remain
-compatible with the experiments. First, SVC may already have been able to
-extract much of the useful decision structure from the raw and scaled
-features, leaving relatively little additional value for the handcrafted
-representations explored here. Second, the engineered features investigated
-in this study may simply not have introduced enough new information that was
-useful to SVC.
-
-The experiments cannot distinguish conclusively between these explanations.
-
-What they do establish is that, for the representations explored in this
-case study, SVC preferred a comparatively conservative feature set and
-showed limited benefit from additional engineered representations.
-
-The final predictive configuration reached 0.836 accuracy and 0.774 F1.
-A simpler configuration without the full-context Fare/TicketGroupSize
-representation reached 0.835 accuracy and 0.773 F1, making it a competitive
-alternative when straightforward inductive inference is preferred.
-
-### Random Forest
-
-#### Forward selection
-
-Feature selection for Random Forest started from the raw feature configuration
-plus Title engineering. Title was selected as the baseline because it had
-produced the strongest general-purpose Random Forest result during the
-feature-engineering stage, reaching 0.832 accuracy and 0.768 F1.
-
-Random Forest had shown relatively little benefit from most of the engineered
-representations explored previously. Age and Fare were therefore investigated
-first because earlier experiments had revealed potentially useful interactions
-between the two domains.
-
-| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
-| Baseline | Title | **0.832** | **0.768** | — | — | Baseline |
+| Baseline | Title FE05 | **0.832** | **0.768** | — | — | Reference |
 | FS01 | + Age CB03 | 0.831 | 0.764 | -0.001 | -0.004 | Reject |
-| FS01 | + Age CB02 | 0.828 | 0.760 | -0.004 | -0.008 | Reject |
-| FS02 | + Fare FE10 full-context | 0.828 | 0.759 | -0.004 | -0.009 | Reject |
 | FS02 | + Fare CB06 fitted | 0.832 | 0.766 | 0.000 | -0.002 | Reject |
 
-No tested engineered representation improved upon the Title baseline during
-forward selection.
+*Deltas compare each test against the Title baseline. Additional experiments within each stage are discussed below.*
 
-Unlike Logistic Regression and SVC, Random Forest therefore did not produce
-a larger forward-selection candidate. The Title baseline remained the
-strongest configuration after feature addition.
+**Notable decisions**
 
-##### Age
+- **Age:** CB03 and CB02 were tested because they had previously been among Random Forest's more promising Age representations. CB03 reached 0.831 accuracy / 0.764 F1, while CB02 reached 0.828 / 0.760. Neither improved the Title baseline, so both were rejected as additions to the current configuration.
 
-CB03 and CB02 were tested because they had been the most promising Age
-representations for Random Forest during earlier feature-engineering
-experiments.
+- **Fare:** FE10 full-context reduced accuracy by 0.004 and F1 by 0.009. CB06 fitted preserved accuracy but reduced F1 by 0.002. Neither provided a reason to increase representation complexity, so both were rejected.
 
-Neither improved the Title baseline.
+**Forward candidate:** Title FE05 with the remaining raw features.
 
-CB03 reduced accuracy by 0.001 and F1 by 0.004, while CB02 reduced accuracy
-by 0.004 and F1 by 0.008.
+**Result:** 0.832 accuracy / 0.768 F1.
 
-CB03 was the stronger of the two, but its negative result provided no reason
-to carry either Age representation forward under the existing Title + Fare
-context.
+Unlike Logistic Regression and SVC, Random Forest did not benefit from assembling additional engineered representations during Forward Selection.
 
-##### Fare
+#### Backward Pruning
 
-Previous experiments had generally favored retaining raw Fare for Random
-Forest, but several engineered Fare representations had produced small or
-non-zero results and were reconsidered during feature selection.
+Although Forward Selection found no beneficial additions, earlier Age × Fare experiments had suggested that removing Fare could improve some Random Forest configurations.
 
-FE10 using full-context TicketGroupSize reduced accuracy by 0.004 and F1 by
-0.009.
+This justified investigating feature removal and reconsidering CB03 under different representation contexts.
 
-CB06 using fitted TicketGroupSize preserved accuracy but reduced F1 by
-0.002. Because it increased representation complexity without improving the
-primary metric and slightly worsened the secondary metric, it was also
-rejected.
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| Forward candidate | Title FE05 | 0.832 | 0.768 | — | — | Reference |
+| PR01 | Remove raw Fare | 0.832 | 0.767 | 0.000 | -0.001 | No improvement |
+| PR02 | Add CB03 without Fare | 0.829 | 0.766 | -0.003 | -0.002 | Reject |
+| PR03 | Remove Title and Fare, retain CB03 | **0.834** | 0.762 | +0.002 | -0.006 | Select for accuracy |
 
-The Title baseline therefore remained the selected configuration after
-forward selection.
+*Deltas compare each configuration against the original Title-based forward candidate, allowing the alternative representations to be evaluated against the same reference.*
 
----
+**Key pruning findings**
 
-#### Ablation and representation interaction
+**Fare — context-dependent contribution**
 
-Although forward selection found no beneficial additions, earlier Age × Fare
-ablation experiments had shown a repeated pattern in which removing Fare
-improved several Random Forest Age configurations.
+Removing raw Fare from the Title baseline preserved accuracy but slightly reduced F1:
 
-This provided a specific reason to investigate feature removal rather than
-continue adding engineered representations that had previously shown weak
-or negative evidence.
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Title + raw Fare | 0.832 | 0.768 |
+| Title without Fare | 0.832 | 0.767 |
 
-##### Removing Fare
+Fare was therefore not generally detrimental to Random Forest. Its earlier negative effects appeared to depend on the other representations present.
 
-Removing raw Fare from the Title baseline produced:
+**Age — reconsidering a rejected candidate**
 
-| Configuration | Accuracy | F1 | Δ Accuracy | Δ F1 |
-|---|---:|---:|---:|---:|
-| Title + raw Fare | 0.832 | 0.768 | — | — |
-| Title − raw Fare | 0.832 | 0.767 | 0.000 | -0.001 |
+CB03 had been rejected during Forward Selection because it reduced performance when added to Title.
 
-Removing Fare alone therefore provided no benefit.
+However, earlier experiments suggested that CB03 might behave differently without Fare. It was therefore reconsidered after Fare removal.
 
-This result refined the earlier ablation finding. Fare was not generally
-harmful to Random Forest; its previous negative behavior appeared to depend
-on the representation context in which it was used.
+Adding CB03 while retaining Title but excluding Fare reached 0.829 accuracy / 0.766 F1, remaining below the original Title baseline.
 
-##### Reintroducing CB03 without Fare
+Removing Fare alone was consequently insufficient to make CB03 beneficial.
 
-Because earlier experiments had suggested an interaction between the Age
-representation and Fare, CB03 was tested again after removing Fare.
+**Title, Age, and Fare — combined representation change**
 
-The resulting configuration reached 0.829 accuracy and 0.766 F1, compared
-with 0.832 accuracy and 0.768 F1 for the Title baseline.
-
-CB03 therefore remained detrimental while Title was present even after Fare
-had been removed.
-
-This showed that the earlier Age × Fare interaction did not fully explain
-CB03's behavior in the current feature-selection configuration.
-
-##### Reproducing the previous Age/Fare ablation
-
-A final targeted experiment reproduced the previously successful ablation
-configuration by using CB03 while removing both raw Fare and Title.
+A final targeted experiment reproduced the previously promising configuration using CB03 without raw Fare or Title as an explicit predictor.
 
 | Configuration | Accuracy | F1 |
 |---|---:|---:|
 | Title baseline | 0.832 | **0.768** |
 | Title + CB03 + Fare | 0.831 | 0.764 |
-| Title + CB03 − Fare | 0.829 | 0.766 |
-| **CB03 − Fare − Title** | **0.834** | 0.762 |
+| Title + CB03, without Fare | 0.829 | 0.766 |
+| **CB03, without Title or Fare** | **0.834** | 0.762 |
 
-The final experiment reproduced the earlier result of 0.834 accuracy and
-0.762 F1, confirming that the previous ablation behavior remained consistent
-with the current experimental setup.
+The last configuration achieved the highest Random Forest accuracy observed during Feature Selection.
 
-More importantly, the result revealed that the useful Age configuration was
-conditional on removing both Fare and Title.
+This revealed an important conditional relationship:
 
-CB03 was detrimental when added to the Title baseline, and removing Fare
-alone did not make it beneficial. However, CB03 combined with the removal of
-both Title and Fare produced the highest Random Forest accuracy observed in
-this feature-selection phase.
+- CB03 reduced performance when added to the Title baseline.
+- Removing Fare alone did not make CB03 beneficial.
+- Removing both Fare and Title as explicit predictors allowed the CB03 configuration to achieve higher accuracy.
 
----
+The result also reproduced the earlier Age/Fare ablation finding, supporting its consistency within the existing experimental setup.
 
-#### Final selection
+**Title remained involved indirectly:** CB03 still used Title alongside Pclass for Age imputation, even though Title was no longer supplied as a separate model input.
 
-Random Forest produced two competitive final representations with different
-metric trade-offs:
+#### Final Selection
+
+Random Forest produced two competitive configurations with different metric priorities.
 
 | Configuration | Accuracy | F1 | Characteristic |
 |---|---:|---:|---|
-| Title + otherwise raw representation | 0.832 | **0.768** | Higher F1 |
-| **CB03 Age − Title − Fare** | **0.834** | 0.762 | Higher accuracy |
+| Title FE05 + otherwise raw features | 0.832 | **0.768** | Higher F1 |
+| **Age CB03, without Title or Fare** | **0.834** | 0.762 | Higher accuracy |
 
-Because accuracy was established as the primary selection metric, the
-CB03 Age configuration without Title or Fare was selected as the final
-Random Forest candidate.
+Because accuracy was the primary selection metric, the CB03 configuration was selected as the final candidate.
 
-Relative to the Title baseline, this configuration improves accuracy by
-0.002 while reducing F1 by 0.006.
+**Selected representations**
 
-The Title configuration remains a meaningful alternative when the balance
-between accuracy and F1 is preferred over maximizing accuracy.
+- **CB03 — Age:** Title + Pclass-based imputation, continuous Age, and Age bins
+- Remaining raw predictors, excluding Fare and Title as a separate input
 
-The selected accuracy-oriented configuration therefore uses:
+**Removed or rejected representations:** Title as an explicit predictor, raw Fare, additional Fare engineering, and Age CB02.
 
-- CB03 Age representation
-  - Title + Pclass-based Age imputation
-  - continuous Age
-  - Age bins
-- no Title as a direct predictor
-- no Fare
-- the remaining raw predictors not explicitly removed during selection
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw baseline | 0.822 | 0.744 |
+| FS baseline — Title FE05 | 0.832 | **0.768** |
+| **Final accuracy-oriented candidate** | **0.834** | 0.762 |
 
-Title remains involved indirectly through CB03's Age-imputation procedure,
-but is not retained as a direct model input.
+**Improvement over raw baseline:** +0.012 accuracy / +0.018 F1.
 
----
+Relative to the Title baseline, the final configuration improved accuracy by 0.002 while reducing F1 by 0.006.
+
+**Alternative configuration:** Title FE05 with the otherwise raw feature set remains a competitive candidate when F1 is prioritized or a simpler feature representation is preferred.
 
 #### Interpretation
 
-Random Forest showed little benefit from simply adding engineered
-representations to an already strong feature set.
+Random Forest benefited more from selecting between alternative feature representations than from accumulating additional engineered features.
 
-Neither of the preferred Age representations improved the Title baseline,
-and the additional Fare representations were either detrimental or failed
-to improve accuracy. Unlike Logistic Regression, there was therefore no
-useful collection of engineered features to assemble and subsequently prune.
+Three findings stood out:
 
-Instead, the most important Random Forest result came from changing the
-representation context.
+1. **Useful representations did not necessarily combine well.** Title and CB03 Age each supported competitive configurations, but combining them reduced performance relative to the Title baseline.
+2. **Feature removal changed the value of other representations.** CB03 achieved its highest accuracy only after both Fare and Title were removed as explicit predictors.
+3. **Feature construction and model inputs are distinct.** Title remained useful for CB03's Age imputation even though it was excluded as a separate predictor.
 
-Title alone produced a strong model, while CB03 Age produced another
-competitive representation only after Title and Fare were removed as direct
-predictors. Attempts to combine these apparently useful components performed
-worse than either of the competing representations.
+These results indicate that feature contributions were conditional on the surrounding representation. They do not establish the underlying mechanism or imply that Random Forest generally performs better without Fare or Title.
 
-This demonstrates that feature effects were strongly conditional:
+Unlike Logistic Regression, where Backward Pruning simplified a larger forward candidate, Random Forest's pruning stage identified a different feature configuration altogether.
 
-- Title was useful in the mostly raw representation.
-- CB03 was detrimental when added to the Title representation.
-- Removing Fare alone provided no benefit.
-- Removing Fare did not make CB03 useful while Title remained present.
-- CB03 became the highest-accuracy representation when both Fare and direct
-  Title were removed.
+The final candidate reached **0.834 accuracy / 0.762 F1**, while the Title-based alternative retained a slightly higher F1 of 0.768.
 
-The earlier observation that removing Fare could benefit Random Forest
-should therefore not be generalized as evidence that Random Forest does not
-benefit from Fare. The current experiments instead indicate an interaction
-between Fare, Title, and the engineered Age representation.
-
-Similarly, CB03 should not be described as generally superior to the raw Age
-representation. Its advantage appeared only under the particular
-representation in which direct Title and Fare were absent.
-
-The selected model also illustrates an important distinction between a
-feature being used as a direct predictor and being used during feature
-construction. Although Title was removed from the model inputs, CB03 still
-uses Title together with Pclass to impute Age. Title information therefore
-remains involved indirectly in the final representation.
-
-Overall, Random Forest benefited more from selecting between competing
-feature representations than from accumulating additional engineered
-features. The final accuracy improvement was small, but the experiments
-revealed substantial interaction between representations that would have
-been hidden by considering each engineered feature independently.
+The accuracy difference was small, so both configurations remain meaningful candidates for later hyperparameter optimization and independent evaluation.
 
 ### K-Nearest Neighbors (KNN)
 
-#### Forward selection
+#### Starting Point
 
-Feature selection for KNN started from the raw feature configuration plus Title engineering. Title was selected as the baseline because it had produced one of the strongest KNN results during feature engineering, increasing accuracy from 0.809 to 0.822 and F1 from 0.742 to 0.760.
+Feature selection started from the raw feature set with **FE05 Title engineering**, which had produced one of KNN's strongest results during feature engineering.
 
-Unlike SVC and Random Forest, KNN had shown meaningful improvements from several engineered representations. Fare/TicketGroupSize and Deck were particularly promising, while TicketGroupSize had shown a smaller, context-dependent benefit.
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw baseline | 0.809 | 0.742 |
+| **FS baseline — Title FE05** | **0.822** | **0.760** |
 
-The forward-selection process therefore prioritized these representations before exploring Family engineering as a possible additional source of information.
+Unlike SVC and Random Forest, KNN had shown promising results from several engineered representations, particularly Fare/TicketGroupSize and Deck. Direct TicketGroupSize had also shown smaller, context-dependent benefits.
 
-| Step | Representation tested | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+Forward Selection prioritized these representations, followed by Family engineering. Backward Pruning would then test whether their contributions remained useful in combination.
+
+#### Forward Selection
+
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
-| Baseline | Title | 0.822 | 0.760 | — | — | Baseline |
-| FS01 | + FE10 Fare/Ticket full-context | 0.831 | 0.771 | +0.009 | +0.011 | Carry |
-| FS02 | + FE03 Deck | 0.832 | 0.768 | +0.001 | -0.003 | Carry provisionally |
-| FS02 | + FE04 Cabin | 0.827 | 0.764 | -0.004 | -0.007 | Reject |
-| FS03 | + FE09 Ticket full-context | **0.834** | **0.776** | +0.002 | +0.008 | Carry |
-| FS04 | + FE01 Family | 0.829 | 0.771 | -0.005 | -0.005 | Reject |
-| FS04 | + CB07 Family | 0.828 | 0.770 | -0.006 | -0.006 | Reject |
+| Baseline | Title FE05 | 0.822 | 0.760 | — | — | Reference |
+| FS01 | + Fare FE10 full-context | 0.831 | 0.771 | +0.009 | +0.011 | Carry |
+| FS02 | + Cabin FE03 Deck | 0.832 | 0.768 | +0.001 | -0.003 | Carry provisionally |
+| FS03 | + Ticket FE09 full-context | **0.834** | **0.776** | +0.002 | +0.008 | Carry |
+| FS04 | + Family FE01 | 0.829 | 0.771 | -0.005 | -0.005 | Reject |
 
-Each experiment was compared against the latest accepted forward configuration, rather than against the original baseline.
+*Deltas compare each test with the latest accepted configuration. Other experiments within each stage are discussed below.*
 
-The resulting forward candidate reached **0.834 accuracy and 0.776 F1**, improving upon the Title baseline by 0.012 accuracy and 0.016 F1.
+**Notable decisions**
 
-##### Fare
+- **Fare:** FE10 full-context was prioritized because of its strong earlier results. It improved accuracy by 0.009 and F1 by 0.011, making it a clear candidate for retention.
 
-FE10 using full-context TicketGroupSize was tested first because it had previously produced one of the strongest improvements for KNN.
+- **Cabin:** FE03 Deck improved accuracy by 0.001 but reduced F1 by 0.003. Despite this mixed result, **Deck was carried provisionally** to investigate possible interactions with later features. The broader FE04 Cabin representation performed worse (0.827 / 0.764), so FE03 was preferred.
 
-Adding the normalized Fare representation increased accuracy by 0.009 and F1 by 0.011.
+- **Ticket:** Adding FE09 full-context improved accuracy by 0.002 and F1 by 0.008. This was particularly interesting because FE10 already used TicketGroupSize indirectly to normalize Fare. Adding FE09 showed that TicketGroupSize could provide additional information as a separate feature. The improvement suggested that TicketGroupSize could provide additional information when supplied as a separate model input.
 
-Both improvements were substantial relative to the other feature-engineering gains observed for KNN, making FE10 a clear candidate for retention.
+- **Family:** Earlier Family × Ticket experiments had suggested a possible benefit from combining these domains, justifying another test despite Family's generally weak isolated results. FE01 reduced accuracy and F1 by 0.005; CB07 reduced both by 0.006. Neither was carried forward.
 
-The result also reinforced the earlier observation that KNN benefited from Fare normalization using ticket-sharing information under full-context semantics.
+**Forward candidate:** Title FE05 + Fare FE10 full-context + Cabin FE03 Deck + Ticket FE09 full-context.
 
-##### Cabin
+**Result:** 0.834 accuracy / 0.776 F1.
 
-FE03 Deck was tested because it had previously improved KNN performance during isolated feature engineering.
+#### Backward Pruning
 
-Adding Deck increased accuracy by 0.001 but reduced F1 by 0.003.
+Backward Pruning evaluated whether each retained representation remained useful after the complete forward assembly.
 
-Although mixed, this result remained within the established tolerance for provisional retention. Deck was therefore carried forward to preserve the possibility of useful interactions with subsequent features.
-
-FE04, containing a broader Cabin representation, was also tested. It reduced accuracy by 0.004 and F1 by 0.007 relative to the selected Fare configuration.
-
-The broader representation was rejected in favor of FE03.
-
-At this stage, Deck's contribution appeared weak and uncertain, making it an important candidate for later pruning.
-
-##### Ticket
-
-FE09 using full-context TicketGroupSize was added after Deck.
-
-This increased accuracy from 0.832 to 0.834 and F1 from 0.768 to 0.776, corresponding to improvements of 0.002 accuracy and 0.008 F1.
-
-The F1 improvement was particularly notable because it more than compensated for the F1 reduction introduced by Deck.
-
-FE09 was therefore retained.
-
-This result was also interesting because FE10 already used TicketGroupSize to normalize Fare. Adding TicketGroupSize directly nevertheless improved the assembled model.
-
-The normalized Fare representation and direct TicketGroupSize appeared to provide complementary predictive information in the tested configuration.
-
-##### Family
-
-Family engineering had generally performed poorly for KNN during isolated feature-engineering experiments. However, earlier Family × Ticket tests had shown a positive result for the full-context combination, making Family worth reconsidering after the Fare and Ticket representations were selected.
-
-Both FE01 and CB07 were tested.
-
-FE01 reduced accuracy and F1 by 0.005, while CB07 reduced both metrics by 0.006.
-
-Neither representation improved the assembled model.
-
-Family engineering was therefore rejected, although its relationship with Deck was investigated further during pruning.
-
----
-
-#### Backward pruning
-
-The forward candidate retained Title, FE10 Fare/Ticket, FE03 Deck, and FE09 TicketGroupSize.
-
-Backward pruning evaluated whether each representation remained useful after the complete forward assembly, rather than relying only on its contribution when initially introduced.
-
-| Experiment | Change | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+| Stage | Selected test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
 | Forward candidate | — | **0.834** | **0.776** | — | — | Reference |
-| PR01 | Remove FE03 Deck | 0.827 | 0.771 | -0.007 | -0.005 | Keep Deck |
-| PR02 | Remove FE10 Fare/Ticket | 0.828 | 0.766 | -0.006 | -0.010 | Keep FE10 |
-| PR03 | Remove Title | 0.825 | 0.766 | -0.009 | -0.010 | Keep Title |
-| Existing FS02 | Remove FE09 TicketGroupSize | 0.832 | 0.768 | -0.002 | -0.008 | Keep FE09 |
+| PR01 | Remove Deck FE03 | 0.827 | 0.771 | -0.007 | -0.005 | Keep Deck |
+| PR02 | Remove Fare FE10 | 0.828 | 0.766 | -0.006 | -0.010 | Keep FE10 |
+| PR03 | Remove Title FE05 | 0.825 | 0.766 | -0.009 | -0.010 | Keep Title |
+| Existing FS02 | Remove TicketGroupSize FE09 | 0.832 | 0.768 | -0.002 | -0.008 | Keep FE09 |
 
-Every retained representation survived pruning. No removal improved the completed forward candidate.
+*All deltas compare against the complete forward candidate. The existing FS02 result provides the comparison without FE09, so no separate pruning experiment was necessary.*
 
-##### Deck and TicketGroupSize interaction
+**Deck × TicketGroupSize interaction**
 
-Removing Deck produced one of the most informative results of KNN's feature selection.
+Deck's contribution changed substantially after TicketGroupSize was introduced.
 
-During forward selection, Deck had contributed only +0.001 accuracy while reducing F1 by 0.003.
+During Forward Selection, Deck improved accuracy by only 0.001 while reducing F1 by 0.003. However, removing Deck from the completed candidate reduced accuracy by 0.007 and F1 by 0.005.
 
-However, removing Deck after FE09 TicketGroupSize had been added reduced accuracy by 0.007 and F1 by 0.005.
+The experiments provided all four combinations needed to examine this relationship:
 
-This indicated that Deck's marginal contribution had changed substantially after TicketGroupSize was introduced.
-
-The experiments also provided all four combinations needed to examine the interaction directly.
-
-| Deck | Full - context TicketGroupSize | Accuracy | F1 |
+| Deck | Direct FE09 TicketGroupSize | Accuracy | F1 |
 |---|---|---:|---:|
 | No | No | 0.831 | 0.771 |
 | Yes | No | 0.832 | 0.768 |
 | No | Yes | 0.827 | 0.771 |
-| Yes | Yes | **0.834** | **0.776** |
+| **Yes** | **Yes** | **0.834** | **0.776** |
 
-All four configurations retained Title and FE10 full-context Fare/Ticket.
+*All configurations retain Title FE05 and Fare FE10 full-context.*
 
-Without Deck, adding direct TicketGroupSize reduced accuracy by 0.004 and left F1 unchanged.
+Without Deck, adding TicketGroupSize reduced accuracy by 0.004 and left F1 unchanged. With Deck, it improved accuracy by 0.002 and F1 by 0.008.
 
-With Deck, adding TicketGroupSize increased accuracy by 0.002 and F1 by 0.008.
+The resulting **interaction contrasts were +0.006 accuracy and +0.008 F1**, showing that the measured contribution of one representation depended on the presence of the other.
 
-The resulting interaction contrasts were +0.006 accuracy and +0.008 F1.
+This was the strongest reason to retain Deck despite its initially mixed result. Had we rejected it immediately during Forward Selection, we would not have discovered this combination through the planned sequence.
 
-These results provide direct evidence that the predictive contribution of Deck and TicketGroupSize was conditional on their joint presence.
+The experiments establish the predictive interaction, but not its mechanism. A plausible explanation is that Deck and TicketGroupSize jointly improve KNN's neighborhood structure; confirming that would require examining distances or nearest-neighbor composition.
 
-The experiments do not establish the underlying mechanism. One plausible explanation is that the two representations jointly improve the neighborhood structure used by KNN, but confirming this would require additional investigation of distances or nearest-neighbor composition.
+**Family without Deck**
 
-This was also a clear validation of the feature-selection methodology: retaining Deck provisionally despite its initially mixed result allowed a useful interaction to emerge during subsequent assembly.
-
-##### Family without Deck
-
-A targeted sanity check investigated whether Deck was responsible for Family engineering's poor result.
-
-FE01 was added to the configuration containing Title, FE10 and FE09, while Deck was removed.
+Because Family engineering had performed poorly in the completed candidate, a targeted experiment tested whether its contribution changed when Deck was absent.
 
 | Configuration | Accuracy | F1 |
 |---|---:|---:|
 | Complete forward candidate | **0.834** | **0.776** |
 | Without Deck | 0.827 | 0.771 |
-| Without Deck, with FE01 | 0.829 | 0.774 |
-| With Deck and FE01 | 0.829 | 0.771 |
+| Without Deck, with Family FE01 | 0.829 | 0.774 |
+| With Deck and Family FE01 | 0.829 | 0.771 |
 
-Without Deck, adding FE01 improved accuracy by 0.002 and F1 by 0.003 relative to the corresponding no-Deck configuration.
+Without Deck, FE01 improved accuracy by 0.002 and F1 by 0.003 relative to the corresponding configuration without Family engineering.
 
-This contrasted with FE01's negative contribution when Deck was present, suggesting another context-dependent relationship between engineered representations.
+However, replacing Deck with FE01 remained inferior to the complete candidate (−0.005 accuracy / −0.002 F1). The result revealed another context-dependent contribution but did not justify retaining Family engineering.
 
-However, replacing Deck with FE01 remained inferior to the complete forward candidate, reducing accuracy by 0.005 and F1 by 0.002.
+**Fare, Title, and TicketGroupSize**
 
-The result was useful for understanding model behavior but did not justify retaining Family engineering.
+The remaining pruning results supported retaining all three representations:
 
-No further Family combinations were pursued.
+- **Fare FE10:** Removing it reduced accuracy by 0.006 and F1 by 0.010. Direct TicketGroupSize therefore did not replace the value of normalized Fare.
+- **Title FE05:** Removing it reduced accuracy by 0.009 and F1 by 0.010, the largest accuracy loss among the pruning tests.
+- **Ticket FE09:** The earlier FS02 configuration already showed that removing FE09 reduced accuracy by 0.002 and F1 by 0.008.
 
-##### Fare
+No removal improved the complete forward candidate.
 
-Removing FE10 from the complete forward candidate reduced accuracy by 0.006 and F1 by 0.010.
-
-This confirmed that the normalized Fare representation remained valuable after Deck and direct TicketGroupSize had been added.
-
-Although FE09 already supplied TicketGroupSize directly, it did not replace the predictive contribution of the Fare/TicketGroupSize representation.
-
-Both representations were therefore retained.
-
-##### Title
-
-Removing Title reduced accuracy by 0.009 and F1 by 0.010, the largest accuracy loss among the pruning experiments.
-
-Title had originally improved raw KNN by 0.013 accuracy and 0.018 F1.
-
-Its marginal contribution was smaller in the completed configuration, consistent with some predictive overlap between Title and the other retained representations.
-
-Nevertheless, Title remained one of the most valuable components of the final KNN feature set.
-
-##### Direct TicketGroupSize
-
-A separate pruning experiment was unnecessary because FE09 had been the final accepted addition during forward selection.
-
-The existing FS02 configuration already represented the completed model without direct TicketGroupSize.
-
-Removing FE09 would reduce accuracy by 0.002 and F1 by 0.008.
-
-FE09 therefore remained in the final configuration.
-
----
-
-#### Final selection
-
-The final KNN configuration retained every representation carried through forward selection:
-
-- Title (FE05)
-- FE10 Fare/TicketGroupSize using full-context semantics
-- FE03 Deck
-- FE09 TicketGroupSize using full-context semantics
-- Remaining raw predictors not explicitly replaced or removed by the selected transformations
-
-Family engineering and the broader Cabin representation were rejected.
+#### Final Selection
 
 | Configuration | Accuracy | F1 |
 |---|---:|---:|
-| Raw KNN baseline | 0.809 | 0.742 |
-| Feature-selection baseline (Title) | 0.822 | 0.760 |
+| Raw baseline | 0.809 | 0.742 |
+| FS baseline — Title FE05 | 0.822 | 0.760 |
 | **Final selected candidate** | **0.834** | **0.776** |
 
-Relative to raw KNN, the final configuration improved accuracy by **0.025** and F1 by **0.034**.
+**Selected representations**
 
-Relative to the Title baseline, the additional selected representations improved accuracy by 0.012 and F1 by 0.016.
+- **FE05 — Title**
+- **FE10 — Fare/TicketGroupSize:** Full-context semantics
+- **FE03 — Deck**
+- **FE09 — TicketGroupSize:** Full-context semantics, included as a separate model input
+- Remaining raw predictors not explicitly replaced or removed
 
-No backward-pruning experiment improved the completed candidate.
+**Rejected representations:** FE04 broader Cabin engineering and FE01/CB07 Family engineering.
 
----
+**Improvement over raw baseline:** +0.025 accuracy / +0.034 F1.
+
+Relative to the Title baseline, the final configuration improved accuracy by 0.012 and F1 by 0.016.
+
+Unlike Logistic Regression, KNN did not benefit from removing any of the provisionally retained representations.
+
+**Inference requirement:** Both FE10 and FE09 use full-context TicketGroupSize. The final configuration therefore depends on the availability and appropriate use of prediction-population context. It should not be treated as interchangeable with a purely fitted, inductive implementation.
 
 #### Interpretation
 
-KNN benefited from combining multiple engineered representations, contrasting with the limited gains observed for SVC and Random Forest.
+KNN benefited from combining engineered representations, with **Deck × TicketGroupSize** providing the clearest example of a conditional contribution.
 
-Fare/TicketGroupSize produced a substantial improvement during forward selection, while Deck and direct TicketGroupSize demonstrated a positive predictive interaction.
+Three findings stood out:
 
-The Deck result was particularly informative. Its initial contribution was mixed, but its value increased substantially after TicketGroupSize was introduced. Removing it from the completed model reduced both accuracy and F1.
+1. **Provisional retention revealed a useful interaction.** Deck's initial accuracy gain was small and accompanied by an F1 loss. Its contribution became substantially more favorable after TicketGroupSize was introduced.
+2. **Positive contributions depended on the surrounding features.** Family FE01 improved the configuration without Deck but reduced performance when Deck was present. A locally beneficial addition was not necessarily part of the best overall configuration.
+3. **Related representations were not interchangeable.** Fare/TicketGroupSize and TicketGroupSize both contributed to the completed candidate, despite sharing underlying ticket information.
 
-This supports the methodological decision to retain promising or tolerably mixed features provisionally during forward assembly, rather than immediately rejecting every feature with a small secondary-metric loss.
+These findings are consistent with KNN's sensitivity to feature representation: adding or removing features changes distances between observations and can alter which neighbors influence predictions. However, the experiments measured predictive outcomes rather than directly investigating distance geometry, so this remains an explanatory hypothesis.
 
-Family engineering provided another example of context-dependent behavior. FE01 was detrimental when Deck was present but marginally beneficial when Deck was absent. However, the alternative Family representation remained inferior to the complete candidate, demonstrating that a positive conditional contribution does not necessarily justify selecting a feature.
+Overall, KNN demonstrated why Forward Selection and Backward Pruning are complementary. Forward Selection assembled a promising configuration, including a provisionally retained feature, while Backward Pruning confirmed its value and exposed the interaction responsible for its improved contribution.
 
-KNN's sensitivity to these combinations is consistent with its distance-based prediction mechanism. Engineered representations change how observations are positioned relative to one another, potentially improving or degrading the relevance of nearest neighbors.
-
-However, the experiments measure predictive performance rather than directly examining the resulting distance geometry. The observed interactions should therefore be treated as empirical findings, while explanations involving neighborhood structure remain hypotheses.
-
-Unlike Logistic Regression, KNN did not benefit from removing provisionally retained representations during backward pruning. Instead, pruning confirmed that all four selected engineered representations contributed to the completed model.
-
-The final configuration reached 0.834 accuracy and 0.776 F1, making it a meaningful improvement over raw KNN without hyperparameter tuning.
-
-Both Fare/TicketGroupSize and direct TicketGroupSize use full-context semantics. Their benefits therefore depend on the availability and validity of the relevant prediction-population context. The selected configuration should be understood as a context-aware predictive candidate rather than an automatically interchangeable inductive deployment configuration.
-
-Overall, KNN demonstrated that useful feature engineering can arise not only from individual representations but also from their conditional contributions when combined. The Deck × TicketGroupSize interaction was the clearest example, showing why forward assembly and backward pruning can reveal behavior that isolated feature-engineering experiments would miss.
+The final candidate achieved **0.834 accuracy / 0.776 F1**, improving on the raw baseline without hyperparameter tuning.
 
 ### XGBoost (XGB)
 
@@ -4261,7 +3988,7 @@ Direct TicketGroupSize (FE09) was added to the configuration containing Title, A
 
 The full-context combination became the best observed configuration at this stage and was carried into backward pruning.
 
-This result does not establish that full-context TicketGroupSize is universally preferable. The comparison changes the TicketGroupSize semantics used by both Fare CB09 and direct FE09, and the earlier Fare-only experiment had favored fitted semantics.
+This result does not establish that full-context TicketGroupSize is universally preferable. The comparison changes the TicketGroupSize semantics used by both Fare CB09 and FE09, and the earlier Fare-only experiment had favored fitted semantics.
 
 ### Backward pruning
 
@@ -4271,8 +3998,8 @@ Pruning investigated whether the selected representations remained useful once o
 |---|---|---:|---:|
 | FS05 | Full forward-selected configuration | 0.829 | 0.766 |
 | PR01 | Remove Family CB07 | 0.829 | 0.766 |
-| PR02 | Remove direct Title FE05 from PR01 | 0.818 | 0.745 |
-| PR03 | Remove direct Ticket FE09 from FS05 | 0.829 | 0.766 |
+| PR02 | Remove Title FE05 from PR01 | 0.818 | 0.745 |
+| PR03 | Remove Ticket FE09 from FS05 | 0.829 | 0.766 |
 | PR04 | Remove Age CB02 from PR01 | 0.823 | 0.757 |
 | PR05 | Remove Fare CB09 from PR01 | 0.828 | 0.765 |
 | **PR06** | **Add Family CB07 to PR05** | **0.831** | **0.767** |
@@ -4280,7 +4007,7 @@ Pruning investigated whether the selected representations remained useful once o
 
 #### Title and Age remained important
 
-Removing direct Title in PR02 reduced accuracy by **0.011** and F1 by **0.021** relative to PR01.
+Removing Title in PR02 reduced accuracy by **0.011** and F1 by **0.021** relative to PR01.
 
 This occurred even though Age CB02 continued to use Title internally for Age imputation. Title therefore retained useful predictive information when exposed directly to Extra Trees.
 
@@ -4290,7 +4017,7 @@ Both representations were retained.
 
 #### Family, Fare, and Ticket showed conditional redundancy
 
-Removing Family from FS05 produced no measurable change. Removing direct TicketGroupSize while retaining Family and Fare also produced no measurable change.
+Removing Family from FS05 produced no measurable change. Removing TicketGroupSize while retaining Family and Fare also produced no measurable change.
 
 However, removing Fare from the Family-free configuration caused only a small decline, from 0.829 / 0.766 to 0.828 / 0.765. Adding Family back **without Fare** then improved performance to **0.831 / 0.767**.
 
@@ -4298,14 +4025,14 @@ This provides a useful contrast:
 
 | Context | Effect of Family CB07 on accuracy / F1 |
 |---|---|
-| Fare CB09 full-context + direct Ticket FE09 full-context | 0.000 / 0.000 |
-| No Fare CB09 + direct Ticket FE09 full-context | +0.003 / +0.002 |
+| Fare CB09 full-context + Ticket FE09 full-context | 0.000 / 0.000 |
+| No Fare CB09 + Ticket FE09 full-context | +0.003 / +0.002 |
 
 Family was neutral when Fare-derived representations were available, but beneficial when Fare was absent.
 
 This is consistent with **conditional redundancy**: Family and Fare-derived features may supply overlapping information, making Family's measured contribution dependent on the remaining feature set. The experiments demonstrate the performance pattern, rather than proving a specific internal mechanism.
 
-Finally, PR07 removed direct TicketGroupSize from PR06. Performance declined by **0.003 accuracy / 0.002 F1**, confirming a small measured benefit from retaining it in the final selected configuration.
+Finally, PR07 removed TicketGroupSize from PR06. Performance declined by **0.003 accuracy / 0.002 F1**, confirming a small measured benefit from retaining it in the final selected configuration.
 
 ### Final configuration
 
@@ -4404,7 +4131,7 @@ The forward-selection phase started from the raw Decision Tree configuration wit
 
 The ranking differed from earlier isolated Fare experiments, demonstrating that the preferred representation can depend on the features already present.
 
-**Important:** CB06 full-context uses full-context TicketGroupSize internally to derive Fare-related features. Removing direct Ticket FE09 does not remove this dependency while CB06 remains.
+**Important:** CB06 full-context uses full-context TicketGroupSize internally to derive Fare-related features. Removing Ticket FE09 does not remove this dependency while CB06 remains.
 
 #### FS02 — Age
 
@@ -4441,7 +4168,7 @@ Its retention was exploratory, not evidence of an independent performance gain.
 
 **Reference:** Title FE05 + Fare CB06 full-context — accuracy 0.827, F1 0.763.
 
-All FS04 configurations also included Family CB07. The Fare CB06 and direct Ticket FE09 variants used matching TicketGroupSize semantics.
+All FS04 configurations also included Family CB07. The Fare CB06 and Ticket FE09 variants used matching TicketGroupSize semantics.
 
 | Ticket/Fare context | Accuracy | F1 | Δ Accuracy | Δ F1 |
 |---|---:|---:|---:|---:|
@@ -4451,9 +4178,9 @@ All FS04 configurations also included Family CB07. The Fare CB06 and direct Tick
 
 **Decision:** Carry forward the full-context configuration provisionally; reject fitted and batch combinations.
 
-**Interpretation:** Adding Family CB07 and direct Ticket FE09 full-context produced an effectively neutral trade-off relative to FS01.
+**Interpretation:** Adding Family CB07 and Ticket FE09 full-context produced an effectively neutral trade-off relative to FS01.
 
-Fitted and batch configurations performed considerably worse. However, those comparisons changed both the direct Ticket patch and the TicketGroupSize semantics inside Fare CB06, so their losses cannot be attributed solely to direct TicketGroupSize.
+Fitted and batch configurations performed considerably worse. However, those comparisons changed both the Ticket patch and the TicketGroupSize semantics inside Fare CB06, so their losses cannot be attributed solely to TicketGroupSize.
 
 Direct Ticket FE09 was retained temporarily to investigate whether its contribution would change after removing other patches.
 
@@ -4527,13 +4254,13 @@ For comparison, the corresponding configurations retaining Title achieved approx
 
 **Interpretation:** Removing Title caused substantial performance losses in every tested branch.
 
-Neither Fare nor Cabin, separately or together, compensated for the absence of direct Title engineering.
+Neither Fare nor Cabin, separately or together, compensated for the absence of Title engineering.
 
 The Fare-based configuration performed better than the Cabin-only configuration when Title was absent, especially in F1. Nevertheless, both were inferior to their Title-containing counterparts.
 
 **Conclusion:** Retain Title FE05. It was the most consistently valuable engineered representation in Decision Tree feature selection.
 
-#### PR03 — Remove direct Ticket FE09
+#### PR03 — Remove Ticket FE09
 
 The corrected primary PR03 experiments used Cabin FE04. An earlier run accidentally used FE02; those results are preserved separately because they provided a useful Cabin-representation comparison.
 
@@ -4560,7 +4287,7 @@ The corrected Cabin-only and Fare-only branches both achieved 0.827 accuracy and
 
 The earlier FE02-based Cabin branch achieved the same accuracy but slightly higher F1 (0.765).
 
-Crucially, removing both Fare CB06 and direct Ticket FE09 eliminated the full-context TicketGroupSize dependency. Removing FE09 alone did not, because CB06 still used full-context TicketGroupSize internally.
+Crucially, removing both Fare CB06 and Ticket FE09 eliminated the full-context TicketGroupSize dependency. Removing FE09 alone did not, because CB06 still used full-context TicketGroupSize internally.
 
 **Conclusion:** Direct Ticket FE09 was unnecessary for the leading reduced configurations. The inductive Cabin branch became especially attractive because its performance matched the full-context Fare branch.
 
@@ -4581,7 +4308,7 @@ Removing Family CB07 reduced accuracy by 0.001 and F1 by 0.005 with either Cabin
 
 This is notable because Family CB07 had been neutral during forward selection when Fare CB06 was present.
 
-Family became more useful after Fare and direct TicketGroupSize were removed.
+Family became more useful after Fare and TicketGroupSize were removed.
 
 Additionally, Cabin FE02 consistently achieved 0.002 higher F1 than FE04, with equal accuracy, in both Family-containing and Family-removed configurations.
 
@@ -4620,7 +4347,7 @@ The pruning phase revealed several important relationships.
 | Title FE05 | Removing Title caused substantial losses | Consistently useful across tested branches |
 | Fare CB06 ↔ Cabin | Cabin became useful after Fare removal | Conditional redundancy or substitutability |
 | Family CB07 | Neutral with Fare, beneficial in the reduced Cabin branch | Conditional usefulness |
-| Ticket FE09 | Removing direct Ticket preserved competitive performance | Not necessary in the leading configurations |
+| Ticket FE09 | Removing Ticket preserved competitive performance | Not necessary in the leading configurations |
 | Cabin FE02 vs FE04 | FE02 repeatedly gained +0.002 F1 in reduced configurations | Simpler Cabin representation favored |
 | Full-context engineering | Competitive, but unnecessary for the selected configuration | Inductive alternative preferred |
 
