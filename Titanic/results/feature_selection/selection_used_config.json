@@ -16211,5 +16211,267 @@
       "Title",
       "Pclass"
     ]
+  },
+  "fs06__age_fe06_with_fe08_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "age_imputer_title",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "age_fe06_with_fe08_fitted",
+    "group": "fs06__age_fe06_with_fe08_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe06, age imputation features.",
+    "name": "fs06__age_fe06_with_fe08_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/FamilySize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass"
+    ]
+  },
+  "fs06__age_cb01_with_fe08_fitted__xgb": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch",
+        "TicketGroupSize",
+        "Fare/FamilySize"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "ticket_group_size_fitted",
+        {
+          "class": "FittedValueCountTransformer",
+          "params": {
+            "count_missing": false,
+            "missing_value": 1,
+            "output_col": "TicketGroupSize",
+            "source_col": "Ticket",
+            "unseen_value": 1
+          }
+        }
+      ],
+      [
+        "family_size",
+        {
+          "class": "SumColumnsTransformer",
+          "params": {
+            "constant": 1,
+            "output_col": "FamilySize",
+            "source_cols": [
+              "SibSp",
+              "Parch"
+            ]
+          }
+        }
+      ],
+      [
+        "fare_per_familysize",
+        {
+          "class": "FeatureDividedByFeatureTransformer",
+          "params": {
+            "denominator_col": "FamilySize",
+            "numerator_col": "Fare",
+            "output_col": "Fare/FamilySize"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "fs06",
+    "feature_group": "age_cb01_with_fe08_fitted",
+    "group": "fs06__age_cb01_with_fe08_fitted",
+    "domain": "xgb",
+    "tags": [],
+    "model_name": "xgb",
+    "model_params": {
+      "n_estimators": 200,
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "subsample": 0.8,
+      "colsample_bytree": 0.8,
+      "random_state": 42,
+      "eval_metric": "logloss"
+    },
+    "notes": "Experiment 03 for XGB feature selection.adding fe06, age imputation features.",
+    "name": "fs06__age_cb01_with_fe08_fitted__xgb",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "TicketGroupSize",
+      "Fare/FamilySize",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Pclass",
+      "Age_bin"
+    ]
   }
 }

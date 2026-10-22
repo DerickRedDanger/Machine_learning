@@ -1545,7 +1545,7 @@ fs04__ticket_family_features_fitted__xgb = create_config(
 
 ALL_FS_CONFIGS['fs04__ticket_family_features_fitted__xgb'] = config_to_group(fs04__ticket_family_features_fitted__xgb)
 XGB_FS_CONFIGS['fs04__ticket_family_features_fitted__xgb'] = config_to_group(fs04__ticket_family_features_fitted__xgb)
-#0/+0.002
+#0/+0.002 against baseline
 
 fs04__ticket_family_features_full_contest__xgb=create_config(
     base_config=baseline_config['xgb__raw'],
@@ -1565,7 +1565,7 @@ fs04__ticket_family_features_full_contest__xgb=create_config(
 
 ALL_FS_CONFIGS['fs04__ticket_family_features_full_contest__xgb'] = config_to_group(fs04__ticket_family_features_full_contest__xgb)
 XGB_FS_CONFIGS['fs04__ticket_family_features_full_contest__xgb'] = config_to_group(fs04__ticket_family_features_full_contest__xgb)
-# -0.007/-0.004
+# -0.007/-0.004 against baseline
 
 # Neither were positive, so they weren't carried over
 
@@ -1588,7 +1588,7 @@ fs05__fare_cb05_fitted__xgb = create_config(
 
 ALL_FS_CONFIGS['fs05__fare_cb05_fitted__xgb'] = config_to_group(fs05__fare_cb05_fitted__xgb)
 XGB_FS_CONFIGS['fs05__fare_cb05_fitted__xgb'] = config_to_group(fs05__fare_cb05_fitted__xgb)
-# -0.013/-0.013
+# -0.013/-0.013 against baseline
 
 fs05__fare_cb05_full_context__xgb = create_config(
     base_config=baseline_config['xgb__raw'],
@@ -1608,7 +1608,7 @@ fs05__fare_cb05_full_context__xgb = create_config(
 
 ALL_FS_CONFIGS['fs05__fare_cb05_full_context__xgb'] = config_to_group(fs05__fare_cb05_full_context__xgb)
 XGB_FS_CONFIGS['fs05__fare_cb05_full_context__xgb'] = config_to_group(fs05__fare_cb05_full_context__xgb)
-# -0.002/+0.003
+# -0.002/+0.003 against baseline
 
 fs05__fare_fe08_fitted__xgb = create_config(
     base_config=baseline_config['xgb__raw'],
@@ -1628,7 +1628,7 @@ fs05__fare_fe08_fitted__xgb = create_config(
 
 ALL_FS_CONFIGS['fs05__fare_fe08_fitted__xgb'] = config_to_group(fs05__fare_fe08_fitted__xgb)
 XGB_FS_CONFIGS['fs05__fare_fe08_fitted__xgb'] = config_to_group(fs05__fare_fe08_fitted__xgb)
-# +0.001/+0.003
+# +0.001/+0.003 against baseline
 
 fs05__fare_fe08_full_context__xgb = create_config(
     base_config=baseline_config['xgb__raw'],
@@ -1648,7 +1648,7 @@ fs05__fare_fe08_full_context__xgb = create_config(
 
 ALL_FS_CONFIGS['fs05__fare_fe08_full_context__xgb'] = config_to_group(fs05__fare_fe08_full_context__xgb)
 XGB_FS_CONFIGS['fs05__fare_fe08_full_context__xgb'] = config_to_group(fs05__fare_fe08_full_context__xgb)
-# -0.002/+0.001
+# -0.002/+0.001 against baseline
 
 fs05__fare_fe10_fitted__xgb = create_config(
     base_config=baseline_config['xgb__raw'],
@@ -1668,7 +1668,7 @@ fs05__fare_fe10_fitted__xgb = create_config(
 
 ALL_FS_CONFIGS['fs05__fare_fe10_fitted__xgb'] = config_to_group(fs05__fare_fe10_fitted__xgb)
 XGB_FS_CONFIGS['fs05__fare_fe10_fitted__xgb'] = config_to_group(fs05__fare_fe10_fitted__xgb)
-# 0/+0.002
+# 0/+0.002 against baseline
 
 fs05__fare_fe10_full_context__xgb = create_config(
     base_config=baseline_config['xgb__raw'],
@@ -1688,7 +1688,7 @@ fs05__fare_fe10_full_context__xgb = create_config(
 
 ALL_FS_CONFIGS['fs05__fare_fe10_full_context__xgb'] = config_to_group(fs05__fare_fe10_full_context__xgb)
 XGB_FS_CONFIGS['fs05__fare_fe10_full_context__xgb'] = config_to_group(fs05__fare_fe10_full_context__xgb)
-# -0.005/ -0.003
+# -0.005/ -0.003 against baseline
 
 # None of the results were compeling when compared to fe03 with it's +0.001/0.002 and 0/+0.005
 # fare fe08 fitted did achieve a 0/+0.001 on top of fe03 fitted, but that gain didnt felt worth carring foward
@@ -1728,12 +1728,52 @@ fs06__age_cb01_fitted__xgb = create_config(
     feature_group='age_cb01_fitted',
     domain='xgb',
     notes=('Experiment 03 for XGB feature selection.'
-           'adding fe06, age imputation features.')
+           'adding cb01, age imputation features.')
 )
 
 ALL_FS_CONFIGS['fs06__age_cb01_fitted__xgb'] = config_to_group(fs06__age_cb01_fitted__xgb)
 XGB_FS_CONFIGS['fs06__age_cb01_fitted__xgb'] = config_to_group(fs06__age_cb01_fitted__xgb)
 # +0.001/+0.002
+
+fs06__age_fe06_with_fe08_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['fe08__fare_per_family_member_patch'],
+        ALL_PATCHES['fe06__age_imputation_title_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='age_fe06_with_fe08_fitted',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding fe06 and fe08.')
+)
+
+ALL_FS_CONFIGS['fs06__age_fe06_with_fe08_fitted__xgb'] = config_to_group(fs06__age_fe06_with_fe08_fitted__xgb)
+XGB_FS_CONFIGS['fs06__age_fe06_with_fe08_fitted__xgb'] = config_to_group(fs06__age_fe06_with_fe08_fitted__xgb)
+# -0.001/0
+
+fs06__age_cb01_with_fe08_fitted__xgb = create_config(
+    base_config=baseline_config['xgb__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['fe09__ticket_group_size_fitted_patch'],
+        ALL_PATCHES['fe08__fare_per_family_member_patch'],
+        ALL_PATCHES['cb01__age_and_bins_patch'],
+    ],
+    raw_features=RAW_FEATURES,
+    stage='fs06',
+    feature_group='age_cb01_with_fe08_fitted',
+    domain='xgb',
+    notes=('Experiment 03 for XGB feature selection.'
+           'adding cb01 and fe08.')
+)
+
+ALL_FS_CONFIGS['fs06__age_cb01_with_fe08_fitted__xgb'] = config_to_group(fs06__age_cb01_with_fe08_fitted__xgb)
+XGB_FS_CONFIGS['fs06__age_cb01_with_fe08_fitted__xgb'] = config_to_group(fs06__age_cb01_with_fe08_fitted__xgb)
+# -0.004/-0.005
 
 # cb01 was the one chosen to be carried over
 
@@ -1786,8 +1826,11 @@ prsc__age_cb01_full_context__xgb = create_config(
     stage='prsc',
     feature_group='age_cb01_full_context',
     domain='xgb',
-    notes=('Experiment 03 for XGB feature selection.'
-           'adding fe06, age imputation features.'),
+    notes=(
+        "XGB backward pruning: compare FE09 full-context "
+        "against the selected fitted configuration, "
+        "retaining FE05 Title and CB01 Age."
+    )
     pre_cv_scope="full_prediction_context"
 )
 
@@ -1858,7 +1901,7 @@ ALL_FS_CONFIGS['fs01__age_cb03__extra_trees'] = config_to_group(fs01__age_cb03__
 EXTRA_TREES_FS_CONFIGS['fs01__age_cb03__extra_trees'] = config_to_group(fs01__age_cb03__extra_trees)
 # +0.002/+0.002
 
-# Since cb02 was originally the best result, it will be the one carried foward, while cb02 will remain as alternative
+# Since cb02 was originally the best result, it will be the one carried foward, while cb03 will remain as alternative
 
 # fs02 - fare - Extra Trees
 
