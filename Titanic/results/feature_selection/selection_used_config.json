@@ -12611,7 +12611,7 @@
       "random_state": 42,
       "n_jobs": -1
     },
-    "notes": "Experiment 06 for Extra Trees backward pruning.removing both cb09 and cb07.",
+    "notes": "Experiment 06 for Extra Trees backward pruning.removing cb09 and adding cb07.",
     "name": "pr06__removing_fare_adding_family_patch__extra_trees",
     "features": [
       "Age",

@@ -1830,7 +1830,7 @@ prsc__age_cb01_full_context__xgb = create_config(
         "XGB backward pruning: compare FE09 full-context "
         "against the selected fitted configuration, "
         "retaining FE05 Title and CB01 Age."
-    )
+    ),
     pre_cv_scope="full_prediction_context"
 )
 
