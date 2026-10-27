@@ -2513,7 +2513,7 @@ fs05__cabin_fe02__decision_tree = create_config(
         ALL_PATCHES['fe02__has_cabin_patch']
     ],
     raw_features=RAW_FEATURES,
-    stage='fs02',
+    stage='fs05',
     feature_group='cabin_fe02',
     domain='decision_tree',
     notes=('Experiment 05 for Decision Tree feature selection.'
@@ -2652,8 +2652,28 @@ pr03__removing_fe09__decision_tree = create_config(
 ALL_FS_CONFIGS['pr03__removing_fe09__decision_tree'] = config_to_group(pr03__removing_fe09__decision_tree)
 DECISION_TREE_FS_CONFIGS['pr03__removing_fe09__decision_tree'] = config_to_group(pr03__removing_fe09__decision_tree)
 #-0.001/-0.003
-#fe02 0/-0.002
 
+
+pr03__removing_fe09_using_fe02__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb06__all_fare_features_full_context_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe02__has_cabin_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_fe09_using_fe02',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree backward pruning.'
+           'removing fe09, switching fe04 for fe02.'),
+    pre_cv_scope="full_prediction_context"
+)
+
+ALL_FS_CONFIGS['pr03__removing_fe09_using_fe02__decision_tree'] = config_to_group(pr03__removing_fe09_using_fe02__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr03__removing_fe09_using_fe02__decision_tree'] = config_to_group(pr03__removing_fe09_using_fe02__decision_tree)
+# 0/-0.002
 
 pr03__removing_fe09_cb06__decision_tree = create_config(
     base_config=baseline_config['decision_tree__raw'],
@@ -2673,7 +2693,25 @@ pr03__removing_fe09_cb06__decision_tree = create_config(
 ALL_FS_CONFIGS['pr03__removing_fe09_cb06__decision_tree'] = config_to_group(pr03__removing_fe09_cb06__decision_tree)
 DECISION_TREE_FS_CONFIGS['pr03__removing_fe09_cb06__decision_tree'] = config_to_group(pr03__removing_fe09_cb06__decision_tree)
 # +0.001/-0.001
-#fe02 +0.001/+0.001
+
+pr03__removing_fe09_cb06_using_fe02__decision_tree = create_config(
+    base_config=baseline_config['decision_tree__raw'],
+    patches = [
+        ALL_PATCHES['fe05__title_patch'],
+        ALL_PATCHES['cb07__family_features_patch'],
+        ALL_PATCHES['fe02__has_cabin_patch']
+    ],
+    raw_features=RAW_FEATURES,
+    stage='pr03',
+    feature_group='removing_fe09_cb06_using_fe02',
+    domain='decision_tree',
+    notes=('Experiment 03 for Decision Tree backward pruning.'
+           'removing fe09 and cb06, using fe02 instead of fe04.'),
+)
+
+ALL_FS_CONFIGS['pr03__removing_fe09_cb06_using_fe02__decision_tree'] = config_to_group(pr03__removing_fe09_cb06_using_fe02__decision_tree)
+DECISION_TREE_FS_CONFIGS['pr03__removing_fe09_cb06_using_fe02__decision_tree'] = config_to_group(pr03__removing_fe09_cb06_using_fe02__decision_tree)
+# +0.001/+0.001
 
 pr03__removing_fe09_fe04__decision_tree = create_config(
     base_config=baseline_config['decision_tree__raw'],
@@ -2746,3 +2784,4 @@ pr05__removing_fe02__decision_tree = create_config(
 )
 ALL_FS_CONFIGS['pr05__removing_fe02__decision_tree'] = config_to_group(pr05__removing_fe02__decision_tree)
 DECISION_TREE_FS_CONFIGS['pr05__removing_fe02__decision_tree'] = config_to_group(pr05__removing_fe02__decision_tree)
+# -0.003/-0.004

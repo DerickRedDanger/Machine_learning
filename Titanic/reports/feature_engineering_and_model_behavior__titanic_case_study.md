@@ -4275,318 +4275,349 @@ The main lesson was that Backward Pruning can reveal better feature combinations
 
 ## Decision Tree — Feature Selection
 
-### Overview
+### Starting Point
 
-**Objective:** Identify a feature configuration that improves Decision Tree classification performance while minimizing unnecessary feature engineering and inference complexity.
+Decision Tree started from a raw baseline of **0.803 accuracy / 0.702 F1**.
 
-**Selection criteria:**
-- Primary metric: Cross-validation accuracy.
-- Secondary metric: Cross-validation F1.
-- Prefer simpler, inductive configurations when performance is comparable.
-- Retain neutral features provisionally when there is a specific interaction worth investigating.
+FE05 Title improved performance to **0.823 accuracy / 0.756 F1**, representing gains of +0.020 accuracy and +0.054 F1 over the raw baseline.
 
-### Baseline and final results
+Title was therefore selected as the starting configuration for Forward Selection. Its substantial improvement, particularly in F1, provided a stronger reference for evaluating additional representations.
 
 | Configuration | Accuracy | F1 |
 |---|---:|---:|
 | Raw baseline | 0.803 | 0.702 |
-| FS baseline — Title FE05 | 0.823 | 0.756 |
-| **Final — Title FE05 + Family CB07 + Cabin FE02** | **0.827** | **0.765** |
+| **FS baseline — FE05 Title** | **0.823** | **0.756** |
+| Improvement | +0.020 | +0.054 |
 
-**Improvement over raw baseline:** +0.024 accuracy and +0.063 F1.
+### Forward Selection
 
-**Improvement over Title baseline:** +0.004 accuracy and +0.009 F1.
+Starting from FE05 Title, Forward Selection evaluated Fare, Age, Family, Ticket, and Cabin representations sequentially.
 
-The final configuration preserves the highest reported accuracy among the leading candidates while achieving the best reported F1 of the selected configurations. It also avoids the full-prediction-context dependency introduced by some Fare and TicketGroupSize patches.
+| Stage | Representative experiment | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| Baseline | FE05 Title | 0.823 | 0.756 | — | — | Starting point |
+| FS01 | CB06 Fare — full-context | 0.827 | 0.763 | +0.004 | +0.007 | Retain |
+| FS02 | CB02 Age — Title imputation + bins | 0.826 | 0.757 | −0.001 | −0.006 | Reject |
+| FS03 | CB07 Family | 0.827 | 0.763 | 0.000 | 0.000 | Retain provisionally |
+| FS04 | FE09 TicketGroupSize — full-context | 0.826 | 0.764 | −0.001 | +0.001 | Retain provisionally |
+| FS05 | FE04 Cabin features | 0.826 | 0.764 | 0.000 | 0.000 | Retain provisionally |
 
----
+*Deltas compare each experiment against the configuration carried into its stage. FS02's rejected Age representation was not included in FS03 or later stages.*
 
-### Forward selection
+**FS01 — Fare**
 
-The forward-selection phase started from the raw Decision Tree configuration with Title FE05 added. Each domain was explored incrementally, carrying forward promising or potentially informative representations.
+Three CB06 Fare representations were tested:
 
-#### FS01 — Fare
+| Representation | Δ Accuracy | Δ F1 |
+|---|---:|---:|
+| CB06 fitted | −0.003 | +0.005 |
+| CB06 batch | −0.003 | +0.004 |
+| **CB06 full-context** | **+0.004** | **+0.007** |
 
-**Reference:** Title FE05 — accuracy 0.823, F1 0.756.
+Only the full-context representation improved both metrics, reaching **0.827 accuracy / 0.763 F1**.
 
-| Fare patch | Accuracy | F1 | Δ Accuracy | Δ F1 |
-|---|---:|---:|---:|---:|
-| CB06 fitted | 0.820 | 0.761 | -0.003 | +0.005 |
-| CB06 batch | 0.820 | 0.760 | -0.003 | +0.004 |
-| **CB06 full-context** | **0.827** | **0.763** | **+0.004** | **+0.007** |
+CB06 full-context was selected and carried forward. Its improvement suggested that Decision Tree could benefit from the additional Fare representations, although the observed advantage depended on the preprocessing semantics.
 
-**Decision:** Carry forward Fare CB06 full-context.
+**FS02 — Age**
 
-**Interpretation:** Fare engineering improved performance when its TicketGroupSize-dependent features used full prediction context. Fitted and batch variants improved F1 but reduced accuracy.
+Three Age alternatives were evaluated on top of Title and CB06 Fare full-context:
 
-The ranking differed from earlier isolated Fare experiments, demonstrating that the preferred representation can depend on the features already present.
+| Representation | Δ Accuracy | Δ F1 |
+|---|---:|---:|
+| FE11 — Age bins | −0.008 | −0.010 |
+| FE06 — Title-based Age imputation | −0.001 | −0.006 |
+| CB02 — Title-based imputation + bins | −0.001 | −0.006 |
 
-**Important:** CB06 full-context uses full-context TicketGroupSize internally to derive Fare-related features. Removing Ticket FE09 does not remove this dependency while CB06 remains.
+All three reduced performance relative to FS01.
 
-#### FS02 — Age
+Neither Age binning nor Title-based imputation provided an improvement in this configuration. No Age patch was carried forward, and FS03 continued from the Title + CB06 Fare candidate.
 
-**Reference:** Title FE05 + Fare CB06 full-context — accuracy 0.827, F1 0.763.
+**FS03 — Family**
 
-| Age patch | Accuracy | F1 | Δ Accuracy | Δ F1 |
-|---|---:|---:|---:|---:|
-| FE11 — Age bins | 0.819 | 0.753 | -0.008 | -0.010 |
-| FE06 — Title-based Age imputation | 0.826 | 0.757 | -0.001 | -0.006 |
-| CB02 — Title-imputed Age + bins | 0.826 | 0.757 | -0.001 | -0.006 |
+CB07 Family and FE01 Family were both tested, producing identical results: **0.827 accuracy / 0.763 F1**, with no change from FS01.
 
-**Decision:** Reject additional Age engineering.
+CB07 was retained provisionally because it provided a broader set of Family representations that could potentially interact with later features.
 
-**Interpretation:** None of the tested Age representations improved upon the current configuration. Raw Age remained available through the baseline features.
+This was an exploratory decision rather than evidence that the additional Family features were already beneficial.
 
-Although Age engineering showed promise in earlier isolated experiments, that benefit did not carry over to the selected Title + Fare configuration.
+**FS04 — Ticket**
 
-#### FS03 — Family
+FE09 TicketGroupSize was evaluated using three preprocessing semantics.
 
-**Reference:** Title FE05 + Fare CB06 full-context — accuracy 0.827, F1 0.763.
+| Configuration | Δ Accuracy | Δ F1 |
+|---|---:|---:|
+| FE09 fitted + CB06 fitted | −0.014 | −0.009 |
+| FE09 batch + CB06 batch | −0.014 | −0.010 |
+| **FE09 full-context + CB06 full-context** | **−0.001** | **+0.001** |
 
-| Family patch | Accuracy | F1 | Δ Accuracy | Δ F1 |
-|---|---:|---:|---:|---:|
-| CB07 — Raw family features + FamilySize + IsAlone | 0.827 | 0.763 | 0 | 0 |
-| FE01 — FamilySize + IsAlone replacing SibSp/Parch | 0.827 | 0.763 | 0 | 0 |
+The full-context configuration reached **0.826 accuracy / 0.764 F1**, representing a small accuracy decrease and F1 improvement relative to FS03.
 
-**Decision:** Carry forward CB07 provisionally.
+The fitted and batch alternatives performed substantially worse. However, these configurations also changed CB06 Fare's preprocessing semantics, so their differences cannot be attributed solely to TicketGroupSize.
 
-**Interpretation:** Both Family representations were neutral at the reported precision. CB07 was retained because it preserves the original SibSp and Parch information alongside the engineered features, allowing further investigation of interactions with TicketGroupSize.
+FE09 full-context was retained provisionally to investigate possible interactions with Cabin, but its limited contribution made it a priority for Backward Pruning.
 
-Its retention was exploratory, not evidence of an independent performance gain.
+**FS05 — Cabin**
 
-#### FS04 — Ticket
+Two Cabin representations were tested on top of Title, CB06 Fare, CB07 Family, and FE09 TicketGroupSize:
 
-**Reference:** Title FE05 + Fare CB06 full-context — accuracy 0.827, F1 0.763.
+| Representation | Δ Accuracy | Δ F1 |
+|---|---:|---:|
+| FE04 — Cabin features | 0.000 | 0.000 |
+| FE02 — HasCabin | 0.000 | 0.000 |
 
-All FS04 configurations also included Family CB07. The Fare CB06 and Ticket FE09 variants used matching TicketGroupSize semantics.
+Neither representation changed performance relative to FS04.
 
-| Ticket/Fare context | Accuracy | F1 | Δ Accuracy | Δ F1 |
-|---|---:|---:|---:|---:|
-| Full-context | 0.826 | 0.764 | -0.001 | +0.001 |
-| Fitted | 0.813 | 0.754 | -0.014 | -0.009 |
-| Batch | 0.813 | 0.753 | -0.014 | -0.010 |
+FE04 was carried into Backward Pruning provisionally, while FE02 remained an alternative for subsequent testing.
 
-**Decision:** Carry forward the full-context configuration provisionally; reject fitted and batch combinations.
+As with Family, retaining Cabin was exploratory: the objective was to determine whether it contributed useful interactions or could be simplified during pruning.
 
-**Interpretation:** Adding Family CB07 and Ticket FE09 full-context produced an effectively neutral trade-off relative to FS01.
+**Forward Selection outcome**
 
-Fitted and batch configurations performed considerably worse. However, those comparisons changed both the Ticket patch and the TicketGroupSize semantics inside Fare CB06, so their losses cannot be attributed solely to TicketGroupSize.
+The completed forward candidate combined:
 
-Direct Ticket FE09 was retained temporarily to investigate whether its contribution would change after removing other patches.
+- FE05 — Title
+- CB06 — Fare features, full-context
+- CB07 — Family features
+- FE09 — TicketGroupSize, full-context
+- FE04 — Cabin features
+- Remaining raw predictors, except where explicitly modified or replaced
 
-#### FS05 — Cabin
+It achieved **0.826 accuracy / 0.764 F1**, improving upon the Title baseline by +0.003 accuracy and +0.008 F1.
 
-**Reference:** FS04 — Title FE05 + Fare CB06 full-context + Family CB07 + Ticket FE09 full-context; accuracy 0.826, F1 0.764.
+Although CB06 Fare produced the clearest improvement, several subsequent additions were neutral or mixed. Consequently, the forward candidate contained representations whose individual contributions had not been established.
 
-| Cabin patch | Accuracy | F1 | Δ Accuracy | Δ F1 |
-|---|---:|---:|---:|---:|
-| FE04 — Cabin features | 0.826 | 0.764 | 0 | 0 |
-| FE02 — HasCabin | 0.826 | 0.764 | 0 | 0 |
-
-**Decision:** Carry forward Cabin FE04 provisionally.
-
-**Interpretation:** Both Cabin representations were neutral in the complete forward-selected configuration.
-
-FE04 was initially retained to explore whether the broader Cabin representation would become useful when other feature groups were removed.
-
-### Forward-selection conclusion
-
-The best accuracy observed during forward selection was **0.827**, achieved by Title FE05 + Fare CB06 full-context at FS01.
-
-Later additions of Family, Ticket, and Cabin did not produce a convincing improvement over that result.
-
-However, their neutral behavior did not establish that they were universally unnecessary. Backward pruning was used to investigate whether overlapping representations were concealing useful contributions.
+Backward Pruning would therefore focus on identifying which representations were necessary, whether simpler alternatives performed as well or better, and whether the full-context dependency could be eliminated without sacrificing performance.
 
 ---
 
-### Backward pruning
+### Backward Pruning
 
-**Starting configuration:** Title FE05 + Fare CB06 full-context + Family CB07 + Ticket FE09 full-context + Cabin FE04.
+Backward Pruning started from the completed Forward Selection candidate:
 
-This configuration achieved 0.826 accuracy and 0.764 F1, identical to FS04 at the reported precision.
+**FE05 Title + CB06 Fare full-context + CB07 Family + FE09 TicketGroupSize full-context + FE04 Cabin**, achieving **0.826 accuracy / 0.764 F1**.
 
-All pruning results below were originally reported against FS04. The interpretations additionally compare configurations that differ by specific patches, where such comparisons are available.
+The initial objective was to remove unnecessary representations while preserving performance. However, early experiments revealed that Fare and Cabin might provide partly overlapping information, leading to the investigation of two alternative configurations.
 
-#### PR01 — Remove Fare CB06
+Consequently, **PR01–PR03 explored competing feature combinations**, while **PR04–PR05 returned to targeted pruning** after selecting a promising inductive candidate.
 
-| Retained engineered patches | Accuracy | F1 |
+| Stage | Representative experiment | Accuracy | F1 | Δ Accuracy | Δ F1 | Decision |
+|---|---|---:|---:|---:|---:|---|
+| FS05 | Forward candidate | 0.826 | 0.764 | — | — | Reference |
+| PR01 | Remove CB06 Fare, retain FE04 | 0.827 | 0.763 | +0.001 | −0.001 | Explore both branches |
+| PR02 | Remove FE05 Title | 0.809 | 0.735 | −0.017 | −0.029 | Retain Title |
+| PR03 | Remove CB06 + FE09, use FE02 | 0.827 | 0.765 | +0.001 | +0.001 | Select new candidate |
+| PR04 | Remove CB07 Family from PR03 candidate | 0.826 | 0.760 | −0.001 | −0.005 | Retain Family |
+| PR05 | Remove FE02 HasCabin from PR03 candidate | 0.824 | 0.761 | −0.003 | −0.004 | Retain Cabin |
+
+*PR01–PR03 are compared against FS05. PR04–PR05 are compared against the selected PR03 configuration, Title + Family CB07 + Cabin FE02.*
+
+**PR01 — Fare and Cabin: Two Competing Branches**
+
+Removing CB06 Fare while retaining FE04 Cabin produced **0.827 accuracy / 0.763 F1**, nearly matching the original candidate.
+
+However, removing both Fare and Cabin reduced performance to **0.820 / 0.757**.
+
+| Configuration | Accuracy | F1 |
 |---|---:|---:|
 | Title + Fare CB06 + Family + Ticket + Cabin FE04 | 0.826 | 0.764 |
-| Title + Family + Ticket + Cabin FE04 | **0.827** | 0.763 |
-| Title + Family + Ticket (without Fare or Cabin) | 0.820 | 0.757 |
+| Title + Fare CB06 + Family + Ticket, without Cabin | 0.826 | 0.764 |
+| Title + Family + Ticket + Cabin FE04, without Fare | 0.827 | 0.763 |
+| Title + Family + Ticket, without Fare or Cabin | 0.820 | 0.757 |
 
-**Interpretation:**
+These comparisons revealed a conditional relationship:
 
-Removing Fare CB06 while retaining Cabin FE04 preserved accuracy and F1 approximately.
-
-However, removing both Fare CB06 and Cabin FE04 caused a larger decline.
-
-The results revealed conditional usefulness:
-
-- With Fare present, Cabin FE04 had no measured benefit.
-- Without Fare, Cabin FE04 improved accuracy by 0.007 and F1 by 0.006.
-- With Cabin present, removing Fare changed accuracy by +0.001 and F1 by -0.001.
+- With Fare present, removing Cabin did not change either metric.
+- With Cabin present, removing Fare produced a small accuracy gain and F1 decline.
 - Without Cabin, removing Fare reduced accuracy by 0.006 and F1 by 0.007.
 
-**Conclusion:** Fare CB06 and Cabin FE04 appeared partially substitutable in this configuration. Their combined use offered no measurable advantage over retaining either representation alone.
+This suggested that CB06 Fare and FE04 Cabin provided partly substitutable information in the tested configurations.
 
-This justified exploring separate Fare-based and Cabin-based pruning branches.
+However, the differences were small, and neither branch was clearly superior.
 
-#### PR02 — Remove Title FE05
+Rather than immediately discarding Fare, **both the Fare-based and Cabin-based branches were retained for further investigation**, particularly to determine whether subsequent feature removals would favor one.
 
-| Retained engineered patches | Accuracy | F1 |
+**PR02 — Title: Testing Its Importance Across Branches**
+
+PR02 removed FE05 Title from multiple configurations, both to measure its contribution and to investigate whether its absence would clarify the choice between Fare and Cabin.
+
+| Configuration without Title | Accuracy | F1 |
 |---|---:|---:|
 | Fare CB06 + Family + Ticket + Cabin FE04 | 0.809 | 0.735 |
 | Fare CB06 + Family + Ticket | 0.809 | 0.735 |
 | Family + Ticket + Cabin FE04 | 0.806 | 0.715 |
 
-For comparison, the corresponding configurations retaining Title achieved approximately 0.826–0.827 accuracy and 0.763–0.764 F1.
+All configurations suffered substantial declines compared with their Title-containing counterparts.
 
-**Interpretation:** Removing Title caused substantial performance losses in every tested branch.
+Removing Title from FS05 reduced accuracy by 0.017 and F1 by 0.029. Removing Title alongside Fare caused an even larger decline of 0.020 accuracy and 0.049 F1.
 
-Neither Fare nor Cabin, separately or together, compensated for the absence of Title engineering.
+Although the Fare-based configuration performed better than the Cabin-only configuration without Title, the difference was not compelling enough to favor either branch. Neither configuration performed sufficiently well to justify removing Title.
 
-The Fare-based configuration performed better than the Cabin-only configuration when Title was absent, especially in F1. Nevertheless, both were inferior to their Title-containing counterparts.
+Therefore, **PR02 confirmed that Title should be retained but did not resolve the Fare-versus-Cabin decision**.
 
-**Conclusion:** Retain Title FE05. It was the most consistently valuable engineered representation in Decision Tree feature selection.
+Both branches remained under consideration.
 
-#### PR03 — Remove Ticket FE09
+**PR03 — Ticket Removal and the FE02 Discovery**
 
-The corrected primary PR03 experiments used Cabin FE04. An earlier run accidentally used FE02; those results are preserved separately because they provided a useful Cabin-representation comparison.
+PR03 continued investigating the competing branches while removing FE09 TicketGroupSize.
 
-**Corrected PR03 results:**
+The corrected experiments using FE04 Cabin produced:
 
-| Retained engineered patches | Accuracy | F1 | Full-context dependency |
+| Configuration | Accuracy | F1 | Full-context required |
 |---|---:|---:|---|
 | Title + Fare CB06 + Family + Cabin FE04 | 0.825 | 0.761 | Yes |
-| Title + Family + Cabin FE04 | **0.827** | **0.763** | No |
-| Title + Fare CB06 + Family | **0.827** | **0.763** | Yes |
+| Title + Family + Cabin FE04 | 0.827 | 0.763 | No |
+| Title + Fare CB06 + Family | 0.827 | 0.763 | Yes |
 
-**Earlier FE02 comparison:**
+Removing TicketGroupSize did not reveal a clear performance winner between the Fare and Cabin branches.
 
-| Retained engineered patches | Accuracy | F1 |
+Both leading configurations achieved **0.827 accuracy / 0.763 F1**. However, the Cabin-based configuration no longer required full-context preprocessing, whereas CB06 Fare continued using TicketGroupSize information indirectly.
+
+This made the Cabin branch more attractive from an inference and deployment perspective, even before considering further improvements.
+
+**Accidental FE02 substitution**
+
+During the initial PR03 experiments, FE02 HasCabin was accidentally used instead of FE04 Cabin features.
+
+After identifying and correcting the mistake, the original FE02 results were preserved and compared against the intended FE04 configurations.
+
+| Configuration | FE04 Accuracy | FE04 F1 | FE02 Accuracy | FE02 F1 |
+|---|---:|---:|---:|---:|
+| Title + Fare CB06 + Family, without FE09 | 0.825 | 0.761 | 0.826 | 0.762 |
+| Title + Family, without Fare or FE09 | 0.827 | 0.763 | 0.827 | **0.765** |
+
+The accidental substitution revealed that FE02 performed slightly better than FE04 in both tested combinations. Although the leading accuracy remained unchanged, FE02's combination of higher F1, simpler Cabin engineering, and independence from full-context preprocessing favored its selection as the main candidate for further pruning.
+
+Therefore, the new candidate selected for further pruning was:
+
+**FE05 Title + CB07 Family + FE02 HasCabin — 0.827 accuracy / 0.765 F1.**
+
+**PR04 — Family**
+
+With the new candidate established, PR04 returned to targeted feature removal, testing whether CB07 Family remained beneficial.
+
+Both Cabin representations were examined to verify that the result did not depend solely on the choice of FE02.
+
+| Configuration | Accuracy | F1 |
 |---|---:|---:|
-| Title + Fare CB06 + Family + Cabin FE02 | 0.826 | 0.762 |
-| Title + Family + Cabin FE02 | **0.827** | **0.765** |
-
-**Interpretation:**
-
-Direct Ticket FE09 was not necessary to maintain competitive performance in the reduced configurations.
-
-The corrected Cabin-only and Fare-only branches both achieved 0.827 accuracy and 0.763 F1.
-
-The earlier FE02-based Cabin branch achieved the same accuracy but slightly higher F1 (0.765).
-
-Crucially, removing both Fare CB06 and Ticket FE09 eliminated the full-context TicketGroupSize dependency. Removing FE09 alone did not, because CB06 still used full-context TicketGroupSize internally.
-
-**Conclusion:** Direct Ticket FE09 was unnecessary for the leading reduced configurations. The inductive Cabin branch became especially attractive because its performance matched the full-context Fare branch.
-
-#### PR04 — Remove Family CB07
-
-The leading inductive Cabin branch was tested with Family removed, using both Cabin representations.
-
-| Retained engineered patches | Accuracy | F1 |
-|---|---:|---:|
-| Title + Family CB07 + Cabin FE04 | **0.827** | **0.763** |
+| Title + Family CB07 + Cabin FE04 | 0.827 | 0.763 |
 | Title + Cabin FE04 | 0.826 | 0.758 |
-| Title + Family CB07 + Cabin FE02 | **0.827** | **0.765** |
+| **Title + Family CB07 + Cabin FE02** | **0.827** | **0.765** |
 | Title + Cabin FE02 | 0.826 | 0.760 |
 
-**Interpretation:**
+Removing Family reduced accuracy by 0.001 and F1 by 0.005 with either Cabin representation.
 
-Removing Family CB07 reduced accuracy by 0.001 and F1 by 0.005 with either Cabin representation.
+This was notable because CB07 Family had been neutral during Forward Selection while CB06 Fare was present.
 
-This is notable because Family CB07 had been neutral during forward selection when Fare CB06 was present.
+The results suggested that **Family became more useful after Fare and TicketGroupSize were removed**, providing further evidence of conditional feature contributions.
 
-Family became more useful after Fare and TicketGroupSize were removed.
+FE02 also retained its 0.002 F1 advantage over FE04 in both the Family-containing and Family-removed configurations.
 
-Additionally, Cabin FE02 consistently achieved 0.002 higher F1 than FE04, with equal accuracy, in both Family-containing and Family-removed configurations.
+CB07 Family was therefore retained.
 
-**Conclusion:** Retain Family CB07 in the Cabin branch. Prefer the simpler Cabin FE02 representation over FE04, based on its repeated small F1 advantage.
+**PR05 — HasCabin**
 
-For the Fare branch, removing Family CB07 returned to the previously tested FS01 configuration, which achieved 0.827 accuracy and 0.763 F1. Therefore, Family was not needed to maintain performance in that branch.
+Finally, PR05 removed FE02 HasCabin from the selected candidate while retaining FE05 Title and CB07 Family.
 
-#### PR05 — Remove Cabin FE02
-
-**Reference:** Title FE05 + Family CB07 + Cabin FE02 — accuracy 0.827, F1 0.765.
-
-| Retained engineered patches | Accuracy | F1 |
+| Configuration | Accuracy | F1 |
 |---|---:|---:|
-| Title + Family CB07 + Cabin FE02 | **0.827** | **0.765** |
+| **Title + Family CB07 + Cabin FE02** | **0.827** | **0.765** |
 | Title + Family CB07 | 0.824 | 0.761 |
-| **Difference after removing Cabin** | **-0.003** | **-0.004** |
+| **Difference** | **−0.003** | **−0.004** |
 
-**Interpretation:**
+Removing HasCabin reduced both metrics.
 
-Removing Cabin FE02 reduced both metrics.
+Although the decline was modest, it supported retaining FE02 alongside Title and Family.
 
-Although the decline was modest, it supported retaining Cabin alongside Title and Family.
+Together, PR04 and PR05 showed that both CB07 Family and FE02 HasCabin contributed positively to the selected reduced configuration under the tested conditions.
 
-Together with PR04, this showed that both Family CB07 and Cabin FE02 contributed to the selected reduced configuration.
+No further feature removal was supported by the available results.
 
-**Conclusion:** Retain Cabin FE02. No further feature pruning was justified by the available results.
+**Pruning Outcome**
 
----
-
-### Feature interaction findings
-
-The pruning phase revealed several important relationships.
+The pruning phase revealed several important relationships:
 
 | Feature or relationship | Observation | Interpretation |
 |---|---|---|
-| Title FE05 | Removing Title caused substantial losses | Consistently useful across tested branches |
-| Fare CB06 ↔ Cabin | Cabin became useful after Fare removal | Conditional redundancy or substitutability |
-| Family CB07 | Neutral with Fare, beneficial in the reduced Cabin branch | Conditional usefulness |
-| Ticket FE09 | Removing Ticket preserved competitive performance | Not necessary in the leading configurations |
-| Cabin FE02 vs FE04 | FE02 repeatedly gained +0.002 F1 in reduced configurations | Simpler Cabin representation favored |
-| Full-context engineering | Competitive, but unnecessary for the selected configuration | Inductive alternative preferred |
+| FE05 Title | Removing Title caused substantial declines | Consistently valuable |
+| CB06 Fare ↔ Cabin | Cabin became beneficial after Fare removal | Possible conditional redundancy |
+| CB07 Family | Neutral with Fare, beneficial in the reduced Cabin branch | Conditional contribution |
+| FE09 TicketGroupSize | Competitive configurations remained after its removal | Not necessary for the selected candidate |
+| FE02 vs FE04 Cabin | FE02 produced slightly higher F1 in the tested reduced configurations | Simpler representation preferred |
+| Full-context engineering | Inductive Cabin branch matched or exceeded the leading Fare branch | Full-context dependency unnecessary for the selected candidate |
 
-These observations are based on cross-validation mean scores. They describe measured relationships between configurations, not proven causal mechanisms or statistically established improvements.
+These findings describe observed relationships between cross-validation results, not proven causal mechanisms. Small differences may depend on the training folds, model randomness, or the particular configurations evaluated.
 
-In particular, equal aggregate scores do not establish identical predictions, and small metric differences may be sensitive to the training folds or model randomness.
+**Selected candidate:** FE05 Title + CB07 Family + FE02 HasCabin.
 
-### Final configuration
+**Performance:** 0.827 accuracy / 0.765 F1.
 
-**Selected:** Title FE05 + Family CB07 + Cabin FE02.
+Backward Pruning therefore accomplished more than removing unnecessary features. It identified conditional relationships between engineered representations and uncovered a simpler, inductive configuration that slightly outperformed the original forward candidate in both metrics.
 
-| Feature group | Selected patch | Purpose |
-|---|---|---|
-| Title | `fe05__title_patch` | Extract passenger title information |
-| Family | `cb07__family_features_patch` | Retain SibSp/Parch and add FamilySize/IsAlone |
-| Cabin | `fe02__has_cabin_patch` | Represent whether Cabin information is available |
+### Final Selection
 
-The configuration retains the baseline raw features as governed by the patch system and does not use additional Age, Fare, or Ticket engineering.
+Backward Pruning selected **FE05 Title + CB07 Family + FE02 HasCabin**, excluding the additional Age, Fare, and Ticket engineering explored during Forward Selection.
 
-**Final cross-validation results:**
+The selected configuration achieved **0.827 accuracy / 0.765 F1**, matching the highest accuracy among the leading candidates while achieving a slightly higher F1.
 
-| Metric | Raw baseline | Title baseline | Final | Δ vs raw |
-|---|---:|---:|---:|---:|
-| Accuracy | 0.803 | 0.823 | **0.827** | **+0.024** |
-| F1 | 0.702 | 0.756 | **0.765** | **+0.063** |
+| Configuration | Accuracy | F1 |
+|---|---:|---:|
+| Raw baseline | 0.803 | 0.702 |
+| FS baseline — FE05 Title | 0.823 | 0.756 |
+| Forward candidate — FS05 | 0.826 | 0.764 |
+| Alternative — FE05 Title + CB06 Fare full-context | 0.827 | 0.763 |
+| **Final selected candidate — PR03 (FE02)** | **0.827** | **0.765** |
 
-**Why this configuration was selected:**
+**Selected representations**
 
-- Ties the highest reported accuracy among the leading candidates.
-- Achieves the highest reported F1 among those candidates.
-- Requires fewer engineered representations than the complete forward-selected configuration.
-- Avoids the prediction-cohort dependency of full-context TicketGroupSize.
-- Has targeted pruning comparisons supporting retention of Title, Family, and Cabin.
+- **FE05 — Title:** Extracts passenger titles as an additional predictor.
+- **CB07 — Family:** Retains SibSp/Parch and adds FamilySize/IsAlone.
+- **FE02 — HasCabin:** Indicates whether Cabin information is available.
+- Remaining raw predictors, except where explicitly modified or replaced.
 
-**Competitive alternative:** Title FE05 + Fare CB06 full-context — accuracy 0.827, F1 0.763.
+**Excluded representations:** CB06 Fare, FE09 TicketGroupSize, FE04 Cabin, and the tested Age alternatives.
 
-This alternative should remain documented because future hyperparameter tuning could change the relative performance of the feature sets.
+**Improvement over raw baseline:** +0.024 accuracy / +0.063 F1.
 
-### Final conclusion
+Relative to the Title baseline, the final configuration improved accuracy by 0.004 and F1 by 0.009. Compared with the completed forward candidate, it improved accuracy by 0.001 and F1 by 0.001.
 
-Decision Tree benefited most consistently from Title engineering. Fare CB06 full-context provided a useful early improvement, but subsequent pruning revealed that a simpler combination of Title, Family, and Cabin could match its accuracy while avoiding full-context inference.
+**Competitive alternative — Title + CB06 Fare full-context**
 
-The main finding was **conditional feature usefulness**: Family and Cabin appeared neutral when overlapping Fare representations were present, but became beneficial after those representations were removed.
+The Fare-based alternative achieved **0.827 accuracy / 0.763 F1**, matching the final configuration's accuracy while trailing by 0.002 F1.
 
-Backward pruning therefore contributed more than model simplification. It revealed relationships that forward selection alone would have missed.
+Both configurations remained competitive, but the selected candidate offered several advantages:
 
-**Final selection: Title FE05 + Family CB07 + Cabin FE02 — accuracy 0.827, F1 0.765.**
+- Slightly higher measured F1 at equal accuracy.
+- Fewer engineered representations than the completed forward candidate.
+- No dependency on full prediction-population context.
+- Targeted pruning comparisons supporting the retention of Title, Family, and HasCabin.
 
-Feature selection is complete for Decision Tree. The selected configuration is the primary candidate for later hyperparameter tuning, with Title + Fare CB06 full-context retained as an alternative.
+The Fare-based alternative remains worth documenting because later hyperparameter tuning may change the relative performance of these feature sets.
+
+### Interpretation
+
+Decision Tree benefited from feature engineering, but the experiments showed that **the usefulness of individual representations depended strongly on which other features were present**.
+
+Five findings stood out:
+
+1. **Title was the most consistently valuable engineered representation.** Adding FE05 Title improved the raw baseline substantially, particularly in F1. Removing it during pruning caused large declines across multiple configurations, supporting its retention regardless of whether Fare or Cabin was used.
+
+2. **Fare and Cabin showed evidence of conditional redundancy.** CB06 Fare full-context initially improved performance, while FE04 Cabin was neutral when added during Forward Selection. However, after Fare was removed, Cabin became beneficial. This suggested that the representations provided partly overlapping information, although the experiments did not establish the underlying mechanism.
+
+3. **Family became useful in the reduced Cabin configuration.** CB07 Family was neutral during Forward Selection with Fare present. After Fare and TicketGroupSize were removed, removing Family reduced accuracy by 0.001 and F1 by 0.005. This demonstrated why a neutral feature should not automatically be discarded without considering its contribution in other combinations.
+
+4. **The simpler Cabin representation performed slightly better.** FE02 HasCabin achieved higher F1 than FE04 in the tested reduced configurations, without sacrificing accuracy in the leading inductive branch. Its selection also illustrates the value of investigating unexpected experimental results: an accidental substitution revealed a promising alternative that was subsequently compared and retained.
+
+5. **Full-context engineering was not necessary for the selected configuration.** Removing CB06 Fare and FE09 TicketGroupSize eliminated the need for prediction-population context. The resulting inductive configuration matched the leading Fare-based alternative in accuracy while slightly improving F1, making it preferable for simpler and more predictable inference.
+
+These findings suggest that Decision Tree was sensitive not only to the information contained in individual engineered features, but also to how their representations interacted within the available feature set.
+
+However, the experiments do not prove that the model relied on particular decision rules or that the observed improvements will generalize. The results are cross-validation means obtained during feature selection, and small differences may be sensitive to the folds, model randomness, or later hyperparameter tuning.
+
+Overall, Decision Tree benefited most consistently from **Title engineering**, while the final improvements came from identifying a complementary combination of Family and Cabin representations.
+
+The selected configuration achieved **0.827 accuracy / 0.765 F1**, improving upon the raw baseline while avoiding full-context dependencies.
+
+The main lesson was that **Backward Pruning can reveal useful feature combinations that Forward Selection alone would overlook**. In this case, exploring alternative branches and revisiting a seemingly neutral Cabin representation produced a simpler, competitive inductive configuration.
 
 
 ## Lessons learned
