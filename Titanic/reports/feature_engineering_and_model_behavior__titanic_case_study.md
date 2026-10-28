@@ -488,6 +488,7 @@ attributed as directly as possible to changes in the data representation.
 SVC and XGBoost produced the strongest initial baselines, followed closely by Random Forest.
 
 Logistic Regression began with the weakest accuracy among the evaluated models, but its simplicity makes it a useful reference model. Its later response to explicit feature engineering also makes it particularly informative when studying how feature representation affects simpler linear models.
+
 ---
 
 ## Feature Investigation
@@ -3008,100 +3009,114 @@ model-specific feature configuration for each algorithm. These configurations
 will be evaluated before the strongest candidates proceed to hyperparameter
 tuning.
 
-## Final experiments
-
-The exploratory experiments evaluated individual feature-engineering ideas in
-isolation. The final experiments test whether the most promising
-model-specific modifications continue to provide value when combined into a
-single configuration.
-
-This stage therefore serves as the bridge between feature investigation and
-model optimization.
-
-### Selecting candidate features
-
-Final configurations are constructed from the baseline configuration together
-with the strongest acceptable experiment from each feature domain.
-
-Because the Titanic competition evaluates accuracy, accuracy is used as the
-primary selection metric. F1 is retained as a secondary guardrail to avoid
-selecting configurations whose accuracy gains are accompanied by substantial
-losses in classification balance.
-
-An experiment is considered a candidate when:
-
-- its cross-validation accuracy improves by at least **+0.003** relative to the
-  baseline;
-- its F1 score does not decrease by more than **-0.010**;
-- it represents a canonical feature-engineering experiment rather than an
-  ablation.
-
-At most one experiment is selected from each feature domain.
-
-A helper function applies these rules to the stored experiment results and
-returns the strongest qualifying candidate for each domain. The resulting
-recommendations are then reviewed manually against the corresponding feature
-investigation before the final configuration is assembled.
-
-Diagnostic ablations are excluded from automatic candidate selection because their purpose is to measure the marginal contribution of an existing feature rather than propose an alternative feature representation. Their findings may still influence manual decisions when assembling the final configurations.
-
-| Model               | Selected experiment candidates                                                                                                                                |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Logistic Regression | `fe05__title`, `cb03__age_imputed_title_Pclass_and_bins`, `cb08__pclass_sex_features`, `fe01__family`, `fe04__cabin_features`, `fe08__fare_per_family_member` |
-| KNN                 | `fe05__title`, `fe03__deck`, `fe10__fare_per_ticket_member`                                                                                                   |
-| SVC                 | `fe05__title`, `fe09__ticket_group_size`, `cb02__age_imputed_title_and_bins`                                                                                  |
-| Decision Tree       | `fe05__title`, `cb04__fare_and_fare_per_family`, `fe11__age_bin`, `cb07__family_features`                                                                     |
-| Random Forest       | `fe11__age_bin`, `fe05__title`                                                                                                                                |
-| Extra Trees         | `fe05__title`, `cb03__age_imputed_title_Pclass_and_bins`, `fe02__has_cabin`, `cb07__family_features`, `fe09__ticket_group_size`                               |
-| XGBoost             | `fe05__title`, `fe04__cabin_features`, `cb07__family_features`                                                                                                |
-
-These experiments identify candidate modifications rather than complete configurations. Their feature-engineering and preprocessing requirements are manually reconciled before the final experiments are executed.
-
-| Domain                     | LogReg                                                 | KNN                                                              | SVC                                                                  | Decision Tree                                                        | Random Forest                                       | Extra Trees                                  | XGBoost                                               |
-| -------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------- | -------------------------------------------- | ----------------------------------------------------- |
-| **Title**                  | **Carry:** Title                                       | **Carry:** Title                                                 | **Carry:** Title                                                     | **Carry:** Title                                                     | **Carry:** Title                                    | **Carry:** Title                             | **Carry:** Title                                      |
-| **Age**                    | **Carry:** CB03 — Title+Pclass imputed Age + AgeBin    | **Raw:** Age                                                     | **Carry:** CB02 — Title-imputed Age + AgeBin                         | **Carry:** FE11 — AgeBin replacing Age                               | **Carry:** CB03 — Title+Pclass imputed Age + AgeBin | **Carry:** CB02 — Title-imputed Age + AgeBin | **Alt.:** FE06 — Title-imputed Age; otherwise raw Age |
-| **Family**                 | **Carry:** CB07 — SibSp + Parch + FamilySize + IsAlone | **Raw:** SibSp + Parch                                           | **Raw:** SibSp + Parch                                               | **Carry:** CB07 — raw + FamilySize + IsAlone                         | **Raw:** SibSp + Parch                              | **Raw:** SibSp + Parch                       | **Alt.:** CB07 — raw + FamilySize + IsAlone           |
-| **Cabin**                  | **Carry:** FE04 — HasCabin + Deck                      | **Carry:** FE03 — Deck                                           | **Raw:** no Cabin feature                                            | **Raw:** no Cabin feature                                            | **Raw:** no Cabin feature                           | **Alt.:** FE02 — HasCabin                    | **Carry:** FE04 — HasCabin + Deck                     |
-| **Ticket**                 | **Alt.:** fitted/batch TicketGroupSize                 | **Raw**; full-context only as weak Alt.                          | **Carry:** fitted TicketGroupSize; **Context:** full-context version | **Carry:** fitted TicketGroupSize; **Context:** full-context version | **Raw**                                             | **Raw**; full-context weak Alt.              | **Raw**                                               |
-| **Fare**                   | **Raw:** Fare                                          | **Context:** replace Fare with full-context Fare/TicketGroupSize | **Raw:** Fare                                                        | **Carry:** Fare + Fare/FamilySize + fitted Fare/TicketGroupSize      | **Raw:** Fare, with **Fare removal to test**        | **Raw:** Fare                                | **Context:** Fare + full-context Fare/TicketGroupSize |
-| **Sex/Pclass combination** | **Carry:** FE12 — Sex_Pclass replacing Sex + Pclass    | **Raw:** Sex + Pclass                                            | **Raw:** Sex + Pclass                                                | **Raw:** Sex + Pclass                                                | **Raw:** Sex + Pclass                               | **Raw:** Sex + Pclass                        | **Raw:** Sex + Pclass                                 |
 
 
 ## Feature Selection
 
+### Overview
+
+The earlier Feature Investigation experiments evaluated individual feature-engineering ideas and their effects on each model. These experiments identified promising representations, but improvements observed in isolation did not guarantee that those representations would remain beneficial when combined.
+
+Feature Selection therefore investigated how to assemble **model-specific feature configurations**, balancing predictive performance, representation complexity, and inference requirements.
+
+Candidate representations were prioritized using the earlier Feature Investigation results and an automated screening helper. These initial rankings guided the order of experiments, while manual evaluation and targeted follow-up tests allowed promising alternatives and feature interactions to be investigated.
+
+The subsequent selection process used two complementary stages:
+
+- **Forward Selection:** Incrementally evaluate promising representations, including alternative preprocessing semantics and potentially useful feature combinations.
+- **Backward Pruning:** Reassess the assembled configuration, remove unnecessary representations, and investigate conditional contributions or alternative feature combinations when justified.
+
+Accuracy remained the primary selection metric, reflecting the Titanic competition's evaluation criterion, while F1 served as a secondary measure. Small metric differences were considered alongside model complexity and practical inference requirements.
+
+Unlike the earlier isolated experiments, this stage emphasized **how features behaved together**. Some initially promising representations became detrimental when combined, while others that appeared neutral became useful after changes elsewhere in the configuration.
+
+The objective was not to find an exhaustive global optimum, but to identify well-supported configurations for each model before proceeding to hyperparameter optimization.
+
+### Feature Selection Leaderboard
+
+The following table summarizes the selected configuration for each model.
+
+| Model | Accuracy | F1 | Δ Accuracy vs Raw | Δ F1 vs Raw | Full-context required |
+|---|---:|---:|---:|---:|---|
+| **Logistic Regression** | **0.841** | **0.787** | +0.055 | +0.074 | No |
+| XGBoost | 0.838 | 0.776 | +0.012 | +0.018 | No |
+| SVC | 0.836 | 0.774 | +0.009 | +0.014 | Yes |
+| KNN | 0.834 | 0.776 | +0.025 | +0.034 | Yes |
+| Random Forest | 0.834 | 0.762 | +0.012 | +0.018 | No |
+| Extra Trees | 0.831 | 0.767 | +0.027 | +0.046 | Yes |
+| Decision Tree | 0.827 | 0.765 | +0.024 | +0.063 | No |
+
+*Models are ordered by cross-validation accuracy, with F1 as the secondary metric. Deltas represent absolute changes relative to each model's raw baseline.*
+
+The leaderboard reflects the best configurations selected during Feature Selection, **not independently evaluated final model performance**. These cross-validation results were used to guide the selection process and may therefore be optimistic estimates of generalization.
+
+Full-context configurations also have different inference requirements from inductive configurations. Their results should be interpreted with those differences in mind.
+
+The following sections document each model's selection process, including the tested alternatives, reasons for retaining or rejecting representations, and the findings that informed the final choices.
+
 ### Strategy
 
-Feature selection was performed independently for each model, using the feature-engineering experiments to identify promising representations.
+Feature Selection was performed independently for each model, using the earlier Feature Investigation results to prioritize promising feature representations.
 
-Rather than exhaustively testing every feature combination, the process used two complementary stages:
+Rather than exhaustively testing every possible combination, the process followed a **heuristic-guided search**, combining incremental feature selection, backward pruning, and targeted experiments when the results suggested useful alternatives or interactions.
 
-**Forward Selection**
+#### Candidate Prioritization
+
+The earlier Feature Investigation results provided an initial ranking of promising feature-engineering experiments for each model.
+
+An automated screening helper identified candidate experiments using the following criteria:
+
+- Cross-validation accuracy improvement of at least **+0.003** relative to the reference baseline.
+- F1 decrease no greater than **−0.010**.
+- Canonical feature-engineering experiments rather than diagnostic ablations.
+
+These recommendations were used to guide the **order of investigation**, not as strict acceptance criteria.
+
+The search generally prioritized domains whose earlier experiments had produced the strongest results. Within each domain, the best-performing representation was tested first.
+
+Further alternatives were explored according to the results:
+
+- **Promising result with clearly weaker alternatives:** Carry the leading representation forward without extensively testing the remaining options.
+- **Unsatisfactory or inconclusive result with competitive alternatives:** Test one or two additional representations from the same domain.
+- **Poor result with substantially weaker alternatives:** Deprioritize the remaining representations and proceed to the next domain.
+
+This approach reduced unnecessary experiments while preserving opportunities to investigate competitive representations.
+
+The prioritization was intentionally flexible. Domains could be revisited or investigated earlier when previous feature interactions, unexpected experimental results, or additional hypotheses suggested that they might be useful.
+
+Consequently, the initial rankings served as **search guidance rather than a fixed experimental sequence**.
+
+#### Forward Selection
 
 1. Start from a promising baseline configuration, generally the raw features with Title engineering.
-2. Incrementally test feature representations supported by earlier experiments.
+2. Introduce candidate representations according to the initial prioritization and relevant findings from earlier experiments.
 3. Compare each candidate against the current accepted configuration, prioritizing **cross-validation accuracy**, with **F1 as a secondary metric**.
-4. Carry promising or approximately neutral representations forward when further interactions are worth investigating.
-5. Reject clearly detrimental additions, while testing alternative representations when justified by previous evidence.
+4. Carry promising or approximately neutral representations forward when their potential interactions with later features justify further investigation.
+5. Reject detrimental additions when the available evidence does not justify further testing, while considering alternative representations or preprocessing semantics where appropriate.
 
-**Backward Pruning**
+The objective was to assemble a promising model-specific configuration without assuming that features performing well individually would necessarily remain beneficial together.
 
-1. Start from the completed forward-selection candidate.
-2. Remove individual patches or feature groups to measure their contribution within the assembled configuration.
-3. Retain removals that improve or preserve performance; restore features whose removal causes meaningful deterioration.
-4. Investigate specific feature interactions or alternative representations when the results justify additional experiments.
-5. Select a final configuration based on predictive performance, representation complexity, and inference requirements.
+#### Backward Pruning
 
-**Evaluation and interpretation**
+1. Start from the completed Forward Selection candidate.
+2. Remove individual patches or feature groups to evaluate their contribution within the assembled configuration.
+3. Retain removals that improve or approximately preserve performance; restore representations whose removal causes deterioration that justifies retention.
+4. Investigate alternative combinations or feature interactions when straightforward removal does not adequately explain the results.
+5. Select a configuration considering predictive performance, representation complexity, and inference requirements.
+
+Although pruning generally followed the completed forward candidate, some experiments compared alternative branches against a shared reference rather than sequentially removing one feature at a time.
+
+#### Evaluation and Interpretation
 
 - Reported results are cross-validation means. Differences in accuracy and F1 are expressed as absolute changes, not relative percentages.
+- Accuracy is the primary selection metric, reflecting the Titanic competition's evaluation criterion; F1 is secondary.
+- Each experiment is compared with its stated reference configuration. A stage's reference is not necessarily the preceding experiment, particularly when alternative branches are investigated.
 - Small improvements are treated cautiously; they do not necessarily establish a reliable generalization advantage.
-- Feature contributions are **conditional on the surrounding representation**. A feature that performs poorly in isolation may become useful when combined with others, and vice versa.
+- Feature contributions are **conditional on the surrounding representation**. A feature that performs poorly in one configuration may become useful when combined with others, and vice versa.
 - Fitted, batch, and full-context TicketGroupSize approaches are distinguished where relevant. A patch may use TicketGroupSize internally without exposing it as a separate model input.
-- Cross-validation results used to guide feature selection are not independent final performance estimates. Final generalization should be assessed using data not involved in selection.
+- Cross-validation results used to guide feature selection are not independent final performance estimates. Generalization should be assessed using data not involved in selection.
 
-The objective was to identify **compact, interpretable feature configurations supported by experimental evidence**, rather than simply maximizing the number of engineered features or exhaustively searching all possible combinations.
-
+The objective was to identify **compact, interpretable, model-specific feature configurations supported by experimental evidence**, rather than simply maximizing the number of engineered features or exhaustively searching all possible combinations.
 
 ### Logistic Regression
 
@@ -3242,8 +3257,6 @@ Three findings were particularly informative:
 1. **Marginal contributions changed after pruning.** CB03 Age initially provided only a small gain, but became substantially more important in the reduced configuration.
 2. **Original and engineered representations were not interchangeable.** FamilySize/IsAlone could be removed, while retaining SibSp and Parch was important. Keeping the original variables may allow independent linear coefficients that the compressed FamilySize representation cannot express in the same way.
 3. **Redundant or competing representations could reduce performance.** The Fare experiments showed that individually useful representations did not necessarily improve the model when retained together.
-
-These experiments establish the observed predictive differences, but do not prove the underlying mechanisms.
 
 Overall, Logistic Regression benefited from both combining complementary representations and removing unnecessary ones. Backward Pruning was particularly valuable: it improved performance beyond the forward candidate while producing a smaller final feature set.
 
@@ -3566,7 +3579,7 @@ Forward Selection prioritized these representations, followed by Family engineer
 
 - **Cabin:** FE03 Deck improved accuracy by 0.001 but reduced F1 by 0.003. Despite this mixed result, **Deck was carried provisionally** to investigate possible interactions with later features. The broader FE04 Cabin representation performed worse (0.827 / 0.764), so FE03 was preferred.
 
-- **Ticket:** Adding FE09 full-context improved accuracy by 0.002 and F1 by 0.008. This was particularly interesting because FE10 already used TicketGroupSize indirectly to normalize Fare. Adding FE09 showed that TicketGroupSize could provide additional information as a separate feature. The improvement suggested that TicketGroupSize could provide additional information when supplied as a separate model input.
+- **Ticket:** Adding FE09 full-context improved accuracy by 0.002 and F1 by 0.008. This was particularly interesting because FE10 already used TicketGroupSize indirectly to normalize Fare. Adding FE09 showed that TicketGroupSize could provide additional information as a separate feature. 
 
 - **Family:** Earlier Family × Ticket experiments had suggested a possible benefit from combining these domains, justifying another test despite Family's generally weak isolated results. FE01 reduced accuracy and F1 by 0.005; CB07 reduced both by 0.006. Neither was carried forward.
 
@@ -3676,7 +3689,7 @@ Three findings stood out:
 
 These findings are consistent with KNN's sensitivity to feature representation: adding or removing features changes distances between observations and can alter which neighbors influence predictions. However, the experiments measured predictive outcomes rather than directly investigating distance geometry, so this remains an explanatory hypothesis.
 
-Overall, KNN demonstrated why Forward Selection and Backward Pruning are complementary. Forward Selection assembled a promising configuration, including a provisionally retained feature, while Backward Pruning confirmed its value and exposed the interaction responsible for its improved contribution.
+Overall, KNN demonstrated why Forward Selection and Backward Pruning are complementary. Forward Selection assembled a promising configuration, including a provisionally retained feature, while Backward Pruning confirmed its value and revealed a conditional relationship associated with its improved contribution.
 
 The final candidate achieved **0.834 accuracy / 0.776 F1**, improving on the raw baseline without hyperparameter tuning.
 
@@ -3691,18 +3704,10 @@ Feature selection started from the raw feature set with **FE05 Title engineering
 | Raw baseline | 0.826 | 0.758 |
 | **FS baseline — Title FE05** | **0.836** | **0.772** |
 
-Earlier experiments had also identified promising results from Cabin, Fare, and Family × TicketGroupSize combinations. The objective was to determine whether these benefits remained useful alongside Title and whether additional representations could complement one another.
 
 #### Forward Selection
 
-Feature selection started from the raw XGBoost configuration with **FE05 Title**, which had produced one of the strongest improvements during feature engineering.
-
-| Configuration | Accuracy | F1 |
-|---|---:|---:|
-| Raw baseline | 0.826 | 0.758 |
-| **Starting configuration — FE05 Title** | **0.836** | **0.772** |
-
-Earlier experiments had also identified promising Cabin, Fare, and Family × TicketGroupSize representations. Forward Selection investigated whether these benefits remained useful alongside Title and whether additional representations complemented one another.
+Earlier experiments had also identified promising results from Cabin, Fare, and Family × TicketGroupSize combinations. The objective was to determine whether these benefits remained useful alongside Title and whether additional representations could complement one another.
 
 ##### Experiment summary
 
@@ -3939,17 +3944,15 @@ Four findings stood out:
 
 These findings are consistent with the possibility that XGBoost already captures some useful nonlinear relationships and interactions from the original predictors, limiting the additional value of explicit feature engineering. However, the experiments do not directly establish this mechanism.
 
-The observed differences are also based on cross-validation results used during feature selection. Small gains should therefore be interpreted cautiously rather than as independent evidence of improved generalization.
-
 Overall, XGBoost benefited from **a compact set of complementary representations rather than accumulating every feature with a positive isolated result**.
 
 The final candidate achieved **0.838 accuracy / 0.776 F1**, improving upon the raw baseline while retaining fitted, inductive TicketGroupSize semantics.
 
 The main lesson was the importance of evaluating engineered features in their assembled context: both the positive Age × TicketGroupSize interaction and the unfavorable FE08 × Age combination would be missed by considering only isolated feature contributions.
 
-## Extra Trees — Feature Selection
+### Extra Trees — Feature Selection
 
-### Starting Point
+#### Starting Point
 
 Feature selection began with **FE05 Title**, which had achieved strong results during the earlier feature-engineering experiments.
 
@@ -3964,13 +3967,13 @@ Title, by contrast, provided a single strong candidate within its domain. It was
 
 Title improved accuracy by **0.016** and F1 by **0.033** over the raw baseline, establishing a stronger reference for subsequent feature selection.
 
-### Forward Selection
+#### Forward Selection
 
 Forward Selection investigated whether Age, Fare, Cabin, Family, and Ticket representations could improve the Title-based configuration.
 
 Unlike models where most additional features were rejected, Extra Trees benefited from several successive additions. However, some gains depended on the representations already present, particularly the fitted versus full-context treatment of TicketGroupSize.
 
-#### Experiment summary
+##### Experiment summary
 
 | Stage | Representative test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
@@ -3983,7 +3986,7 @@ Unlike models where most additional features were rejected, Extra Trees benefite
 
 *Deltas compare each experiment against the configuration carried into its stage. FS03 and FS04 use the FS02 fitted-Fare candidate as their reference. FS05 compares against the FS04 candidate, but also changes CB09 from fitted to full-context semantics; its delta therefore represents the combined configuration change, not the isolated effect of FE09.*
 
-#### Notable decisions
+##### Notable decisions
 
 **Age — FS01**
 
@@ -4080,7 +4083,7 @@ The findings suggest that the usefulness of TicketGroupSize representations depe
 
 **The full-context combination was selected for Backward Pruning**, while recognizing its additional inference-context requirements.
 
-#### Forward Selection result
+##### Forward Selection result
 
 The completed candidate contained:
 
@@ -4104,7 +4107,7 @@ However, CB07 Family had been retained without an observed improvement, and FS05
 
 Backward Pruning would therefore investigate whether these features remained necessary and whether a simpler or better-performing combination could be obtained.
 
-### Backward Pruning
+#### Backward Pruning
 
 Backward Pruning evaluated whether the representations retained during Forward Selection remained useful in the assembled configuration.
 
@@ -4112,7 +4115,7 @@ The starting candidate contained FE05 Title, CB02 Age, CB09 Fare full-context, C
 
 The initial removal tests identified several redundant or important representations. Subsequent experiments investigated whether replacing Fare with Family could produce a better configuration and whether TicketGroupSize could be removed to avoid full-context inference requirements.
 
-#### Experiment summary
+##### Experiment summary
 
 | Stage | Representative test | Accuracy | F1 | Δ Acc. | Δ F1 | Decision |
 |---|---|---:|---:|---:|---:|---|
@@ -4121,13 +4124,13 @@ The initial removal tests identified several redundant or important representati
 | PR02 | Remove FE05 Title | 0.818 | 0.745 | −0.011 | −0.021 | Keep Title |
 | PR03 | Remove FE09 TicketGroupSize | 0.829 | 0.766 | 0.000 | 0.000 | No measured contribution in this configuration |
 | PR04 | Remove CB02 Age | 0.823 | 0.757 | −0.006 | −0.009 | Keep Age |
-| PR05 | Remove CB09 Fare | 0.828 | 0.765 | −0.001 | −0.001 | Fare nearly redundant |
+| PR05 | Remove CB09 Fare and CB07 Family | 0.828 | 0.765 | −0.001 | −0.001 | Fare nearly redundant |
 | PR06 | Remove CB09 Fare, retain CB07 Family | **0.831** | **0.767** | **+0.002** | **+0.001** | Select |
 | PR07 | Remove FE09 TicketGroupSize from PR06 | 0.828 | 0.765 | −0.003 | −0.002 | Retain as inductive alternative |
 
 *PR01–PR06 are compared against the FS05 forward candidate. PR07 is compared against PR06, since it tests removing TicketGroupSize from the improved configuration. The reported deltas for PR06 reflect the replacement configuration relative to FS05.*
 
-#### Notable findings
+##### Notable findings
 
 **Family and Fare — PR01, PR05, PR06**
 
@@ -4189,7 +4192,7 @@ This suggests that FE09 became more useful after the Fare representation was rem
 
 **PR06 was retained as the performance-oriented candidate**, while PR07 remained a competitive alternative with simpler inductive inference requirements.
 
-#### Backward Pruning result
+##### Backward Pruning result
 
 The completed pruning phase selected:
 
@@ -4215,7 +4218,7 @@ The comparison between PR03 and PR07 also demonstrated that the apparent usefuln
 
 The final choice between PR06 and PR07 therefore involves a modest measured performance advantage for full-context inference versus the simpler inductive requirements of the alternative.
 
-### Final Selection
+#### Final Selection
 
 Backward Pruning selected **PR06**, which retained FE05 Title, CB02 Age, CB07 Family, and FE09 TicketGroupSize full-context while excluding CB09 Fare.
 
@@ -4249,7 +4252,7 @@ It achieved **0.828 accuracy / 0.765 F1**, only 0.003 accuracy and 0.002 F1 belo
 
 PR07 is therefore a competitive **inductive alternative** that avoids the prediction-population context required by FE09 full-context. PR06 remains the performance-oriented selection, but PR07 may be preferable when simpler inference requirements are more important than the small observed performance difference.
 
-### Interpretation
+#### Interpretation
 
 Extra Trees benefited from combining several engineered representations, but their contributions were not independent. Forward Selection identified promising additions, while Backward Pruning showed that the best combination differed from the strongest accumulated forward candidate.
 
@@ -4273,9 +4276,9 @@ The final candidate achieved **0.831 accuracy / 0.767 F1**, improving upon the r
 
 The main lesson was that Backward Pruning can reveal better feature combinations than Forward Selection alone. In this case, removing a previously beneficial Fare representation and retaining Family produced the strongest measured result.
 
-## Decision Tree — Feature Selection
+### Decision Tree — Feature Selection
 
-### Starting Point
+#### Starting Point
 
 Decision Tree started from a raw baseline of **0.803 accuracy / 0.702 F1**.
 
@@ -4289,7 +4292,7 @@ Title was therefore selected as the starting configuration for Forward Selection
 | **FS baseline — FE05 Title** | **0.823** | **0.756** |
 | Improvement | +0.020 | +0.054 |
 
-### Forward Selection
+#### Forward Selection
 
 Starting from FE05 Title, Forward Selection evaluated Fare, Age, Family, Ticket, and Cabin representations sequentially.
 
@@ -4390,7 +4393,7 @@ Backward Pruning would therefore focus on identifying which representations were
 
 ---
 
-### Backward Pruning
+#### Backward Pruning
 
 Backward Pruning started from the completed Forward Selection candidate:
 
@@ -4553,7 +4556,7 @@ These findings describe observed relationships between cross-validation results,
 
 Backward Pruning therefore accomplished more than removing unnecessary features. It identified conditional relationships between engineered representations and uncovered a simpler, inductive configuration that slightly outperformed the original forward candidate in both metrics.
 
-### Final Selection
+#### Final Selection
 
 Backward Pruning selected **FE05 Title + CB07 Family + FE02 HasCabin**, excluding the additional Age, Fare, and Ticket engineering explored during Forward Selection.
 
@@ -4593,7 +4596,7 @@ Both configurations remained competitive, but the selected candidate offered sev
 
 The Fare-based alternative remains worth documenting because later hyperparameter tuning may change the relative performance of these feature sets.
 
-### Interpretation
+#### Interpretation
 
 Decision Tree benefited from feature engineering, but the experiments showed that **the usefulness of individual representations depended strongly on which other features were present**.
 
@@ -4609,9 +4612,7 @@ Five findings stood out:
 
 5. **Full-context engineering was not necessary for the selected configuration.** Removing CB06 Fare and FE09 TicketGroupSize eliminated the need for prediction-population context. The resulting inductive configuration matched the leading Fare-based alternative in accuracy while slightly improving F1, making it preferable for simpler and more predictable inference.
 
-These findings suggest that Decision Tree was sensitive not only to the information contained in individual engineered features, but also to how their representations interacted within the available feature set.
-
-However, the experiments do not prove that the model relied on particular decision rules or that the observed improvements will generalize. The results are cross-validation means obtained during feature selection, and small differences may be sensitive to the folds, model randomness, or later hyperparameter tuning.
+These results support conditional relationships between engineered representations, but do not establish which decision rules produced them. The small differences among the leading configurations remain exploratory.
 
 Overall, Decision Tree benefited most consistently from **Title engineering**, while the final improvements came from identifying a complementary combination of Family and Cabin representations.
 
@@ -4619,6 +4620,188 @@ The selected configuration achieved **0.827 accuracy / 0.765 F1**, improving upo
 
 The main lesson was that **Backward Pruning can reveal useful feature combinations that Forward Selection alone would overlook**. In this case, exploring alternative branches and revisiting a seemingly neutral Cabin representation produced a simpler, competitive inductive configuration.
 
+### Cross-Model Findings and Lessons Learned
+
+Feature Selection revealed that the value of engineered features depended not only on the information they represented, but also on the model, the surrounding feature configuration, and the preprocessing approach used to construct them.
+
+Across the seven models, the strongest results did not consistently come from adding more engineered features. Some models benefited from combining complementary representations, while others improved after removing features or replacing previously selected combinations.
+
+The experiments also demonstrated the importance of investigating feature interactions, preserving competitive alternatives, and distinguishing predictive performance from practical inference requirements.
+
+#### Cross-Model Findings
+
+**1. Title was the most consistently valuable engineered feature**
+
+FE05 Title provided substantial improvements over the raw baseline for every model during the earlier feature-engineering experiments, making it a useful starting point for Feature Selection.
+
+It remained an explicit predictor in six of the seven selected configurations.
+
+Random Forest was the exception: its accuracy-oriented candidate removed Title as a separate input. However, Title remained involved indirectly through CB03's Age imputation.
+
+Title's contribution was also repeatedly confirmed during Backward Pruning. Removing it produced some of the largest performance declines for Logistic Regression, SVC, KNN, XGBoost, and Decision Tree.
+
+This made Title the most consistently useful engineered representation investigated, although its measured contribution varied by model and feature configuration.
+
+**2. Feature contributions were conditional on the surrounding representations**
+
+One of the clearest recurring findings was that a feature's contribution could change substantially depending on which other representations were present.
+
+Several experiments illustrated this:
+
+| Model | Conditional relationship | Observation |
+|---|---|---|
+| Logistic Regression | Age CB03 and surrounding features | CB03's contribution became substantially larger after pruning |
+| KNN | Deck FE03 × TicketGroupSize FE09 | The combination performed better than the separate additions suggested |
+| XGBoost | Age CB01 × TicketGroupSize FE09 | CB01 was detrimental without FE09 but beneficial with it |
+| Extra Trees | Family CB07 and Fare CB09 | Family became useful after Fare was removed |
+| Decision Tree | Cabin and Fare | Cabin became beneficial after Fare was removed |
+| Random Forest | Title, Age CB03, and Fare | The highest-accuracy configuration emerged after removing Title and Fare as explicit predictors |
+
+These findings explain why isolated feature-engineering results were useful for prioritization but insufficient for determining the final feature sets.
+
+They also demonstrate why neutral or slightly detrimental representations sometimes deserved further investigation.
+
+However, these are observed predictive relationships within the tested configurations. They do not necessarily establish direct feature interactions within a model's learned decision function or reveal the underlying mechanism.
+
+**3. Different models favored different representations of the same information**
+
+The seven models did not converge on a common feature set.
+
+Age engineering provides a useful example:
+
+- Logistic Regression and Random Forest selected CB03, using Title and Pclass for Age imputation alongside continuous Age and Age bins.
+- SVC and Extra Trees selected CB02, using Title-based Age imputation and Age bins.
+- XGBoost selected CB01, retaining continuous Age and adding Age bins.
+- KNN retained its original Age representation.
+- Decision Tree did not retain additional Age engineering in its selected configuration.
+
+Fare and TicketGroupSize showed similar differences.
+
+KNN benefited from both normalized Fare and TicketGroupSize as a separate feature. XGBoost benefited from fitted TicketGroupSize without additional Fare engineering. Logistic Regression improved after removing the Fare domain, while Random Forest's accuracy-oriented candidate also excluded Fare.
+
+These results reinforce that **feature engineering should be evaluated for each model rather than assumed to transfer between algorithms**.
+
+They also suggest that maintaining reusable feature patches is valuable: the same representations can be tested across different models without requiring every model to use them.
+
+**4. More engineered features did not consistently produce better results**
+
+The final configurations differed considerably in complexity.
+
+Logistic Regression achieved its best result after removing engineered Family, TicketGroupSize, and Fare representations from its completed forward candidate.
+
+Random Forest improved accuracy by replacing its Title-based forward candidate with a different, smaller configuration centered on CB03 Age.
+
+Decision Tree identified a reduced Title + Family + HasCabin configuration that matched the leading accuracy of the more complex alternatives while slightly improving F1.
+
+In contrast, KNN retained all four representations assembled during Forward Selection. Their combined contribution was supported by pruning, particularly the relationship between Deck and TicketGroupSize.
+
+The general finding was not that simpler configurations were always better, but that **additional representations needed to justify their contribution within the assembled feature set**.
+
+**5. Backward Pruning served different purposes across models**
+
+Backward Pruning was not simply a procedure for removing unnecessary features.
+
+Its role varied according to what Forward Selection had discovered:
+
+| Model | Main contribution of Backward Pruning |
+|---|---|
+| Logistic Regression | Removed detrimental or unnecessary representations, improving both metrics |
+| SVC | Confirmed that the retained representations remained useful |
+| Random Forest | Identified an alternative, accuracy-oriented configuration |
+| KNN | Confirmed the assembled feature set and exposed conditional contributions |
+| XGBoost | Confirmed the selected representations and quantified the Age × TicketGroupSize relationship |
+| Extra Trees | Revealed a better Family-based alternative after removing Fare |
+| Decision Tree | Compared competing Fare/Cabin branches and selected a simpler inductive configuration |
+
+This was one of the strongest arguments for using Forward Selection and Backward Pruning together.
+
+Forward Selection identified promising combinations, while Backward Pruning tested whether their apparent contributions survived changes to the surrounding features.
+
+**6. Preprocessing semantics affected both predictive results and inference requirements**
+
+TicketGroupSize-related features were tested using fitted, batch, and full-context approaches.
+
+The distinction mattered because the same conceptual feature could produce different results depending on how TicketGroupSize was calculated.
+
+It also affected how predictions could be generated.
+
+SVC, KNN, and Extra Trees selected configurations requiring full prediction-population context. Logistic Regression, Random Forest, XGBoost, and Decision Tree selected configurations without that dependency.
+
+Importantly, full-context preprocessing was not consistently superior.
+
+XGBoost favored fitted TicketGroupSize after Age engineering was introduced. Extra Trees and Decision Tree preserved competitive inductive alternatives, while SVC's full-context advantage over its raw-Fare alternative was only 0.001 in both metrics.
+
+These findings demonstrated that preprocessing semantics should be treated as part of the experimental configuration rather than an interchangeable implementation detail.
+
+#### Lessons Learned
+
+**1. Look for meaningful information hidden within existing features.**
+
+Title was the most consistently useful engineered representation, improving the initial results across all seven models. Unlike transformations such as FamilySize or Age bins, which reorganized information already available through other predictors, Title extracted meaningful information from the otherwise unused Name field.
+
+This highlighted the value of examining what each variable contains, rather than focusing exclusively on mathematical transformations of existing predictors. Domain knowledge and careful data exploration can reveal useful information that the model's current input representation does not expose.
+
+The experiments do not establish that extracted features are generally superior to transformed ones, but they demonstrate why **making previously inaccessible information available to a model can be an especially valuable feature-engineering strategy**.
+
+**2. Use isolated experiments to guide the search, not dictate the final selection.**
+
+The earlier Feature Investigation results provided an efficient way to prioritize domains and representations. However, several important improvements emerged only after combining or removing features.
+
+Initial rankings were therefore most useful as a search heuristic, not as fixed acceptance rules.
+
+**3. Preserve promising alternatives when the evidence is inconclusive.**
+
+Several decisions benefited from keeping alternative representations available.
+
+Logistic Regression revisited CB02 Age after selecting CB03. Random Forest reconsidered CB03 after rejecting it during Forward Selection. Decision Tree continued exploring Fare and Cabin branches until later experiments provided a more useful comparison.
+
+Prematurely committing to one representation could have hidden these findings.
+
+**4. Investigate neutral features when there is a reasonable interaction hypothesis.**
+
+KNN's Deck representation initially produced a small accuracy gain accompanied by an F1 decline. Retaining it provisionally allowed the later Deck × TicketGroupSize combination to be discovered.
+
+Extra Trees and Decision Tree similarly demonstrated that Family or Cabin representations could become useful after other features were removed.
+
+This does not mean every neutral feature should be retained. Rather, additional experiments are justified when earlier results or a plausible relationship provide a reason to investigate.
+
+**5. Use targeted comparisons to understand unexpected results.**
+
+Some of the most informative experiments came from investigating results that did not follow the expected progression.
+
+Four-way comparisons helped quantify conditional contributions for KNN and XGBoost. Fare-removal experiments clarified Logistic Regression's representation effects. Decision Tree's accidental FE02 substitution revealed a competitive alternative worth testing systematically.
+
+These investigations made the conclusions more informative than simply selecting the configuration with the highest score.
+
+**6. Balance predictive performance with complexity and inference practicality.**
+
+Small cross-validation differences did not always justify additional preprocessing requirements.
+
+Where configurations performed similarly, representation simplicity and inductive inference could provide reasonable selection criteria.
+
+This was particularly relevant to SVC, Extra Trees, and Decision Tree, where competitive alternatives differed in their dependency on full prediction context.
+
+**7. Treat selected configurations as candidates for further validation.**
+
+The leaderboard represents configurations chosen using the same cross-validation evidence that guided Feature Selection.
+
+Consequently, the recorded improvements should not be interpreted as independent estimates of future performance.
+
+Hyperparameter optimization may also change the relative performance of the selected feature sets, especially where differences were small.
+
+Competitive alternatives should therefore remain available for later comparison, and final generalization should be assessed using data not involved in feature selection or tuning.
+
+#### Conclusion
+
+Feature Selection improved the understanding of how each model responded to engineered representations and produced seven model-specific candidates for subsequent optimization.
+
+**Logistic Regression achieved the highest recorded cross-validation accuracy and F1**, reaching 0.841 and 0.787, respectively. However, the broader result was that no single feature-engineering strategy worked best for every model.
+
+The experiments demonstrated that feature contributions were conditional, that preprocessing choices could affect both performance and inference requirements, and that carefully targeted pruning could be as valuable as adding new features.
+
+The most important methodological lesson was to **treat feature selection as an iterative investigation rather than a one-directional search for additional predictors**.
+
+The next stage is hyperparameter optimization, using these selected configurations and their competitive alternatives as starting points for further experimentation.
 
 ## Lessons learned
 
