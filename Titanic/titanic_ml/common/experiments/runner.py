@@ -230,6 +230,12 @@ def run_experiments(
         if debug:
             print(f"Running config: {exp}")
 
+        if exp.get("hyperparameter_search") is not None:
+            raise ValueError(
+                f"Experiment '{exp['name']}' contains hyperparameter "
+                "search instructions. Use run_hyperparameter_search()."
+            )
+
         try:
             # -------------------------------------------------
             # 1. Validate target

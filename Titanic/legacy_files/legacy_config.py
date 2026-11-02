@@ -4,7 +4,7 @@
 from math import exp
 
 from titanic_ml.feature_engineering import add_family_features, add_has_cabin, add_title, add_full_title_feature, age_imputed_by_title, age_imputed_by_title_pclass, add_fare_per_familysize, add_ticket_group_size, add_fare_per_ticket_member, add_deck, add_full_cabin_features
-from titanic_ml.common.experiments.legacy_config_creation import create_experiment_group
+from legacy_files.legacy_config_creation import create_experiment_group
 import copy
 
 from titanic_ml.feature_engineering.age_bin import add_age_bin
