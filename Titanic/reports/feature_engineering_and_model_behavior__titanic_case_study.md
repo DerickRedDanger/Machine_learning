@@ -4803,6 +4803,78 @@ The most important methodological lesson was to **treat feature selection as an 
 
 The next stage is hyperparameter optimization, using these selected configurations and their competitive alternatives as starting points for further experimentation.
 
+# Draft
+
+# HPO — Logistic Regression: investigation notes
+
+### Objective
+
+Investigate whether hyperparameter optimization can improve our feature-selected Logistic Regression model, understand how its main hyperparameters affect predictions, and identify competitive configurations without relying exclusively on the highest CV score.
+
+**Evaluation:** Same 5-fold cross-validation and feature configuration used during Feature Selection. Accuracy remains the primary metric, with F1 as secondary; precision, recall, and training scores provide additional context.
+
+### HPO01–02: Regularization strength (`C`)
+
+**Why:** Logistic Regression uses regularization to constrain coefficient magnitudes. We wanted to determine whether the default `C=1` was appropriate.
+
+- HPO01 tested a broad logarithmic range to identify promising values.
+- HPO02 explored that region more closely rather than refining the entire search space.
+- Stronger regularization (`C` much below 1) reduced performance.
+- `C=0.6–1.0` produced a relatively stable performance plateau, with accuracy around 0.8406.
+- Larger values did not improve performance.
+
+**Lesson:** Moderate regularization works well. Further fine-grained tuning of `C` alone is unlikely to justify additional experimentation.
+
+### HPO03: Regularization type
+
+**Why:** L1, L2, and Elastic Net constrain coefficients differently. L1 can eliminate coefficients, while L2 generally retains them with reduced magnitudes. We wanted to investigate whether sparsity would benefit our selected features.
+
+- Compared L1, L2, and Elastic Net across promising `C` values.
+- Used the `saga` solver to support all three regularization types.
+- L2 consistently produced competitive results and the highest observed accuracy.
+- Elastic Net performed better with a smaller L1 contribution.
+- L1 did not improve performance.
+
+**Lesson:** Our selected feature representation appears better suited to L2 regularization among the tested alternatives. Coefficient inspection would be needed to determine whether sparsity explains the differences.
+
+### HPO04: Solver comparison
+
+**Why:** Determine whether optimization algorithms materially affect the results, and whether differences observed in HPO03 might be solver-related.
+
+- Compared `lbfgs`, `liblinear`, `newton-cg`, `sag`, and `saga` using L2.
+- Several solvers produced identical classification metrics at the same `C`.
+- `newton-cg`, `sag`, and `saga` tied for the highest observed accuracy (0.84175 at `C=0.8`).
+- Differences were small; solver choice did not reveal a substantial performance improvement.
+
+**Lesson:** Solver selection appears less important than regularization strength and type for this dataset. Similar classification scores do not guarantee identical coefficients or convergence behavior.
+
+### HPO05: Class weighting
+
+**Why:** Titanic has unequal class frequencies. We wanted to test whether changing the importance of survivors versus non-survivors improves classification, and understand the associated precision–recall trade-off.
+
+- Tested no weighting, automatic balanced weighting, and manually increased weights for either class.
+- Equal weighting produced the highest accuracy and F1 among the tested configurations.
+- Increasing non-survivor weight improved survivor precision but substantially reduced recall.
+- Increasing survivor weight improved recall but reduced precision.
+- At `C=1`, doubling non-survivor weight changed precision/recall from approximately 0.806/0.772 to 0.852/0.599.
+- Doubling survivor weight changed them to approximately 0.710/0.807.
+
+**Lesson:** Class weighting changes the model's priorities, not necessarily its overall quality. It may be valuable when errors have different consequences, but it did not benefit our current accuracy/F1 objectives.
+
+### Overall observations
+
+- Moderate L2 regularization is consistently competitive.
+- Solver choice has relatively little influence on our classification metrics.
+- Class weighting produces meaningful precision–recall trade-offs, but no improvement in our primary metrics.
+- Small CV improvements should not automatically determine the preferred configuration, especially after repeated experimentation on the same folds.
+- The leaderboard should identify competitive candidates, while practical constraints, limitations, and alternative objectives remain part of the final decision.
+
+### Remaining investigation
+
+**Decision threshold:** Our experiments used the default probability cutoff of 0.5. Investigate whether changing this cutoff improves accuracy or F1, and how it affects precision and recall.
+
+Threshold selection must be performed using validation predictions, not the same observations used to fit the model. Any reported improvement from selecting a threshold on our existing CV results should be treated as exploratory rather than independently validated.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).
