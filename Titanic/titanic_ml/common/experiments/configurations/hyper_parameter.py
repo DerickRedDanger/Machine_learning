@@ -139,3 +139,16 @@ logreg_hpo05["hyperparameter_search"]["param_grid"] = {
 hpo05_configs = config_to_group(logreg_hpo05)
 
 ALL_HPO_CONFIGS['hpo05_configs'] = hpo05_configs
+
+
+logreg_hpo06 = copy.deepcopy(logreg_hpo05)
+
+logreg_hpo06["model_params"].update({
+    "C": 1.0,
+    "penalty": "l2",
+    "solver": "lbfgs",
+    "class_weight": None,
+})
+
+hpo06_configs = config_to_group(logreg_hpo06)
+ALL_HPO_CONFIGS['hpo06_configs'] = hpo06_configs

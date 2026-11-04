@@ -4852,6 +4852,8 @@ Investigate whether hyperparameter optimization can improve our feature-selected
 
 **Why:** Titanic has unequal class frequencies. We wanted to test whether changing the importance of survivors versus non-survivors improves classification, and understand the associated precision–recall trade-off.
 
+Experimental control: Fixed solver="lbfgs" and penalty="l2" to isolate the effect of class weighting. HPO04 showed only minor differences between solvers, so repeating that comparison would add complexity without directly addressing our hypothesis. We retained a small range of C values to account for interactions between regularization strength and class weights.
+
 - Tested no weighting, automatic balanced weighting, and manually increased weights for either class.
 - Equal weighting produced the highest accuracy and F1 among the tested configurations.
 - Increasing non-survivor weight improved survivor precision but substantially reduced recall.
@@ -4874,6 +4876,118 @@ Investigate whether hyperparameter optimization can improve our feature-selected
 **Decision threshold:** Our experiments used the default probability cutoff of 0.5. Investigate whether changing this cutoff improves accuracy or F1, and how it affects precision and recall.
 
 Threshold selection must be performed using validation predictions, not the same observations used to fit the model. Any reported improvement from selecting a threshold on our existing CV results should be treated as exploratory rather than independently validated.
+
+### HPO06 — Decision Threshold Optimization
+
+**Objective:** Investigate whether adjusting Logistic Regression's default classification threshold (0.5) can improve accuracy or F1 without changing the fitted model.
+
+#### Motivation
+
+HPO05 demonstrated that class weighting can alter the balance between precision and recall, but none of the tested weights improved overall accuracy or F1.
+
+This raised a related question: could we achieve a better balance by adjusting the classification threshold instead of changing how the model learns?
+
+Logistic Regression produces estimated probabilities through `predict_proba()`. By default, passengers with an estimated survival probability of at least 0.5 are classified as survivors.
+
+Changing this threshold modifies the final predictions without retraining the model or changing its learned coefficients.
+
+#### Experimental Design
+
+- **Model:** Selected Logistic Regression configuration from Feature Selection (`pr03__removing_fare__logreg`).
+- **Thresholds:** 0.300–0.700, in increments of 0.025 (17 candidates).
+- **Primary metric:** Accuracy.
+- **Secondary metric:** F1, used to resolve accuracy ties.
+- **Final tie-breaker:** Prefer the threshold closest to 0.5.
+- **Evaluation:** Nested five-fold cross-validation, using the original unshuffled stratified CV configuration.
+
+**Why nested CV?**
+
+Selecting the best threshold and evaluating it on the same validation predictions would produce an optimistically biased performance estimate.
+
+Instead, each outer CV iteration:
+
+1. Reserves approximately 20% of the dataset for evaluation.
+2. Uses inner five-fold CV on the remaining 80% to generate out-of-fold survival probabilities.
+3. Evaluates all candidate thresholds on those probabilities and selects the best.
+4. Refits Logistic Regression on the full outer training subset (80% of the dataset).
+5. Evaluates both the default and selected thresholds on the untouched outer validation subset.
+
+This allows threshold selection to be evaluated separately from the data used to select it.
+
+The inner models train on approximately 64% of the full dataset, but the model used for each outer evaluation trains on approximately 80%.
+
+#### Results
+
+**Inner-CV threshold investigation**
+
+| Threshold | Mean accuracy | Mean F1 | Selected |
+|---|---:|---:|---:|
+| 0.450 | 0.82155 | 0.77007 | 0 |
+| 0.475 | 0.82688 | 0.77297 | 0 |
+| 0.500 | **0.83193** | **0.77589** | 4 |
+| 0.525 | **0.83193** | 0.77319 | 1 |
+| 0.550 | 0.82856 | 0.76559 | 0 |
+
+The default threshold achieved the highest mean F1 and tied for the highest mean accuracy among the tested candidates.
+
+Four of the five inner searches selected 0.5, while the remaining search selected 0.525.
+
+**Outer-CV performance**
+
+| Metric | Default (0.5) | Tuned | Delta |
+|---|---:|---:|---:|
+| Accuracy | **0.84063** | 0.83951 | −0.00112 |
+| Precision | 0.80612 | **0.80745** | +0.00133 |
+| Recall | **0.77161** | 0.76581 | −0.00580 |
+| F1 | **0.78675** | 0.78459 | −0.00216 |
+
+Threshold tuning did not improve accuracy or F1. Its small precision improvement came at the expense of recall.
+
+#### Interpretation
+
+**1. The default threshold is already competitive.**
+
+Accuracy peaks around 0.5–0.525 in the inner-CV investigation, and most outer training subsets independently select 0.5.
+
+The tested threshold range offers no convincing evidence that changing the default improves our primary objective.
+
+**2. Threshold adjustment reproduces the precision–recall trade-off observed in HPO05.**
+
+Lower thresholds classify more passengers as survivors, generally increasing recall while reducing precision. Higher thresholds make survivor predictions more selective, increasing precision while reducing recall.
+
+Unlike class weighting, threshold adjustment does not modify the fitted model or its estimated probabilities.
+
+This makes threshold selection a useful technique when classification costs or priorities differ, even when it does not improve accuracy.
+
+**3. Accuracy is less sensitive than precision and recall.**
+
+Changing the threshold can correct some classifications while introducing new errors elsewhere. Consequently, precision and recall can change substantially without producing a comparable improvement in accuracy.
+
+**4. CV configuration matters.**
+
+An initial run used shuffled outer folds and produced a small improvement from threshold tuning.
+
+After aligning the outer CV with the original Feature Selection evaluation (`StratifiedKFold`, five folds, no shuffling), the default accuracy returned to 0.84063 and threshold tuning no longer improved performance.
+
+The difference was caused by the evaluation partitions, rather than the inner CV reducing the amount of training data used for outer evaluation.
+
+**5. Nested CV separates selection from evaluation.**
+
+Inner CV selects a threshold using only the outer training observations. Outer CV then evaluates that selection on unseen observations.
+
+This avoids using an outer validation fold to optimize its own threshold, although it does not eliminate selection bias from earlier feature and hyperparameter experiments performed on the same dataset.
+
+#### Conclusion
+
+**Verdict: No meaningful improvement.**
+
+The default threshold of **0.5** remains the preferred choice for Logistic Regression under our accuracy-first objective.
+
+Threshold tuning introduced additional selection complexity without improving accuracy or F1 in the aligned outer-CV evaluation.
+
+The main value of HPO06 was methodological: understanding the distinction between modifying the model's learning process and modifying its classification rule, and learning how to evaluate threshold selection using nested cross-validation.
+
+No further threshold optimization is recommended for this Logistic Regression configuration at this stage.
 
 ## Lessons learned
 
