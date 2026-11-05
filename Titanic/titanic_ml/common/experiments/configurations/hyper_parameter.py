@@ -4,6 +4,8 @@ from titanic_ml.common.experiments.configurations.feature_selection_config impor
 
 ALL_HPO_CONFIGS = {}
 
+# Log Reg hyperparameter optimization configurations
+
 best_logreg_fs = ALL_FS_CONFIGS["pr03__removing_fare__logreg"]
 
 logreg_selected_features = copy.deepcopy(
@@ -31,7 +33,7 @@ logreg_hpo01.update({
 
 hpo01_configs = config_to_group(logreg_hpo01)
 
-ALL_HPO_CONFIGS['hpo01_configs'] = hpo01_configs
+ALL_HPO_CONFIGS['hpo01_configs__logreg'] = hpo01_configs
 
 # ------------------------------------------
 
@@ -52,7 +54,7 @@ logreg_hpo02["hyperparameter_search"]["param_grid"] = {
 }
 
 hpo02_configs = config_to_group(logreg_hpo02)
-ALL_HPO_CONFIGS['hpo02_configs'] = hpo02_configs
+ALL_HPO_CONFIGS['hpo02_configs__logreg'] = hpo02_configs
 
 #--------------------------------------------
 
@@ -80,7 +82,7 @@ logreg_hpo03["hyperparameter_search"]["param_grid"] = [
 ]
 
 hpo03_configs = config_to_group(logreg_hpo03)
-ALL_HPO_CONFIGS['hpo03_configs'] = hpo03_configs
+ALL_HPO_CONFIGS['hpo03_configs__logreg'] = hpo03_configs
 
 #--------------------------------------------
 
@@ -107,7 +109,7 @@ logreg_hpo04["hyperparameter_search"]["param_grid"] = {
 
 hpo04_configs = config_to_group(logreg_hpo04)
 
-ALL_HPO_CONFIGS['hpo04_configs'] = hpo04_configs
+ALL_HPO_CONFIGS['hpo04_configs__logreg'] = hpo04_configs
 
 #--------------------------------------------
 
@@ -138,8 +140,9 @@ logreg_hpo05["hyperparameter_search"]["param_grid"] = {
 
 hpo05_configs = config_to_group(logreg_hpo05)
 
-ALL_HPO_CONFIGS['hpo05_configs'] = hpo05_configs
+ALL_HPO_CONFIGS['hpo05_configs__logreg'] = hpo05_configs
 
+#--------------------------------------------
 
 logreg_hpo06 = copy.deepcopy(logreg_hpo05)
 
@@ -151,4 +154,103 @@ logreg_hpo06["model_params"].update({
 })
 
 hpo06_configs = config_to_group(logreg_hpo06)
-ALL_HPO_CONFIGS['hpo06_configs'] = hpo06_configs
+ALL_HPO_CONFIGS['hpo06_configs__logreg'] = hpo06_configs
+
+# SVC hyperparameter optimization configurations
+
+best_svc_fs = ALL_FS_CONFIGS['fs04__fare_fe10_full_context__svc']
+
+svc_base = copy.deepcopy(
+    next(iter(best_svc_fs.values()))
+)
+
+svc_hpo01 = copy.deepcopy(svc_base)
+
+svc_hpo01.update({
+    "name": "svc_hpo01__broad_c",
+    "stage": "hyperparameter_optimization",
+    "group": "svc_hpo01__broad_c",
+})
+
+svc_hpo01["hyperparameter_search"] = {
+    "method": "grid",
+    "param_grid": {
+        "model__C": [0.01, 0.1, 1, 10, 100],
+    },
+    "refit": "accuracy",
+}
+
+svc_hpo01_configs = config_to_group(svc_hpo01)
+
+ALL_HPO_CONFIGS["hpo01_configs__svc"] = svc_hpo01_configs
+
+#--------------------------------------------
+
+svc_hpo02 = copy.deepcopy(svc_hpo01)
+
+svc_hpo02.update({
+    "name": "svc_hpo02__refined_c",
+    "group": "svc_hpo02__refined_c",
+})
+
+svc_hpo02["hyperparameter_search"]["param_grid"] = {
+    "model__C": [
+        0.2,
+        0.4,
+        0.6,
+        0.8,
+        1.0,
+        1.5,
+        2.0,
+        3.0,
+        5.0,
+    ],
+}
+
+svc_hpo02_configs = config_to_group(svc_hpo02)
+
+ALL_HPO_CONFIGS["hpo02_configs__svc"] = svc_hpo02_configs
+
+#--------------------------------------------
+
+svc_hpo03 = copy.deepcopy(svc_hpo02)
+
+svc_hpo03.update({
+    "name": "svc_hpo03__c_gamma",
+    "group": "svc_hpo03__c_gamma",
+})
+
+svc_hpo03["hyperparameter_search"]["param_grid"] = {
+    "model__C": [0.6, 1.0, 1.5, 2.0],
+    "model__gamma": ["scale", 0.001, 0.01, 0.1, 1.0],
+}
+
+svc_hpo03_configs = config_to_group(svc_hpo03)
+
+ALL_HPO_CONFIGS["hpo03_configs__svc"] = svc_hpo03_configs
+
+#--------------------------------------------
+
+svc_hpo04 = copy.deepcopy(svc_hpo02)
+
+svc_hpo04.update({
+    "name": "svc_hpo04__c_gamma",
+    "group": "svc_hpo04__c_gamma",
+})
+
+svc_hpo04["hyperparameter_search"]["param_grid"] = {
+    "model__C": [0.6, 1.0, 1.5, 2.0],
+    "model__gamma": [
+        "scale",
+        0.05,
+        0.075,
+        0.1,
+        0.15,
+        0.2,
+        0.3,
+    ],
+}
+
+svc_hpo04_configs = config_to_group(svc_hpo04)
+
+ALL_HPO_CONFIGS["hpo04_configs__svc"] = svc_hpo04_configs
