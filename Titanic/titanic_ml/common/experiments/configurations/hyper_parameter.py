@@ -231,7 +231,7 @@ ALL_HPO_CONFIGS["hpo03_configs__svc"] = svc_hpo03_configs
 
 #--------------------------------------------
 
-svc_hpo04 = copy.deepcopy(svc_hpo02)
+svc_hpo04 = copy.deepcopy(svc_hpo03)
 
 svc_hpo04.update({
     "name": "svc_hpo04__c_gamma",
@@ -254,3 +254,69 @@ svc_hpo04["hyperparameter_search"]["param_grid"] = {
 svc_hpo04_configs = config_to_group(svc_hpo04)
 
 ALL_HPO_CONFIGS["hpo04_configs__svc"] = svc_hpo04_configs
+
+#--------------------------------------------
+svc_hpo05 = copy.deepcopy(svc_hpo04)
+
+svc_hpo05.update({
+    "name": "svc_hpo05__kernel_comparison",
+    "group": "svc_hpo05__kernel_comparison",
+})
+
+svc_hpo05["hyperparameter_search"]["param_grid"] = [
+    {
+        "model__kernel": ["linear"],
+        "model__C": [0.01, 0.1, 1, 10, 100],
+    },
+    {
+        "model__kernel": ["rbf"],
+        "model__C": [0.6, 1, 1.5, 2],
+        "model__gamma": ["scale", 0.05, 0.1],
+    },
+    {
+        "model__kernel": ["poly"],
+        "model__C": [0.1, 1, 10],
+        "model__gamma": ["scale"],
+        "model__degree": [2, 3, 4],
+        "model__coef0": [0, 1, 2],
+    },
+    {
+        "model__kernel": ["sigmoid"],
+        "model__C": [0.1, 1, 10],
+        "model__gamma": ["scale"],
+        "model__coef0": [0, 1, 2],
+    },
+]
+
+svc_hpo05_configs = config_to_group(svc_hpo05)
+
+ALL_HPO_CONFIGS["hpo05_configs__svc"] = svc_hpo05_configs
+
+
+svc_hpo06 = copy.deepcopy(svc_hpo05)
+
+svc_hpo06.update({
+    "name": "svc_hpo06__class_weight",
+    "group": "svc_hpo06__class_weight",
+})
+
+svc_hpo06["hyperparameter_search"]["param_grid"] = {
+    "model__kernel": ["rbf"],
+    "model__gamma": ["scale"],
+    "model__C": [0.6, 1.0, 1.5],
+    "model__class_weight": [
+        None,
+        "balanced",
+        {0: 1, 1: 1.25},
+        {0: 1, 1: 1.5},
+        {0: 1, 1: 2},
+        {0: 1.25, 1: 1},
+        {0: 1.5, 1: 1},
+        {0: 2, 1: 1},
+    ],
+}
+
+svc_hpo06_configs = config_to_group(svc_hpo06)
+
+ALL_HPO_CONFIGS["hpo06_configs__svc"] = svc_hpo06_configs
+
