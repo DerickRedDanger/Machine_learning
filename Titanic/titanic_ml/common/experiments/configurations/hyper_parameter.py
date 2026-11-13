@@ -1,6 +1,8 @@
 import copy
-from titanic_ml.common.experiments.config_creation import config_to_group
+from titanic_ml.common.experiments.config_creation import config_to_group, update_experiment_identity
 from titanic_ml.common.experiments.configurations.feature_selection_config import ALL_FS_CONFIGS
+
+
 
 ALL_HPO_CONFIGS = {}
 
@@ -16,12 +18,13 @@ logreg_selected_features = copy.deepcopy(
 
 logreg_hpo01 = copy.deepcopy(logreg_selected_features)
 
+logreg_hpo01 = update_experiment_identity(
+    config=logreg_hpo01,
+    stage="hpo01",
+    feature_group="regularization"
+)
+
 logreg_hpo01.update({
-    "name": "hpo01__regularization__logreg",
-    "stage": "hpo01",
-    "feature_group": "regularization",
-    "group": "hpo01__regularization",
-    "source_experiment": logreg_selected_features["name"],
     "hyperparameter_search": {
         "method": "grid",
         "param_grid": {
@@ -168,7 +171,7 @@ svc_hpo01 = copy.deepcopy(svc_base)
 
 svc_hpo01.update({
     "name": "svc_hpo01__broad_c",
-    "stage": "hyperparameter_optimization",
+    "stage": "hpo",
     "group": "svc_hpo01__broad_c",
 })
 
@@ -296,8 +299,10 @@ ALL_HPO_CONFIGS["hpo05_configs__svc"] = svc_hpo05_configs
 svc_hpo06 = copy.deepcopy(svc_hpo05)
 
 svc_hpo06.update({
-    "name": "svc_hpo06__class_weight",
-    "group": "svc_hpo06__class_weight",
+    "stage": "hpo06",
+    "feature_group": "class_weight",
+    # "name": "svc_hpo06__class_weight",
+    # "group": "svc_hpo06__class_weight",
 })
 
 svc_hpo06["hyperparameter_search"]["param_grid"] = {

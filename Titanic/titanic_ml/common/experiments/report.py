@@ -1,7 +1,7 @@
 import pandas as pd
 import pprint
 from pathlib import Path
-from titanic_ml.common.experiments.save_load import make_config_json_safe
+from titanic_ml.common.experiments.save_load import make_json_safe
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, titanic_notes_leaderboard
 def format_metric(result_row, metric_name):
@@ -72,7 +72,7 @@ def baseline_summary_to_markdown(results_df):
 
 
 def experiment_config_to_markdown(config):
-    safe_config = make_config_json_safe(
+    safe_config = make_json_safe(
         config
     )
 

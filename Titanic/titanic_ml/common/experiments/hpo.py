@@ -196,12 +196,47 @@ def _run_single_hpo(
 
     search.fit(X, y)
 
+    
     # -------------------------------------------------
-    # 6. Collect results
+    # 6. Collect results and candidate metadata
     # -------------------------------------------------
 
     results = pd.DataFrame(search.cv_results_)
 
-    results.insert(0, "experiment", exp["name"])
+    stage = exp["stage"]
+    feature_group = exp["feature_group"]
+    model_name = exp["model_name"]
+
+    # Keep the original search identity.
+    source_search = exp["name"]
+
+    # Generate candidate IDs in search order, not rank order.
+    candidate_ids = range(1, len(results) + 1)
+
+    # Generate a unique experiment name for each candidate.
+    candidate_names = [
+        f"{stage}__{feature_group}{candidate_id:02d}__{model_name}"
+        for candidate_id in candidate_ids
+    ]
+
+    # Preserve experiment metadata alongside each candidate.
+    metadata = {
+        "experiment": candidate_names,
+        "source_search": source_search,
+        "candidate_id": list(candidate_ids),
+        "stage": stage,
+        "feature_group": feature_group,
+        "group": exp["group"],
+        "model_name": model_name,
+        "domain": exp.get("domain", ""),
+    }
+
+    results = pd.concat(
+        [
+            pd.DataFrame(metadata, index=results.index),
+            results,
+        ],
+        axis=1,
+    )
 
     return search, results

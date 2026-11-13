@@ -661,3 +661,27 @@ def config_to_group(config):
     return {
         config["group"]: config
     }
+
+
+def update_experiment_identity(
+    config,
+    stage,
+    feature_group,
+):
+    """
+    Update an experiment's identity metadata.
+
+    Preserves all other configuration fields.
+    """
+    config = config.copy()
+
+    model_name = config["model_name"]
+
+    config.update({
+        "stage": stage,
+        "feature_group": feature_group,
+        "group": f"{stage}__{feature_group}",
+        "name": f"{stage}__{feature_group}__{model_name}",
+    })
+
+    return config
