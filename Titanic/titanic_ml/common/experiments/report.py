@@ -4,7 +4,6 @@ from pathlib import Path
 from titanic_ml.common.experiments.save_load import make_config_json_safe
 from titanic_ml.paths import EXPERIMENT_RESULTS_FILE, EXPERIMENT_CONFIGS_FILE
 from titanic_ml.common.experiments.compare import compare_experiment_groups, summarize_group_comparison, leaderboard, titanic_notes_leaderboard
-from titanic_ml.common.experiments.presentation import feature_effect_interpretation
 def format_metric(result_row, metric_name):
     mean_key = f"{metric_name}_mean"
     std_key = f"{metric_name}_std"
@@ -322,3 +321,243 @@ def workflow_report(workflow, conclusion="", description="", top_n=10):
 
 #         full_report = experiments_summary_to_markdown(self.experiment_result)
 #         return individual_report, full_report
+
+
+def feature_effect_interpretation(feature_effect):
+    if not feature_effect:
+        return []
+
+    effect = feature_effect[0]
+
+    section = [
+        "",
+        "##### Interpretation",
+        "",
+        f"- Verdict: {effect['verdict']}",
+    ]
+
+    if effect["recommended_for_all"]:
+        section.extend([
+            "- Recommended for all models",
+            f"- Mean delta: {effect['mean_delta']}",
+        ])
+
+    elif effect["discard"]:
+        section.extend([
+            "- Discard",
+            f"- Max delta: {effect['max_delta']}",
+        ])
+
+    else:
+        section.append("- Recommended for specific models:")
+
+        for model_name, tradeoff in effect["recommended_model_tradeoffs"].items():
+            section.append(f"  - {model_name}: {tradeoff['primary_metric']}: {tradeoff['primary_delta']}")
+
+            if tradeoff["secondary_pros"]:
+                section.append("    - Secondary gains:")
+                for metric, delta in tradeoff["secondary_pros"].items():
+                    section.append(f"      - {metric}: {delta}")
+
+            if tradeoff["secondary_cons"]:
+                section.append("    - Secondary losses:")
+                for metric, delta in tradeoff["secondary_cons"].items():
+                    section.append(f"      - {metric}: {delta}")
+
+        if effect["notable_secondary_improvements"]:
+            section.append("- Notable secondary improvements in non-recommended models:")
+
+            for model_name, metrics in effect["notable_secondary_improvements"].items():
+                metric_text = ", ".join(
+                    f"{metric}: {delta}"
+                    for metric, delta in metrics.items()
+                )
+                section.append(f"  - {model_name}: {metric_text}")
+
+    section.append("")
+    return section
+
+# -------------- Hiperparameter Optimization (HPO) Reporting Functions --------------
+
+def summarize_hpo_results(results, decimals=5):
+    parameter_columns = [
+        column
+        for column in results.columns
+        if column.startswith("param_")
+    ]
+
+    metric_columns = [
+        "mean_test_accuracy",
+        "std_test_accuracy",
+        "mean_test_f1",
+        "std_test_f1",
+        "mean_train_accuracy",
+        "rank_test_accuracy",
+    ]
+
+    selected_columns = [
+        "experiment",
+        *parameter_columns,
+        *[
+            column
+            for column in metric_columns
+            if column in results.columns
+        ],
+    ]
+
+    summary = results[selected_columns].copy()
+
+    summary = summary.rename(
+        columns={
+            "experiment": "Experiment",
+            **{
+                column: column.removeprefix("param_model__")
+                for column in parameter_columns
+            },
+            "mean_test_accuracy": "CV Accuracy",
+            "std_test_accuracy": "Accuracy Std",
+            "mean_test_f1": "CV F1",
+            "std_test_f1": "F1 Std",
+            "mean_train_accuracy": "Train Accuracy",
+            "rank_test_accuracy": "Rank",
+        }
+    )
+
+    return (
+        summary
+        .sort_values(
+            ["CV Accuracy", "CV F1"],
+            ascending=False,
+        )
+        .round(decimals)
+        .reset_index(drop=True)
+    )
+
+def has_varying_values(series):
+    """
+    Return True if a Series contains different values.
+
+    Supports scalar hyperparameters and dictionary values.
+    Treats missing scalar values as equivalent.
+    """
+    if series.empty:
+        return False
+
+    first_value = series.iloc[0]
+
+    for value in series.iloc[1:]:
+
+        # Handle missing scalar values.
+        first_missing = (
+            first_value is None
+            or first_value is pd.NA
+            or (
+                isinstance(first_value, float)
+                and pd.isna(first_value)
+            )
+        )
+
+        value_missing = (
+            value is None
+            or value is pd.NA
+            or (
+                isinstance(value, float)
+                and pd.isna(value)
+            )
+        )
+
+        if first_missing and value_missing:
+            continue
+
+        if first_missing != value_missing:
+            return True
+
+        if value != first_value:
+            return True
+
+    return False
+
+def hpo_leaderboard(results, top_n=5, decimals=5):
+    if top_n < 1:
+        raise ValueError("top_n must be at least 1.")
+
+    # Detect searched hyperparameters.
+    param_columns = [
+        col for col in results.columns
+        if col.startswith("param_")
+    ]
+
+    # Keep only parameters that vary across candidates.
+    varying_params = [
+        col for col in param_columns
+        if has_varying_values(results[col])
+    ]
+
+    columns = [
+        "experiment",
+        *varying_params,
+        "mean_test_accuracy",
+        "std_test_accuracy",
+        "mean_test_f1",
+        "std_test_f1",
+        "rank_test_accuracy",
+    ]
+
+    leaderboard = results[columns].copy()
+
+    leaderboard = leaderboard.sort_values(
+        [
+            "mean_test_accuracy",
+            "mean_test_f1",
+            "std_test_accuracy",
+        ],
+        ascending=[False, False, True],
+        kind="stable",
+    ).head(top_n)
+
+    leaderboard = leaderboard.rename(
+        columns={
+            "experiment": "Experiment",
+            **{
+                col: col.removeprefix("param_model__")
+                for col in varying_params
+            },
+            "mean_test_accuracy": "CV Accuracy",
+            "std_test_accuracy": "Accuracy Std",
+            "mean_test_f1": "CV F1",
+            "std_test_f1": "F1 Std",
+            "rank_test_accuracy": "Rank",
+        }
+    )
+
+    return leaderboard.round(decimals).reset_index(drop=True)
+
+# ------------- Threshold Optimization Reporting Functions --------------
+
+def summarize_threshold_candidates(candidates, decimals=5):
+    summary = (
+        candidates
+        .groupby("threshold")
+        .agg(
+            accuracy_mean=("accuracy", "mean"),
+            accuracy_std=("accuracy", "std"),
+            precision_mean=("precision", "mean"),
+            recall_mean=("recall", "mean"),
+            f1_mean=("f1", "mean"),
+            selected_count=("selected", "sum"),
+        )
+        .reset_index()
+    )
+
+    return summary.round(decimals)
+
+def summarize_threshold_performance(results, decimals=5):
+    metrics = ["accuracy", "precision", "recall", "f1"]
+
+    summary = (
+        results
+        .groupby("method")[metrics]
+        .agg(["mean", "std"])
+    )
+
+    return summary.round(decimals)

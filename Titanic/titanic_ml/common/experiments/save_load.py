@@ -66,14 +66,11 @@ def make_json_safe(value):
 
     if isinstance(value, set):
         return sorted(
-            make_config_json_safe(item)
+            make_json_safe(item)
             for item in value
         )
 
     return value
-
-def make_config_json_safe(config):
-    return make_json_safe(config)
 
 def _config_values(configs):
     if isinstance(configs, dict):
@@ -106,7 +103,7 @@ def save_configs(
 
     new_configs = {
         config["name"]:
-            make_config_json_safe(config)
+            make_json_safe(config)
 
         for config in _config_values(configs)
     }
