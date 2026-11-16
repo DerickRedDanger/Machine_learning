@@ -12,6 +12,10 @@ EXPERIMENT_FEATURE_EFFECT = RESULTS_DIR /"feature_experiments" / "experiments_fe
 SELECTION_RESULTS_FILE = RESULTS_DIR /"feature_selection" / "selection_results.csv"
 SELECTION_CONFIGS_FILE = RESULTS_DIR /"feature_selection" / "selection_used_config.json"
 SELECTION_FEATURE_EFFECT = RESULTS_DIR /"feature_selection" / "selection_feature_effect.json"
+
+HPO_RESULTS_FILE = RESULTS_DIR / "hyperparameter_optimization" / "hpo_results.csv"
+HPO_CONFIGS_FILE = RESULTS_DIR / "hyperparameter_optimization" / "hpo_used_configs.json"
+
 # print(f"Results directory: {RESULTS_DIR}")
 # print(f"Experiment results file: {EXPERIMENT_RESULTS_FILE}")
 # print(f"Experiment configs file: {EXPERIMENT_CONFIGS_FILE}")

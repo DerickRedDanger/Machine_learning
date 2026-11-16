@@ -1,10 +1,11 @@
 import copy
 from titanic_ml.common.experiments.config_creation import config_to_group, update_experiment_identity
 from titanic_ml.common.experiments.configurations.feature_selection_config import ALL_FS_CONFIGS
-
+import numpy as np
 
 
 ALL_HPO_CONFIGS = {}
+ALL_THRESHOLD_CONFIGS = {}
 
 # Log Reg hyperparameter optimization configurations
 
@@ -15,16 +16,15 @@ logreg_selected_features = copy.deepcopy(
     )
 
 
+hpo01_logreg = logreg_selected_features
 
-logreg_hpo01 = copy.deepcopy(logreg_selected_features)
-
-logreg_hpo01 = update_experiment_identity(
-    config=logreg_hpo01,
+hpo01_logreg = update_experiment_identity(
+    config=hpo01_logreg,
     stage="hpo01",
     feature_group="regularization"
 )
 
-logreg_hpo01.update({
+hpo01_logreg.update({
     "hyperparameter_search": {
         "method": "grid",
         "param_grid": {
@@ -34,43 +34,41 @@ logreg_hpo01.update({
     },
 })
 
-hpo01_configs = config_to_group(logreg_hpo01)
+hpo01_configs__logreg = config_to_group(hpo01_logreg)
 
-ALL_HPO_CONFIGS['hpo01_configs__logreg'] = hpo01_configs
+ALL_HPO_CONFIGS['hpo01_configs__logreg'] = hpo01_configs__logreg
 
 # ------------------------------------------
 
-logreg_hpo02 = copy.deepcopy(logreg_hpo01)
+hpo02_logreg = hpo01_logreg
 
-logreg_hpo02.update({
-    "name": "hpo02__refine_c__logreg",
-    "stage": "hpo02",
-    "feature_group": "refine_c",
-    "group": "hpo02__refine_c",
-})
+hpo02_logreg = update_experiment_identity(
+    config=hpo02_logreg,
+    stage="hpo02",
+    feature_group="refine_c"
+)
 
-logreg_hpo02["hyperparameter_search"]["param_grid"] = {
+hpo02_logreg["hyperparameter_search"]["param_grid"] = {
     "model__C": [
         0.2, 0.4, 0.6, 0.8, 1.0, 1.2,
         1.5, 2.0, 3.0, 5.0,
     ],
 }
 
-hpo02_configs = config_to_group(logreg_hpo02)
-ALL_HPO_CONFIGS['hpo02_configs__logreg'] = hpo02_configs
+hpo02_configs__logreg = config_to_group(hpo02_logreg)
+ALL_HPO_CONFIGS['hpo02_configs__logreg'] = hpo02_configs__logreg
 
 #--------------------------------------------
 
-logreg_hpo03 = copy.deepcopy(logreg_hpo02)
+hpo03_logreg = hpo02_logreg
 
-logreg_hpo03.update({
-    "name": "hpo03__regularization_type__logreg",
-    "stage": "hpo03",
-    "feature_group": "regularization_type",
-    "group": "hpo03__regularization_type",
-})
+hpo03_logreg = update_experiment_identity(
+    config=hpo03_logreg,
+    stage="hpo03",
+    feature_group="regularization_type"
+)
 
-logreg_hpo03["hyperparameter_search"]["param_grid"] = [
+hpo03_logreg["hyperparameter_search"]["param_grid"] = [
     {
         "model__solver": ["saga"],
         "model__penalty": ["l1", "l2"],
@@ -84,21 +82,20 @@ logreg_hpo03["hyperparameter_search"]["param_grid"] = [
     },
 ]
 
-hpo03_configs = config_to_group(logreg_hpo03)
-ALL_HPO_CONFIGS['hpo03_configs__logreg'] = hpo03_configs
+hpo03_configs__logreg = config_to_group(hpo03_logreg)
+ALL_HPO_CONFIGS['hpo03_configs__logreg'] = hpo03_configs__logreg
 
 #--------------------------------------------
 
-logreg_hpo04 = copy.deepcopy(logreg_hpo03)
+hpo04_logreg = hpo03_logreg
 
-logreg_hpo04.update({
-    "name": "hpo04__solver_comparison__logreg",
-    "stage": "hpo04",
-    "feature_group": "solver_comparison",
-    "group": "hpo04__solver_comparison",
-})
+hpo04_logreg = update_experiment_identity(
+    config=hpo04_logreg,
+    stage="hpo04",
+    feature_group="solver_comparison"
+)
 
-logreg_hpo04["hyperparameter_search"]["param_grid"] = {
+hpo04_logreg["hyperparameter_search"]["param_grid"] = {
     "model__solver": [
         "lbfgs",
         "liblinear",
@@ -110,22 +107,21 @@ logreg_hpo04["hyperparameter_search"]["param_grid"] = {
     "model__penalty": ["l2"],
 }
 
-hpo04_configs = config_to_group(logreg_hpo04)
+hpo04_configs__logreg = config_to_group(hpo04_logreg)
 
-ALL_HPO_CONFIGS['hpo04_configs__logreg'] = hpo04_configs
+ALL_HPO_CONFIGS['hpo04_configs__logreg'] = hpo04_configs__logreg
 
 #--------------------------------------------
 
-logreg_hpo05 = copy.deepcopy(logreg_hpo04)
+hpo05_logreg = hpo04_logreg
 
-logreg_hpo05.update({
-    "name": "hpo05__class_weight__logreg",
-    "stage": "hpo05",
-    "feature_group": "class_weight",
-    "group": "hpo05__class_weight",
-})
+hpo05_logreg = update_experiment_identity(
+    config=hpo05_logreg,
+    stage="hpo05",
+    feature_group="class_weight"
+)
 
-logreg_hpo05["hyperparameter_search"]["param_grid"] = {
+hpo05_logreg["hyperparameter_search"]["param_grid"] = {
     "model__solver": ["lbfgs"],
     "model__penalty": ["l2"],
     "model__C": [0.6, 0.8, 1.0],
@@ -141,23 +137,45 @@ logreg_hpo05["hyperparameter_search"]["param_grid"] = {
     ],
 }
 
-hpo05_configs = config_to_group(logreg_hpo05)
+hpo05_configs__logreg = config_to_group(hpo05_logreg)
 
-ALL_HPO_CONFIGS['hpo05_configs__logreg'] = hpo05_configs
+ALL_HPO_CONFIGS['hpo05_configs__logreg'] = hpo05_configs__logreg
 
 #--------------------------------------------
 
-logreg_hpo06 = copy.deepcopy(logreg_hpo05)
+hpo_final_logreg = hpo05_logreg
 
-logreg_hpo06["model_params"].update({
+hpo_final_logreg = update_experiment_identity(
+    config=hpo_final_logreg,
+    stage="hpo_final",
+    feature_group="selected"
+)
+
+hpo_final_logreg["model_params"].update({
     "C": 1.0,
     "penalty": "l2",
     "solver": "lbfgs",
     "class_weight": None,
 })
 
-hpo06_configs = config_to_group(logreg_hpo06)
-ALL_HPO_CONFIGS['hpo06_configs__logreg'] = hpo06_configs
+hpo_final_logreg["threshold_experiment"] = "logreg_threshold01"
+
+hpo_final_configs__logreg = config_to_group(hpo_final_logreg)
+ALL_HPO_CONFIGS['hpo_final_configs__logreg'] = hpo_final_configs__logreg
+
+th01_logreg = {
+        "name": "logreg_threshold01",
+        "source_experiment": "hpo_final_configs__logreg",
+        "thresholds":np.round(
+    np.arange(0.30, 0.701, 0.025),
+    3,),
+        "score_method": "predict_proba",
+        "default_threshold": 0.5,
+        "outer_cv": 5,
+        "inner_cv": 5,
+    }
+
+ALL_THRESHOLD_CONFIGS["th01_logreg"] = th01_logreg
 
 # SVC hyperparameter optimization configurations
 
@@ -167,15 +185,15 @@ svc_base = copy.deepcopy(
     next(iter(best_svc_fs.values()))
 )
 
-svc_hpo01 = copy.deepcopy(svc_base)
+hpo01_scv = svc_base
 
-svc_hpo01.update({
-    "name": "svc_hpo01__broad_c",
-    "stage": "hpo",
-    "group": "svc_hpo01__broad_c",
-})
+hpo01_scv = update_experiment_identity(
+    config=hpo01_scv,
+    stage="hpo01",
+    feature_group="regularization"
+)
 
-svc_hpo01["hyperparameter_search"] = {
+hpo01_scv["hyperparameter_search"] = {
     "method": "grid",
     "param_grid": {
         "model__C": [0.01, 0.1, 1, 10, 100],
@@ -183,20 +201,21 @@ svc_hpo01["hyperparameter_search"] = {
     "refit": "accuracy",
 }
 
-svc_hpo01_configs = config_to_group(svc_hpo01)
+hpo01_scv_configs = config_to_group(hpo01_scv)
 
-ALL_HPO_CONFIGS["hpo01_configs__svc"] = svc_hpo01_configs
+ALL_HPO_CONFIGS["hpo01_configs__svc"] = hpo01_scv_configs
 
 #--------------------------------------------
 
-svc_hpo02 = copy.deepcopy(svc_hpo01)
+hpo02_scv = hpo01_scv
 
-svc_hpo02.update({
-    "name": "svc_hpo02__refined_c",
-    "group": "svc_hpo02__refined_c",
-})
+hpo02_scv = update_experiment_identity(
+    config=hpo02_scv,
+    stage="hpo02",
+    feature_group="refined_c"
+)
 
-svc_hpo02["hyperparameter_search"]["param_grid"] = {
+hpo02_scv["hyperparameter_search"]["param_grid"] = {
     "model__C": [
         0.2,
         0.4,
@@ -210,38 +229,40 @@ svc_hpo02["hyperparameter_search"]["param_grid"] = {
     ],
 }
 
-svc_hpo02_configs = config_to_group(svc_hpo02)
+hpo02_scv_configs = config_to_group(hpo02_scv)
 
-ALL_HPO_CONFIGS["hpo02_configs__svc"] = svc_hpo02_configs
+ALL_HPO_CONFIGS["hpo02_configs__svc"] = hpo02_scv_configs
 
 #--------------------------------------------
 
-svc_hpo03 = copy.deepcopy(svc_hpo02)
+hpo03_scv = hpo02_scv
 
-svc_hpo03.update({
-    "name": "svc_hpo03__c_gamma",
-    "group": "svc_hpo03__c_gamma",
-})
+hpo03_scv = update_experiment_identity(
+    config=hpo03_scv,
+    stage="hpo03",
+    feature_group="c_gamma"
+)
 
-svc_hpo03["hyperparameter_search"]["param_grid"] = {
+hpo03_scv["hyperparameter_search"]["param_grid"] = {
     "model__C": [0.6, 1.0, 1.5, 2.0],
     "model__gamma": ["scale", 0.001, 0.01, 0.1, 1.0],
 }
 
-svc_hpo03_configs = config_to_group(svc_hpo03)
+hpo03_scv_configs = config_to_group(hpo03_scv)
 
-ALL_HPO_CONFIGS["hpo03_configs__svc"] = svc_hpo03_configs
+ALL_HPO_CONFIGS["hpo03_configs__svc"] = hpo03_scv_configs
 
 #--------------------------------------------
 
-svc_hpo04 = copy.deepcopy(svc_hpo03)
+hpo04_scv = hpo03_scv
 
-svc_hpo04.update({
-    "name": "svc_hpo04__c_gamma",
-    "group": "svc_hpo04__c_gamma",
-})
+hpo04_scv = update_experiment_identity(
+    config=hpo04_scv,
+    stage="hpo04",
+    feature_group="c_gamma"
+)
 
-svc_hpo04["hyperparameter_search"]["param_grid"] = {
+hpo04_scv["hyperparameter_search"]["param_grid"] = {
     "model__C": [0.6, 1.0, 1.5, 2.0],
     "model__gamma": [
         "scale",
@@ -254,19 +275,20 @@ svc_hpo04["hyperparameter_search"]["param_grid"] = {
     ],
 }
 
-svc_hpo04_configs = config_to_group(svc_hpo04)
+hpo04_scv_configs = config_to_group(hpo04_scv)
 
-ALL_HPO_CONFIGS["hpo04_configs__svc"] = svc_hpo04_configs
+ALL_HPO_CONFIGS["hpo04_configs__svc"] = hpo04_scv_configs
 
 #--------------------------------------------
-svc_hpo05 = copy.deepcopy(svc_hpo04)
+hpo05_scv = hpo04_scv
 
-svc_hpo05.update({
-    "name": "svc_hpo05__kernel_comparison",
-    "group": "svc_hpo05__kernel_comparison",
-})
+hpo05_scv = update_experiment_identity(
+    config=hpo05_scv,
+    stage="hpo05",
+    feature_group="kernel_comparison"
+)
 
-svc_hpo05["hyperparameter_search"]["param_grid"] = [
+hpo05_scv["hyperparameter_search"]["param_grid"] = [
     {
         "model__kernel": ["linear"],
         "model__C": [0.01, 0.1, 1, 10, 100],
@@ -291,21 +313,20 @@ svc_hpo05["hyperparameter_search"]["param_grid"] = [
     },
 ]
 
-svc_hpo05_configs = config_to_group(svc_hpo05)
+hpo05_scv_configs = config_to_group(hpo05_scv)
 
-ALL_HPO_CONFIGS["hpo05_configs__svc"] = svc_hpo05_configs
+ALL_HPO_CONFIGS["hpo05_configs__svc"] = hpo05_scv_configs
 
 
-svc_hpo06 = copy.deepcopy(svc_hpo05)
+hpo06_scv = hpo05_scv
 
-svc_hpo06.update({
-    "stage": "hpo06",
-    "feature_group": "class_weight",
-    # "name": "svc_hpo06__class_weight",
-    # "group": "svc_hpo06__class_weight",
-})
+hpo06_scv = update_experiment_identity(
+    config=hpo06_scv,
+    stage="hpo06",
+    feature_group="class_weight"
+)
 
-svc_hpo06["hyperparameter_search"]["param_grid"] = {
+hpo06_scv["hyperparameter_search"]["param_grid"] = {
     "model__kernel": ["rbf"],
     "model__gamma": ["scale"],
     "model__C": [0.6, 1.0, 1.5],
@@ -321,7 +342,35 @@ svc_hpo06["hyperparameter_search"]["param_grid"] = {
     ],
 }
 
-svc_hpo06_configs = config_to_group(svc_hpo06)
+hpo06_scv_configs = config_to_group(hpo06_scv)
 
-ALL_HPO_CONFIGS["hpo06_configs__svc"] = svc_hpo06_configs
+ALL_HPO_CONFIGS["hpo06_configs__svc"] = hpo06_scv_configs
 
+#--------------------------------------------
+
+svc_hpo_final = update_experiment_identity(
+    best_svc_fs,
+    stage="hpo_final",
+    feature_group="selected",
+)
+
+svc_hpo_final["threshold_experiment"] = "th01_scv"
+
+svc_hpo_final_configs= config_to_group(svc_hpo_final)
+
+ALL_HPO_CONFIGS["hpo_final_configs__svc"] = svc_hpo_final_configs
+
+
+th01_scv = {
+        "name": "th01_scv",
+        "source_experiment": "hpo_final_configs__svc",
+        "thresholds":np.round(
+    np.arange(-1.0, 1.01, 0.1),
+    2,),
+        "score_method": "decision_function",
+        "default_threshold": 0.0,
+        "outer_cv": 5,
+        "inner_cv": 5,
+    }
+
+ALL_THRESHOLD_CONFIGS["th01_scv"] = th01_scv

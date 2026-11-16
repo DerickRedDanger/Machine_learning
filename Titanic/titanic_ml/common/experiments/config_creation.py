@@ -673,7 +673,7 @@ def update_experiment_identity(
 
     Preserves all other configuration fields.
     """
-    config = config.copy()
+    config = copy.deepcopy(config)
 
     model_name = config["model_name"]
 

@@ -164,3 +164,37 @@ def save_feature_effects(
 def load_feature_effects(path=EXPERIMENT_FEATURE_EFFECT):
     with open(path, "r", encoding="utf-8") as file:
         return json.load(file)
+
+
+
+def save_threshold_results(
+    results_df,
+    path,
+    append=True,
+):
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    if "threshold_experiment" not in results_df.columns:
+        raise ValueError(
+            "Missing 'threshold_experiment' column."
+        )
+
+    if append and path.exists():
+        old_results = pd.read_csv(path)
+
+        # Replace previous results for the same experiments.
+        old_results = old_results[
+            ~old_results["threshold_experiment"].isin(
+                results_df["threshold_experiment"]
+            )
+        ]
+
+        results_df = pd.concat(
+            [old_results, results_df],
+            ignore_index=True,
+        )
+
+    results_df.to_csv(path, index=False)
+
+    return results_df
