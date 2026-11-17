@@ -56,6 +56,7 @@ def evaluate_threshold_cv(
     inner_cv=None,
     score_method="predict_proba",
     default_threshold=None,
+    experiment_name=None,
 ):
     if score_method not in ("predict_proba", "decision_function"):
         raise ValueError(
@@ -170,7 +171,24 @@ def evaluate_threshold_cv(
                 ),
             })
 
-    return (
-        pd.DataFrame(rows),
-        pd.concat(candidate_results, ignore_index=True),
+    outer_results = pd.DataFrame(rows)
+
+    inner_candidates = pd.concat(
+        candidate_results,
+        ignore_index=True,
     )
+
+    if experiment_name is not None:
+        outer_results.insert(
+            0,
+            "threshold_experiment",
+            experiment_name,
+        )
+
+        inner_candidates.insert(
+            0,
+            "threshold_experiment",
+            experiment_name,
+        )
+
+    return outer_results, inner_candidates

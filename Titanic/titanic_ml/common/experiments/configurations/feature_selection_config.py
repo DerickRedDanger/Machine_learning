@@ -4,6 +4,7 @@ from titanic_ml.feature_engineering.updated import fe as FE
 from titanic_ml.pre_cv_feature_engineering import pre_cv_fe as PRE_CV_FE
 from titanic_ml.common.experiments.configurations.exp_config import RAW_FEATURES, baseline_config, ALL_PATCHES
 
+
 ALL_FS_CONFIGS = {}
 LOGREG_FS_CONFIGS = {}
 

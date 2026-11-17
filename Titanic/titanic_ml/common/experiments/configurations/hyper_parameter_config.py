@@ -7,6 +7,7 @@ import numpy as np
 ALL_HPO_CONFIGS = {}
 ALL_THRESHOLD_CONFIGS = {}
 
+
 # Log Reg hyperparameter optimization configurations
 
 best_logreg_fs = ALL_FS_CONFIGS["pr03__removing_fare__logreg"]
@@ -158,14 +159,16 @@ hpo_final_logreg["model_params"].update({
     "class_weight": None,
 })
 
-hpo_final_logreg["threshold_experiment"] = "logreg_threshold01"
+hpo_final_logreg.pop("hyperparameter_search", None)
+
+hpo_final_logreg["threshold_experiment"] = "th01_logreg"
 
 hpo_final_configs__logreg = config_to_group(hpo_final_logreg)
 ALL_HPO_CONFIGS['hpo_final_configs__logreg'] = hpo_final_configs__logreg
 
 th01_logreg = {
-        "name": "logreg_threshold01",
-        "source_experiment": "hpo_final_configs__logreg",
+        "name": "th01_logreg",
+        "source_experiment": hpo_final_logreg['name'],
         "thresholds":np.round(
     np.arange(0.30, 0.701, 0.025),
     3,),
@@ -179,13 +182,15 @@ ALL_THRESHOLD_CONFIGS["th01_logreg"] = th01_logreg
 
 # SVC hyperparameter optimization configurations
 
+
+
 best_svc_fs = ALL_FS_CONFIGS['fs04__fare_fe10_full_context__svc']
 
-svc_base = copy.deepcopy(
+best_svc_fs = copy.deepcopy(
     next(iter(best_svc_fs.values()))
 )
 
-hpo01_scv = svc_base
+hpo01_scv = best_svc_fs
 
 hpo01_scv = update_experiment_identity(
     config=hpo01_scv,
@@ -348,22 +353,24 @@ ALL_HPO_CONFIGS["hpo06_configs__svc"] = hpo06_scv_configs
 
 #--------------------------------------------
 
-svc_hpo_final = update_experiment_identity(
+hpo_final_svc = update_experiment_identity(
     best_svc_fs,
     stage="hpo_final",
     feature_group="selected",
 )
 
-svc_hpo_final["threshold_experiment"] = "th01_scv"
+hpo_final_svc.pop("hyperparameter_search", None)
 
-svc_hpo_final_configs= config_to_group(svc_hpo_final)
+hpo_final_svc["threshold_experiment"] = "th01_scv"
 
-ALL_HPO_CONFIGS["hpo_final_configs__svc"] = svc_hpo_final_configs
+hpo_final_svc_configs= config_to_group(hpo_final_svc)
+
+ALL_HPO_CONFIGS["hpo_final_configs__svc"] = hpo_final_svc_configs
 
 
 th01_scv = {
         "name": "th01_scv",
-        "source_experiment": "hpo_final_configs__svc",
+        "source_experiment": hpo_final_svc['name'],
         "thresholds":np.round(
     np.arange(-1.0, 1.01, 0.1),
     2,),
@@ -374,3 +381,4 @@ th01_scv = {
     }
 
 ALL_THRESHOLD_CONFIGS["th01_scv"] = th01_scv
+
