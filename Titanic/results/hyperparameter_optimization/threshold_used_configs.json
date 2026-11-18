@@ -1,0 +1,60 @@
+{
+  "th01_logreg": {
+    "name": "th01_logreg",
+    "source_experiment": "hpo_final__selected__logreg",
+    "thresholds": [
+      0.3,
+      0.325,
+      0.35,
+      0.375,
+      0.4,
+      0.425,
+      0.45,
+      0.475,
+      0.5,
+      0.525,
+      0.55,
+      0.575,
+      0.6,
+      0.625,
+      0.65,
+      0.675,
+      0.7
+    ],
+    "score_method": "predict_proba",
+    "default_threshold": 0.5,
+    "outer_cv": 5,
+    "inner_cv": 5
+  },
+  "th01_scv": {
+    "name": "th01_scv",
+    "source_experiment": "hpo_final__selected__svc",
+    "thresholds": [
+      -1.0,
+      -0.9,
+      -0.8,
+      -0.7,
+      -0.6,
+      -0.5,
+      -0.4,
+      -0.3,
+      -0.2,
+      -0.1,
+      -0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "score_method": "decision_function",
+    "default_threshold": 0.0,
+    "outer_cv": 5,
+    "inner_cv": 5
+  }
+}

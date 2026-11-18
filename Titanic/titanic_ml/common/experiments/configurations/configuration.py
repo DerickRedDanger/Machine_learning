@@ -26,3 +26,5 @@ validate_threshold_config_references(
     HPO_CONFIGS_BY_NAME,
     debug=False
 )
+
+ALL_THRESHOLD_CONFIGS = ALL_THRESHOLD_CONFIGS

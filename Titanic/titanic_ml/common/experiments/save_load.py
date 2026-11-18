@@ -166,7 +166,6 @@ def load_feature_effects(path=EXPERIMENT_FEATURE_EFFECT):
         return json.load(file)
 
 
-
 def save_threshold_results(
     results_df,
     path,
@@ -184,12 +183,12 @@ def save_threshold_results(
         old_results = pd.read_csv(path)
 
         # Replace previous results for the same experiments.
-        old_results = old_results[
-            ~old_results["threshold_experiment"].isin(
-                results_df["threshold_experiment"]
-            )
-        ]
+        experiment_names = results_df["threshold_experiment"].unique()
 
+        old_results = old_results[
+            ~old_results["threshold_experiment"].isin(experiment_names)
+        ]
+        
         results_df = pd.concat(
             [old_results, results_df],
             ignore_index=True,

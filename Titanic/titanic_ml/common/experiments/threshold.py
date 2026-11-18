@@ -192,3 +192,31 @@ def evaluate_threshold_cv(
         )
 
     return outer_results, inner_candidates
+
+def run_threshold_experiment(
+    df,
+    threshold_config,
+    experiment_configs_by_name,
+    target,
+    context_df=None,
+):
+    source_config = experiment_configs_by_name[
+        threshold_config["source_experiment"]
+    ]
+
+    return evaluate_threshold_cv(
+        X=df.drop(columns=[target]),
+        y=df[target],
+        exp=source_config,
+        context_df=context_df,
+        thresholds=threshold_config["thresholds"],
+        score_method=threshold_config["score_method"],
+        default_threshold=threshold_config["default_threshold"],
+        outer_cv=StratifiedKFold(
+            n_splits=threshold_config["outer_cv"]
+        ),
+        inner_cv=StratifiedKFold(
+            n_splits=threshold_config["inner_cv"]
+        ),
+        experiment_name=threshold_config["name"],
+    )
