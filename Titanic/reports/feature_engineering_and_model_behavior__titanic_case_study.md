@@ -4989,6 +4989,37 @@ The main value of HPO06 was methodological: understanding the distinction betwee
 
 No further threshold optimization is recommended for this Logistic Regression configuration at this stage.
 
+
+----------------------------------------------
+
+HPO01–02 — Regularization strength
+
+Verdict: No improvement over the default C=1.0.
+
+The broad search identified C=1.0 as the strongest candidate. Refinement revealed a stable region around C=0.6–1.0, where mean CV accuracy was identical and F1 differences were negligible.
+
+Stronger regularization reduced performance, particularly at C=0.01, while weaker regularization offered no benefit. Training accuracy remained relatively stable across the competitive configurations, without a clear indication of substantial overfitting.
+
+Within the competitive range of C=0.6–1.0, precision and recall remained relatively stable. This suggests that further refinement of regularization strength alone is unlikely to meaningfully improve either metric. However, it does not establish how the model will respond to class weighting or threshold adjustment.
+
+Selected configuration: Retain C=1.0, as it achieves the highest observed F1 among the accuracy-leading candidates without introducing additional tuning complexity.
+
+Lesson: When a hyperparameter search reveals a stable performance plateau, further optimization may provide little practical value. The default can remain preferable even when several alternatives perform equally well.
+
+HPO03 — Regularization type
+
+Verdict: L2 remains preferred; marginal improvement observed.
+
+Comparing L1, L2 and Elastic Net using the saga solver showed that L2 achieved the highest CV accuracy (0.84175) and F1 (0.78790), at C=0.8.
+
+Elastic Net remained competitive when the L1 contribution was small (l1_ratio=0.25), but increasing that contribution generally reduced performance. Pure L1 did not improve upon L2.
+
+The strongest configuration improved accuracy by approximately 0.00112 over the previous baseline, which is too small to establish a meaningful generalization improvement.
+
+Provisional selection: L2 regularization, with C=0.8 retained as a candidate for further investigation.
+
+Next step: HPO04 will examine whether solver differences explain the small changes observed between otherwise comparable configurations.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).

@@ -379,6 +379,7 @@ def feature_effect_interpretation(feature_effect):
 
 # -------------- Hiperparameter Optimization (HPO) Reporting Functions --------------
 
+
 def summarize_hpo_results(results, decimals=5):
     parameter_columns = [
         column
@@ -389,6 +390,10 @@ def summarize_hpo_results(results, decimals=5):
     metric_columns = [
         "mean_test_accuracy",
         "std_test_accuracy",
+        "mean_test_precision",
+        "std_test_precision",
+        "mean_test_recall",
+        "std_test_recall",
         "mean_test_f1",
         "std_test_f1",
         "mean_train_accuracy",
@@ -416,6 +421,10 @@ def summarize_hpo_results(results, decimals=5):
             },
             "mean_test_accuracy": "CV Accuracy",
             "std_test_accuracy": "Accuracy Std",
+            "mean_test_precision": "CV Precision",
+            "std_test_precision": "Precision Std",
+            "mean_test_recall": "CV Recall",
+            "std_test_recall": "Recall Std",
             "mean_test_f1": "CV F1",
             "std_test_f1": "F1 Std",
             "mean_train_accuracy": "Train Accuracy",
@@ -426,7 +435,7 @@ def summarize_hpo_results(results, decimals=5):
     return (
         summary
         .sort_values(
-            ["CV Accuracy", "CV F1"],
+            ["CV Accuracy", "CV F1", "Accuracy Std"],
             ascending=False,
         )
         .round(decimals)
@@ -477,6 +486,7 @@ def has_varying_values(series):
 
     return False
 
+
 def hpo_leaderboard(results, top_n=5, decimals=5):
     if top_n < 1:
         raise ValueError("top_n must be at least 1.")
@@ -498,6 +508,8 @@ def hpo_leaderboard(results, top_n=5, decimals=5):
         *varying_params,
         "mean_test_accuracy",
         "std_test_accuracy",
+        "mean_test_precision",
+        "mean_test_recall",
         "mean_test_f1",
         "std_test_f1",
         "rank_test_accuracy",
@@ -524,6 +536,8 @@ def hpo_leaderboard(results, top_n=5, decimals=5):
             },
             "mean_test_accuracy": "CV Accuracy",
             "std_test_accuracy": "Accuracy Std",
+            "mean_test_precision": "CV Precision",
+            "mean_test_recall": "CV Recall",
             "mean_test_f1": "CV F1",
             "std_test_f1": "F1 Std",
             "rank_test_accuracy": "Rank",
@@ -531,6 +545,7 @@ def hpo_leaderboard(results, top_n=5, decimals=5):
     )
 
     return leaderboard.round(decimals).reset_index(drop=True)
+
 
 # ------------- Threshold Optimization Reporting Functions --------------
 
