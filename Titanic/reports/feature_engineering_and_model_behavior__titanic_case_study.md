@@ -4989,6 +4989,7 @@ The main value of HPO06 was methodological: understanding the distinction betwee
 
 No further threshold optimization is recommended for this Logistic Regression configuration at this stage.
 
+Methodological reflection: The SVC investigation initially focused on refining the RBF kernel before exploring alternative kernels. Although the eventual comparison did not require changing the selected kernel, it revealed a potential inefficiency in the experimental sequence. Because different kernels require different hyperparameter configurations, comparing them earlier could have reduced the risk of extensive tuning on a branch that might later be discarded. This observation informed subsequent experiments, where broad comparisons were prioritized before detailed refinement.
 
 ----------------------------------------------
 
@@ -5006,19 +5007,72 @@ Selected configuration: Retain C=1.0, as it achieves the highest observed F1 amo
 
 Lesson: When a hyperparameter search reveals a stable performance plateau, further optimization may provide little practical value. The default can remain preferable even when several alternatives perform equally well.
 
-HPO03 — Regularization type
+HPO03 — Solver and penalty comparison
 
-Verdict: L2 remains preferred; marginal improvement observed.
+Verdict: No meaningful improvement over the baseline.
 
-Comparing L1, L2 and Elastic Net using the saga solver showed that L2 achieved the highest CV accuracy (0.84175) and F1 (0.78790), at C=0.8.
+A broad search evaluated 50 compatible solver–penalty configurations across five regularization strengths, including three Elastic Net mixing ratios.
 
-Elastic Net remained competitive when the L1 contribution was small (l1_ratio=0.25), but increasing that contribution generally reduced performance. Pure L1 did not improve upon L2.
+L2 regularization consistently produced the strongest results. newton-cg, sag and saga achieved the highest observed CV accuracy (0.84175) and F1 (0.78790) at C=0.8. The existing lbfgs + L2 baseline at C=1.0 remained highly competitive, with accuracy of 0.84063 and F1 of 0.78675.
 
-The strongest configuration improved accuracy by approximately 0.00112 over the previous baseline, which is too small to establish a meaningful generalization improvement.
+Elastic Net with a small L1 contribution approached L2 performance, while pure L1 generally performed worse. No alternative demonstrated sufficient improvement to justify further refinement or replacing the baseline.
 
-Provisional selection: L2 regularization, with C=0.8 retained as a candidate for further investigation.
+Selected configuration: solver="lbfgs", penalty="l2", C=1.0.
 
-Next step: HPO04 will examine whether solver differences explain the small changes observed between otherwise comparable configurations.
+Methodological lesson: Broadly comparing compatible configurations before committing to further refinement helps identify promising alternatives while limiting unnecessary experimentation. Group-level comparisons are especially useful when a large candidate search makes individual configuration families difficult to assess.
+
+### HPO04 — Class Weighting
+
+**Verdict:** No improvement over the unweighted baseline.
+
+**Interpretation**
+
+- The unweighted configurations achieved the highest CV accuracy (0.84063), with C=1.0 also achieving the highest F1 (0.78675).
+- Increasing the weight of class 0 generally improved survival precision at the cost of recall. At C=1.0, doubling class 0's weight increased precision from 0.80612 to 0.85231, while recall decreased from 0.77161 to 0.59923.
+- Increasing the weight of class 1 generally improved survival recall at the cost of precision. Doubling class 1's weight increased recall to 0.80665, while precision decreased to 0.71030.
+- Both directions reduced overall accuracy and F1. Changes in class weighting had a substantially larger impact than varying C between 0.6 and 1.0.
+- No weighted configuration demonstrated an advantage for the current accuracy-focused objective.
+
+**Conclusion**
+
+Class weighting provides a useful mechanism for prioritizing precision or recall when the relative costs of classification errors differ. However, in this experiment, the resulting trade-offs did not justify departing from the unweighted baseline.
+
+Retain `class_weight=None`, `C=1.0`, `penalty="l2"` and `solver="lbfgs"`.
+
+The observed precision–recall trade-offs are worth retaining as a reference for future applications where one metric is more important than overall accuracy.
+
+### TH01 — Decision Threshold Optimization
+
+**Objective**
+
+Investigate whether adjusting Logistic Regression's decision threshold can improve classification accuracy or provide a more favorable precision–recall trade-off without retraining the model.
+
+**Configuration**
+
+- Model: Logistic Regression (`lbfgs`, L2, C=1.0, `class_weight=None`).
+- Threshold range: 0.300–0.700, in increments of 0.025.
+- Evaluation: 5-fold outer CV with threshold selection using 5-fold inner CV.
+- Primary selection metric: accuracy.
+
+**Findings**
+
+- Inner-CV accuracy peaked around thresholds 0.500–0.525, with both achieving a mean accuracy of 0.83193.
+- The selection procedure chose the default threshold of 0.500 in four of five outer folds, and 0.525 in the remaining fold.
+- Outer-CV accuracy decreased marginally from 0.84063 at the default threshold to 0.83951 after tuning.
+- F1 also decreased slightly, from 0.78675 to 0.78459.
+- Lower thresholds increased survival recall, reaching 0.82309 at threshold 0.300, while reducing precision and accuracy.
+- Higher thresholds increased survival precision, reaching 0.89144 at threshold 0.700, while reducing recall and accuracy.
+- No tested threshold demonstrated a meaningful improvement in overall accuracy.
+
+**Conclusion**
+
+The default threshold of 0.500 is already competitive for the selected Logistic Regression configuration. Threshold tuning did not improve accuracy or F1 and therefore provides no compelling reason to change the decision rule.
+
+Threshold adjustment remains useful when precision or recall must be prioritized, but the resulting trade-offs do not benefit the current accuracy-focused objective.
+
+**Selected threshold:** 0.500.
+
+**Verdict:** Retain the default threshold; no further refinement required.
 
 ## Lessons learned
 

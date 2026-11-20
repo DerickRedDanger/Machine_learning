@@ -2041,5 +2041,192 @@
       "Age_bin"
     ],
     "threshold_experiment": "th01_scv"
+  },
+  "hpo03__solver_penalty__logreg": {
+    "pre_cv_feature_pipeline": [],
+    "pre_cv_scope": null,
+    "preprocessing": {
+      "numeric_features": [
+        "Age",
+        "SibSp",
+        "Parch"
+      ],
+      "onehot_features": [
+        "Sex",
+        "Embarked",
+        "Title",
+        "Deck"
+      ],
+      "ordinal_features": [
+        "Pclass",
+        "Age_bin",
+        "Has_Cabin"
+      ],
+      "numeric_imputer": "median",
+      "categorical_imputer": "most_frequent",
+      "scaler": "standard"
+    },
+    "feature_pipeline": [
+      [
+        "title",
+        {
+          "class": "TitleTransformer",
+          "params": {}
+        }
+      ],
+      [
+        "age_imputer_title_pclass",
+        {
+          "class": "GroupedImputer",
+          "params": {
+            "agg_func": "median",
+            "fallback_to_global": true,
+            "group_cols": [
+              "Title",
+              "Pclass"
+            ],
+            "target_col": "Age"
+          }
+        }
+      ],
+      [
+        "age_bin",
+        {
+          "class": "BinTransformer",
+          "params": {
+            "bins": [
+              0,
+              14,
+              35,
+              60,
+              100
+            ],
+            "labels": [
+              "0",
+              "2",
+              "3",
+              "1"
+            ],
+            "output_col": "Age_bin",
+            "right": false,
+            "source_col": "Age"
+          }
+        }
+      ],
+      [
+        "has_cabin",
+        {
+          "class": "HasFeatureTransformer",
+          "params": {
+            "output_col": "Has_Cabin",
+            "source_col": "Cabin"
+          }
+        }
+      ],
+      [
+        "add_deck",
+        {
+          "class": "AddDeckTransformer",
+          "params": {}
+        }
+      ]
+    ],
+    "evaluation": {
+      "method": "cross_validation",
+      "cv": 5,
+      "scoring": [
+        "accuracy",
+        "precision",
+        "recall",
+        "f1"
+      ],
+      "return_train_score": true,
+      "n_jobs": -1
+    },
+    "stage": "hpo03",
+    "feature_group": "solver_penalty",
+    "group": "hpo03__solver_penalty",
+    "domain": "logreg",
+    "tags": [],
+    "model_name": "logreg",
+    "model_params": {
+      "max_iter": 1000,
+      "random_state": 42
+    },
+    "notes": "pruning 03 for LogReg feature selection.removal of fare feature.",
+    "name": "hpo03__solver_penalty__logreg",
+    "features": [
+      "Age",
+      "SibSp",
+      "Parch",
+      "Sex",
+      "Embarked",
+      "Title",
+      "Deck",
+      "Pclass",
+      "Age_bin",
+      "Has_Cabin"
+    ],
+    "hyperparameter_search": {
+      "method": "grid",
+      "param_grid": [
+        {
+          "model__solver": [
+            "lbfgs",
+            "newton-cg",
+            "sag",
+            "saga",
+            "liblinear"
+          ],
+          "model__penalty": [
+            "l2"
+          ],
+          "model__C": [
+            0.4,
+            0.6,
+            0.8,
+            1.0,
+            1.5
+          ]
+        },
+        {
+          "model__solver": [
+            "liblinear",
+            "saga"
+          ],
+          "model__penalty": [
+            "l1"
+          ],
+          "model__C": [
+            0.4,
+            0.6,
+            0.8,
+            1.0,
+            1.5
+          ]
+        },
+        {
+          "model__solver": [
+            "saga"
+          ],
+          "model__penalty": [
+            "elasticnet"
+          ],
+          "model__l1_ratio": [
+            0.25,
+            0.5,
+            0.75
+          ],
+          "model__C": [
+            0.4,
+            0.6,
+            0.8,
+            1.0,
+            1.5
+          ]
+        }
+      ],
+      "refit": "accuracy"
+    }
   }
 }

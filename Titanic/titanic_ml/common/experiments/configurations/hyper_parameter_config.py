@@ -61,68 +61,110 @@ ALL_HPO_CONFIGS['hpo02_configs__logreg'] = hpo02_configs__logreg
 
 #--------------------------------------------
 
-hpo03_logreg = hpo02_logreg
-
 hpo03_logreg = update_experiment_identity(
-    config=hpo03_logreg,
+    config=hpo02_logreg,
     stage="hpo03",
-    feature_group="regularization_type"
+    feature_group="solver_penalty",
 )
+
+c_values = [0.4, 0.6, 0.8, 1.0, 1.5]
 
 hpo03_logreg["hyperparameter_search"]["param_grid"] = [
     {
-        "model__solver": ["saga"],
-        "model__penalty": ["l1", "l2"],
-        "model__C": [0.4, 0.6, 0.8, 1.0, 1.5],
+        "model__solver": [
+            "lbfgs",
+            "newton-cg",
+            "sag",
+            "saga",
+            "liblinear",
+        ],
+        "model__penalty": ["l2"],
+        "model__C": c_values,
+    },
+    {
+        "model__solver": [
+            "liblinear",
+            "saga",
+        ],
+        "model__penalty": ["l1"],
+        "model__C": c_values,
     },
     {
         "model__solver": ["saga"],
         "model__penalty": ["elasticnet"],
         "model__l1_ratio": [0.25, 0.5, 0.75],
-        "model__C": [0.4, 0.6, 0.8, 1.0, 1.5],
+        "model__C": c_values,
     },
 ]
 
-hpo03_configs__logreg = config_to_group(hpo03_logreg)
-ALL_HPO_CONFIGS['hpo03_configs__logreg'] = hpo03_configs__logreg
+ALL_HPO_CONFIGS["hpo03_configs__logreg"] = config_to_group(
+    hpo03_logreg
+)
 
-#--------------------------------------------
+# #--------------------------------------------
+
+# hpo03_logreg = hpo02_logreg
+
+# hpo03_logreg = update_experiment_identity(
+#     config=hpo03_logreg,
+#     stage="hpo03",
+#     feature_group="regularization_type"
+# )
+
+# hpo03_logreg["hyperparameter_search"]["param_grid"] = [
+#     {
+#         "model__solver": ["saga"],
+#         "model__penalty": ["l1", "l2"],
+#         "model__C": [0.4, 0.6, 0.8, 1.0, 1.5],
+#     },
+#     {
+#         "model__solver": ["saga"],
+#         "model__penalty": ["elasticnet"],
+#         "model__l1_ratio": [0.25, 0.5, 0.75],
+#         "model__C": [0.4, 0.6, 0.8, 1.0, 1.5],
+#     },
+# ]
+
+# hpo03_configs__logreg = config_to_group(hpo03_logreg)
+# ALL_HPO_CONFIGS['hpo03_configs__logreg'] = hpo03_configs__logreg
+
+# #--------------------------------------------
+
+# hpo04_logreg = hpo03_logreg
+
+# hpo04_logreg = update_experiment_identity(
+#     config=hpo04_logreg,
+#     stage="hpo04",
+#     feature_group="solver_comparison"
+# )
+
+# hpo04_logreg["hyperparameter_search"]["param_grid"] = {
+#     "model__solver": [
+#         "lbfgs",
+#         "liblinear",
+#         "newton-cg",
+#         "sag",
+#         "saga",
+#     ],
+#     "model__C": [0.6, 0.8, 1.0],
+#     "model__penalty": ["l2"],
+# }
+
+# hpo04_configs__logreg = config_to_group(hpo04_logreg)
+
+# ALL_HPO_CONFIGS['hpo04_configs__logreg'] = hpo04_configs__logreg
+
+# #--------------------------------------------
 
 hpo04_logreg = hpo03_logreg
 
 hpo04_logreg = update_experiment_identity(
     config=hpo04_logreg,
-    stage="hpo04",
-    feature_group="solver_comparison"
-)
-
-hpo04_logreg["hyperparameter_search"]["param_grid"] = {
-    "model__solver": [
-        "lbfgs",
-        "liblinear",
-        "newton-cg",
-        "sag",
-        "saga",
-    ],
-    "model__C": [0.6, 0.8, 1.0],
-    "model__penalty": ["l2"],
-}
-
-hpo04_configs__logreg = config_to_group(hpo04_logreg)
-
-ALL_HPO_CONFIGS['hpo04_configs__logreg'] = hpo04_configs__logreg
-
-#--------------------------------------------
-
-hpo05_logreg = hpo04_logreg
-
-hpo05_logreg = update_experiment_identity(
-    config=hpo05_logreg,
     stage="hpo05",
     feature_group="class_weight"
 )
 
-hpo05_logreg["hyperparameter_search"]["param_grid"] = {
+hpo04_logreg["hyperparameter_search"]["param_grid"] = {
     "model__solver": ["lbfgs"],
     "model__penalty": ["l2"],
     "model__C": [0.6, 0.8, 1.0],
@@ -138,13 +180,13 @@ hpo05_logreg["hyperparameter_search"]["param_grid"] = {
     ],
 }
 
-hpo05_configs__logreg = config_to_group(hpo05_logreg)
+hpo04_configs__logreg = config_to_group(hpo04_logreg)
 
-ALL_HPO_CONFIGS['hpo05_configs__logreg'] = hpo05_configs__logreg
+ALL_HPO_CONFIGS['hpo04_configs__logreg'] = hpo04_configs__logreg
 
 #--------------------------------------------
 
-hpo_final_logreg = hpo05_logreg
+hpo_final_logreg = hpo04_logreg
 
 hpo_final_logreg = update_experiment_identity(
     config=hpo_final_logreg,
