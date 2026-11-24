@@ -222,8 +222,50 @@ th01_logreg = {
 
 ALL_THRESHOLD_CONFIGS["th01_logreg"] = th01_logreg
 
-# SVC hyperparameter optimization configurations
+# ------------------------------------------------
 
+class_weights = hpo04_logreg[
+    "hyperparameter_search"
+]["param_grid"]["model__class_weight"]
+
+th02_model_configs = {}
+th02_threshold_configs = {}
+
+for i, class_weight in enumerate(class_weights, start=1):
+
+    threshold_name = f"th02_{i:02d}_logreg"
+
+    model_config = update_experiment_identity(
+        config=hpo_final_logreg,
+        stage="th02",
+        feature_group=f"class_weight{i:02d}",
+    )
+
+    model_config["model_params"]["class_weight"] = (
+        copy.deepcopy(class_weight)
+    )
+
+    model_config["threshold_experiment"] = threshold_name
+
+    threshold_config = copy.deepcopy(th01_logreg)
+
+    threshold_config.update({
+        "name": threshold_name,
+        "source_experiment": model_config["name"],
+        "thresholds": np.round(
+            np.arange(0.20, 0.801, 0.025), 3
+        ).tolist(),
+    })
+
+    th02_model_configs[model_config["name"]] = model_config
+    th02_threshold_configs[threshold_name] = threshold_config
+
+
+ALL_HPO_CONFIGS["th02_configs__logreg"] = th02_model_configs
+
+ALL_THRESHOLD_CONFIGS.update(th02_threshold_configs)
+
+# SVC hyperparameter optimization configurations
 
 
 best_svc_fs = ALL_FS_CONFIGS['fs04__fare_fe10_full_context__svc']

@@ -4805,274 +4805,578 @@ The next stage is hyperparameter optimization, using these selected configuratio
 
 # Draft
 
-# HPO — Logistic Regression: investigation notes
+## Hyperparameter and Decision Threshold Optimization
 
 ### Objective
 
-Investigate whether hyperparameter optimization can improve our feature-selected Logistic Regression model, understand how its main hyperparameters affect predictions, and identify competitive configurations without relying exclusively on the highest CV score.
+Following the Feature Engineering and Feature Selection investigations, this stage aims to further improve each model by investigating its hyperparameters and classification decision rule.
 
-**Evaluation:** Same 5-fold cross-validation and feature configuration used during Feature Selection. Accuracy remains the primary metric, with F1 as secondary; precision, recall, and training scores provide additional context.
+In addition to improving predictive performance, the investigation aims to develop a practical understanding of how different model configurations affect learning, generalization, and classification behavior.
 
-### HPO01–02: Regularization strength (`C`)
+The objective is not necessarily to identify the globally optimal configuration, but to establish a competitive, well-understood, and experimentally justified configuration for each model.
 
-**Why:** Logistic Regression uses regularization to constrain coefficient magnitudes. We wanted to determine whether the default `C=1` was appropriate.
+### Investigation methodology
 
-- HPO01 tested a broad logarithmic range to identify promising values.
-- HPO02 explored that region more closely rather than refining the entire search space.
-- Stronger regularization (`C` much below 1) reduced performance.
-- `C=0.6–1.0` produced a relatively stable performance plateau, with accuracy around 0.8406.
-- Larger values did not improve performance.
+Feature Engineering and Feature Selection were performed using representative base configurations for each model. These configurations provided consistent references against which the effects of feature transformations, additions, and removals could be evaluated.
 
-**Lesson:** Moderate regularization works well. Further fine-grained tuning of `C` alone is unlikely to justify additional experimentation.
+Hyperparameter Optimization (HPO) builds upon the feature configurations established during those investigations.
 
-### HPO03: Regularization type
+Although changing model hyperparameters may also change the usefulness of individual features, jointly investigating every possible combination of features, preprocessing strategies, and model parameters would considerably increase the search space and experimental cost.
 
-**Why:** L1, L2, and Elastic Net constrain coefficients differently. L1 can eliminate coefficients, while L2 generally retains them with reduced magnitudes. We wanted to investigate whether sparsity would benefit our selected features.
+Instead, the investigation follows a progressive approach:
 
-- Compared L1, L2, and Elastic Net across promising `C` values.
-- Used the `saga` solver to support all three regularization types.
-- L2 consistently produced competitive results and the highest observed accuracy.
-- Elastic Net performed better with a smaller L1 contribution.
-- L1 did not improve performance.
+1. Establish representative base model configurations.
+2. Investigate feature engineering alternatives.
+3. Select useful feature combinations through forward selection and backward pruning.
+4. Optimize model hyperparameters while retaining the selected feature configuration.
+5. Investigate decision thresholds and their interactions with relevant training parameters.
 
-**Lesson:** Our selected feature representation appears better suited to L2 regularization among the tested alternatives. Coefficient inspection would be needed to determine whether sparsity explains the differences.
+This approach prioritizes controlled comparisons, interpretability, and a manageable experimental scope over exhaustive optimization.
 
-### HPO04: Solver comparison
+### Hyperparameter Optimization (HPO)
 
-**Why:** Determine whether optimization algorithms materially affect the results, and whether differences observed in HPO03 might be solver-related.
+Hyperparameter Optimization investigates parameters that influence how a model learns from its training data.
 
-- Compared `lbfgs`, `liblinear`, `newton-cg`, `sag`, and `saga` using L2.
-- Several solvers produced identical classification metrics at the same `C`.
-- `newton-cg`, `sag`, and `saga` tied for the highest observed accuracy (0.84175 at `C=0.8`).
-- Differences were small; solver choice did not reveal a substantial performance improvement.
+Depending on the model, these may include regularization strength, regularization type, kernel configuration, tree complexity, ensemble size, learning rate, and class weighting.
 
-**Lesson:** Solver selection appears less important than regularization strength and type for this dataset. Similar classification scores do not guarantee identical coefficients or convergence behavior.
+The investigation generally follows a broad-to-narrow strategy:
 
-### HPO05: Class weighting
+- Identify promising parameter regions through coarse searches.
+- Compare relevant configuration alternatives using representative parameter ranges.
+- Refine promising configurations where further investigation is justified.
+- Investigate interactions between parameters when they are likely to influence the conclusions.
+- Retain simpler or established configurations when alternatives offer no compelling improvement.
 
-**Why:** Titanic has unequal class frequencies. We wanted to test whether changing the importance of survivors versus non-survivors improves classification, and understand the associated precision–recall trade-off.
+Where different configuration alternatives require substantially different hyperparameters, broad comparisons should preferably precede detailed refinement. This reduces the risk of investing considerable effort in optimizing an alternative that may subsequently be discarded.
 
-Experimental control: Fixed solver="lbfgs" and penalty="l2" to isolate the effect of class weighting. HPO04 showed only minor differences between solvers, so repeating that comparison would add complexity without directly addressing our hypothesis. We retained a small range of C values to account for interactions between regularization strength and class weights.
+The exact experimental sequence and search space are adapted to the characteristics of each model.
 
-- Tested no weighting, automatic balanced weighting, and manually increased weights for either class.
-- Equal weighting produced the highest accuracy and F1 among the tested configurations.
-- Increasing non-survivor weight improved survivor precision but substantially reduced recall.
-- Increasing survivor weight improved recall but reduced precision.
-- At `C=1`, doubling non-survivor weight changed precision/recall from approximately 0.806/0.772 to 0.852/0.599.
-- Doubling survivor weight changed them to approximately 0.710/0.807.
+### Decision Threshold Optimization (TH)
 
-**Lesson:** Class weighting changes the model's priorities, not necessarily its overall quality. It may be valuable when errors have different consequences, but it did not benefit our current accuracy/F1 objectives.
+Decision Threshold Optimization investigates how model scores are converted into final classification predictions.
 
-### Overall observations
+Unlike hyperparameter optimization, adjusting a decision threshold does not change the fitted model. Instead, it changes the classification rule applied to its predicted probabilities or decision scores.
 
-- Moderate L2 regularization is consistently competitive.
-- Solver choice has relatively little influence on our classification metrics.
-- Class weighting produces meaningful precision–recall trade-offs, but no improvement in our primary metrics.
-- Small CV improvements should not automatically determine the preferred configuration, especially after repeated experimentation on the same folds.
-- The leaderboard should identify competitive candidates, while practical constraints, limitations, and alternative objectives remain part of the final decision.
+This investigation serves two purposes:
 
-### Remaining investigation
+- Determine whether an alternative decision threshold improves the primary evaluation metric.
+- Understand the precision–recall trade-offs available without modifying the model's learning process.
 
-**Decision threshold:** Our experiments used the default probability cutoff of 0.5. Investigate whether changing this cutoff improves accuracy or F1, and how it affects precision and recall.
+Where supported by the model, additional exploratory experiments may investigate interactions between class weighting and threshold adjustment.
 
-Threshold selection must be performed using validation predictions, not the same observations used to fit the model. Any reported improvement from selecting a threshold on our existing CV results should be treated as exploratory rather than independently validated.
+Class weighting modifies the training objective, whereas threshold adjustment modifies the decision rule. Investigating them together helps determine whether changes introduced during training provide benefits beyond those achievable through threshold adjustment alone.
 
-### HPO06 — Decision Threshold Optimization
+### Evaluation methodology
 
-**Objective:** Investigate whether adjusting Logistic Regression's default classification threshold (0.5) can improve accuracy or F1 without changing the fitted model.
+Accuracy remains the primary evaluation metric, consistent with the Titanic competition objective.
 
-#### Motivation
+F1 is used as a secondary metric, while precision, recall, training performance, and variation across validation folds provide additional context.
 
-HPO05 demonstrated that class weighting can alter the balance between precision and recall, but none of the tested weights improved overall accuracy or F1.
+Hyperparameter experiments use the established five-fold stratified cross-validation configuration without shuffling, maintaining consistent evaluation partitions across comparable experiments.
 
-This raised a related question: could we achieve a better balance by adjusting the classification threshold instead of changing how the model learns?
+Decision threshold experiments use nested cross-validation to separate threshold selection from performance evaluation.
 
-Logistic Regression produces estimated probabilities through `predict_proba()`. By default, passengers with an estimated survival probability of at least 0.5 are classified as survivors.
+For each outer fold:
 
-Changing this threshold modifies the final predictions without retraining the model or changing its learned coefficients.
+1. Reserve the outer validation subset for evaluation.
+2. Generate out-of-fold prediction scores through inner cross-validation on the outer training subset.
+3. Evaluate candidate thresholds using these inner predictions.
+4. Select the threshold with the highest accuracy, using F1 and proximity to the default threshold as successive tie-breakers.
+5. Refit the model using the complete outer training subset.
+6. Evaluate both the default and selected thresholds on the outer validation subset.
 
-#### Experimental Design
+This procedure evaluates threshold selection without using the corresponding outer validation observations to select the threshold.
 
-- **Model:** Selected Logistic Regression configuration from Feature Selection (`pr03__removing_fare__logreg`).
-- **Thresholds:** 0.300–0.700, in increments of 0.025 (17 candidates).
-- **Primary metric:** Accuracy.
-- **Secondary metric:** F1, used to resolve accuracy ties.
-- **Final tie-breaker:** Prefer the threshold closest to 0.5.
-- **Evaluation:** Nested five-fold cross-validation, using the original unshuffled stratified CV configuration.
+### Configuration selection
 
-**Why nested CV?**
+The highest observed cross-validation score does not automatically determine the preferred configuration.
 
-Selecting the best threshold and evaluating it on the same validation predictions would produce an optimistically biased performance estimate.
+Configuration selection also considers:
 
-Instead, each outer CV iteration:
+- Magnitude and consistency of observed improvements.
+- Performance across secondary evaluation metrics.
+- Training and validation performance differences.
+- Model complexity and practical requirements.
+- The experimental evidence supporting the configuration.
+- Whether further optimization is likely to justify its computational and investigative cost.
 
-1. Reserves approximately 20% of the dataset for evaluation.
-2. Uses inner five-fold CV on the remaining 80% to generate out-of-fold survival probabilities.
-3. Evaluates all candidate thresholds on those probabilities and selects the best.
-4. Refits Logistic Regression on the full outer training subset (80% of the dataset).
-5. Evaluates both the default and selected thresholds on the untouched outer validation subset.
+Small improvements may reflect validation variability rather than meaningful improvements in generalization. Established configurations may therefore be retained when alternatives demonstrate comparable performance without a compelling advantage.
 
-This allows threshold selection to be evaluated separately from the data used to select it.
+### Methodological limitations
 
-The inner models train on approximately 64% of the full dataset, but the model used for each outer evaluation trains on approximately 80%.
+The progressive investigation does not guarantee that the selected feature and model configurations are globally optimal. Interactions between features, preprocessing strategies, and hyperparameters may remain unexplored.
 
-#### Results
+Repeated experimentation using the same dataset and validation partitions may also introduce selection bias.
 
-**Inner-CV threshold investigation**
+Nested cross-validation separates threshold selection from outer-fold evaluation, but it does not eliminate bias introduced by earlier feature and hyperparameter selection.
 
-| Threshold | Mean accuracy | Mean F1 | Selected |
-|---|---:|---:|---:|
-| 0.450 | 0.82155 | 0.77007 | 0 |
-| 0.475 | 0.82688 | 0.77297 | 0 |
-| 0.500 | **0.83193** | **0.77589** | 4 |
-| 0.525 | **0.83193** | 0.77319 | 1 |
-| 0.550 | 0.82856 | 0.76559 | 0 |
+Similarly, independently optimizing thresholds for several fixed class-weight configurations and subsequently selecting the best configuration using their outer-CV results constitutes exploratory screening rather than an unbiased evaluation of joint optimization.
 
-The default threshold achieved the highest mean F1 and tied for the highest mean accuracy among the tested candidates.
+Where such interactions demonstrate promising improvements, a more rigorous joint selection procedure may be investigated.
 
-Four of the five inner searches selected 0.5, while the remaining search selected 0.525.
+The results should therefore be interpreted as comparative experimental evidence supporting configuration decisions, rather than definitive estimates of performance on entirely unseen data.
 
-**Outer-CV performance**
+## Logistic Regression
 
-| Metric | Default (0.5) | Tuned | Delta |
-|---|---:|---:|---:|
-| Accuracy | **0.84063** | 0.83951 | −0.00112 |
-| Precision | 0.80612 | **0.80745** | +0.00133 |
-| Recall | **0.77161** | 0.76581 | −0.00580 |
-| F1 | **0.78675** | 0.78459 | −0.00216 |
+### Objective
 
-Threshold tuning did not improve accuracy or F1. Its small precision improvement came at the expense of recall.
+Investigate whether hyperparameter and decision threshold optimization can improve the feature-selected Logistic Regression model, understand how its main parameters affect classification performance, and identify a competitive configuration supported by experimental evidence.
 
-#### Interpretation
+### Starting configuration
 
-**1. The default threshold is already competitive.**
+The investigation builds upon the feature configuration selected during Feature Selection:
 
-Accuracy peaks around 0.5–0.525 in the inner-CV investigation, and most outer training subsets independently select 0.5.
+`pr03__removing_fare__logreg`
 
-The tested threshold range offers no convincing evidence that changing the default improves our primary objective.
+The feature representation and preprocessing configuration remain fixed throughout the investigation.
 
-**2. Threshold adjustment reproduces the precision–recall trade-off observed in HPO05.**
+The initial model uses:
 
-Lower thresholds classify more passengers as survivors, generally increasing recall while reducing precision. Higher thresholds make survivor predictions more selective, increasing precision while reducing recall.
+- Regularization strength: `C=1.0`
+- Regularization type: `penalty="l2"`
+- Solver: `solver="lbfgs"`
+- Class weighting: `class_weight=None`
+- Decision threshold: `0.5`
 
-Unlike class weighting, threshold adjustment does not modify the fitted model or its estimated probabilities.
+Accuracy remains the primary evaluation metric, with F1 as secondary. Precision, recall, training performance, and variation across validation folds provide additional context.
 
-This makes threshold selection a useful technique when classification costs or priorities differ, even when it does not improve accuracy.
-
-**3. Accuracy is less sensitive than precision and recall.**
-
-Changing the threshold can correct some classifications while introducing new errors elsewhere. Consequently, precision and recall can change substantially without producing a comparable improvement in accuracy.
-
-**4. CV configuration matters.**
-
-An initial run used shuffled outer folds and produced a small improvement from threshold tuning.
-
-After aligning the outer CV with the original Feature Selection evaluation (`StratifiedKFold`, five folds, no shuffling), the default accuracy returned to 0.84063 and threshold tuning no longer improved performance.
-
-The difference was caused by the evaluation partitions, rather than the inner CV reducing the amount of training data used for outer evaluation.
-
-**5. Nested CV separates selection from evaluation.**
-
-Inner CV selects a threshold using only the outer training observations. Outer CV then evaluates that selection on unseen observations.
-
-This avoids using an outer validation fold to optimize its own threshold, although it does not eliminate selection bias from earlier feature and hyperparameter experiments performed on the same dataset.
-
-#### Conclusion
-
-**Verdict: No meaningful improvement.**
-
-The default threshold of **0.5** remains the preferred choice for Logistic Regression under our accuracy-first objective.
-
-Threshold tuning introduced additional selection complexity without improving accuracy or F1 in the aligned outer-CV evaluation.
-
-The main value of HPO06 was methodological: understanding the distinction between modifying the model's learning process and modifying its classification rule, and learning how to evaluate threshold selection using nested cross-validation.
-
-No further threshold optimization is recommended for this Logistic Regression configuration at this stage.
-
-Methodological reflection: The SVC investigation initially focused on refining the RBF kernel before exploring alternative kernels. Although the eventual comparison did not require changing the selected kernel, it revealed a potential inefficiency in the experimental sequence. Because different kernels require different hyperparameter configurations, comparing them earlier could have reduced the risk of extensive tuning on a branch that might later be discarded. This observation informed subsequent experiments, where broad comparisons were prioritized before detailed refinement.
-
-----------------------------------------------
-
-HPO01–02 — Regularization strength
-
-Verdict: No improvement over the default C=1.0.
-
-The broad search identified C=1.0 as the strongest candidate. Refinement revealed a stable region around C=0.6–1.0, where mean CV accuracy was identical and F1 differences were negligible.
-
-Stronger regularization reduced performance, particularly at C=0.01, while weaker regularization offered no benefit. Training accuracy remained relatively stable across the competitive configurations, without a clear indication of substantial overfitting.
-
-Within the competitive range of C=0.6–1.0, precision and recall remained relatively stable. This suggests that further refinement of regularization strength alone is unlikely to meaningfully improve either metric. However, it does not establish how the model will respond to class weighting or threshold adjustment.
-
-Selected configuration: Retain C=1.0, as it achieves the highest observed F1 among the accuracy-leading candidates without introducing additional tuning complexity.
-
-Lesson: When a hyperparameter search reveals a stable performance plateau, further optimization may provide little practical value. The default can remain preferable even when several alternatives perform equally well.
-
-HPO03 — Solver and penalty comparison
-
-Verdict: No meaningful improvement over the baseline.
-
-A broad search evaluated 50 compatible solver–penalty configurations across five regularization strengths, including three Elastic Net mixing ratios.
-
-L2 regularization consistently produced the strongest results. newton-cg, sag and saga achieved the highest observed CV accuracy (0.84175) and F1 (0.78790) at C=0.8. The existing lbfgs + L2 baseline at C=1.0 remained highly competitive, with accuracy of 0.84063 and F1 of 0.78675.
-
-Elastic Net with a small L1 contribution approached L2 performance, while pure L1 generally performed worse. No alternative demonstrated sufficient improvement to justify further refinement or replacing the baseline.
-
-Selected configuration: solver="lbfgs", penalty="l2", C=1.0.
-
-Methodological lesson: Broadly comparing compatible configurations before committing to further refinement helps identify promising alternatives while limiting unnecessary experimentation. Group-level comparisons are especially useful when a large candidate search makes individual configuration families difficult to assess.
-
-### HPO04 — Class Weighting
-
-**Verdict:** No improvement over the unweighted baseline.
-
-**Interpretation**
-
-- The unweighted configurations achieved the highest CV accuracy (0.84063), with C=1.0 also achieving the highest F1 (0.78675).
-- Increasing the weight of class 0 generally improved survival precision at the cost of recall. At C=1.0, doubling class 0's weight increased precision from 0.80612 to 0.85231, while recall decreased from 0.77161 to 0.59923.
-- Increasing the weight of class 1 generally improved survival recall at the cost of precision. Doubling class 1's weight increased recall to 0.80665, while precision decreased to 0.71030.
-- Both directions reduced overall accuracy and F1. Changes in class weighting had a substantially larger impact than varying C between 0.6 and 1.0.
-- No weighted configuration demonstrated an advantage for the current accuracy-focused objective.
-
-**Conclusion**
-
-Class weighting provides a useful mechanism for prioritizing precision or recall when the relative costs of classification errors differ. However, in this experiment, the resulting trade-offs did not justify departing from the unweighted baseline.
-
-Retain `class_weight=None`, `C=1.0`, `penalty="l2"` and `solver="lbfgs"`.
-
-The observed precision–recall trade-offs are worth retaining as a reference for future applications where one metric is more important than overall accuracy.
-
-### TH01 — Decision Threshold Optimization
+### HPO01–02 — Regularization strength
 
 **Objective**
 
-Investigate whether adjusting Logistic Regression's decision threshold can improve classification accuracy or provide a more favorable precision–recall trade-off without retraining the model.
+Investigate the effect of regularization strength and determine whether an alternative value of `C` improves the selected model.
 
-**Configuration**
+In Logistic Regression, `C` represents the inverse of regularization strength. Smaller values impose stronger regularization, while larger values allow greater flexibility in the fitted coefficients.
 
-- Model: Logistic Regression (`lbfgs`, L2, C=1.0, `class_weight=None`).
-- Threshold range: 0.300–0.700, in increments of 0.025.
-- Evaluation: 5-fold outer CV with threshold selection using 5-fold inner CV.
-- Primary selection metric: accuracy.
+**Experimental design**
+
+HPO01 investigated a broad logarithmic range:
+
+`C = [0.01, 0.1, 1, 10, 100]`
+
+HPO02 refined the promising region identified during HPO01:
+
+`C = [0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.5, 2, 3, 5]`
+
+The remaining model parameters and feature configuration were kept unchanged.
+
+**Representative results**
+
+| Experiment | C | CV Accuracy | CV F1 |
+|---|---:|---:|---:|
+| HPO01 | 0.01 | 0.80808 | 0.71749 |
+| HPO01 | 0.10 | 0.82714 | 0.76565 |
+| HPO01 | 1.00 | 0.84063 | 0.78675 |
+| HPO01 | 10.00 | 0.83277 | 0.77724 |
+| HPO01 | 100.00 | 0.83166 | 0.77549 |
+| HPO02 | 0.60 | 0.84063 | 0.78624 |
+| HPO02 | 0.80 | 0.84063 | 0.78624 |
+| HPO02 | 1.00 | 0.84063 | 0.78675 |
 
 **Findings**
 
-- Inner-CV accuracy peaked around thresholds 0.500–0.525, with both achieving a mean accuracy of 0.83193.
-- The selection procedure chose the default threshold of 0.500 in four of five outer folds, and 0.525 in the remaining fold.
-- Outer-CV accuracy decreased marginally from 0.84063 at the default threshold to 0.83951 after tuning.
-- F1 also decreased slightly, from 0.78675 to 0.78459.
-- Lower thresholds increased survival recall, reaching 0.82309 at threshold 0.300, while reducing precision and accuracy.
-- Higher thresholds increased survival precision, reaching 0.89144 at threshold 0.700, while reducing recall and accuracy.
-- No tested threshold demonstrated a meaningful improvement in overall accuracy.
+- Strong regularization substantially reduced accuracy and F1.
+- Weakening regularization beyond `C=1.0` did not improve performance.
+- Values between 0.6 and 1.0 formed a competitive performance plateau.
+- `C=0.6` and `C=0.8` achieved the same observed accuracy as `C=1.0`, with slightly lower variation across folds but marginally lower F1.
+- Refining the promising region did not reveal a compelling improvement over the default configuration.
 
 **Conclusion**
 
-The default threshold of 0.500 is already competitive for the selected Logistic Regression configuration. Threshold tuning did not improve accuracy or F1 and therefore provides no compelling reason to change the decision rule.
+Moderate regularization appears appropriate for the selected feature representation.
 
-Threshold adjustment remains useful when precision or recall must be prioritized, but the resulting trade-offs do not benefit the current accuracy-focused objective.
+The results suggest that performance is relatively insensitive to small changes in regularization strength within the identified competitive region.
+
+Further fine-grained optimization of `C` alone is unlikely to justify additional experimentation.
+
+**Selected value:** `C=1.0`.
+
+**Verdict:** Retain the default regularization strength.
+
+### HPO03 — Solver and regularization type
+
+**Objective**
+
+Investigate whether alternative regularization types or optimization algorithms improve the selected Logistic Regression configuration.
+
+L1, L2, and Elastic Net regularization constrain coefficients differently. L1 may produce sparse coefficient representations, while L2 generally shrinks coefficients without eliminating them. Elastic Net combines both approaches.
+
+Different solvers support different regularization types, making their combined investigation more informative than treating them as entirely independent parameters.
+
+**Experimental design**
+
+The experiment compared compatible solver–penalty combinations across:
+
+`C = [0.4, 0.6, 0.8, 1.0, 1.5]`
+
+| Penalty | Solvers |
+|---|---|
+| L2 | lbfgs, newton-cg, sag, saga, liblinear |
+| L1 | liblinear, saga |
+| Elastic Net | saga |
+
+Elastic Net additionally investigated:
+
+`l1_ratio = [0.25, 0.5, 0.75]`
+
+A total of 50 candidate configurations were evaluated.
+
+The experiment replaced the original separate regularization-type and solver investigations, allowing compatible alternatives to be compared across several representative regularization strengths.
+
+**Representative results**
+
+| Solver | Penalty | C | L1 ratio | CV Accuracy | CV F1 |
+|---|---|---:|---:|---:|---:|
+| newton-cg | L2 | 0.8 | — | 0.84175 | 0.78790 |
+| sag | L2 | 0.8 | — | 0.84175 | 0.78790 |
+| saga | L2 | 0.8 | — | 0.84175 | 0.78790 |
+| lbfgs | L2 | 1.0 | — | 0.84063 | 0.78675 |
+| saga | Elastic Net | 0.8 | 0.25 | 0.84063 | 0.78672 |
+| liblinear | L2 | 0.6 | — | 0.83726 | 0.78214 |
+| liblinear | L1 | 1.0 | — | 0.83614 | 0.78120 |
+| saga | L1 | 1.5 | — | 0.83502 | 0.77939 |
+
+**Findings**
+
+- L2 regularization produced the highest observed accuracy and F1.
+- Several L2 solvers achieved identical classification metrics at equivalent regularization strengths.
+- `newton-cg`, `sag`, and `saga` achieved the highest observed accuracy of 0.84175 at `C=0.8`.
+- The established `lbfgs` configuration remained competitive, with an accuracy difference of only 0.00112 relative to the highest-scoring alternatives.
+- Elastic Net was most competitive with a relatively small L1 contribution.
+- Pure L1 regularization did not improve performance among the tested configurations.
+
+**Interpretation**
+
+The selected feature representation appears better suited to L2 regularization among the investigated alternatives.
+
+However, the results do not establish whether coefficient sparsity is responsible for the weaker performance of L1. Coefficient inspection would be required to investigate this explanation.
+
+Solver choice had relatively little influence on classification performance among the strongest configurations. Similar classification metrics do not necessarily imply identical fitted coefficients, predicted probabilities, computational efficiency, or convergence behavior.
+
+The regularization strengths investigated were informed primarily by earlier L2 experiments. More extensive penalty-specific optimization might reveal alternative competitive configurations, but the current results provide insufficient motivation for such refinement.
+
+**Conclusion**
+
+Although several alternative solvers achieved marginally higher scores, the observed improvements were insufficient to justify replacing the established configuration.
+
+**Selected configuration:** `solver="lbfgs"`, `penalty="l2"`, `C=1.0`.
+
+**Verdict:** Retain the established solver and regularization configuration.
+
+### HPO04 — Class weighting
+
+**Objective**
+
+Investigate whether assigning different weights to survivors and nonsurvivors improves classification performance, and understand the resulting precision–recall trade-offs.
+
+**Experimental design**
+
+The solver and regularization type were fixed to `lbfgs` and L2, respectively.
+
+A small range of competitive regularization strengths was retained to account for potential interactions between regularization and class weighting:
+
+`C = [0.6, 0.8, 1.0]`
+
+Eight class-weight configurations were investigated:
+
+- No class weighting.
+- Automatic balanced class weighting.
+- Class 0 weights of 1.25, 1.5, and 2.0.
+- Class 1 weights of 1.25, 1.5, and 2.0.
+
+For manually weighted configurations, the other class retained a weight of 1.0.
+
+A total of 24 candidate configurations were evaluated.
+
+**Representative results at C=1.0**
+
+| Class weighting | CV Accuracy | CV Precision | CV Recall | CV F1 |
+|---|---:|---:|---:|---:|
+| None | 0.84063 | 0.80612 | 0.77161 | 0.78675 |
+| Class 0 × 1.25 | 0.83278 | 0.81269 | 0.73372 | 0.76996 |
+| Class 0 × 1.5 | 0.81818 | 0.81689 | 0.67818 | 0.74036 |
+| Class 0 × 2 | 0.80699 | 0.85231 | 0.59923 | 0.70136 |
+| Balanced | 0.81259 | 0.73837 | 0.80085 | 0.76561 |
+| Class 1 × 1.25 | 0.82491 | 0.76653 | 0.78619 | 0.77382 |
+| Class 1 × 1.5 | 0.81257 | 0.74040 | 0.79497 | 0.76420 |
+| Class 1 × 2 | 0.79688 | 0.71030 | 0.80665 | 0.75241 |
+
+**Findings**
+
+- The unweighted configurations achieved the highest accuracy.
+- `C=1.0` achieved marginally higher F1 than the other competitive unweighted configurations.
+- Increasing the weight of nonsurvivors improved survivor precision while substantially reducing recall.
+- Increasing the weight of survivors improved survivor recall while reducing precision.
+- Class weighting had a considerably greater influence on classification performance than changes in `C` within the investigated range.
+- No weighted configuration improved accuracy or F1 over the established baseline.
+
+**Interpretation**
+
+Class weighting changes the relative contribution of training observations to the model's objective function.
+
+Increasing the weight of a class encourages the model to prioritize that class, but does not necessarily improve its overall ability to distinguish between classes.
+
+The observed precision–recall trade-offs may be valuable in applications where different classification errors have different consequences.
+
+However, Titanic's accuracy-first objective does not provide sufficient justification for accepting the associated performance losses.
+
+**Conclusion**
+
+Class weighting is effective at modifying classification priorities but did not improve the primary evaluation metrics.
+
+The results also motivate investigating whether similar trade-offs can be achieved by modifying the decision threshold without retraining the model.
+
+**Selected configuration:** `class_weight=None`.
+
+**Verdict:** Retain the unweighted model.
+
+### TH01 — Decision threshold optimization
+
+**Objective**
+
+Investigate whether adjusting Logistic Regression's default probability threshold improves classification accuracy or provides a more favorable precision–recall trade-off without modifying the fitted model.
+
+**Experimental design**
+
+- Model: Selected configuration from HPO04.
+- Score method: `predict_proba`.
+- Default threshold: 0.500.
+- Candidate thresholds: 0.300–0.700, in increments of 0.025.
+- Evaluation: Five-fold outer CV and five-fold inner CV.
+- Selection criteria: Accuracy, followed by F1 and proximity to the default threshold.
+
+**Representative inner-CV results**
+
+| Threshold | Mean Accuracy | Mean F1 | Selected count |
+|---|---:|---:|---:|
+| 0.450 | 0.82155 | 0.77007 | 0 |
+| 0.475 | 0.82688 | 0.77297 | 0 |
+| 0.500 | 0.83193 | 0.77589 | 4 |
+| 0.525 | 0.83193 | 0.77319 | 1 |
+| 0.550 | 0.82856 | 0.76559 | 0 |
+
+**Outer-CV performance**
+
+| Metric | Default | Tuned | Delta |
+|---|---:|---:|---:|
+| Accuracy | 0.84063 | 0.83951 | −0.00112 |
+| Precision | 0.80612 | 0.80745 | +0.00133 |
+| Recall | 0.77161 | 0.76581 | −0.00580 |
+| F1 | 0.78675 | 0.78459 | −0.00216 |
+
+**Findings**
+
+- Inner-CV accuracy peaked around thresholds 0.500–0.525.
+- The default threshold achieved the highest mean inner-CV F1.
+- Four of the five outer training subsets independently selected the default threshold.
+- Threshold tuning slightly reduced outer-CV accuracy and F1.
+- Lower thresholds increased survival recall, reaching 0.82309 at threshold 0.300, while reducing precision.
+- Higher thresholds increased survival precision, reaching 0.89144 at threshold 0.700, while reducing recall.
+- No tested threshold demonstrated a compelling improvement in accuracy.
+
+**Interpretation**
+
+Threshold adjustment reproduced the general precision–recall trade-offs observed during class-weight investigation without modifying the fitted model.
+
+Changing the threshold can correct some classifications while introducing new errors elsewhere. Consequently, precision and recall may change substantially without producing a corresponding improvement in accuracy.
+
+The experiment also demonstrated the importance of maintaining consistent evaluation partitions.
+
+An initial experiment using shuffled outer folds suggested a small improvement from threshold tuning. After aligning the outer CV with the original unshuffled stratified evaluation, the default accuracy returned to 0.84063 and the observed improvement disappeared.
+
+This difference was associated with the evaluation partitions rather than nested CV reducing the amount of training data available to the outer model.
+
+**Conclusion**
+
+The default probability threshold remains competitive for the selected Logistic Regression configuration.
+
+Threshold adjustment provides a useful mechanism for changing classification priorities, but the accuracy-focused selection procedure did not improve accuracy or F1.
 
 **Selected threshold:** 0.500.
 
-**Verdict:** Retain the default threshold; no further refinement required.
+**Verdict:** Retain the default threshold.
+
+### TH02 — Class weight and threshold interaction
+
+**Objective**
+
+Investigate whether combining class weighting with decision threshold optimization can recover performance lost through class weighting or outperform the established unweighted model.
+
+**Motivation**
+
+HPO04 and TH01 demonstrated that both class weighting and threshold adjustment can modify precision–recall trade-offs.
+
+However, these mechanisms operate differently:
+
+- Class weighting modifies the training objective and may change the learned decision function.
+- Threshold adjustment modifies the classification rule applied to an already fitted model.
+
+For Logistic Regression, class weighting may substantially shift predicted probabilities without producing an equally substantial change in the model's ability to distinguish between classes.
+
+Under an idealized probability reweighting assumption, a threshold compensating for class weighting relative to an original threshold of 0.5 can be expressed as:
+
+`t = w1 / (w0 + w1)`
+
+Where `w0` and `w1` represent the respective class weights.
+
+This relationship provides a theoretical reference for investigating whether threshold adjustment can compensate for the classification tendency introduced by weighting.
+
+**Experimental design**
+
+- Model: Logistic Regression with `lbfgs`, L2, and `C=1.0`.
+- Eight fixed class-weight configurations inherited from HPO04.
+- Candidate thresholds: 0.200–0.800, in increments of 0.025.
+- Independent nested threshold optimization for each configuration.
+- Five-fold outer CV and five-fold inner CV.
+- Primary selection metric: Accuracy.
+
+The experiment was designed as exploratory screening rather than joint optimization of class weights and thresholds.
+
+**Outer-CV performance**
+
+| Class weighting | Default Accuracy | Tuned Accuracy | Accuracy Delta | Tuned F1 |
+|---|---:|---:|---:|---:|
+| None | 0.84063 | 0.83951 | −0.00112 | 0.78459 |
+| Class 0 × 2 | 0.80699 | 0.83503 | +0.02803 | 0.77640 |
+| Class 0 × 1.5 | 0.81818 | 0.83390 | +0.01572 | 0.77524 |
+| Class 0 × 1.25 | 0.83278 | 0.83279 | +0.00001 | 0.77359 |
+| Balanced | 0.81259 | 0.83501 | +0.02243 | 0.77864 |
+| Class 1 × 1.25 | 0.82491 | 0.83501 | +0.01011 | 0.78046 |
+| Class 1 × 1.5 | 0.81257 | 0.83390 | +0.02133 | 0.77483 |
+| Class 1 × 2 | 0.79688 | 0.83166 | +0.03477 | 0.77599 |
+
+**Threshold compensation**
+
+| Class weighting | Theoretical threshold | Mean selected threshold |
+|---|---:|---:|
+| Class 0 × 2 | 0.333 | 0.360 |
+| Class 0 × 1.5 | 0.400 | 0.430 |
+| Class 0 × 1.25 | 0.444 | 0.475 |
+| None | 0.500 | 0.505 |
+| Class 1 × 1.25 | 0.556 | 0.550 |
+| Class 1 × 1.5 | 0.600 | 0.615 |
+| Balanced | ≈0.616 | 0.625 |
+| Class 1 × 2 | 0.667 | 0.655 |
+
+The theoretical threshold for balanced weighting is approximated using the full training dataset's class proportions. Actual balanced weights depend on the observations available during each model fit.
+
+**Findings**
+
+- Threshold optimization recovered a substantial portion of the accuracy lost through class weighting in six of the seven weighted configurations.
+- The remaining weighted configuration experienced negligible accuracy improvement but improved F1.
+- The largest accuracy recovery occurred when doubling the weight of survivors, increasing accuracy from 0.79688 to 0.83166.
+- The accuracy spread across configurations decreased from 0.04375 to 0.00785 after threshold optimization.
+- Mean selected thresholds closely followed the theoretical compensating thresholds.
+- The expanded threshold search reproduced the unweighted results from TH01.
+- No weighted configuration surpassed the unweighted baseline in accuracy or F1.
+- The original unweighted model also achieved higher precision and recall than every accuracy-optimized weighted configuration.
+
+**Additional precision–recall investigation**
+
+Because threshold selection prioritized accuracy, the inner-CV candidates were additionally examined to identify potentially favorable precision–recall trade-offs.
+
+For example, when requiring precision of at least 0.85:
+
+| Metric | Unweighted | Class 0 × 1.25 |
+|---|---:|---:|
+| Threshold | 0.650 | 0.600 |
+| Accuracy | 0.81313 | 0.81594 |
+| Precision | 0.85271 | 0.85486 |
+| Recall | 0.62131 | 0.62789 |
+| F1 | 0.71835 | 0.72347 |
+
+When requiring recall of at least 0.80:
+
+| Metric | Unweighted | Class 0 × 1.25 |
+|---|---:|---:|
+| Threshold | 0.375 | 0.325 |
+| Precision | 0.72904 | 0.73048 |
+| Recall | 0.80043 | 0.80043 |
+
+These comparisons suggest that weighting may provide slightly more favorable operating points in certain circumstances.
+
+However, the observed improvements are small, were identified retrospectively using inner-CV results, and may be influenced by threshold grid resolution and selection variability.
+
+They do not establish a meaningful generalization advantage over threshold adjustment alone.
+
+**Interpretation**
+
+The results support the hypothesis that much of the classification behavior introduced by class weighting can be compensated for through decision threshold adjustment.
+
+The close relationship between theoretical and empirically selected thresholds provides additional evidence for this interpretation.
+
+However, similar classification performance does not establish that weighted and unweighted models learned identical coefficients or produce identical score rankings.
+
+The interaction may be more beneficial for other model families, particularly where class weighting can substantially change the learned decision function or model structure.
+
+**Methodological limitation**
+
+Threshold selection was nested independently for each fixed class-weight configuration.
+
+Selecting the best class weight using the resulting outer-CV scores would introduce additional selection bias.
+
+A rigorous evaluation of joint optimization would require both class-weight and threshold selection to occur within the inner validation procedure.
+
+The current experiment serves as exploratory screening, and its results do not provide sufficient motivation for further joint optimization of Logistic Regression.
+
+**Conclusion**
+
+Combining class weighting with threshold optimization substantially reduced the performance differences observed during HPO04.
+
+Nevertheless, no weighted configuration demonstrated a compelling advantage over the established unweighted model.
+
+**Selected configuration:** `class_weight=None`, `threshold=0.500`.
+
+**Verdict:** Retain the baseline configuration.
+
+### Overall findings
+
+The Logistic Regression investigation demonstrated that the feature-selected model was already competitive under its established hyperparameter configuration.
+
+The main findings were:
+
+- Moderate L2 regularization provides competitive performance for the selected feature representation.
+- Regularization strength has a greater influence when moving outside the identified competitive region.
+- Alternative solvers and regularization types did not provide compelling improvements.
+- Class weighting substantially modifies precision–recall trade-offs but did not improve the primary evaluation metrics.
+- Decision threshold adjustment provides an alternative mechanism for modifying classification priorities without retraining.
+- Threshold adjustment can compensate for a substantial portion of the classification behavior introduced by class weighting.
+- Combining class weighting and threshold optimization did not improve accuracy or F1 over the established configuration.
+- Small differences in cross-validation scores should be interpreted in the context of experimental variability, selection bias, and practical requirements.
+
+### Final selected configuration
+
+| Parameter | Selected value |
+|---|---|
+| Feature configuration | `pr03__removing_fare__logreg` |
+| C | 1.0 |
+| Penalty | L2 |
+| Solver | lbfgs |
+| Class weight | None |
+| Score method | predict_proba |
+| Decision threshold | 0.500 |
+
+**Final cross-validation performance**
+
+| Metric | Mean |
+|---|---:|
+| Accuracy | 0.84063 |
+| Precision | 0.80612 |
+| Recall | 0.77161 |
+| F1 | 0.78675 |
+| Training accuracy | 0.84512 |
+
+### Final conclusion
+
+Hyperparameter and decision threshold optimization did not reveal a configuration with a sufficiently compelling improvement to justify replacing the established Logistic Regression model.
+
+Although several alternatives achieved competitive performance, the original configuration remained a strong choice across the primary and secondary evaluation metrics.
+
+The investigation also provided practical insights into regularization, solver selection, class weighting, threshold adjustment, and the interaction between training objectives and classification decision rules.
+
+The established Logistic Regression configuration is therefore retained for subsequent model comparison.
+
+**Investigation status:** Complete.
 
 ## Lessons learned
 
