@@ -5378,6 +5378,189 @@ The established Logistic Regression configuration is therefore retained for subs
 
 **Investigation status:** Complete.
 
+### HPO01–02 — Regularization strength
+
+**Objective**
+
+Investigate the effect of regularization strength on the feature-selected Support Vector Classifier and determine whether an alternative value of `C` improves classification performance.
+
+In SVC, `C` controls the penalty associated with margin violations. Smaller values impose stronger regularization by allowing greater tolerance for violations, while larger values penalize violations more heavily, potentially favoring closer adaptation to training observations.
+
+**Experimental design**
+
+The investigation builds upon the feature configuration selected during Feature Selection:
+
+`fs04__fare_fe10_full_context__svc`
+
+HPO01 investigated a broad logarithmic range:
+
+`C = [0.01, 0.1, 1, 10, 100]`
+
+HPO02 refined the promising region identified during HPO01:
+
+`C = [0.2, 0.4, 0.6, 0.8, 1.0, 1.5, 2.0, 3.0, 5.0]`
+
+The remaining model parameters, feature representation, and preprocessing configuration were kept unchanged.
+
+**Representative results**
+
+| Experiment | C | Train Accuracy | CV Accuracy | Accuracy Std | CV F1 |
+|---|---:|---:|---:|---:|---:|
+| HPO01 | 0.01 | 0.61616 | 0.61616 | 0.00232 | 0.00000 |
+| HPO01 | 0.10 | 0.83333 | 0.82939 | 0.01978 | 0.76503 |
+| HPO01 | 1.00 | 0.83922 | 0.83612 | 0.02068 | 0.77437 |
+| HPO01 | 10.00 | 0.86139 | 0.82268 | 0.02691 | 0.74444 |
+| HPO01 | 100.00 | 0.88889 | 0.81034 | 0.03602 | 0.72886 |
+| HPO02 | 0.60 | 0.83782 | 0.83499 | 0.01917 | 0.77316 |
+| HPO02 | 0.80 | 0.83922 | 0.83499 | 0.01917 | 0.77316 |
+| HPO02 | 1.00 | 0.83922 | 0.83612 | 0.02068 | 0.77437 |
+| HPO02 | 1.50 | 0.84091 | 0.83612 | 0.02068 | 0.77437 |
+| HPO02 | 2.00 | 0.84231 | 0.83499 | 0.02222 | 0.77318 |
+| HPO02 | 3.00 | 0.84764 | 0.82715 | 0.02402 | 0.75717 |
+| HPO02 | 5.00 | 0.85522 | 0.82603 | 0.02869 | 0.75000 |
+
+**Findings**
+
+- Excessively strong regularization at `C=0.01` resulted in severe underfitting, with accuracy matching the majority-class proportion and zero survivor recall and F1.
+- Increasing `C` beyond the competitive region progressively increased training accuracy while reducing validation accuracy and F1.
+- The increasing training–validation performance gap and variation across validation folds are consistent with overfitting under weaker regularization.
+- Values between 0.6 and 2.0 formed a competitive performance region, with accuracy differences of approximately 0.00113 or less.
+- `C=1.0` and `C=1.5` achieved identical reported validation metrics.
+- `C=1.5` achieved slightly higher training accuracy without improving validation performance.
+- Performance deterioration became more pronounced at `C=3.0` and above.
+- No alternative regularization strength surpassed the established configuration.
+
+**Interpretation**
+
+Moderate regularization appears appropriate for the selected SVC feature representation.
+
+Compared with the Logistic Regression investigation, SVC exhibited greater sensitivity to extreme regularization strengths, particularly when regularization was weakened substantially.
+
+The relationship between increasing training accuracy and decreasing validation performance provides evidence consistent with excessive adaptation to training observations.
+
+Although several configurations within the competitive region achieved similar performance, none demonstrated a compelling advantage over the established value.
+
+These findings are conditional on the current feature representation and kernel configuration. Interactions between `C` and kernel-specific parameters may reveal different competitive regions during subsequent experiments.
+
+**Conclusion**
+
+The coarse and refined searches successfully identified a competitive regularization region and demonstrated the consequences of both excessively strong and excessively weak regularization.
+
+The established value of `C=1.0` remains competitive, achieving the highest observed validation accuracy and F1 alongside `C=1.5`, while imposing stronger regularization.
+
+Further refinement of `C` alone is not currently justified. Subsequent experiments should account for its potential interactions with kernel-specific parameters.
+
+**Selected value:** `C=1.0`.
+
+**Verdict:** Retain the default regularization strength.
+
+### HPO03–04 — Gamma and regularization interaction
+
+**Objective**
+
+Investigate the effect of gamma on the RBF Support Vector Classifier and determine whether jointly adjusting gamma and C improves classification performance.
+
+Gamma controls the locality of the RBF kernel, influencing how rapidly similarity decreases with distance between observations.
+
+Smaller gamma values generally encourage smoother decision functions, while larger values allow more localized adaptation to training observations.
+
+Because both C and gamma influence model flexibility through different mechanisms, their combined investigation is more informative than optimizing gamma independently.
+
+**Experimental design**
+
+The feature representation, preprocessing configuration, and RBF kernel were retained.
+
+HPO03 investigated a broad range of gamma values alongside representative regularization strengths identified during HPO01–02:
+
+- `C = [0.6, 1.0, 1.5, 2.0]`
+- `gamma = ["scale", 0.001, 0.01, 0.1, 1.0]`
+
+A total of 20 candidate configurations were evaluated.
+
+HPO04 refined the promising gamma region:
+
+- `C = [0.6, 1.0, 1.5, 2.0]`
+- `gamma = ["scale", 0.05, 0.075, 0.1, 0.15, 0.2, 0.3]`
+
+A total of 28 candidate configurations were evaluated.
+
+The default `gamma="scale"` was retained in both experiments as a reference.
+
+**HPO03 — Representative results**
+
+| C | Gamma | Train Accuracy | CV Accuracy | CV F1 |
+|---:|---:|---:|---:|---:|
+| 0.6 | 0.001 | 0.64339 | 0.64198 | 0.12736 |
+| 1.0 | 0.001 | 0.75786 | 0.75425 | 0.54047 |
+| 1.0 | 0.01 | 0.80668 | 0.79683 | 0.72245 |
+| 2.0 | 0.01 | 0.82576 | 0.82152 | 0.75834 |
+| 1.0 | 0.1 | 0.84091 | 0.83499 | 0.77247 |
+| 1.5 | 0.1 | 0.84203 | 0.83612 | 0.77437 |
+| 1.0 | scale | 0.83922 | 0.83612 | 0.77437 |
+| 1.0 | 1.0 | 0.89675 | 0.80923 | 0.73610 |
+| 2.0 | 1.0 | 0.90067 | 0.80588 | 0.73406 |
+
+**HPO03 — Findings**
+
+- Very small gamma values produced relatively low training and validation performance, consistent with insufficient model flexibility.
+- At `gamma=0.001`, some configurations achieved extremely high precision but very low recall, indicating that only a small proportion of survivors were successfully identified.
+- Increasing C partially compensated for the limitations observed at small gamma values.
+- `gamma=0.1` and `gamma="scale"` produced the most competitive configurations.
+- At `gamma=1.0`, training accuracy increased substantially while validation accuracy and F1 deteriorated.
+- The training–validation accuracy gap increased further when large gamma values were combined with larger C values, consistent with overfitting.
+- No configuration surpassed the established baseline in accuracy or F1.
+
+**HPO04 — Representative results**
+
+| C | Gamma | Train Accuracy | CV Accuracy | CV F1 |
+|---:|---:|---:|---:|---:|
+| 1.0 | scale | 0.83922 | 0.83612 | 0.77437 |
+| 1.5 | scale | 0.84091 | 0.83612 | 0.77437 |
+| 1.5 | 0.1 | 0.84203 | 0.83612 | 0.77437 |
+| 1.5 | 0.05 | 0.83810 | 0.83611 | 0.77490 |
+| 2.0 | 0.05 | 0.83922 | 0.83611 | 0.77490 |
+| 0.6 | 0.15 | 0.84063 | 0.83275 | 0.76932 |
+| 1.0 | 0.2 | 0.85213 | 0.82828 | 0.75713 |
+| 2.0 | 0.3 | 0.87150 | 0.81483 | 0.73828 |
+
+**HPO04 — Findings**
+
+- Refining gamma identified additional competitive configurations but did not improve the highest observed accuracy.
+- Numerical gamma values between 0.05 and 0.1 produced several configurations competitive with `gamma="scale"`.
+- Configurations using `gamma=0.05` with `C=1.5` or `C=2.0` achieved marginally higher F1 while obtaining practically identical accuracy to the baseline.
+- Increasing gamma beyond the competitive region generally increased training accuracy while reducing validation accuracy and F1.
+- The deterioration in validation performance became more pronounced when larger gamma values were combined with larger C values.
+- Smaller C values became increasingly competitive relative to larger C values as gamma increased.
+- Changes in gamma also affected precision and recall, with some configurations achieving higher precision at the expense of substantially reduced recall.
+
+**Interpretation**
+
+The experiments demonstrate the importance of considering C and gamma jointly when optimizing an RBF SVC.
+
+Both parameters influence model flexibility, but through different mechanisms. C controls the penalty associated with margin violations, while gamma controls the locality of the RBF kernel.
+
+The observed results suggest that increasing C can partially compensate for insufficient flexibility at small gamma values. Conversely, stronger regularization through smaller C can partially compensate for excessive flexibility at larger gamma values.
+
+The interaction is particularly apparent in configurations combining large C and gamma values, where training performance increases while validation performance deteriorates.
+
+Although several numerical gamma values produced classification metrics similar to those obtained with `gamma="scale"`, this does not establish that their effective gamma values or learned decision functions are identical.
+
+The results are conditional on the selected feature representation, preprocessing configuration, RBF kernel, and investigated parameter ranges.
+
+**Conclusion**
+
+The coarse and refined searches successfully identified a competitive C–gamma region and demonstrated the consequences of insufficient and excessive model flexibility.
+
+Although several alternative configurations achieved competitive performance, none demonstrated a compelling advantage over the established baseline.
+
+The marginal F1 improvements obtained with `gamma=0.05` do not provide sufficient motivation to replace the existing configuration.
+
+Further refinement of C and gamma is not currently justified.
+
+**Selected configuration:** `C=1.0`, `gamma="scale"`.
+
+**Verdict:** Retain the established RBF configuration for subsequent investigation.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).
