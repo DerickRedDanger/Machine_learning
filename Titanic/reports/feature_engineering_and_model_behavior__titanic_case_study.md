@@ -5561,6 +5561,123 @@ Further refinement of C and gamma is not currently justified.
 
 **Verdict:** Retain the established RBF configuration for subsequent investigation.
 
+### HPO05 — Kernel comparison
+
+**Objective**
+
+Investigate whether alternative SVC kernels provide better classification performance than the RBF kernel retained during the preceding regularization and gamma investigations.
+
+The experiment also examines how kernel-specific hyperparameters influence model flexibility, generalization, and the precision–recall balance.
+
+**Experimental design**
+
+The selected feature representation and preprocessing configuration were retained.
+
+Four kernel families were investigated using kernel-specific parameter grids:
+
+| Kernel | C | Gamma | Degree | Coef0 | Candidates |
+|---|---|---|---|---|---:|
+| Linear | 0.01, 0.1, 1, 10, 100 | — | — | — | 5 |
+| RBF | 0.6, 1, 1.5, 2 | scale, 0.05, 0.1 | — | — | 12 |
+| Polynomial | 0.1, 1, 10 | scale | 2, 3, 4 | 0, 1, 2 | 27 |
+| Sigmoid | 0.1, 1, 10 | scale | — | 0, 1, 2 | 9 |
+
+A total of 53 candidate configurations were evaluated.
+
+The RBF search retained representative configurations identified during HPO01–04, while the remaining kernels underwent an initial broader screening.
+
+**Representative results**
+
+| Kernel | C | Gamma | Degree | Coef0 | CV Accuracy | CV Precision | CV Recall | CV F1 |
+|---|---:|---|---:|---:|---:|---:|---:|---:|
+| RBF | 1.0 | scale | — | — | 0.83612 | 0.81706 | 0.73943 | 0.77437 |
+| RBF | 1.5 | 0.05 | — | — | 0.83611 | 0.81419 | 0.74233 | 0.77490 |
+| Polynomial | 1.0 | scale | 2 | 2 | 0.83387 | 0.80935 | 0.74233 | 0.77263 |
+| Polynomial | 1.0 | scale | 2 | 1 | 0.83387 | 0.80750 | 0.74527 | 0.77356 |
+| Linear | 1.0 | — | — | — | 0.82602 | 0.79383 | 0.73645 | 0.76261 |
+| Sigmoid | 0.1 | scale | — | -1.5 | 0.81817 | 0.78803 | 0.71905 | 0.75113 |
+
+**RBF — Findings**
+
+- The competitive configurations identified during HPO03–04 reproduced their previous results.
+- RBF achieved the highest observed accuracy and F1 among the investigated kernel families.
+- The established baseline remained among the highest-performing configurations.
+
+**Linear — Findings**
+
+- Increasing C initially improved both training and validation performance.
+- Performance plateaued around `C=1` and `C=10`, with no further improvement at `C=100`.
+- The training–validation accuracy gap remained relatively small throughout the investigation.
+- The best linear configuration achieved an accuracy of 0.82602, approximately 1.01 percentage points below the RBF baseline.
+- The results are consistent with the more restricted functional form of the linear kernel limiting its ability to benefit from additional model flexibility.
+
+**Polynomial — Findings**
+
+- The polynomial kernel was the most competitive alternative to RBF.
+- Second-degree configurations with `C=1` achieved the highest polynomial accuracy of 0.83387.
+- Higher polynomial degrees generally benefited from stronger regularization.
+- Combining larger C values with higher polynomial degrees substantially increased the training–validation accuracy gap.
+- At `C=10` and `coef0=2`, increasing degree from 2 to 4 increased training accuracy from 0.85213 to 0.88917 while reducing validation accuracy from 0.82267 to 0.80250.
+- These results are consistent with excessive model flexibility leading to overfitting.
+- Although several configurations were competitive, none demonstrated a compelling advantage over RBF.
+
+**Sigmoid — Findings**
+
+- The initial sigmoid search achieved a maximum CV accuracy of 0.77553, substantially below the established RBF configuration.
+- The best initial configuration occurred at the lower boundaries of the investigated C and coef0 ranges, motivating a limited expansion of the search.
+- Introducing smaller C values and negative coef0 values improved the maximum accuracy to 0.80918.
+- A subsequent extension of the coef0 range identified a more competitive configuration with `C=0.1`, `coef0=-1.5`, and `gamma="scale"`, achieving an accuracy of 0.81817.
+- Across the complete investigation, sigmoid's maximum observed accuracy improved by approximately 4.26 percentage points, recovering approximately 70% of its initial accuracy gap relative to RBF.
+- The preferred C varied considerably depending on coef0, demonstrating an interaction between regularization strength and kernel configuration.
+- Extremely small C values frequently resulted in majority-class predictions, while several poorly performing configurations exhibited high precision accompanied by very low recall.
+- The final search identified a promising region surrounded by weaker configurations along both investigated parameter dimensions.
+
+**Conclusion**
+
+The expanded investigation demonstrated that sigmoid's initially poor performance was partly attributable to its hyperparameter configuration rather than necessarily to the kernel's suitability alone.
+
+Nevertheless, its best observed accuracy remained approximately 1.80 percentage points below the established RBF configuration.
+
+Although further refinement, particularly involving gamma, could potentially improve its performance, the current results do not provide sufficient motivation to expand the investigation further.
+
+**Verdict:** Retain RBF. No further sigmoid refinement is justified within the current investigation scope.
+
+**Precision–recall analysis**
+
+Alternative kernels did not demonstrate a compelling improvement in the precision–recall balance.
+
+Some polynomial configurations achieved higher precision or recall than the baseline, but these improvements were generally accompanied by reductions in the complementary metric.
+
+The more balanced alternatives produced only marginal improvements in individual metrics.
+
+No tested configuration simultaneously improved both precision and recall relative to the established RBF baseline.
+
+**Methodological observation**
+
+The kernel comparison was performed after the initial refinement of the RBF kernel through HPO01–04.
+
+Although RBF remained the preferred kernel, this experimental sequence introduced a potential inefficiency. If another kernel had demonstrated substantially better performance, part of the preceding refinement could have become unnecessary.
+
+Additionally, the alternative kernels did not receive the same degree of refinement as RBF, limiting the conclusions that can be drawn about their maximum achievable performance.
+
+A broader kernel screening followed by detailed refinement of the most promising candidates would provide a more efficient investigation strategy.
+
+This observation informed the subsequent experimental design adopted during the Logistic Regression solver–penalty investigation.
+
+**Conclusion**
+
+RBF remained the most promising kernel among the investigated configurations.
+
+The polynomial kernel demonstrated competitive performance, while linear and sigmoid configurations provided progressively weaker results.
+
+The experiments also reinforced the importance of jointly investigating parameters that influence model flexibility and regularization, particularly through the observed interaction between polynomial degree and C.
+
+Although further optimization of the alternative kernels could potentially improve their performance, the current results provide no compelling reason to expand the investigation.
+
+**Selected configuration:** `kernel="rbf"`, `C=1.0`, `gamma="scale"`.
+
+**Verdict:** Retain the established RBF configuration and proceed to class weight investigation.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).

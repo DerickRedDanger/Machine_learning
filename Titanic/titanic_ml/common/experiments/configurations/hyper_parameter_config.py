@@ -396,9 +396,9 @@ hpo05_scv["hyperparameter_search"]["param_grid"] = [
     },
     {
         "model__kernel": ["sigmoid"],
-        "model__C": [0.1, 1, 10],
+        "model__C": [0.01, 0.05, 0.1, 1, 10],
         "model__gamma": ["scale"],
-        "model__coef0": [0, 1, 2],
+        "model__coef0": [-2, -1.5, -1, -0.5, 0, 1, 2],
     },
 ]
 
@@ -406,7 +406,7 @@ hpo05_scv_configs = config_to_group(hpo05_scv)
 
 ALL_HPO_CONFIGS["hpo05_configs__svc"] = hpo05_scv_configs
 
-
+#--------------------------------------------
 hpo06_scv = hpo05_scv
 
 hpo06_scv = update_experiment_identity(
