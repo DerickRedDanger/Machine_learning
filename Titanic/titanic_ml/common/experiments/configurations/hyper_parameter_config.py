@@ -415,20 +415,22 @@ hpo06_scv = update_experiment_identity(
     feature_group="class_weight"
 )
 
+class_weights = [
+    {0: 2, 1: 1},
+    {0: 1.5, 1: 1},
+    {0: 1.25, 1: 1},
+    None,
+    {0: 1, 1: 1.25},
+    {0: 1, 1: 1.5},
+    {0: 1, 1: 2},
+    "balanced",
+]
+
 hpo06_scv["hyperparameter_search"]["param_grid"] = {
     "model__kernel": ["rbf"],
     "model__gamma": ["scale"],
     "model__C": [0.6, 1.0, 1.5],
-    "model__class_weight": [
-        None,
-        "balanced",
-        {0: 1, 1: 1.25},
-        {0: 1, 1: 1.5},
-        {0: 1, 1: 2},
-        {0: 1.25, 1: 1},
-        {0: 1.5, 1: 1},
-        {0: 2, 1: 1},
-    ],
+    "model__class_weight": class_weights
 }
 
 hpo06_scv_configs = config_to_group(hpo06_scv)
@@ -465,4 +467,44 @@ th01_scv = {
     }
 
 ALL_THRESHOLD_CONFIGS["th01_scv"] = th01_scv
+
+#------------------------------------------------
+
+th02_svc_model_configs = {}
+th02_svc_threshold_configs = {}
+
+for i, class_weight in enumerate(class_weights, start=1,):
+
+    threshold_name = f"th02_{i:02d}_scv"
+
+    model_config = update_experiment_identity(
+        config=hpo_final_svc,
+        stage="th02",
+        feature_group=f"class_weight{i:02d}",
+    )
+
+    model_config["model_params"]["class_weight"] = (
+        copy.deepcopy(class_weight)
+    )
+
+    model_config["threshold_experiment"] = threshold_name
+
+    threshold_config = copy.deepcopy(th01_scv)
+
+    threshold_config.update({
+        "name": threshold_name,
+        "source_experiment": model_config["name"],
+        "thresholds": np.round(
+            np.arange(-1.5, 1.51, 0.05),
+            2,
+        ).tolist(),
+    })
+
+    th02_svc_model_configs[model_config["name"]] = model_config
+    th02_svc_threshold_configs[threshold_name] = threshold_config
+
+
+ALL_HPO_CONFIGS["th02_configs__svc"] = th02_svc_model_configs
+
+ALL_THRESHOLD_CONFIGS.update(th02_svc_threshold_configs)
 

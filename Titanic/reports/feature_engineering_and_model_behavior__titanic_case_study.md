@@ -5678,6 +5678,159 @@ Although further optimization of the alternative kernels could potentially impro
 
 **Verdict:** Retain the established RBF configuration and proceed to class weight investigation.
 
+### HPO06 — Class weighting
+
+#### Objective
+
+Investigate whether adjusting class weights improves the predictive performance of SVC or provides useful alternatives for prioritizing precision or recall.
+
+Additionally, investigate the interaction between class weighting and regularization strength.
+
+#### Experimental design
+
+The previously selected RBF kernel and `gamma="scale"` were retained.
+
+| Parameter | Investigated values |
+|---|---|
+| C | 0.6, 1.0, 1.5 |
+| Class weight | None, balanced, custom weights favoring either class by factors of 1.25, 1.5 and 2 |
+| Kernel | RBF |
+| Gamma | scale |
+
+A total of 24 configurations were evaluated.
+
+#### Representative results
+
+| C | Class weight | CV Accuracy | CV Precision | CV Recall | CV F1 |
+|---:|---|---:|---:|---:|---:|
+| 1.0 | None | 0.83612 | 0.81706 | 0.73943 | 0.77437 |
+| 1.5 | None | 0.83612 | 0.81706 | 0.73943 | 0.77437 |
+| 1.0 | {0: 1.25, 1: 1} | 0.83499 | 0.82034 | 0.73069 | 0.77129 |
+| 1.0 | {0: 1.5, 1: 1} | 0.83052 | 0.84963 | 0.67809 | 0.75237 |
+| 1.5 | {0: 2, 1: 1} | 0.82719 | 0.90871 | 0.61411 | 0.72851 |
+| 1.0 | {0: 1, 1: 1.25} | 0.83275 | 0.80879 | 0.73943 | 0.77078 |
+| 0.6 | {0: 1, 1: 1.5} | 0.82380 | 0.78880 | 0.74237 | 0.76240 |
+| 1.5 | {0: 1, 1: 2} | 0.80359 | 0.72180 | 0.80665 | 0.75720 |
+| 0.6 | balanced | 0.82156 | 0.78148 | 0.74817 | 0.76144 |
+
+#### Findings
+
+- No weighted configuration surpassed the unweighted baseline in either accuracy or F1.
+- Mild class weighting remained competitive, while stronger weighting produced increasingly pronounced precision–recall trade-offs.
+- Prioritizing nonsurvivors increased survivor precision substantially. The best precision-oriented configuration achieved a precision of 0.90871 while retaining an accuracy of 0.82719.
+- Prioritizing survivors increased recall to a maximum of 0.80665, but generally required a more substantial sacrifice in accuracy and precision.
+- Compared with the investigated Logistic Regression configurations, SVC demonstrated a particularly favorable precision–accuracy trade-off when prioritizing nonsurvivors. Its advantage when prioritizing recall was less pronounced.
+- The preferred C varied depending on the selected class weight, demonstrating an interaction between regularization strength and class weighting.
+- Stronger weighting generally increased training–validation accuracy gaps and metric variability, although no compelling evidence of severe overfitting was observed.
+- Recall exhibited the greatest fold-to-fold variability. This was particularly noticeable under stronger survivor weighting combined with larger C values.
+
+#### Interpretation
+
+SVC implements class weighting by scaling the effective C associated with each class. Consequently, global regularization strength and class weighting jointly influence the fitted decision boundary.
+
+The observed precision–recall trade-offs were asymmetric. Increasing the weight of nonsurvivors produced considerably larger precision gains than the recall gains obtained by increasing the weight of survivors.
+
+This behavior may reflect a combination of class imbalance, class separability, feature representation and the characteristics of the RBF decision boundary. The current experiments do not isolate their individual contributions.
+
+Although class weighting did not improve accuracy, several configurations demonstrated useful alternatives for applications with different misclassification priorities.
+
+#### Conclusion
+
+The unweighted baseline remained the most suitable configuration for the project's accuracy-oriented objective.
+
+While class weighting demonstrated meaningful control over precision and recall, the resulting trade-offs did not justify replacing the selected configuration.
+
+The interaction between class weighting and decision threshold optimization remains worth investigating, particularly to determine whether the favorable precision–recall operating points can be reproduced through threshold adjustment alone.
+
+**Verdict:** Retain `C=1.0`, `kernel="rbf"`, `gamma="scale"` and `class_weight=None`.
+
+### TH01 — Decision threshold optimization
+
+#### Objective
+
+Investigate whether adjusting the decision threshold of the selected SVC configuration improves predictive performance or provides useful alternatives for prioritizing precision or recall.
+
+Additionally, compare the observed precision–recall trade-offs with those obtained through class weighting in HPO06.
+
+#### Experimental design
+
+The selected SVC configuration was retained without further hyperparameter modifications.
+
+| Parameter | Value |
+|---|---|
+| Kernel | RBF |
+| C | 1.0 |
+| Gamma | scale |
+| Class weight | None |
+| Score method | decision_function |
+| Default threshold | 0.0 |
+| Investigated thresholds | −1.0 to 1.0, increments of 0.1 |
+| Outer CV | 5 folds |
+| Inner CV | 5 folds |
+
+A total of 21 candidate thresholds were evaluated within each outer fold using inner out-of-fold predictions.
+
+#### Representative inner results
+
+| Threshold | Accuracy | Precision | Recall | F1 | Selected count |
+|---:|---:|---:|---:|---:|---:|
+| −1.0 | 0.70006 | 0.57308 | 0.85818 | 0.68717 | 0 |
+| −0.9 | 0.78956 | 0.70569 | 0.77558 | 0.73888 | 0 |
+| −0.5 | 0.81987 | 0.77627 | 0.74560 | 0.76054 | 0 |
+| −0.2 | 0.82912 | 0.80011 | 0.73975 | 0.76862 | 0 |
+| −0.1 | 0.83165 | 0.80676 | 0.73829 | 0.77088 | 0 |
+| 0.0 | 0.83389 | 0.81247 | 0.73756 | 0.77307 | 4 |
+| 0.1 | 0.83361 | 0.81383 | 0.73463 | 0.77208 | 0 |
+| 0.2 | 0.83333 | 0.81773 | 0.72805 | 0.77018 | 1 |
+| 0.3 | 0.83193 | 0.81907 | 0.72147 | 0.76712 | 0 |
+| 0.5 | 0.82492 | 0.82722 | 0.68786 | 0.75101 | 0 |
+| 0.9 | 0.78872 | 0.90052 | 0.50582 | 0.64731 | 0 |
+| 1.0 | 0.76122 | 0.91920 | 0.41446 | 0.57124 | 0 |
+
+#### Outer cross-validation results
+
+| Metric | Default | Tuned |
+|---|---:|---:|
+| Accuracy | 0.83612 ± 0.02312 | 0.83612 ± 0.02312 |
+| Precision | 0.81706 ± 0.02733 | 0.81706 ± 0.02733 |
+| Recall | 0.73943 ± 0.07350 | 0.73943 ± 0.07350 |
+| F1 | 0.77437 ± 0.04311 | 0.77437 ± 0.04311 |
+
+Selected thresholds:
+
+- 0.0: 4 folds.
+- 0.2: 1 fold.
+
+#### Findings
+
+- The default threshold achieved the highest mean inner accuracy and F1.
+- A relatively competitive accuracy region was observed around the default threshold, particularly between −0.1 and 0.3.
+- Increasing the threshold improved precision at the expense of recall, while decreasing it produced the opposite effect.
+- Performance deterioration became increasingly pronounced near the extremes of the investigated range.
+- A particularly sharp decrease in accuracy and precision occurred between thresholds −0.9 and −1.0.
+- Threshold optimization produced no measured improvement in outer cross-validation performance.
+- Compared with the results from HPO06, threshold adjustment appeared to provide less favorable precision–recall trade-offs than class weighting, particularly when prioritizing precision.
+
+#### Interpretation
+
+Unlike probability-based classifiers, SVC produces decision scores whose values are associated with its margin-based classification objective.
+
+The pronounced performance changes near the extremes of the investigated threshold range may indicate a concentration of observations near the margin values of −1 and +1. However, the decision-score distributions were not directly examined.
+
+The preliminary comparison with HPO06 suggests that class weighting may provide benefits beyond those obtainable through threshold adjustment alone. While threshold adjustment preserves the relative ordering of decision scores, class weighting can modify the fitted decision boundary and potentially alter class separation.
+
+This comparison remains exploratory because HPO06 validation metrics and TH01 inner out-of-fold metrics were obtained under different evaluation procedures.
+
+#### Conclusion
+
+Decision threshold optimization did not improve the selected unweighted SVC configuration.
+
+The default threshold remained the most suitable option for the project's accuracy-oriented objective, and further independent threshold refinement was not considered necessary.
+
+However, the apparent advantage of class weighting in controlling precision–recall trade-offs provides additional motivation to investigate the interaction between class weighting and decision threshold optimization.
+
+**Verdict:** Retain the default decision threshold of 0.0.
+
 ## Lessons learned
 
 - Recovering missing information (cabin, Age Imputation).
